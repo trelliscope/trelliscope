@@ -1,3 +1,8 @@
+add_meta_class <- function(x) {
+  class(x) <- c("R6", "trelliscope_meta_def")
+  x
+}
+
 #' Specify a "string" metadata variable
 #' @param varname Name of the variable.
 #' @param description Description of the variable.
@@ -13,7 +18,8 @@ meta_string <- function(
     varname = varname,
     description = description,
     tags = tags
-  )
+  ) %>%
+  add_meta_class()
 }
 
 #' Specify a "number" metadata variable
@@ -37,7 +43,8 @@ meta_number <- function(
     tags = tags,
     digits = digits,
     local = locale
-  )
+  ) %>%
+  add_meta_class()
 }
 
 #' Specify a "factor" metadata variable
@@ -58,7 +65,8 @@ meta_factor <- function(
     description = description,
     tags = tags,
     levels = levels
-  )
+  ) %>%
+  add_meta_class()
 }
 
 #' Specify a "date" metadata variable
@@ -74,7 +82,8 @@ meta_date <- function(
     varname = varname,
     description = description,
     tags = tags
-  )
+  ) %>%
+  add_meta_class()
 }
 
 #' Specify a "datetime" metadata variable
@@ -90,7 +99,8 @@ meta_datetime <- function(
     varname = varname,
     description = description,
     tags = tags
-  )
+  ) %>%
+  add_meta_class()
 }
 
 #' Specify a "geo" metadata variable
@@ -112,7 +122,8 @@ meta_geo <- function(
     tags = tags,
     latvar = latvar,
     longvar = longvar
-  )
+  ) %>%
+  add_meta_class()
 }
 
 #' Specify a "graph" metadata variable
@@ -138,7 +149,8 @@ meta_graph <- function(
     tags = tags,
     idvarname = idvarname,
     direction = direction
-  )
+  ) %>%
+  add_meta_class()
 }
 
 #' Specify a "href" metadata variable
@@ -154,5 +166,6 @@ meta_href <- function(
     varname = varname,
     description = description,
     tags = tags
-  )
+  ) %>%
+  add_meta_class()
 }

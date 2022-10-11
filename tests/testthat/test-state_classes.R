@@ -10,6 +10,21 @@ tmp <- matrix(c(
 ), ncol = 2)
 dat$lst <- apply(tmp, 1, as.list)
 
+test_that("LayoutState", {
+  obj <- LayoutState$new()
+  expect_true(obj$check_with_data(dat))
+
+  expect_error(
+    LayoutState$new(nrow = "a"),
+    regexp = "must be an integer"
+  )
+
+  expect_error(
+    LayoutState$new(arrange = "stuff"),
+    regexp = "must be one of rows, cols"
+  )
+})
+
 test_that("LabelState", {
   obj <- LabelState$new(c("Species", "date"))
   expect_true(obj$check_with_data(dat))

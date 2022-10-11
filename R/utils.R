@@ -1,4 +1,3 @@
-
 to_json <- function(x, pretty = FALSE) {
   jsonlite::toJSON(
     x,
@@ -7,6 +6,11 @@ to_json <- function(x, pretty = FALSE) {
     digits = NA,
     null = "null"
   )
+}
+
+check_display_object <- function(obj) {
+  assertthat::assert_that(inherits(obj, "trelliscope_display"),
+    msg = "Expecting a trelliscope display object")
 }
 
 check_scalar <- function(x, name, err_fn = paste0) {
@@ -99,3 +103,7 @@ check_longvar <- function(x, name, err_fn = paste0) {
     msg = err_fn(paste0("The variable specifying longitude, '",
       name, "' must be numeric and between 0 and 180")))
 }
+
+# sanitize <- function(x) {
+#   gsub("[^a-zA-Z0-9_]", "_", x)
+# }
