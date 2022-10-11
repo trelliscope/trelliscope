@@ -53,6 +53,15 @@ Display <- R6::R6Class(
   )
 )
 
+#' Instantiate a trelliscope display object
+#' @param df A data frame that contains the metadata of the display as well as
+#' a column that indicate the panels to be displayed.
+#' @param name Name of the trelliscope display.
+#' @param description Description of the trelliscope display.
+#' @param path Directory in which to place the trelliscope display when
+#' it is written using `write_display()`.
+#' @param force_plot Should the panels be forced to be plotted, even if they
+#' have already been plotted and have not changed since the previous plotting?
 #' @export
 trelliscope <- function(
   df, name, description = name, path = tempfile(), force_plot = FALSE

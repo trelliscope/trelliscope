@@ -7,19 +7,19 @@
 map_plot(.x, .f, ...)
 }
 \arguments{
-\item{.x}{a list or atomic vector (see \code{\link[purrr]{map}} for details)}
+\item{.x}{a list or atomic vector (see \code{purrr::map()} for details)}
 
-\item{.f}{a function, formula, or atomic vector (see purrr::map() for
+\item{.f}{a function, formula, or atomic vector (see \code{purrr::map()} for
 details)}
 
-\item{...}{additional arguments passed on to .f (see purrr::map() for
+\item{...}{additional arguments passed on to .f (see \code{purrr::map()} for
 details)}
 }
 \description{
 Apply a function to each element of a vector and return a vector of plots
 }
 \details{
-See \code{\link[purrr]{map}}
+See \code{purrr::map()}
 }
 \examples{
 \donttest{
@@ -27,11 +27,11 @@ library(dplyr)
 library(tidyr)
 library(purrr)
 
-x <- ggplot2::mpg \%>\%
-  tidyr::nest(data = !dplyr::one_of(c("manufacturer", "class"))) \%>\%
+x <- ggplot2::mpg |>
+  tidyr::nest(data = !dplyr::one_of(c("manufacturer", "class"))) |>
   dplyr::mutate(panel = map_plot(data, function(x) {
     ggplot2::qplot(hwy, cty, data = x)
-  })) \%>\%
-  trelliscope(dat, name = "test")
+  })) |>
+  trelliscope(name = "test")
 }
 }

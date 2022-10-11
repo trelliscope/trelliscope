@@ -1,3 +1,7 @@
+#' Add a meta variable definition to a trelliscope display
+#' @param disp A trelliscope display object created with `trelliscope()`.
+#' @param obj A meta variable definition created with a meta_*() function
+#' @export
 add_meta_def <- function(disp, obj) {
   check_display_object(disp)
   disp2 <- disp$clone()
@@ -5,6 +9,10 @@ add_meta_def <- function(disp, obj) {
   disp2
 }
 
+#' Add multiple meta variable definitions to a trelliscope display
+#' @param disp A trelliscope display object created with `trelliscope()`.
+#' @param ... Any number of objects created with meta_*() functions
+#' @export
 add_meta_defs <- function(disp, ...) {
   check_display_object(disp)
   objs <- list(...)
@@ -49,8 +57,10 @@ set_labels <- function(disp, varnames) {
 #' @param disp A trelliscope display object created with `trelliscope()`.
 #' @param varnames A vector of variable names to sort on.
 #' @param dirs A vector of directions to sort on ("asc" or "desc").
+#' @param add Should an existing sort specification be added to? If FALSE
+#' (default), the entire sort specification will be overridden.
 #' @export
-set_sort <- function(disp, varnames, dirs) {
+set_sort <- function(disp, varnames, dirs, add = FALSE) {
   check_display_object(disp)
   assertthat::assert_that(length(varnames) == length(dirs),
     msg = "In setting sort state, 'varnames' must have same length as 'dirs'")
@@ -60,7 +70,7 @@ set_sort <- function(disp, varnames, dirs) {
   for (ii in seq_along(varnames)) {
     obj <- state_sort(varname = varnames[ii], dir = dirs[ii])
     obj$check_with_data(disp$df)
-    state2$set(obj, add = ii != 1)
+    state2$set(obj, add = ii != 1 || add)
   }
   disp2$set_state(state2)
   disp2

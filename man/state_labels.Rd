@@ -7,7 +7,8 @@
 state_labels(varnames)
 }
 \arguments{
-\item{labels}{A vector of variable names that should appear as labels
+\item{varnames}{A vector of variable names whose values should appear
+as labels
 when viewing the display.}
 }
 \description{

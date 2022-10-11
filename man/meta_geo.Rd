@@ -4,7 +4,7 @@
 \alias{meta_geo}
 \title{Specify a "geo" metadata variable}
 \usage{
-meta_geo(varname, description = varname, tags = "common", latvar, longvar)
+meta_geo(varname, description = varname, tags = NULL, latvar, longvar)
 }
 \arguments{
 \item{varname}{Name of the variable.}

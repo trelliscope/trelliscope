@@ -4,7 +4,7 @@
 \alias{meta_string}
 \title{Specify a "string" metadata variable}
 \usage{
-meta_string(varname, description = varname, tags = "common")
+meta_string(varname, description = varname, tags = NULL)
 }
 \arguments{
 \item{varname}{Name of the variable.}

@@ -1,10 +1,10 @@
-test_that("trelliscope instantiation", {
-  dat <- ggplot2::mpg %>%
-    tidyr::nest(data = !dplyr::one_of(c("manufacturer", "class"))) %>%
-    dplyr::mutate(panel = map_plot(data, function(x) {
-      ggplot2::qplot(hwy, cty, data = x)
-    }))
+dat <- ggplot2::mpg |>
+  tidyr::nest(data = !dplyr::one_of(c("manufacturer", "class"))) |>
+  dplyr::mutate(panel = map_plot(data, function(x) {
+    ggplot2::qplot(hwy, cty, data = x)
+  }))
 
+test_that("trelliscope instantiation", {
   expect_error(
     trelliscope(iris, name = "test"),
     regexp = "that references a plot or image"

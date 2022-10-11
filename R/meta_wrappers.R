@@ -12,13 +12,13 @@ add_meta_class <- function(x) {
 meta_string <- function(
   varname,
   description = varname,
-  tags = "common"
+  tags = NULL
 ) {
   StringMeta$new(
     varname = varname,
     description = description,
     tags = tags
-  ) %>%
+  ) |>
   add_meta_class()
 }
 
@@ -33,7 +33,7 @@ meta_string <- function(
 meta_number <- function(
   varname,
   description = varname,
-  tags = "common",
+  tags = NULL,
   digits = NULL,
   locale = TRUE
 ) {
@@ -43,7 +43,7 @@ meta_number <- function(
     tags = tags,
     digits = digits,
     local = locale
-  ) %>%
+  ) |>
   add_meta_class()
 }
 
@@ -57,7 +57,7 @@ meta_number <- function(
 meta_factor <- function(
   varname,
   description = varname,
-  tags = "common",
+  tags = NULL,
   levels = NULL
 ) {
   FactorMeta$new(
@@ -65,7 +65,7 @@ meta_factor <- function(
     description = description,
     tags = tags,
     levels = levels
-  ) %>%
+  ) |>
   add_meta_class()
 }
 
@@ -76,13 +76,13 @@ meta_factor <- function(
 meta_date <- function(
   varname,
   description = varname,
-  tags = "common"
+  tags = NULL
 ) {
   DateMeta$new(
     varname = varname,
     description = description,
     tags = tags
-  ) %>%
+  ) |>
   add_meta_class()
 }
 
@@ -93,13 +93,13 @@ meta_date <- function(
 meta_datetime <- function(
   varname,
   description = varname,
-  tags = "common"
+  tags = NULL
 ) {
   DatetimeMeta$new(
     varname = varname,
     description = description,
     tags = tags
-  ) %>%
+  ) |>
   add_meta_class()
 }
 
@@ -112,7 +112,7 @@ meta_datetime <- function(
 meta_geo <- function(
   varname,
   description = varname,
-  tags = "common",
+  tags = NULL,
   latvar,
   longvar
 ) {
@@ -122,7 +122,7 @@ meta_geo <- function(
     tags = tags,
     latvar = latvar,
     longvar = longvar
-  ) %>%
+  ) |>
   add_meta_class()
 }
 
@@ -138,7 +138,7 @@ meta_geo <- function(
 meta_graph <- function(
   varname,
   description = varname,
-  tags = "common",
+  tags = NULL,
   idvarname,
   direction = c("none", "to", "from")
 ) {
@@ -149,7 +149,7 @@ meta_graph <- function(
     tags = tags,
     idvarname = idvarname,
     direction = direction
-  ) %>%
+  ) |>
   add_meta_class()
 }
 
@@ -160,12 +160,12 @@ meta_graph <- function(
 meta_href <- function(
   varname,
   description = varname,
-  tags = "common"
+  tags = NULL
 ) {
   HREFMeta$new(
     varname = varname,
     description = description,
     tags = tags
-  ) %>%
+  ) |>
   add_meta_class()
 }

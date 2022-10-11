@@ -20,7 +20,7 @@ DisplayState <- R6::R6Class("DisplayState",
         if (add) {
           if (!is.null(private$sort[[varname]]))
             message("Replacing existing sort state specification for ",
-              " variable ", varname)
+              "variable ", varname)
           # make sure it is in the order we want by adding to the end
           private$sort[[varname]] <- NULL
           private$sort[[varname]] <- obj
@@ -31,9 +31,10 @@ DisplayState <- R6::R6Class("DisplayState",
           names(tmp) <- varname
           private$sort <- tmp
         }
-      } else if (obj$get("type") == "filter") {
-        message("TODO")
       }
+      # else if (obj$get("type") == "filter") {
+      #   message("TODO")
+      # }
     }
   ),
   private = list(
@@ -108,7 +109,8 @@ LabelState <- R6::R6Class("LabelState",
   public = list(
     initialize = function(varnames) {
       super$initialize(type = "labels")
-      check_atomic_vector(varnames, "varnames", self$error_msg)
+      if (is.null(varnames))
+        varnames <- character(0)
       check_character(varnames, "varnames", self$error_msg)
       private$varnames <- I(varnames) # to make it a json array
     },

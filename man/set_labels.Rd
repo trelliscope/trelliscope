@@ -8,6 +8,10 @@ set_labels(disp, varnames)
 }
 \arguments{
 \item{disp}{A trelliscope display object created with \code{trelliscope()}.}
+
+\item{varnames}{A vector of variable names whose values should appear
+as labels
+when viewing the display.}
 }
 \description{
 Add a labels state specification to a trelliscope display

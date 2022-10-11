@@ -4,7 +4,7 @@
 \alias{meta_datetime}
 \title{Specify a "datetime" metadata variable}
 \usage{
-meta_datetime(varname, description = varname, tags = "common")
+meta_datetime(varname, description = varname, tags = NULL)
 }
 \arguments{
 \item{varname}{Name of the variable.}

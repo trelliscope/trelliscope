@@ -13,10 +13,10 @@ Meta <- R6::R6Class("Meta",
       private$type <- type
       private$filterable <- filterable
       private$sortable <- sortable
-      if (!is.null(tags)) {
-        check_atomic_vector(tags, "tags", self$error_msg)
-        private$tags <- as.character(tags)
-      }
+      if (is.null(tags))
+        tags <- character(0)
+      check_atomic(tags, "tags", self$error_msg)
+      private$tags <- as.character(tags)
     },
     get = function(name) {
       private[[name]]
@@ -53,7 +53,7 @@ Meta <- R6::R6Class("Meta",
     varname = NULL,
     type = NULL,
     description = NULL,
-    tags = "common",
+    tags = NULL,
     filterable = TRUE,
     sortable = TRUE
   )

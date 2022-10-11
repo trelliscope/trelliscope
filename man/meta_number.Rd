@@ -7,7 +7,7 @@
 meta_number(
   varname,
   description = varname,
-  tags = "common",
+  tags = NULL,
   digits = NULL,
   locale = TRUE
 )

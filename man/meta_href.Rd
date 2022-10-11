@@ -4,7 +4,7 @@
 \alias{meta_href}
 \title{Specify a "href" metadata variable}
 \usage{
-meta_href(varname, description = varname, tags = "common")
+meta_href(varname, description = varname, tags = NULL)
 }
 \arguments{
 \item{varname}{Name of the variable.}

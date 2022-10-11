@@ -4,7 +4,7 @@
 \alias{meta_factor}
 \title{Specify a "factor" metadata variable}
 \usage{
-meta_factor(varname, description = varname, tags = "common", levels = NULL)
+meta_factor(varname, description = varname, tags = NULL, levels = NULL)
 }
 \arguments{
 \item{varname}{Name of the variable.}

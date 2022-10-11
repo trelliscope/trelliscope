@@ -1,24 +1,25 @@
 #' Apply a function to each element of a vector and return a vector of plots
 #'
-#' @param .x a list or atomic vector (see \code{\link[purrr]{map}} for details)
-#' @param .f a function, formula, or atomic vector (see purrr::map() for
+#' @param .x a list or atomic vector (see `purrr::map()` for details)
+#' @param .f a function, formula, or atomic vector (see `purrr::map()` for
 #' details)
-#' @param ... additional arguments passed on to .f (see purrr::map() for
+#' @param ... additional arguments passed on to .f (see `purrr::map()` for
 #' details)
-#' @details See \code{\link[purrr]{map}}
+#' @details See `purrr::map()`
 #' @examples
 #' \donttest{
 #' library(dplyr)
 #' library(tidyr)
 #' library(purrr)
 #'
-#' x <- ggplot2::mpg %>%
-#'   tidyr::nest(data = !dplyr::one_of(c("manufacturer", "class"))) %>%
+#' x <- ggplot2::mpg |>
+#'   tidyr::nest(data = !dplyr::one_of(c("manufacturer", "class"))) |>
 #'   dplyr::mutate(panel = map_plot(data, function(x) {
 #'     ggplot2::qplot(hwy, cty, data = x)
-#'   })) %>%
-#'   trelliscope(dat, name = "test")
+#'   })) |>
+#'   trelliscope(name = "test")
 #' }
+#' @importFrom purrr map
 #' @export
 map_plot <- function(.x, .f, ...) {
   structure(

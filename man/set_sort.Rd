@@ -4,7 +4,7 @@
 \alias{set_sort}
 \title{Add a labels state specification to a trelliscope display}
 \usage{
-set_sort(disp, varnames, dirs)
+set_sort(disp, varnames, dirs, add = FALSE)
 }
 \arguments{
 \item{disp}{A trelliscope display object created with \code{trelliscope()}.}
@@ -12,6 +12,9 @@ set_sort(disp, varnames, dirs)
 \item{varnames}{A vector of variable names to sort on.}
 
 \item{dirs}{A vector of directions to sort on ("asc" or "desc").}
+
+\item{add}{Should an existing sort specification be added to? If FALSE
+(default), the entire sort specification will be overridden.}
 }
 \description{
 Add a labels state specification to a trelliscope display

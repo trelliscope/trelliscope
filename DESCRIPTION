@@ -2,16 +2,20 @@ Package: trelliscopejs
 Title: What the Package Does (One Line, Title Case)
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+    person("Ryan", "Hafen", , "rhafen@gmail.com", role = c("aut", "cre"),
+        comment = c(ORCID = "YOUR-ORCID-ID"))
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
 Suggests: 
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    dplyr,
+    ggplot2,
+    tidyr
 Config/testthat/edition: 3
 Imports: 
     assertthat,
-    jsonlite
+    jsonlite,
+    purrr

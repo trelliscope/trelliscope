@@ -7,7 +7,7 @@
 meta_graph(
   varname,
   description = varname,
-  tags = "common",
+  tags = NULL,
   idvarname,
   direction = c("none", "to", "from")
 )

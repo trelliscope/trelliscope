@@ -30,6 +30,12 @@ check_enum <- function(x, vals, name, err_fn = paste0) {
       paste(vals, collapse = ", "))))
 }
 
+check_atomic <- function(x, name, err_fn = paste0) {
+  assertthat::assert_that(is.atomic(x),
+    msg = err_fn(paste0(
+      "'", name, "' must be an atomic vector")))
+}
+
 check_atomic_vector <- function(x, name, err_fn = paste0) {
   assertthat::assert_that(is.atomic(x) && length(x) > 0,
     msg = err_fn(paste0(

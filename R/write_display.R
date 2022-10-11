@@ -1,4 +1,7 @@
-# write_display <- function(disp) {
+#' Write a trelliscope display object to disk.
+#' @param disp A trelliscope display object created with `trelliscope()`.
+#' @export
+write_display <- function(disp) {
 #   # infer any meta definitions that aren't specified
 
 #   sname <- sanitize(disp$get("name"))
@@ -16,4 +19,4 @@
 #   #     jsonp = params$jsonp,
 #   #   )
 #   # }
-# }
+}
