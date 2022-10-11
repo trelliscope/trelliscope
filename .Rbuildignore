@@ -1,2 +1,5 @@
 ^LICENSE\.md$
 ^_ignore$
+^README\.Rmd$
+^\.github$
+^codecov\.yml$

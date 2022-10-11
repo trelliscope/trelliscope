@@ -1,11 +1,11 @@
 #' Apply a function to each element of a vector and return a vector of plots
 #'
-#' @param .x a list or atomic vector (see `purrr::map()` for details)
-#' @param .f a function, formula, or atomic vector (see `purrr::map()` for
+#' @param .x a list or atomic vector (see [`purrr::map()`] for details)
+#' @param .f a function, formula, or atomic vector (see [`purrr::map()`] for
 #' details)
-#' @param ... additional arguments passed on to .f (see `purrr::map()` for
+#' @param ... additional arguments passed on to .f (see [`purrr::map()`] for
 #' details)
-#' @details See `purrr::map()`
+#' @details See [`purrr::map()`]
 #' @examples
 #' \donttest{
 #' library(dplyr)

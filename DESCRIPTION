@@ -1,16 +1,17 @@
-Package: trelliscopejs
-Title: What the Package Does (One Line, Title Case)
+Package: trelliscope
+Title: Create Interactive Trelliscope Displays
 Version: 0.0.0.9000
 Authors@R: 
     person("Ryan", "Hafen", , "rhafen@gmail.com", role = c("aut", "cre"),
-        comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+        comment = c(ORCID = "0000-0002-5516-8367"))
+Description: Trelliscope is a scalable, flexible, interactive approach to visualizing data. This package provides methods that make it easy to create and interact with Trelliscope displays. High-level functions are provided for creating displays from within 'tidyverse' or 'ggplot2' workflows. Low-level functions are also provided for creating new interfaces.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
 Suggests: 
     testthat (>= 3.0.0),
+    covr,
     dplyr,
     ggplot2,
     tidyr

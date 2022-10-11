@@ -8,10 +8,10 @@
 
 suppressPackageStartupMessages({
   library(testthat, warn.conflicts = FALSE)
-  library(trelliscopejs, warn.conflicts = FALSE)
+  library(trelliscope, warn.conflicts = FALSE)
   library(ggplot2, warn.conflicts = FALSE)
   library(tidyr, warn.conflicts = FALSE)
   library(dplyr, warn.conflicts = FALSE)
 })
 
-test_check("trelliscopejs")
+test_check("trelliscope")

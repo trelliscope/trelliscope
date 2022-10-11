@@ -7,7 +7,7 @@
 set_labels(disp, varnames)
 }
 \arguments{
-\item{disp}{A trelliscope display object created with \code{trelliscope()}.}
+\item{disp}{A trelliscope display object created with \code{\link[=trelliscope]{trelliscope()}}.}
 
 \item{varnames}{A vector of variable names whose values should appear
 as labels

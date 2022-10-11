@@ -7,7 +7,7 @@
 set_sort(disp, varnames, dirs, add = FALSE)
 }
 \arguments{
-\item{disp}{A trelliscope display object created with \code{trelliscope()}.}
+\item{disp}{A trelliscope display object created with \code{\link[=trelliscope]{trelliscope()}}.}
 
 \item{varnames}{A vector of variable names to sort on.}
 

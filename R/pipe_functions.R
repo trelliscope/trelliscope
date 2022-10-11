@@ -1,6 +1,6 @@
 #' Add a meta variable definition to a trelliscope display
-#' @param disp A trelliscope display object created with `trelliscope()`.
-#' @param obj A meta variable definition created with a meta_*() function
+#' @param disp A trelliscope display object created with [`trelliscope()`].
+#' @param obj A meta variable definition created with a meta_*() function.
 #' @export
 add_meta_def <- function(disp, obj) {
   check_display_object(disp)
@@ -10,8 +10,8 @@ add_meta_def <- function(disp, obj) {
 }
 
 #' Add multiple meta variable definitions to a trelliscope display
-#' @param disp A trelliscope display object created with `trelliscope()`.
-#' @param ... Any number of objects created with meta_*() functions
+#' @param disp A trelliscope display object created with [`trelliscope()`].
+#' @param ... Any number of objects created with meta_*() functions.
 #' @export
 add_meta_defs <- function(disp, ...) {
   check_display_object(disp)
@@ -22,7 +22,7 @@ add_meta_defs <- function(disp, ...) {
 }
 
 #' Add a layout state specification to a trelliscope display
-#' @param disp A trelliscope display object created with `trelliscope()`.
+#' @param disp A trelliscope display object created with [`trelliscope()`].
 #' @inheritParams state_layout
 #' @export
 set_layout <- function(disp, nrow = 1, ncol = 1, arrange = "rows", page = 1) {
@@ -38,7 +38,7 @@ set_layout <- function(disp, nrow = 1, ncol = 1, arrange = "rows", page = 1) {
 }
 
 #' Add a labels state specification to a trelliscope display
-#' @param disp A trelliscope display object created with `trelliscope()`.
+#' @param disp A trelliscope display object created with [`trelliscope()`].
 #' @inheritParams state_labels
 #' @export
 set_labels <- function(disp, varnames) {
@@ -54,7 +54,7 @@ set_labels <- function(disp, varnames) {
 }
 
 #' Add a labels state specification to a trelliscope display
-#' @param disp A trelliscope display object created with `trelliscope()`.
+#' @param disp A trelliscope display object created with [`trelliscope()`].
 #' @param varnames A vector of variable names to sort on.
 #' @param dirs A vector of directions to sort on ("asc" or "desc").
 #' @param add Should an existing sort specification be added to? If FALSE

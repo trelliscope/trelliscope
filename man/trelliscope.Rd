@@ -21,7 +21,7 @@ a column that indicate the panels to be displayed.}
 \item{description}{Description of the trelliscope display.}
 
 \item{path}{Directory in which to place the trelliscope display when
-it is written using \code{write_display()}.}
+it is written using \code{\link[=write_display]{write_display()}}.}
 
 \item{force_plot}{Should the panels be forced to be plotted, even if they
 have already been plotted and have not changed since the previous plotting?}

@@ -7,9 +7,9 @@
 add_meta_defs(disp, ...)
 }
 \arguments{
-\item{disp}{A trelliscope display object created with \code{trelliscope()}.}
+\item{disp}{A trelliscope display object created with \code{\link[=trelliscope]{trelliscope()}}.}
 
-\item{...}{Any number of objects created with meta_*() functions}
+\item{...}{Any number of objects created with meta_*() functions.}
 }
 \description{
 Add multiple meta variable definitions to a trelliscope display

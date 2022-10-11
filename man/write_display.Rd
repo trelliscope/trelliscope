@@ -7,7 +7,7 @@
 write_display(disp)
 }
 \arguments{
-\item{disp}{A trelliscope display object created with \code{trelliscope()}.}
+\item{disp}{A trelliscope display object created with \code{\link[=trelliscope]{trelliscope()}}.}
 }
 \description{
 Write a trelliscope display object to disk.

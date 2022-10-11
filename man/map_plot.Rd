@@ -7,19 +7,19 @@
 map_plot(.x, .f, ...)
 }
 \arguments{
-\item{.x}{a list or atomic vector (see \code{purrr::map()} for details)}
+\item{.x}{a list or atomic vector (see \code{\link[purrr:map]{purrr::map()}} for details)}
 
-\item{.f}{a function, formula, or atomic vector (see \code{purrr::map()} for
+\item{.f}{a function, formula, or atomic vector (see \code{\link[purrr:map]{purrr::map()}} for
 details)}
 
-\item{...}{additional arguments passed on to .f (see \code{purrr::map()} for
+\item{...}{additional arguments passed on to .f (see \code{\link[purrr:map]{purrr::map()}} for
 details)}
 }
 \description{
 Apply a function to each element of a vector and return a vector of plots
 }
 \details{
-See \code{purrr::map()}
+See \code{\link[purrr:map]{purrr::map()}}
 }
 \examples{
 \donttest{

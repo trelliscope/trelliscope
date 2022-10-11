@@ -59,7 +59,7 @@ Display <- R6::R6Class(
 #' @param name Name of the trelliscope display.
 #' @param description Description of the trelliscope display.
 #' @param path Directory in which to place the trelliscope display when
-#' it is written using `write_display()`.
+#' it is written using [`write_display()`].
 #' @param force_plot Should the panels be forced to be plotted, even if they
 #' have already been plotted and have not changed since the previous plotting?
 #' @export

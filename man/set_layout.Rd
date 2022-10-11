@@ -7,7 +7,7 @@
 set_layout(disp, nrow = 1, ncol = 1, arrange = "rows", page = 1)
 }
 \arguments{
-\item{disp}{A trelliscope display object created with \code{trelliscope()}.}
+\item{disp}{A trelliscope display object created with \code{\link[=trelliscope]{trelliscope()}}.}
 
 \item{nrow}{Number of rows of panels to show.}
 
