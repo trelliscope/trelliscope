@@ -1,3 +1,4 @@
+#' @importFrom R6 R6Class
 Display <- R6::R6Class(
   public = list(
     df = NULL,
