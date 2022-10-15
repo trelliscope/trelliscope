@@ -5,6 +5,9 @@ Display <- R6::R6Class(
     path = NULL,
     force_plot = NULL,
     panel_col = NULL,
+    # if the user specifies meta labels using add_meta_labels(), we keep track
+    # of them here so that we can apply them just before writing out the object
+    meta_labels = list(),
     initialize = function(df, name, description, path, force_plot) {
       assertthat::assert_that(inherits(df, "data.frame"),
         msg = "Argument 'df' must be a data frame")

@@ -65,6 +65,9 @@ State <- R6::R6Class("State",
     },
     get = function(name) {
       private[[name]]
+    },
+    check_with_data = function(df) {
+      return(TRUE)
     }
   ),
   private = list(
@@ -156,41 +159,141 @@ SortState <- R6::R6Class("SortState",
   )
 )
 
-# FilterState <- R6::R6Class("FilterState",
-#   inherit = State,
-#   public = list(
-#     initialize = function(varname, applies_to = NULL) {
-#       super$initialize(type = "filter")
-#       check_scalar(varname, "varname")
-#       check_character(varname, "varname")
-#       private$varname <- varname
-#       private$applies_to <- applies_to
-#     },
-#     check_with_data = function(df) {
-#       assertthat::assert_that(private$varname %in% names(df),
-#         msg = paste0("'", private$varname,
-#           "' not found in the dataset that the ", private$type,
-#           " state definition is being applied to"))
-#     },
-#     check_with_meta = function(meta) {
-#       assertthat::assert_that(meta$get(type) %in% applies_to)
-#       assertthat::assert_that(meta$get(filterable),
-#         msg = self$error_msg(paste0("'", private$varname,
-#         "' is not filterable")))
-#     }
-#   ),
-#   private = list(
-#     varname = NULL,
-#     applies_to = NULL # NULL means applies to all meta definitions
-#   )
-# )
+FilterState <- R6::R6Class("FilterState",
+  inherit = State,
+  public = list(
+    applies_to = NULL, # NULL means applies to all meta definitions
+    initialize = function(varname, filtertype, applies_to = NULL) {
+      super$initialize(type = "filter")
+      check_scalar(varname, "varname")
+      check_character(varname, "varname")
+      private$varname <- varname
+      private$filtertype <- filtertype
+      self$applies_to <- applies_to
+    },
+    check_with_data = function(df) {
+      assertthat::assert_that(private$varname %in% names(df),
+        msg = paste0("'", private$varname,
+          "' not found in the dataset that the ", private$type,
+          " state definition is being applied to"))
+      if (!is.null(self$extra_check))
+        self$extra_check(df)
+      return(TRUE)
+    },
+    check_with_meta = function(meta) {
+      # # don't need this because we are in control of applying meta to filter
+      # assertthat::assert_that(private$varname == meta$get("varname"),
+      #   msg = self$error_msg("filter variable name must match"))
+      assertthat::assert_that(meta$get("type") %in% self$applies_to,
+        msg = self$error_msg(paste0("the meta type applied to variable '",
+          private$varname, "' is not compatible with this filter")))
+      # # this is redundant:
+      # assertthat::assert_that(meta$get("filterable"),
+      #   msg = self$error_msg(paste0("'", private$varname,
+      #   "' is not filterable")))
+    }
+  ),
+  private = list(
+    varname = NULL,
+    filtertype = NULL
+  )
+)
 
-# FilterState
+CategoryFilterState <- R6::R6Class("CategoryFilterState",
+  inherit = FilterState,
+  public = list(
+    initialize = function(varname, regexp = NULL, values = NULL) {
+      super$initialize(varname = varname, filtertype = "category",
+        applies_to = c("string", "factor"))
+      if (!is.null(regexp)) {
+        check_scalar(regexp, "regexp", self$error_msg)
+        check_character(regexp, "regexp", self$error_msg)
+      }
+      if (is.null(values)) {
+        values <- character(0)
+      } else {
+        check_character(values, "values", self$error_msg)
+      }
+      private$regexp <- regexp
+      private$values <- I(values)
+    },
+    extra_check = function(df) {
+      dff <- setdiff(private$values, unique(df[[private$varname]]))
+      assertthat::assert_that(length(dff) == 0,
+        msg = self$data_error_msg(paste0("could not find the value(s): ",
+        paste0(dff, collapse = ", "), " in the variable '",
+        private$varname, "'")))
+      #? could validate that regex is a valid regex as well...
+    }
+  ),
+  private = list(
+    regexp = NULL,
+    values = NULL
+  )
+)
 
-# StringFilterState
+RangeFilterState <- R6::R6Class("RangeFilterState",
+  inherit = FilterState,
+  public = list(
+    initialize = function(varname, filtertype, applies_to,
+      min = NULL, max = NULL
+    ) {
+      super$initialize(varname = varname, filtertype = filtertype,
+        applies_to = applies_to)
+      if (!is.null(min))
+        check_scalar(min, "min", self$error_msg)
+      if (!is.null(max))
+        check_scalar(max, "max", self$error_msg)
+      private$min <- min
+      private$max <- max
+    }
+  ),
+  private = list(
+    min = NULL,
+    max = NULL
+  )
+)
 
-# FactorFilterState
+NumberRangeFilterState <- R6::R6Class("NumberRangeFilterState",
+  inherit = RangeFilterState,
+  public = list(
+    initialize = function(varname, min = NULL, max = NULL) {
+      super$initialize(varname, filtertype = "numberrange",
+        applies_to = "number", min = min, max = max)
+      if (!is.null(min))
+        check_numeric(min, "min", self$error_msg)
+      if (!is.null(max))
+        check_numeric(max, "max", self$error_msg)
+    }
+  )
+)
+
+DateRangeFilterState <- R6::R6Class("DateRangeFilterState",
+  inherit = RangeFilterState,
+  public = list(
+    initialize = function(varname, min = NULL, max = NULL) {
+      super$initialize(varname, filtertype = "daterange",
+        applies_to = "date", min = min, max = max)
+      if (!is.null(min))
+        check_date(min, "min", self$error_msg)
+      if (!is.null(max))
+        check_date(max, "max", self$error_msg)
+    }
+  )
+)
+
+DatetimeRangeFilterState <- R6::R6Class("DatetimeRangeFilterState",
+  inherit = RangeFilterState,
+  public = list(
+    initialize = function(varname, min = NULL, max = NULL) {
+      super$initialize(varname, filtertype = "datetimerange",
+        applies_to = "datetime", min = min, max = max)
+      if (!is.null(min))
+        check_datetime(min, "min", self$error_msg)
+      if (!is.null(max))
+        check_datetime(max, "max", self$error_msg)
+    }
+  )
+)
 
 # GraphFilterState
-
-# NumberFilterState

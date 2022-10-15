@@ -5,18 +5,18 @@ add_meta_class <- function(x) {
 
 #' Specify a "string" metadata variable
 #' @param varname Name of the variable.
-#' @param description Description of the variable.
+#' @param label Description of the variable.
 #' @param tags Vector of tag names that help classify this variable.
 #' @family {metadata types}
 #' @export
 meta_string <- function(
   varname,
-  description = varname,
+  label = NULL,
   tags = NULL
 ) {
   StringMeta$new(
     varname = varname,
-    description = description,
+    label = label,
     tags = tags
   ) |>
   add_meta_class()
@@ -32,14 +32,14 @@ meta_string <- function(
 #' @export
 meta_number <- function(
   varname,
-  description = varname,
+  label = NULL,
   tags = NULL,
   digits = NULL,
   locale = TRUE
 ) {
   NumberMeta$new(
     varname = varname,
-    description = description,
+    label = label,
     tags = tags,
     digits = digits,
     local = locale
@@ -56,13 +56,13 @@ meta_number <- function(
 #' @export
 meta_factor <- function(
   varname,
-  description = varname,
+  label = NULL,
   tags = NULL,
   levels = NULL
 ) {
   FactorMeta$new(
     varname = varname,
-    description = description,
+    label = label,
     tags = tags,
     levels = levels
   ) |>
@@ -75,12 +75,12 @@ meta_factor <- function(
 #' @export
 meta_date <- function(
   varname,
-  description = varname,
+  label = NULL,
   tags = NULL
 ) {
   DateMeta$new(
     varname = varname,
-    description = description,
+    label = label,
     tags = tags
   ) |>
   add_meta_class()
@@ -92,12 +92,12 @@ meta_date <- function(
 #' @export
 meta_datetime <- function(
   varname,
-  description = varname,
+  label = NULL,
   tags = NULL
 ) {
   DatetimeMeta$new(
     varname = varname,
-    description = description,
+    label = label,
     tags = tags
   ) |>
   add_meta_class()
@@ -111,14 +111,14 @@ meta_datetime <- function(
 #' @export
 meta_geo <- function(
   varname,
-  description = varname,
+  label = NULL,
   tags = NULL,
   latvar,
   longvar
 ) {
   GeoMeta$new(
     varname = varname,
-    description = description,
+    label = label,
     tags = tags,
     latvar = latvar,
     longvar = longvar
@@ -137,7 +137,7 @@ meta_geo <- function(
 #' @export
 meta_graph <- function(
   varname,
-  description = varname,
+  label = NULL,
   tags = NULL,
   idvarname,
   direction = c("none", "to", "from")
@@ -145,7 +145,7 @@ meta_graph <- function(
   direction <- match.arg(direction)
   GraphMeta$new(
     varname = varname,
-    description = description,
+    label = label,
     tags = tags,
     idvarname = idvarname,
     direction = direction
@@ -159,12 +159,12 @@ meta_graph <- function(
 #' @export
 meta_href <- function(
   varname,
-  description = varname,
+  label = NULL,
   tags = NULL
 ) {
   HREFMeta$new(
     varname = varname,
-    description = description,
+    label = label,
     tags = tags
   ) |>
   add_meta_class()

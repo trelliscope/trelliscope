@@ -4,12 +4,12 @@
 \alias{meta_href}
 \title{Specify a "href" metadata variable}
 \usage{
-meta_href(varname, description = varname, tags = NULL)
+meta_href(varname, label = NULL, tags = NULL)
 }
 \arguments{
 \item{varname}{Name of the variable.}
 
-\item{description}{Description of the variable.}
+\item{label}{Description of the variable.}
 
 \item{tags}{Vector of tag names that help classify this variable.}
 }

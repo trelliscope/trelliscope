@@ -50,6 +50,25 @@ dat <- ggplot2::mpg |>
 
 dat
 
+p <- ggplot(mpg, aes(hwy, cty)) +
+  geom_point() +
+  facet_trelliscope(~ manufacturer + class) +
+  theme()
+
+dat2 <- some_function(p) %>%
+# output should look same as dat but without mean_cty
+  dplyr::mutate(
+    mean_cty = purrr::map_dbl(data, function(x) mean(x$cty))
+  )
+
+
+disp <- dat %>%
+  trelliscope(name = "Highway mpg vs. City mpg") |>
+  # provide information about metadata:
+  add_meta_defs(
+    meta_string("manufacturerrr", description = "Vehicle manufacturer name")
+  )
+
 disp <- dat %>%
   trelliscope(name = "Highway mpg vs. City mpg") |>
   # provide information about metadata:
@@ -67,7 +86,21 @@ disp <- dat %>%
   set_sort(c("class", "mean_cty"), dir = c("asc", "asc")) |>
   set_layout(nrow = 2, ncol = 3)
   # set_filters()
-  # set_views()
+  set_views(
+    "Ordered by x" = view(
+      set_labels(c("manufacturer", "class")),
+      set_sort(c("class", "mean_cty"), dir = c("asc", "asc")),
+      set_layout(nrow = 2, ncol = 3)
+    ),
+    "View 2" = view(...)
+  )
   # set_inputs()
   # write_display()
+
+
+# modify an existing display...
+trelliscope(path) %>%
+  set_layout(...)
+
+
 ```

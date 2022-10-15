@@ -4,12 +4,12 @@
 \alias{meta_geo}
 \title{Specify a "geo" metadata variable}
 \usage{
-meta_geo(varname, description = varname, tags = NULL, latvar, longvar)
+meta_geo(varname, label = NULL, tags = NULL, latvar, longvar)
 }
 \arguments{
 \item{varname}{Name of the variable.}
 
-\item{description}{Description of the variable.}
+\item{label}{Description of the variable.}
 
 \item{tags}{Vector of tag names that help classify this variable.}
 

@@ -4,18 +4,12 @@
 \alias{meta_number}
 \title{Specify a "number" metadata variable}
 \usage{
-meta_number(
-  varname,
-  description = varname,
-  tags = NULL,
-  digits = NULL,
-  locale = TRUE
-)
+meta_number(varname, label = NULL, tags = NULL, digits = NULL, locale = TRUE)
 }
 \arguments{
 \item{varname}{Name of the variable.}
 
-\item{description}{Description of the variable.}
+\item{label}{Description of the variable.}
 
 \item{tags}{Vector of tag names that help classify this variable.}
 

@@ -36,3 +36,37 @@ state_sort <- function(varname, dir = "asc") {
   SortState$new(varname = varname, dir = dir) |>
   add_state_class()
 }
+
+#' Specify a string "filter" state (applies to string and factor meta
+#' variables)
+#' @param varname The name of the variable to filter on.
+#' @param regexp A search string that can be a regular expression indicating
+#' the values of the variable to filter on.
+#' @param values A vector of specific values of the variable to filter on. If
+#' `values` is specified, `regexp` will be ignored.
+#' @export
+state_filter_string <- function(varname, regexp = NULL, values = NULL) {
+  CategoryFilterState$new(varname = varname,
+    regexp = regexp, values = values) |>
+  add_state_class()
+}
+
+#' Specify a range "filter" state (applies to numeric, date, and datetime
+#' meta variables)
+#' @param varname The name of the variable to filter on.
+#' @param min Lower bound of the range (if NULL, there is no lower bound).
+#' @param max Upper bound of the range (if NULL, there is no upper bound).
+#' @export
+state_filter_range <- function(varname, min = NULL, max = NULL) {
+  if (is.numeric(min) || is.numeric(max)) {
+    res <- NumberRangeFilterState$new(varname, min = min, max = max)
+  } else if (inherits(min, "Date") || inherits(max, "Date")) {
+    res <- DateRangeFilterState$new(varname, min = min, max = max)
+  } else if (inherits(min, "POSIXct") || inherits(max, "POSIXct")) {
+    res <- DatetimeRangeFilterState$new(varname, min = min, max = max)
+  } else {
+    stop("state_filter_range() must have one of min or max with numeric, ",
+      "date, or datetime types.", call. = FALSE)
+  }
+  add_state_class(res)
+}

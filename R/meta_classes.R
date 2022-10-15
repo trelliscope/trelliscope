@@ -3,13 +3,13 @@ Meta <- R6::R6Class("Meta",
     initialize = function(
       type,
       varname,
-      description = varname,
+      label = NULL,
       tags = NULL,
       filterable,
       sortable
     ) {
       private$varname <- varname
-      private$description <- description
+      private$label <- label
       private$type <- type
       private$filterable <- filterable
       private$sortable <- sortable
@@ -34,13 +34,23 @@ Meta <- R6::R6Class("Meta",
         private$varname, "' against the data: ", txt)
     },
     as_list = function() {
-      as.list(private)
+      self$finalize()
     },
     as_json = function(pretty = FALSE) {
-      to_json(as.list(private))
+      to_json(self$finalize())
     },
     check_varname = function(df) {
       check_has_var(df, private$varname, self$error_msg)
+    },
+    # we must have a label before it is serialized
+    finalize = function() {
+      res <- as.list(private)
+      if (is.null(res$label))
+        res$label <- res$varname
+      res
+    },
+    set = function(name, val) {
+      private[[name]] <- val
     },
     check_with_data = function(df) {
       self$check_varname(df)
@@ -52,7 +62,7 @@ Meta <- R6::R6Class("Meta",
   private = list(
     varname = NULL,
     type = NULL,
-    description = NULL,
+    label = NULL,
     tags = NULL,
     filterable = TRUE,
     sortable = TRUE
@@ -62,14 +72,14 @@ Meta <- R6::R6Class("Meta",
 NumberMeta <- R6::R6Class("NumberMeta",
   inherit = Meta,
   public = list(
-    initialize = function(varname, description = varname, tags = NULL,
+    initialize = function(varname, label = NULL, tags = NULL,
       digits = NULL,
       locale = TRUE
     ) {
       super$initialize(
         type = "number",
         varname = varname,
-        description = description,
+        label = label,
         tags = tags,
         filterable = TRUE,
         sortable = TRUE
@@ -98,11 +108,11 @@ NumberMeta <- R6::R6Class("NumberMeta",
 StringMeta <- R6::R6Class("StringMeta",
   inherit = Meta,
   public = list(
-    initialize = function(varname, description = varname, tags = NULL) {
+    initialize = function(varname, label = NULL, tags = NULL) {
       super$initialize(
         type = "string",
         varname = varname,
-        description = description,
+        label = label,
         tags = tags,
         filterable = TRUE,
         sortable = TRUE
@@ -122,22 +132,32 @@ StringMeta <- R6::R6Class("StringMeta",
 FactorMeta <- R6::R6Class("FactorMeta",
   inherit = Meta,
   public = list(
-    initialize = function(varname, description = varname, tags = NULL,
-      levels
+    initialize = function(varname, label = NULL, tags = NULL,
+      levels = NULL
     ) {
       super$initialize(
         type = "factor",
         varname = varname,
-        description = description,
+        label = label,
         tags = tags,
         filterable = TRUE,
         sortable = TRUE
       )
-      check_atomic_vector(levels, "levels", self$error_msg)
-      check_character(levels, "levels", self$error_msg)
-      private$levels <- levels
+      if (!is.null(levels)) {
+        check_atomic_vector(levels, "levels", self$error_msg)
+        check_character(levels, "levels", self$error_msg)
+        private$levels <- levels
+      }
     },
     check_variable = function(df) {
+      # need to infer levels if it wasn't specified already
+      if (is.null(private$levels)) {
+        if (is.factor(df[[private$varname]])) {
+          private$levels <- levels(df[[private$varname]])
+        } else {
+          private$levels <- as.character(sort(unique(df[[private$varname]])))
+        }
+      }
       check_atomic_vector(
         df[[private$varname]], private$varname, self$data_error_msg)
       check_exhaustive_levels(
@@ -157,11 +177,11 @@ FactorMeta <- R6::R6Class("FactorMeta",
 DateMeta <- R6::R6Class("DateMeta",
   inherit = Meta,
   public = list(
-    initialize = function(varname, description = varname, tags = NULL) {
+    initialize = function(varname, label = NULL, tags = NULL) {
       super$initialize(
         type = "date",
         varname = varname,
-        description = description,
+        label = label,
         tags = tags,
         filterable = TRUE,
         sortable = TRUE
@@ -180,13 +200,13 @@ DateMeta <- R6::R6Class("DateMeta",
 DatetimeMeta <- R6::R6Class("DatetimeMeta",
   inherit = Meta,
   public = list(
-    initialize = function(varname, description = varname, tags = NULL,
+    initialize = function(varname, label = NULL, tags = NULL,
       timezone = "UTC"
     ) {
       super$initialize(
         type = "datetime",
         varname = varname,
-        description = description,
+        label = label,
         tags = tags,
         filterable = TRUE,
         sortable = TRUE
@@ -211,14 +231,14 @@ DatetimeMeta <- R6::R6Class("DatetimeMeta",
 GraphMeta <- R6::R6Class("GraphMeta",
   inherit = Meta,
   public = list(
-    initialize = function(varname, description = varname, tags = NULL,
+    initialize = function(varname, label = NULL, tags = NULL,
       idvarname = NULL,
       direction = "none"
     ) {
       super$initialize(
         type = "graph",
         varname = varname,
-        description = description,
+        label = label,
         tags = tags,
         filterable = TRUE,
         sortable = FALSE
@@ -251,14 +271,14 @@ GeoMeta <- R6::R6Class("GeoMeta",
     # store these in public because we won't serialize them
     latvar = NULL,
     longvar = NULL,
-    initialize = function(varname, description = varname, tags = NULL,
+    initialize = function(varname, label = NULL, tags = NULL,
       latvar, longvar
       # TODO: parameters to specify how map is rendered
     ) {
       super$initialize(
         type = "geo",
         varname = varname,
-        description = description,
+        label = label,
         tags = tags,
         filterable = TRUE,
         sortable = FALSE
@@ -294,11 +314,11 @@ GeoMeta <- R6::R6Class("GeoMeta",
 HREFMeta <- R6::R6Class("HREFMeta",
   inherit = Meta,
   public = list(
-    initialize = function(varname, description = varname, tags = NULL) {
+    initialize = function(varname, label = NULL, tags = NULL) {
       super$initialize(
         type = "href",
         varname = varname,
-        description = description,
+        label = label,
         tags = tags,
         filterable = FALSE,
         sortable = FALSE

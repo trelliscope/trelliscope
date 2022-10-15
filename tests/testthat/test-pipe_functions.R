@@ -1,8 +1,9 @@
 dat <- ggplot2::mpg |>
   tidyr::nest(data = !dplyr::one_of(c("manufacturer", "class"))) |>
-  dplyr::mutate(panel = map_plot(data, function(x) {
-    ggplot2::qplot(hwy, cty, data = x)
-  }))
+  dplyr::mutate(
+    panel = map_plot(data, function(x) ggplot2::qplot(hwy, cty, data = x)),
+    class2 = factor(class)
+  )
 
 x <- trelliscope(dat, name = "test")
 
@@ -24,6 +25,23 @@ test_that("add_meta_def", {
     b2 <- b |>
       add_meta_def(meta_string("manufacturer", "vehicle manufacturer")),
     regexp = "Replacing existing meta variable definition"
+  )
+})
+
+# if we don't specify factor levels, it will infer them
+test_that("meta factor levels inference", {
+  b <- x |>
+    add_meta_def(meta_factor("manufacturer", "vehicle manufacturer"))
+  expect_equal(
+    b$get("metas")$manufacturer$get("levels"),
+    sort(unique(dat$manufacturer))
+  )
+
+  b <- x |>
+    add_meta_def(meta_factor("class2", "vehicle class (as factor)"))
+  expect_equal(
+    b$get("metas")$class2$get("levels"),
+    levels(dat$class2)
   )
 })
 
@@ -56,6 +74,14 @@ test_that("add_meta_defs", {
       add_meta_defs(meta_string("manufacturer", "vehicle manufacturer")),
     regexp = "Replacing existing meta variable definition"
   )
+})
+
+test_that("add_meta_labels", {
+  b <- x |>
+    add_meta_labels(manufacturer = "test manufacturer")
+
+  expect_equal(b$meta_labels, list(manufacturer = "test manufacturer"))
+  expect_length(x$meta_labels, 0)
 })
 
 test_that("set_layout", {

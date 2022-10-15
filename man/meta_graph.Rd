@@ -6,7 +6,7 @@
 \usage{
 meta_graph(
   varname,
-  description = varname,
+  label = NULL,
   tags = NULL,
   idvarname,
   direction = c("none", "to", "from")
@@ -15,7 +15,7 @@ meta_graph(
 \arguments{
 \item{varname}{Name of the variable.}
 
-\item{description}{Description of the variable.}
+\item{label}{Description of the variable.}
 
 \item{tags}{Vector of tag names that help classify this variable.}
 

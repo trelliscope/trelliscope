@@ -4,12 +4,12 @@
 \alias{meta_factor}
 \title{Specify a "factor" metadata variable}
 \usage{
-meta_factor(varname, description = varname, tags = NULL, levels = NULL)
+meta_factor(varname, label = NULL, tags = NULL, levels = NULL)
 }
 \arguments{
 \item{varname}{Name of the variable.}
 
-\item{description}{Description of the variable.}
+\item{label}{Description of the variable.}
 
 \item{tags}{Vector of tag names that help classify this variable.}
 

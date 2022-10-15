@@ -21,6 +21,28 @@ add_meta_defs <- function(disp, ...) {
   disp2
 }
 
+#' Specify labels for meta variables
+#' @param disp A trelliscope display object created with [`trelliscope()`].
+#' @param ... A named set of labels, where each name must correspond to one
+#' of the variables in the dataset
+#' @details This function can be useful if you don't want to go to the trouble
+#' of explicitly setting meta variable definitions but still want variable
+#' descriptions.
+add_meta_labels <- function(disp, ...) {
+  check_display_object(disp)
+  args <- list(...)
+  assertthat::assert_that(length(names(args)) == length(args),
+    msg = "Arguments must be named")
+  names_diff <- setdiff(names(args), names(disp$df))
+  assertthat::assert_that(length(names_diff) == 0,
+    msg = paste0("The following variables are not in the data: ",
+      paste(names_diff, collapse = ", ")))
+  disp2 <- disp$clone()
+  for (nm in names(args))
+    disp2$meta_labels[[nm]] <- args[[nm]]
+  disp2
+}
+
 #' Add a layout state specification to a trelliscope display
 #' @param disp A trelliscope display object created with [`trelliscope()`].
 #' @inheritParams state_layout

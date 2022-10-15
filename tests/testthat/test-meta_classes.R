@@ -24,7 +24,7 @@ test_that("NumberMeta", {
 
   expect_equal(
     as.character(obj$as_json()),
-    '{"locale":true,"digits":null,"sortable":true,"filterable":true,"tags":"stuff","description":"Sepal.Length","type":"number","varname":"Sepal.Length"}'
+    '{"locale":true,"digits":null,"sortable":true,"filterable":true,"tags":"stuff","label":"Sepal.Length","type":"number","varname":"Sepal.Length"}'
   )
 
   expect_true(
@@ -32,7 +32,7 @@ test_that("NumberMeta", {
   )
 
   obj <- NumberMeta$new("Sepal.Length",
-    description = "Sepal length of the iris")
+    label = "Sepal length of the iris")
 
   obj <- NumberMeta$new("whatever", digits = 2, local = FALSE)
   expect_error(

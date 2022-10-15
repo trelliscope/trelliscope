@@ -2,20 +2,20 @@
 test_that("meta wrappers", {
   obj <- meta_string(
     varname = "Species",
-    description = "Iris species",
+    label = "Iris species",
     tags = c("tag1", "tag2")
   )
 
   obj <- meta_number(
     varname = "Sepal.Length",
-    description = "Sepal length",
+    label = "Sepal length",
     tags = c("tag1", "tag2"),
     digits = 2
   )
 
   obj <- meta_factor(
     varname = "Species",
-    description = "Iris species",
+    label = "Iris species",
     tags = c("tag1", "tag2"),
     levels = c("setosa", "versicolor", "virginica")
   )

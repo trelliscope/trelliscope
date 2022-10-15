@@ -56,3 +56,28 @@ test_that("state_sort", {
   obj <- state_sort(varname = "Sepal.Length")
   expect_true(obj$check_with_data(iris))
 })
+
+test_that("state_filter_string", {
+  obj <- state_filter_string(varname = "a", regexp = "stuff")
+
+  expect_true(inherits(obj, "trelliscope_state_def"))
+  expect_equal(obj$get("type"), "filter")
+
+  expect_error(
+    obj$check_with_data(iris),
+    regexp = "not found in the dataset"
+  )
+
+  expect_error(
+    state_sort(varname = "a", dir = "descc"),
+    regexp = "must be one of asc, desc"
+  )
+
+  expect_error(
+    state_sort(varname = c("a", "b"), dir = "descc"),
+    regexp = "must be a scalar value"
+  )
+
+  obj <- state_sort(varname = "Sepal.Length")
+  expect_true(obj$check_with_data(iris))
+})
