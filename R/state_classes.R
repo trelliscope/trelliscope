@@ -65,10 +65,10 @@ State <- R6::R6Class("State",
     },
     get = function(name) {
       private[[name]]
-    },
-    check_with_data = function(df) {
-      return(TRUE)
     }
+    # check_with_data = function(df) {
+    #   return(TRUE)
+    # }
   ),
   private = list(
     type = NULL

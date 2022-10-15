@@ -81,3 +81,24 @@ test_that("state_filter_string", {
   obj <- state_sort(varname = "Sepal.Length")
   expect_true(obj$check_with_data(iris))
 })
+
+test_that("state_filter_range", {
+  obj <- state_filter_range(varname = "a", min = 1)
+
+  expect_true(inherits(obj, "trelliscope_state_def"))
+  expect_equal(obj$get("type"), "filter")
+  expect_equal(obj$get("filtertype"), "numberrange")
+
+  obj <- state_filter_range(varname = "a", min = as.Date("2010-01-01"))
+
+  expect_equal(obj$get("filtertype"), "daterange")
+
+  obj <- state_filter_range(varname = "a", min = as.POSIXct("2010-01-01"))
+
+  expect_equal(obj$get("filtertype"), "datetimerange")
+
+  expect_error(
+    state_filter_range(varname = "a"),
+    regexp = "must have one of min or max"
+  )
+})
