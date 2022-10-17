@@ -69,8 +69,17 @@ disp <- dat |>
   set_filters(
     filter_string("manufacturer", values = c("audi", "volkswagen")),
     filter_range("mean_cty", min = 20)
+  ) |>
+  add_view(
+    name = "test view",
+    state_layout(nrow = 3, ncol = 5),
+    state_labels(c("class", "manufacturer")),
+    state_sort("manufacturer"),
+    state_sort("mean_cty", "desc"),
+    filter_string("manufacturer",
+      values = c("toyota", "honda", "nissan", "subaru")),
+    filter_range("mean_cty", max = 20)
   )
-  # set_views()
   # set_inputs()
   # write_display()
 ```

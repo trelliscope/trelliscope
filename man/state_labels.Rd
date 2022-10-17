@@ -4,11 +4,11 @@
 \alias{state_labels}
 \title{Specify a "labels" state}
 \usage{
-state_labels(varnames)
+state_labels(varnames = NULL)
 }
 \arguments{
 \item{varnames}{A vector of variable names whose values should appear
-as labels
+as labels. If NULL, no labels will be displayed.
 when viewing the display.}
 }
 \description{

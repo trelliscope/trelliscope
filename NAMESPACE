@@ -2,6 +2,7 @@
 
 export(add_meta_def)
 export(add_meta_defs)
+export(add_view)
 export(filter_range)
 export(filter_string)
 export(img_panel)

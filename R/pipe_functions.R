@@ -123,7 +123,20 @@ set_filters <- function(disp, ..., add = TRUE) {
   disp2
 }
 
-# set_view
-# set_views
+#' Add a view specification to a trelliscope display
+#' @param name The name of the view.
+#' @param ... Any number of state specifications that define the view. These
+#' can be specified with any of [`state_layout()`], [`state_labels()`],
+#' [`state_sort()`], [`filter_string()`], [`filter_range()`].
+#' @param disp A trelliscope display object created with [`trelliscope()`].
+#' @export
+add_view <- function(disp, name, ...) {
+  check_display_object(disp)
+  view <- View$new(name, ...)
+  disp2 <- disp$clone()
+  view$check_with_data(disp$df)
+  disp2$set_view(view)
+  disp2
+}
 
 # add_input

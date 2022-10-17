@@ -43,6 +43,14 @@ Display <- R6::R6Class(
     set_state = function(obj) {
       private$state <- obj
     },
+    set_view = function(obj) {
+      nm <- obj$get("name")
+      if (!is.null(private$views[[nm]])) {
+        message("Overwriting view '", nm, "'")
+      } else {
+        private$views[[nm]] <- obj
+      }
+    },
     get = function(name) {
       private[[name]]
     }

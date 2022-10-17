@@ -20,10 +20,10 @@ state_layout <- function(
 
 #' Specify a "labels" state
 #' @param varnames A vector of variable names whose values should appear
-#' as labels
+#' as labels. If NULL, no labels will be displayed.
 #' when viewing the display.
 #' @export
-state_labels <- function(varnames) {
+state_labels <- function(varnames = NULL) {
   LabelState$new(varnames = varnames) |>
   add_state_class()
 }

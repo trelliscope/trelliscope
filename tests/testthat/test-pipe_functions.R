@@ -10,6 +10,11 @@ x <- trelliscope(dat, name = "test")
 
 test_that("add_meta_def", {
   expect_error(
+    list() |> add_meta_def(meta_string("test")),
+    regexp = "Expecting a trelliscope display object"
+  )
+
+  expect_error(
     b <- x |>
       add_meta_def(meta_string("manufacturr", "vehicle manufacturer")),
     regexp = "not find variable"
@@ -47,6 +52,11 @@ test_that("meta factor levels inference", {
 })
 
 test_that("add_meta_defs", {
+  expect_error(
+    list() |> add_meta_defs(),
+    regexp = "Expecting a trelliscope display object"
+  )
+
   b <- x |>
     add_meta_defs(
       meta_string("manufacturer", "vehicle manufacturer")
@@ -78,6 +88,11 @@ test_that("add_meta_defs", {
 })
 
 test_that("add_meta_labels", {
+  expect_error(
+    list() |> add_meta_defs(),
+    regexp = "Expecting a trelliscope display object"
+  )
+
   b <- x |>
     add_meta_labels(manufacturer = "test manufacturer")
 
@@ -86,6 +101,11 @@ test_that("add_meta_labels", {
 })
 
 test_that("set_layout", {
+  expect_error(
+    list() |> set_layout(),
+    regexp = "Expecting a trelliscope display object"
+  )
+
   b <- x |>
     set_layout()
   obj <- b$get("state")$get("layout")
@@ -108,6 +128,11 @@ test_that("set_layout", {
 })
 
 test_that("set_labels", {
+  expect_error(
+    list() |> set_labels("test"),
+    regexp = "Expecting a trelliscope display object"
+  )
+
   b <- x |>
     set_labels(varnames = "manufacturer")
 
@@ -132,6 +157,11 @@ test_that("set_labels", {
 })
 
 test_that("set_sort", {
+  expect_error(
+    list() |> set_sort("test"),
+    regexp = "Expecting a trelliscope display object"
+  )
+
   expect_error(
     b <- x |>
       set_sort(varnames = c("a", "b"), dirs = rep("asc", 3)),
@@ -165,6 +195,11 @@ test_that("set_sort", {
 })
 
 test_that("set_filters", {
+  expect_error(
+    list() |> set_filters(),
+    regexp = "Expecting a trelliscope display object"
+  )
+
   expect_error(
     b <- x |>
       set_filters(
@@ -212,5 +247,63 @@ test_that("set_filters", {
         add = FALSE
       ),
     regexp = "Replacing entire existing filter"
+  )
+})
+
+test_that("add_view", {
+  expect_error(
+    list() |> add_view("test view", a = 1),
+    regexp = "Expecting a trelliscope display object"
+  )
+
+  expect_error(
+    x |> add_view("test view", a = 1),
+    regexp = "Expecting a trelliscope state definition"
+  )
+
+  b <- x |>
+    add_view(
+      name = "test view",
+      state_layout(nrow = 3, ncol = 5),
+      state_labels(c("manufacturer", "class")),
+      state_sort("manufacturer"),
+      state_sort("mean_cty", "desc"),
+      filter_string("manufacturer", values = c("audi", "volkswagen")),
+      filter_range("mean_cty", min = 10)
+    )
+
+  expect_equal(names(b$get("views")), "test view")
+
+  # make sure we haven't changed the underlying object
+  expect_length(x$get("views"), 0)
+
+  expect_message(
+    x |> add_view(name = "test view", state_layout(), state_layout()),
+    "Multiple layout definitions"
+  )
+  expect_message(
+    x |> add_view(name = "test view", state_labels(), state_labels()),
+    "Multiple labels definitions"
+  )
+  expect_message(
+    x |> add_view("test view"),
+    regexp = "No layout definition"
+  )
+  expect_message(
+    x |> add_view("test view"),
+    regexp = "No labels definition"
+  )
+  expect_message(
+    x |> add_view("test view"),
+    regexp = "No sort definitions"
+  )
+  expect_message(
+    x |> add_view("test view"),
+    regexp = "No filter definitions"
+  )
+
+  expect_message(
+    b |> add_view("test view"),
+    regexp = "Overwriting view 'test view'"
   )
 })

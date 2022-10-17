@@ -10,7 +10,7 @@ set_labels(disp, varnames)
 \item{disp}{A trelliscope display object created with \code{\link[=trelliscope]{trelliscope()}}.}
 
 \item{varnames}{A vector of variable names whose values should appear
-as labels
+as labels. If NULL, no labels will be displayed.
 when viewing the display.}
 }
 \description{

@@ -13,6 +13,11 @@ check_display_object <- function(obj) {
     msg = "Expecting a trelliscope display object")
 }
 
+check_state_object <- function(obj) {
+  assertthat::assert_that(inherits(obj, "trelliscope_state_def"),
+    msg = "Expecting a trelliscope state definition object")
+}
+
 check_scalar <- function(x, name, err_fn = paste0) {
   assertthat::assert_that(length(x) == 1,
     msg = err_fn(paste0("'", name, "' must be a scalar value")))
