@@ -31,10 +31,23 @@ DisplayState <- R6::R6Class("DisplayState",
           names(tmp) <- varname
           private$sort <- tmp
         }
+      } else if (obj$get("type") == "filter") {
+        varname <- obj$get("varname")
+        if (add) {
+          if (!is.null(private$filter[[varname]]))
+            message("Replacing existing filter state specification for ",
+              "variable ", varname)
+          # make sure it is in the order we want by adding to the end
+          private$filter[[varname]] <- NULL
+          private$filter[[varname]] <- obj
+        } else {
+          if (length(private$filter) > 0)
+            message("Replacing entire existing filter specification")
+          tmp <- list(obj)
+          names(tmp) <- varname
+          private$filter <- tmp
+        }
       }
-      # else if (obj$get("type") == "filter") {
-      #   message("TODO")
-      # }
     }
   ),
   private = list(

@@ -4,7 +4,7 @@
 \alias{set_sort}
 \title{Add a labels state specification to a trelliscope display}
 \usage{
-set_sort(disp, varnames, dirs, add = FALSE)
+set_sort(disp, varnames, dirs = "asc", add = FALSE)
 }
 \arguments{
 \item{disp}{A trelliscope display object created with \code{\link[=trelliscope]{trelliscope()}}.}

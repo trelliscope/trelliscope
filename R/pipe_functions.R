@@ -82,8 +82,10 @@ set_labels <- function(disp, varnames) {
 #' @param add Should an existing sort specification be added to? If FALSE
 #' (default), the entire sort specification will be overridden.
 #' @export
-set_sort <- function(disp, varnames, dirs, add = FALSE) {
+set_sort <- function(disp, varnames, dirs = "asc", add = FALSE) {
   check_display_object(disp)
+  if (length(dirs) == 1)
+    dirs <- rep(dirs, length(varnames))
   assertthat::assert_that(length(varnames) == length(dirs),
     msg = "In setting sort state, 'varnames' must have same length as 'dirs'")
   disp2 <- disp$clone()
@@ -98,11 +100,28 @@ set_sort <- function(disp, varnames, dirs, add = FALSE) {
   disp2
 }
 
-# set_filter <- function(disp, obj) {
-# }
-
-# set_filters <- function(disp, ...) {
-# }
+#' Add a filter state specifications to a trelliscope display
+#' @param disp A trelliscope display object created with [`trelliscope()`].
+#' @param ... Filter state specifications (e.g. [`filter_string()`],
+#' [`filter_range()`]).
+#' @param add Should existing filter state specifications be added to?
+#' Default is TRUE. If FALSE, the entire sort specification will be overridden.
+#' @export
+set_filters <- function(disp, ..., add = TRUE) {
+  check_display_object(disp)
+  objs <- list(...)
+  disp2 <- disp$clone()
+  state <- disp2$get("state")
+  state2 <- state$clone()
+  for (ii in seq_along(objs)) {
+    assertthat::assert_that(inherits(objs[[ii]], "trelliscope_filter_def"),
+      msg = "Can only add filter definitions to set_filter()")
+    objs[[ii]]$check_with_data(disp$df)
+    state2$set(objs[[ii]], add = ii != 1 || add)
+  }
+  disp2$set_state(state2)
+  disp2
+}
 
 # set_view
 # set_views

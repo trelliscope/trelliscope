@@ -57,8 +57,8 @@ test_that("state_sort", {
   expect_true(obj$check_with_data(iris))
 })
 
-test_that("state_filter_string", {
-  obj <- state_filter_string(varname = "a", regexp = "stuff")
+test_that("filter_string", {
+  obj <- filter_string(varname = "a", regexp = "stuff")
 
   expect_true(inherits(obj, "trelliscope_state_def"))
   expect_equal(obj$get("type"), "filter")
@@ -82,23 +82,23 @@ test_that("state_filter_string", {
   expect_true(obj$check_with_data(iris))
 })
 
-test_that("state_filter_range", {
-  obj <- state_filter_range(varname = "a", min = 1)
+test_that("filter_range", {
+  obj <- filter_range(varname = "a", min = 1)
 
   expect_true(inherits(obj, "trelliscope_state_def"))
   expect_equal(obj$get("type"), "filter")
   expect_equal(obj$get("filtertype"), "numberrange")
 
-  obj <- state_filter_range(varname = "a", min = as.Date("2010-01-01"))
+  obj <- filter_range(varname = "a", min = as.Date("2010-01-01"))
 
   expect_equal(obj$get("filtertype"), "daterange")
 
-  obj <- state_filter_range(varname = "a", min = as.POSIXct("2010-01-01"))
+  obj <- filter_range(varname = "a", min = as.POSIXct("2010-01-01"))
 
   expect_equal(obj$get("filtertype"), "datetimerange")
 
   expect_error(
-    state_filter_range(varname = "a"),
+    filter_range(varname = "a"),
     regexp = "must have one of min or max"
   )
 })

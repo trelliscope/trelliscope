@@ -57,23 +57,26 @@ dat
 #> 10 ford         pickup  <tibble [7 × 9]>      13   <gg>      
 #> # … with 22 more rows
 
-disp <- dat %>%
+disp <- dat |>
   trelliscope(name = "Highway mpg vs. City mpg") |>
   # provide information about metadata:
   add_meta_defs(
-    meta_string("manufacturer", description = "Vehicle manufacturer name"),
-    meta_factor("class", description = "Type of vehicle",
+    meta_string("manufacturer", label = "Vehicle manufacturer name"),
+    meta_factor("class", label = "Type of vehicle",
       levels = c("subcompact", "compact", "2seater", "midsize", "suv",
         "minivan", "pickup")),
-    meta_number("mean_cty", description = "Mean city miles per gallon",
+    meta_number("mean_cty", label = "Mean city miles per gallon",
       tags = "metrics")
   ) |>
   # alternately can use add_meta_from_csv()
   # set the initial viewing state:
   set_labels(c("manufacturer", "class")) |>
   set_sort(c("class", "mean_cty"), dir = c("asc", "asc")) |>
-  set_layout(nrow = 2, ncol = 3)
-  # set_filters()
+  set_layout(nrow = 2, ncol = 3) |>
+  set_filters(
+    filter_string("manufacturer", values = c("audi", "volkswagen")),
+    filter_range("mean_cty", min = 20)
+  )
   # set_views()
   # set_inputs()
   # write_display()

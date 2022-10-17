@@ -1,6 +1,7 @@
 dat <- ggplot2::mpg |>
   tidyr::nest(data = !dplyr::one_of(c("manufacturer", "class"))) |>
   dplyr::mutate(
+    mean_cty = purrr::map_dbl(data, function(x) mean(x$cty)),
     panel = map_plot(data, function(x) ggplot2::qplot(hwy, cty, data = x)),
     class2 = factor(class)
   )
@@ -133,7 +134,7 @@ test_that("set_labels", {
 test_that("set_sort", {
   expect_error(
     b <- x |>
-      set_sort(varnames = c("a", "b"), dirs = "asc"),
+      set_sort(varnames = c("a", "b"), dirs = rep("asc", 3)),
     regexp = "must have same length"
   )
 
@@ -160,5 +161,56 @@ test_that("set_sort", {
     b |>
       set_sort(varnames = "manufacturer", dirs = "desc"),
     regexp = "Replacing entire existing sort"
+  )
+})
+
+test_that("set_filters", {
+  expect_error(
+    b <- x |>
+      set_filters(
+        filter_string("a", values = c("audi", "volkswagen"))
+      ),
+    regexp = "not found in the dataset"
+  )
+
+  expect_error(
+    b <- x |>
+      set_filters(
+        filter_string("manufacturer", values = c("a", "b"))
+      ),
+    regexp = "could not find the value"
+  )
+
+  b <- x |>
+    set_filters(
+      filter_string("manufacturer", values = c("audi", "volkswagen")),
+      filter_range("mean_cty", min = 20)
+    )
+
+  obj <- b$get("state")$get("filter")
+  expect_length(obj, 2)
+  expect_equal(obj[[1]]$get("type"), "filter")
+
+  # make sure we haven't changed the underlying object
+  expect_length(x$get("state")$get("filter"), 0)
+
+  expect_message(
+    a <- b |>
+      set_filters(
+        filter_string("manufacturer", regexp = "for")
+      ),
+    regexp = "Replacing existing filter state specification for variable"
+  )
+
+  # "mean_cty" should now be first
+  expect_equal(names(a$get("state")$get("filter"))[1], "mean_cty")
+
+  expect_message(
+    b |>
+      set_filters(
+        filter_string("manufacturer", regexp = "for"),
+        add = FALSE
+      ),
+    regexp = "Replacing entire existing filter"
   )
 })
