@@ -86,7 +86,19 @@ disp <- dat |>
     filter_string("manufacturer",
       values = c("toyota", "honda", "nissan", "subaru")),
     filter_range("mean_cty", max = 20)
+  ) |>
+  add_inputs(
+    input_radio(name = "good_radio",
+      label = "Is it good?", options = c("no", "yes")),
+    input_checkbox(name = "good_checkbox",
+      label = "Is it good?", options = c("no", "yes")),
+    input_select(name = "good_select",
+      label = "Is it good?", options = c("no", "yes")),
+    input_multiselect(name = "good_multiselect",
+      label = "Is it good?", options = c("no", "yes")),
+    input_text(name = "opinion", label = "What do you think?",
+      width = 100, height = 6),
+    input_number(name = "rank", label = "Rank this panel")
   )
-  # set_inputs()
   # write_display()
 ```

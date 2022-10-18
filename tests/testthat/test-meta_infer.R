@@ -18,8 +18,10 @@ dat$plot <- img_panel(dat$plot)
 dat$plot2 <- img_panel_local(dat$plot)
 attr(dat$date2, "label") <- "test date label with label attribute"
 
-x <- trelliscope(dat, name = "test") %>%
-  add_meta_labels(id = "test id label with add_meta_labels")
+suppressMessages(
+  x <- trelliscope(dat, name = "test") %>%
+    add_meta_labels(id = "test id label with add_meta_labels")
+)
 
 test_that("meta variable inference", {
   b <- x |>

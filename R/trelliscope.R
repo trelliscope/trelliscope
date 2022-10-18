@@ -51,6 +51,14 @@ Display <- R6::R6Class(
         private$views[[nm]] <- obj
       }
     },
+    set_input = function(obj) {
+      nm <- obj$get("name")
+      if (!is.null(private$inputs[[nm]])) {
+        message("Overwriting input '", nm, "'")
+      } else {
+        private$inputs[[nm]] <- obj
+      }
+    },
     get = function(name) {
       private[[name]]
     }

@@ -124,11 +124,11 @@ set_filters <- function(disp, ..., add = TRUE) {
 }
 
 #' Add a view specification to a trelliscope display
+#' @param disp A trelliscope display object created with [`trelliscope()`].
 #' @param name The name of the view.
 #' @param ... Any number of state specifications that define the view. These
 #' can be specified with any of [`state_layout()`], [`state_labels()`],
 #' [`state_sort()`], [`filter_string()`], [`filter_range()`].
-#' @param disp A trelliscope display object created with [`trelliscope()`].
 #' @export
 add_view <- function(disp, name, ...) {
   check_display_object(disp)
@@ -139,4 +139,19 @@ add_view <- function(disp, name, ...) {
   disp2
 }
 
-# add_input
+#' Add inputs to a trelliscope display
+#' @param disp A trelliscope display object created with [`trelliscope()`].
+#' @param ... Any number of input specifications. These can be specified with
+#' any of [`input_number()`], [`input_radio()`], [`input_checkbox()`],
+#' [`input_select()`], [`input_multiselect()`], [`input_text()`]
+#' @export
+add_inputs <- function(disp, ...) {
+  check_display_object(disp)
+  disp2 <- disp$clone()
+  for (inpt in list(...)) {
+    assertthat::assert_that(inherits(inpt, "trelliscope_input_def"),
+      msg = "Can only add input definitions to add_inputs()")
+    disp2$set_input(inpt)
+  }
+  disp2
+}

@@ -3,7 +3,7 @@
 test_that("state_layout", {
   obj <- state_layout(nrow = 2, ncol = 3, arrange = "cols", page = 1)
 
-  expect_true(inherits(obj, "trelliscope_state_def"))
+  expect_s3_class(obj, "trelliscope_state_def")
   expect_equal(obj$get("type"), "layout")
 
   expect_error(
@@ -15,7 +15,7 @@ test_that("state_layout", {
 test_that("state_labels", {
   obj <- state_labels(varnames = c("a", "b", "c"))
 
-  expect_true(inherits(obj, "trelliscope_state_def"))
+  expect_s3_class(obj, "trelliscope_state_def")
   expect_equal(obj$get("type"), "labels")
 
   expect_error(
@@ -35,7 +35,7 @@ test_that("state_labels", {
 test_that("state_sort", {
   obj <- state_sort(varname = "a", dir = "desc")
 
-  expect_true(inherits(obj, "trelliscope_state_def"))
+  expect_s3_class(obj, "trelliscope_state_def")
   expect_equal(obj$get("type"), "sort")
 
   expect_error(
@@ -60,7 +60,7 @@ test_that("state_sort", {
 test_that("filter_string", {
   obj <- filter_string(varname = "a", regexp = "stuff")
 
-  expect_true(inherits(obj, "trelliscope_state_def"))
+  expect_s3_class(obj, "trelliscope_state_def")
   expect_equal(obj$get("type"), "filter")
 
   expect_error(
@@ -85,7 +85,7 @@ test_that("filter_string", {
 test_that("filter_range", {
   obj <- filter_range(varname = "a", min = 1)
 
-  expect_true(inherits(obj, "trelliscope_state_def"))
+  expect_s3_class(obj, "trelliscope_state_def")
   expect_equal(obj$get("type"), "filter")
   expect_equal(obj$get("filtertype"), "numberrange")
 

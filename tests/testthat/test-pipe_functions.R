@@ -280,30 +280,58 @@ test_that("add_view", {
   expect_message(
     x |> add_view(name = "test view", state_layout(), state_layout()),
     "Multiple layout definitions"
-  )
+  ) |> suppressMessages()
   expect_message(
     x |> add_view(name = "test view", state_labels(), state_labels()),
     "Multiple labels definitions"
-  )
+  ) |> suppressMessages()
   expect_message(
     x |> add_view("test view"),
     regexp = "No layout definition"
-  )
+  ) |> suppressMessages()
   expect_message(
     x |> add_view("test view"),
     regexp = "No labels definition"
-  )
+  ) |> suppressMessages()
   expect_message(
     x |> add_view("test view"),
     regexp = "No sort definitions"
-  )
+  ) |> suppressMessages()
   expect_message(
     x |> add_view("test view"),
     regexp = "No filter definitions"
-  )
+  ) |> suppressMessages()
 
   expect_message(
     b |> add_view("test view"),
     regexp = "Overwriting view 'test view'"
+  ) |> suppressMessages()
+})
+
+test_that("input pipe functions", {
+  b <- x |>
+    add_inputs(
+      input_radio(name = "good_radio",
+        label = "Is it good?", options = c("no", "yes")),
+      input_checkbox(name = "good_checkbox",
+        label = "Is it good?", options = c("no", "yes")),
+      input_select(name = "good_select",
+        label = "Is it good?", options = c("no", "yes")),
+      input_multiselect(name = "good_multiselect",
+        label = "Is it good?", options = c("no", "yes")),
+      input_text(name = "opinion", label = "What do you think?",
+        width = 100, height = 6),
+      input_number(name = "rank", label = "Rank this panel")
+    )
+
+  expect_length(b$get("inputs"), 6)
+  expect_length(x$get("inputs"), 0)
+  for (inpt in b$get("inputs"))
+    expect_s3_class(inpt, "trelliscope_input_def")
+
+  expect_message(
+    b |>
+      add_inputs(input_radio(name = "good_radio", options = 1:5)),
+    regexp = "Overwriting input 'good_radio'"
   )
 })
