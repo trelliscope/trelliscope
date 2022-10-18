@@ -16,44 +16,33 @@ View <- R6::R6Class("View",
 
       lyt_idx <- which(types == "layout")
       lyt <- NULL
-      if (length(lyt_idx) == 0) {
-        message("No layout definition supplied for view '", name, "'. ",
-          "Using the default layout.")
-      } else if (length(lyt_idx) > 1) {
+      if (length(lyt_idx) > 1) {
         message("Multiple layout definitions supplied for view '", name, "'. ",
           "Using the last-defined definition.")
         lyt <- objs[[tail(lyt_idx, 1)]]
-      } else {
+      } else if (length(lyt_idx) == 1) {
         lyt <- objs[[lyt_idx]]
       }
 
       lbl_idx <- which(types == "labels")
       lbl <- NULL
-      if (length(lbl_idx) == 0) {
-        message("No labels definition supplied for view '", name, "'. ",
-          "Using default labels.")
-      } else if (length(lbl_idx) > 1) {
+      if (length(lbl_idx) > 1) {
         message("Multiple labels definitions supplied for view '", name, "'. ",
           "Using the last-defined definition.")
         lbl <- objs[[tail(lbl_idx, 1)]]
-      } else {
+      } else if (length(lbl_idx) == 1) {
         lbl <- objs[[lbl_idx]]
       }
 
       sort_idx <- which(types == "sort")
       sorts <- NULL
-      if (length(sort_idx) == 0) {
-        message("No sort definitions supplied for view '", name, "'. ",
-          "Using default sort.")
-      } else {
+      if (length(sort_idx) > 0) {
         sorts <- objs[sort_idx]
       }
 
       filter_idx <- which(types == "filter")
       filters <- NULL
-      if (length(filter_idx) == 0) {
-        message("No filter definitions supplied for view '", name, "'.")
-      } else {
+      if (length(filter_idx) > 0) {
         filters <- objs[filter_idx]
       }
 
@@ -73,12 +62,18 @@ View <- R6::R6Class("View",
     get = function(name) {
       private[[name]]
     },
-    # as_list = function() {
-    #   as.list(private)
-    # },
-    # as_json = function(pretty = FALSE) {
-    #   to_json(as.list(private))
-    # },
+    set_state = function(obj) {
+      private$states <- obj
+    },
+    as_list = function() {
+      list(
+        name = private$name,
+        state = private$states$as_list()
+      )
+    },
+    as_json = function(pretty = TRUE) {
+      to_json(self$as_list(), pretty = pretty)
+    },
     check_with_data = function(df) {
       if (!is.null(private$states$get("layout")))
         private$states$get("layout")$check_with_data(df)

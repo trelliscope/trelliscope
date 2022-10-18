@@ -48,6 +48,23 @@ DisplayState <- R6::R6Class("DisplayState",
           private$filter <- tmp
         }
       }
+    },
+    as_list = function() {
+      lyt <- private$layout
+      if (!is.null(lyt))
+        lyt <- lyt$as_list()
+      lbl <- private$labels
+      if (!is.null(lbl))
+        lbl <- lbl$as_list()
+      list(
+        layout = lyt,
+        labels = lbl,
+        sort = unname(lapply(private$sort, function(x) x$as_list())),
+        filter = unname(lapply(private$filter, function(x) x$as_list()))
+      )
+    },
+    as_json = function(pretty = TRUE) {
+      to_json(self$as_list(), pretty = pretty)
     }
   ),
   private = list(

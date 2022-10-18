@@ -23,7 +23,7 @@ test_that("NumberMeta", {
   expect_equal(obj$get("tags"), "stuff")
 
   expect_equal(
-    as.character(obj$as_json()),
+    as.character(obj$as_json(pretty = FALSE)),
     '{"locale":true,"digits":null,"sortable":true,"filterable":true,"tags":"stuff","label":"Sepal.Length","type":"number","varname":"Sepal.Length"}'
   )
 

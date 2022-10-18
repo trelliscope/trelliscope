@@ -155,3 +155,19 @@ add_inputs <- function(disp, ...) {
   }
   disp2
 }
+
+#' Convert any trelliscope R6 object to JSON
+#' @param obj Any R6 object created with trelliscope functions.
+#' @param pretty Adds indentation whitespace to JSON output. Can be TRUE/FALSE
+#' or a number specifying the number of spaces to indent.
+#' @export
+as_json <- function(obj, pretty = TRUE) {
+  assertthat::assert_that(inherits(obj, "R6"),
+    msg = "as_json() only applies to R6 objects")
+  assertthat::assert_that(!is.null(obj$as_json),
+    msg = "Object provided to as_json() must have its own as_json() method")
+  if (inherits(obj, "trelliscope_display")) {
+    obj <- infer(obj)
+  }
+  obj$as_json(pretty = pretty)
+}

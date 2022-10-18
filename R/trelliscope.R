@@ -1,93 +1,46 @@
-#' @importFrom R6 R6Class
-Display <- R6::R6Class(
-  public = list(
-    df = NULL,
-    path = NULL,
-    force_plot = NULL,
-    panel_col = NULL,
-    # if the user specifies meta labels using add_meta_labels(), we keep track
-    # of them here so that we can apply them just before writing out the object
-    meta_labels = list(),
-    initialize = function(df, name, description, path, force_plot) {
-      assertthat::assert_that(inherits(df, "data.frame"),
-        msg = "Argument 'df' must be a data frame")
-      self$df <- df
-      check_scalar(name, "name")
-      check_character(name, "name")
-      check_scalar(description, "description")
-      check_character(description, "description")
-      check_scalar(path, "path")
-      check_character(path, "path")
-      check_scalar(force_plot, "force_plot")
-      check_logical(force_plot, "force_plot")
-      private$name <- name
-      private$description <- description
-      self$path <- path
-      self$force_plot <- force_plot
-      self$panel_col <- check_and_get_panel_col(df)
-      private$state <- DisplayState$new()
-    },
-    set_meta = function(obj) {
-      assertthat::assert_that(inherits(obj, "trelliscope_meta_def"),
-        msg = "Meta variable definition must come from a meta_*() function")
-      obj$check_with_data(self$df)
-      name <- obj$get("varname")
-      if (!is.null(private$metas[[name]]))
-        message("Replacing existing meta variable definition for ", name)
-      private$metas[[name]] <- obj
-    },
-    set_metas = function(objs) {
-      for (obj in objs)
-        self$set_meta(obj)
-    },
-    set_state = function(obj) {
-      private$state <- obj
-    },
-    set_view = function(obj) {
-      nm <- obj$get("name")
-      if (!is.null(private$views[[nm]])) {
-        message("Overwriting view '", nm, "'")
-      } else {
-        private$views[[nm]] <- obj
-      }
-    },
-    set_input = function(obj) {
-      nm <- obj$get("name")
-      if (!is.null(private$inputs[[nm]])) {
-        message("Overwriting input '", nm, "'")
-      } else {
-        private$inputs[[nm]] <- obj
-      }
-    },
-    get = function(name) {
-      private[[name]]
-    }
-  ),
-  private = list(
-    name = NULL,
-    description = NULL,
-    metas = list(),
-    inputs = list(),
-    state = NULL,
-    views = list()
-  )
-)
-
 #' Instantiate a trelliscope display object
 #' @param df A data frame that contains the metadata of the display as well as
 #' a column that indicate the panels to be displayed.
 #' @param name Name of the trelliscope display.
 #' @param description Description of the trelliscope display.
+#' @param id_vars Variable names in `df` that uniquely define a row of the
+#' data. If not supplied, an attempt will be made to infer them.
 #' @param path Directory in which to place the trelliscope display when
 #' it is written using [`write_display()`].
 #' @param force_plot Should the panels be forced to be plotted, even if they
 #' have already been plotted and have not changed since the previous plotting?
 #' @export
+#' @importFrom utils head
 trelliscope <- function(
-  df, name, description = name, path = tempfile(), force_plot = FALSE
+  df, name, description = name, id_vars = NULL,
+  path = tempfile(), force_plot = FALSE
 ) {
+  panel_col <- check_and_get_panel_col(df)
+  if (is.null(id_vars)) {
+    n <- nrow(df)
+    nms <- names(df)
+    char_cols <- which(unname(unlist(lapply(df, function(x)
+      inherits(x, c("character", "factor"))))))
+    id_vars <- character(0)
+    for (ii in char_cols) {
+      if (nrow(dplyr::distinct(df[utils::head(char_cols, ii)])) == n) {
+        id_vars <- nms[utils::head(char_cols, ii)]
+        break
+      }
+    }
+    if (length(id_vars) == 0) {
+      message("Could not find columns of the data that uniquely define each ",
+        "row. Creating a new variable '__id__' as an identifier")
+      df[["__id__"]] <- seq_len(n)
+      id_var <- "__id__"
+    } else {
+      message("Using the variable(s): '", paste0(id_vars, collapse = ", "),
+        "' to uniquely identify each row of the data.")
+    }
+  }
   obj <- Display$new(df = df, name = name, description = description,
-    path = path, force_plot = force_plot)
+    id_vars = id_vars, path = path, force_plot = force_plot,
+    panel_col = panel_col)
   class(obj) <- c("R6", "trelliscope_display")
   obj
 }

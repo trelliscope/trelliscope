@@ -6,7 +6,7 @@ dat <- ggplot2::mpg |>
     class2 = factor(class)
   )
 
-x <- trelliscope(dat, name = "test")
+x <- trelliscope(dat, name = "test", id_vars = c("manufacturer", "class"))
 
 test_that("add_meta_def", {
   expect_error(
@@ -285,22 +285,6 @@ test_that("add_view", {
     x |> add_view(name = "test view", state_labels(), state_labels()),
     "Multiple labels definitions"
   ) |> suppressMessages()
-  expect_message(
-    x |> add_view("test view"),
-    regexp = "No layout definition"
-  ) |> suppressMessages()
-  expect_message(
-    x |> add_view("test view"),
-    regexp = "No labels definition"
-  ) |> suppressMessages()
-  expect_message(
-    x |> add_view("test view"),
-    regexp = "No sort definitions"
-  ) |> suppressMessages()
-  expect_message(
-    x |> add_view("test view"),
-    regexp = "No filter definitions"
-  ) |> suppressMessages()
 
   expect_message(
     b |> add_view("test view"),
@@ -334,4 +318,11 @@ test_that("input pipe functions", {
       add_inputs(input_radio(name = "good_radio", options = 1:5)),
     regexp = "Overwriting input 'good_radio'"
   )
+})
+
+test_that("as_json", {
+  expect_error(
+    as_json(x),
+    regexp = NA # no error
+  ) |> suppressMessages()
 })

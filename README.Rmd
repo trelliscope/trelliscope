@@ -34,6 +34,8 @@ devtools::install_github("trelliscope/trelliscope")
 
 ## Example
 
+A simple visualization of city vs. highway mpg by car manufacturer and class:
+
 ```{r example}
 library(trelliscope)
 library(ggplot2, warn.conflicts = FALSE)
@@ -49,7 +51,18 @@ dat <- ggplot2::mpg |>
   )
 
 dat
+```
 
+We can specify a trelliscope display from this as easily as:
+
+```{r}
+disp <- dat |>
+  trelliscope(name = "Highway mpg vs. City mpg")
+```
+
+But we can provide fine control over the app with the use of many additional utility functions:
+
+```{r}
 disp <- dat |>
   trelliscope(name = "Highway mpg vs. City mpg") |>
   # provide information about metadata:
@@ -80,6 +93,11 @@ disp <- dat |>
       values = c("toyota", "honda", "nissan", "subaru")),
     filter_range("mean_cty", max = 20)
   ) |>
+  add_view(
+    name = "test view 2",
+    state_sort("class"),
+    filter_range("mean_cty", min = 15, max = 25)
+  ) |>
   add_inputs(
     input_radio(name = "good_radio",
       label = "Is it good?", options = c("no", "yes")),
@@ -94,4 +112,10 @@ disp <- dat |>
     input_number(name = "rank", label = "Rank this panel")
   )
   # write_display()
+```
+
+To see what the JSON representation of this looks like:
+
+```{r}
+disp |> as_json()
 ```

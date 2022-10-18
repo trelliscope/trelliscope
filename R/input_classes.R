@@ -20,6 +20,9 @@ Input <- R6::R6Class("Input",
     as_list = function() {
       as.list(private)
     },
+    as_json = function(pretty = TRUE) {
+      to_json(self$as_list(), pretty = pretty)
+    },
     error_msg = function(txt) {
       paste0("While defining a '", private$type, "' input: ", txt)
     }

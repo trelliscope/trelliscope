@@ -10,17 +10,26 @@ test_that("trelliscope instantiation", {
     regexp = "that references a plot or image"
   )
 
-  expect_error(
+  suppressMessages(expect_error(
     trelliscope(dat),
     regexp = "argument \"name\" is missing"
-  )
+  ))
 
-  x <- trelliscope(dat, name = "test")
+  expect_message(
+    x <- trelliscope(dat, name = "test"),
+    regexp = "Using the variable\\(s\\)"
+  )
   expect_equal(x$get("name"), "test")
 
   dat$panel2 <- dat$panel
-  expect_message(
+  suppressMessages(expect_message(
     trelliscope(dat, name = "test"),
     regexp = "Found multiple columns"
-  )
+  ))
+
+  dat2 <- dat[, -c(1:2)]
+  suppressMessages(expect_message(
+    trelliscope(dat2, name = "test"),
+    regexp = "Could not find columns of the data that uniquely define each row"
+  ))
 })

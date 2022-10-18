@@ -23,14 +23,59 @@ suppressMessages(
     add_meta_labels(id = "test id label with add_meta_labels")
 )
 
+test_that("infer", {
+  expect_message(
+    infer(x),
+    regexp = "No layout definition supplied"
+  ) |> suppressMessages()
+  expect_message(
+    infer(x),
+    regexp = "No labels definition supplied"
+  ) |> suppressMessages()
+
+  b <- x |>
+    add_view(name = "view 1")
+
+  expect_message(
+    a <- infer(b),
+    regexp = "No layout definition supplied for view"
+  ) |> suppressMessages()
+  expect_message(
+    infer(b),
+    regexp = "No labels definition supplied for view"
+  ) |> suppressMessages()
+
+  expect_equal(
+    a$get("views")[[1]]$get("states")$get("labels")$get("type"),
+    "labels"
+  )
+  expect_equal(
+    a$get("views")[[1]]$get("states")$get("layout")$get("type"),
+    "layout"
+  )
+  expect_equal(
+    b$get("views")[[1]]$get("states")$get("labels"),
+    NULL
+  )
+  expect_equal(
+    b$get("views")[[1]]$get("states")$get("layout"),
+    NULL
+  )
+})
+
 test_that("meta variable inference", {
   b <- x |>
     add_meta_def(meta_string("letters", label = "test label with meta_string"))
 
   expect_message(
-    d <- meta_infer(b),
+    d <- infer_meta(b),
     regexp = "Cannot find a data type for variable: lst"
-  )
+  ) |> suppressMessages()
+
+  expect_message(
+    d <- infer_meta(b),
+    regexp = "The following variables had their meta definition inferred"
+  ) |> suppressMessages()
 
   # make sure b didn't get updated
   expect_length(b$get("metas"), 1)

@@ -2,7 +2,7 @@
 #' @param disp A trelliscope display object created with [`trelliscope()`].
 #' @export
 write_display <- function(disp) {
-  # disp2 <- meta_infer(disp)
+  # disp2 <- infer_meta(disp)
 
   # infer any meta definitions that aren't specified
 

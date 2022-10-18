@@ -36,6 +36,11 @@ test_that("CheckboxInput", {
     list(options = c("no", "yes"), type = "checkbox", active = TRUE,
       label = "Is it good?", name = "good")
   )
+
+  expect_equal(
+    as.character(obj$as_json(pretty = FALSE)),
+    '{"options":["no","yes"],"type":"checkbox","active":true,"label":"Is it good?","name":"good"}'
+  )
 })
 
 test_that("SelectInput", {

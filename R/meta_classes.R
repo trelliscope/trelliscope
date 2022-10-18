@@ -36,8 +36,8 @@ Meta <- R6::R6Class("Meta",
     as_list = function() {
       self$finalize()
     },
-    as_json = function(pretty = FALSE) {
-      to_json(self$finalize())
+    as_json = function(pretty = TRUE) {
+      to_json(self$as_list(), pretty = pretty)
     },
     check_varname = function(df) {
       check_has_var(df, private$varname, self$error_msg)
