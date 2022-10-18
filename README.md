@@ -27,6 +27,9 @@ devtools::install_github("trelliscope/trelliscope")
 
 ## Example
 
+A simple visualization of city vs. highway mpg by car manufacturer and
+class:
+
 ``` r
 library(trelliscope)
 library(ggplot2, warn.conflicts = FALSE)
@@ -56,7 +59,19 @@ dat
 #>  9 ford         suv     <tibble [9 × 9]>      12.9 <gg>      
 #> 10 ford         pickup  <tibble [7 × 9]>      13   <gg>      
 #> # … with 22 more rows
+```
 
+We can specify a trelliscope display from this as easily as:
+
+``` r
+disp <- dat |>
+  trelliscope(name = "Highway mpg vs. City mpg")
+```
+
+But we can provide fine control over the app with the use of many
+additional utility functions:
+
+``` r
 disp <- dat |>
   trelliscope(name = "Highway mpg vs. City mpg") |>
   # provide information about metadata:
