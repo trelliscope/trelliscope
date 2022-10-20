@@ -162,7 +162,7 @@ meta_href <- function(
   label = NULL,
   tags = NULL
 ) {
-  HREFMeta$new(
+  HrefMeta$new(
     varname = varname,
     label = label,
     tags = tags

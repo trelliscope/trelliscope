@@ -311,7 +311,7 @@ GeoMeta <- R6::R6Class("GeoMeta",
   )
 )
 
-HREFMeta <- R6::R6Class("HREFMeta",
+HrefMeta <- R6::R6Class("HrefMeta",
   inherit = Meta,
   public = list(
     initialize = function(varname, label = NULL, tags = NULL) {
@@ -345,5 +345,5 @@ HREFMeta <- R6::R6Class("HREFMeta",
   datetime = DatetimeMeta,
   geo = GeoMeta,
   graph = GraphMeta,
-  href = HREFMeta
+  href = HrefMeta
 )

@@ -183,8 +183,8 @@ test_that("GraphMeta", {
   )
 })
 
-test_that("HREFMeta", {
-  obj <- HREFMeta$new("href")
+test_that("HrefMeta", {
+  obj <- HrefMeta$new("href")
   expect_true(
     obj$check_with_data(dat)
   )
@@ -193,7 +193,7 @@ test_that("HREFMeta", {
     all(obj$cast_variable(dat)$href == as.character(dat$href))
   )
 
-  obj <- HREFMeta$new("lst")
+  obj <- HrefMeta$new("lst")
   expect_error(
     obj$check_with_data(dat),
     regexp = "must be an atomic vector"
