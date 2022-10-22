@@ -13,3 +13,12 @@ yarn install
 ```
 yarn cases
 ```
+
+## Generate Python classes from Typescript interfaces
+
+Experimental...
+
+```shell
+# pip install ts2python
+ts2python meta_types.ts
+```

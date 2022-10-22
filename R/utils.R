@@ -4,7 +4,8 @@ to_json <- function(x, pretty = FALSE) {
     pretty = pretty,
     auto_unbox = TRUE,
     digits = NA,
-    null = "null"
+    null = "null",
+    POSIXt = "ISO8601"
   )
 }
 

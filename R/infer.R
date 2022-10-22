@@ -8,7 +8,7 @@ infer <- function(disp) {
   disp2$set_state(newst)
   for (view in disp2$get("views")) {
     view2 <- view$clone()
-    st <- view2$get("states")
+    st <- view2$get("state")
     newst <- infer_state(st, disp$df, disp$get("id_vars"), view2$get("name"))
     view2$set_state(newst)
     disp2$set_view(view2, verbose = FALSE)

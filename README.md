@@ -86,7 +86,7 @@ disp <- dat |>
   ) |>
   # alternately can use add_meta_from_csv()
   # set the initial viewing state:
-  set_labels(c("manufacturer", "class")) |>
+  set_labels(c("manufacturer", "class", "mean_cty")) |>
   set_sort(c("class", "mean_cty"), dir = c("asc", "asc")) |>
   set_layout(nrow = 2, ncol = 3) |>
   set_filters(
@@ -176,7 +176,7 @@ disp |> as_json()
 #>       "type": "layout"
 #>     },
 #>     "labels": {
-#>       "varnames": ["manufacturer", "class"],
+#>       "varnames": ["manufacturer", "class", "mean_cty"],
 #>       "type": "labels"
 #>     },
 #>     "sort": [

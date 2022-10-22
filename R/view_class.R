@@ -57,31 +57,31 @@ View <- R6::R6Class("View",
       for (obj in filters) {
         state$set(obj, add = TRUE)
       }
-      private$states <- state
+      private$state <- state
     },
     get = function(name) {
       private[[name]]
     },
     set_state = function(obj) {
-      private$states <- obj
+      private$state <- obj
     },
     as_list = function() {
       list(
         name = private$name,
-        state = private$states$as_list()
+        state = private$state$as_list()
       )
     },
     as_json = function(pretty = TRUE) {
       to_json(self$as_list(), pretty = pretty)
     },
     check_with_data = function(df) {
-      if (!is.null(private$states$get("layout")))
-        private$states$get("layout")$check_with_data(df)
-      if (!is.null(private$states$get("labels")))
-        private$states$get("labels")$check_with_data(df)
-      for (obj in private$states$get("sort"))
+      if (!is.null(private$state$get("layout")))
+        private$state$get("layout")$check_with_data(df)
+      if (!is.null(private$state$get("labels")))
+        private$state$get("labels")$check_with_data(df)
+      for (obj in private$state$get("sort"))
         obj$check_with_data(df)
-      for (obj in private$states$get("filter"))
+      for (obj in private$state$get("filter"))
         obj$check_with_data(df)
     }
     # infer_missing_states = function(df) {
@@ -90,6 +90,6 @@ View <- R6::R6Class("View",
   ),
   private = list(
     name = NULL,
-    states = NULL
+    state = NULL
   )
 )

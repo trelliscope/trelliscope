@@ -9,7 +9,10 @@ read_case <- function(obj) {
   readLines(paste0(path, "/json/", name, ".json"), warn = FALSE)
 }
 
-test_that("typescript comparison", {
+# -------------------------------------------------------- #
+# meta                                                     #
+# -------------------------------------------------------- #
+test_that("typescript meta comparison", {
   meta_num_min <- NumberMeta$new(
     varname = "numvar"
   ) |> case_to_string()
@@ -63,3 +66,142 @@ test_that("typescript comparison", {
   ts <- read_case(meta_grph)
   expect_equal(meta_grph, ts)
 })
+
+# -------------------------------------------------------- #
+# inputs                                                   #
+# -------------------------------------------------------- #
+test_that("typescript inputs comparison", {
+  options <- c("a", "b", "c")
+
+  input_radio <- RadioInput$new(name = "radio", options = options) |>
+    case_to_string()
+  ts <- read_case(input_radio)
+  expect_equal(input_radio, ts)
+
+  input_check <- CheckboxInput$new(name = "check", options = options) |>
+    case_to_string()
+  ts <- read_case(input_check)
+  expect_equal(input_check, ts)
+
+  input_select <- SelectInput$new(name = "select", options = options) |>
+    case_to_string()
+  ts <- read_case(input_select)
+  expect_equal(input_select, ts)
+
+  input_mselect <- MultiselectInput$new(name = "mselect", options = options) |>
+    case_to_string()
+  ts <- read_case(input_mselect)
+  expect_equal(input_mselect, ts)
+
+  input_text <- TextInput$new(name = "text") |>
+    case_to_string()
+  ts <- read_case(input_text)
+  expect_equal(input_text, ts)
+
+  input_num <- NumberInput$new(name = "num") |>
+    case_to_string()
+  ts <- read_case(input_num)
+  expect_equal(input_num, ts)
+})
+
+# -------------------------------------------------------- #
+# states                                                   #
+# -------------------------------------------------------- #
+test_that("typescript states comparison", {
+  state_layout <- LayoutState$new() |>
+    case_to_string()
+  ts <- read_case(state_layout)
+  expect_equal(state_layout, ts)
+
+  state_label <- LabelState$new(varnames = c("a", "b")) |>
+    case_to_string()
+  ts <- read_case(state_label)
+  expect_equal(state_label, ts)
+
+  state_sort <- SortState$new(varname = "a") |>
+    case_to_string()
+  ts <- read_case(state_sort)
+  expect_equal(state_sort, ts)
+
+  state_catfilt <- CategoryFilterState$new(
+    varname = "a", values = c("a", "b", "c")) |>
+    case_to_string()
+  ts <- read_case(state_catfilt)
+  expect_equal(state_catfilt, ts)
+
+  state_numfilt <- NumberRangeFilterState$new(varname = "a", min = 1) |>
+    case_to_string()
+  ts <- read_case(state_numfilt)
+  expect_equal(state_numfilt, ts)
+
+  # # need to test these later...
+  # state_dtfilt <- DateRangeFilterState$new(
+  #   varname = "a", min = as.Date("2000-01-01")) |>
+  #   case_to_string()
+  # ts <- read_case(state_dtfilt)
+  # expect_equal(state_dtfilt, ts)
+
+  # state_dttmfilt <- DatetimeRangeFilterState$new(
+  #   varname = "a", min = as.POSIXct(as.Date("2000-01-01"))) |>
+  #   case_to_string()
+  # ts <- read_case(state_dttmfilt)
+  # expect_equal(state_dttmfilt, ts)
+
+  # displst_min <- DisplayState$new()
+  # displst_min$set(LabelState$new(varnames = c("a", "b")))
+  # displst_min <- case_to_string(displst_min)
+  # ts <- read_case(displst_min)
+  # expect_equal(displst_min, ts)
+
+  # displst <- DisplayState$new()
+  # displst$set(LabelState$new(varnames = c("a", "b")))
+  # displst$set(LayoutState$new(nrow = 2, ncol = 4))
+  #   sort: [
+  #     new SortState({ varname = "a" ),
+  #     new SortState({ varname = "b", dir: "desc" )
+  #   ],
+  #   filter: [
+  #     new CategoryFilterState({ varname = "a", values = c("a", "b", "c")),
+  #     new NumberRangeFilterState({ varname = "a", min = 1 )
+  #   ]
+  # })
+  # ts <- read_case(displst)
+  # expect_equal(displst, ts)
+})
+
+# /* ------------------------------------------------------ */
+# /* view                                                   */
+# /* ------------------------------------------------------ */
+
+# const view = new View({
+#   name: 'myview',
+#   state: displst_min
+# })
+# writeCase(view, 'view')
+
+# const view2 = new View({
+#   name: 'myview2',
+#   state: displst
+# })
+
+# /* ------------------------------------------------------ */
+# /* display                                                */
+# /* ------------------------------------------------------ */
+
+# const displ = new Display({
+#   name: 'test display',
+#   id_vars: ['a', 'b'],
+#   metas: [
+#     new StringMeta({ varname = 'stringvar' }),
+#     new DateMeta({ varname = 'datevar' })
+#   ],
+#   inputs: [
+#     new SelectInput({ name: 'select', options })
+#   ],
+#   state: displst,
+#   views: [
+#     view,
+#     view2
+#   ]
+# })
+# writeCase(displ, 'displ')

@@ -17,7 +17,7 @@ test_that("view class", {
   )
 
   expect_equal(
-    as.character(x$get("states")$as_json(pretty = FALSE)),
+    as.character(x$get("state")$as_json(pretty = FALSE)),
     '{"layout":null,"labels":null,"sort":[],"filter":[]}'
   )
 })

@@ -46,19 +46,19 @@ test_that("infer", {
   ) |> suppressMessages()
 
   expect_equal(
-    a$get("views")[[1]]$get("states")$get("labels")$get("type"),
+    a$get("views")[[1]]$get("state")$get("labels")$get("type"),
     "labels"
   )
   expect_equal(
-    a$get("views")[[1]]$get("states")$get("layout")$get("type"),
+    a$get("views")[[1]]$get("state")$get("layout")$get("type"),
     "layout"
   )
   expect_equal(
-    b$get("views")[[1]]$get("states")$get("labels"),
+    b$get("views")[[1]]$get("state")$get("labels"),
     NULL
   )
   expect_equal(
-    b$get("views")[[1]]$get("states")$get("layout"),
+    b$get("views")[[1]]$get("state")$get("layout"),
     NULL
   )
 })
