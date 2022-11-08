@@ -633,7 +633,7 @@ export class View implements IView {
 export class Display implements IDisplay {
   name: string;
   description: string;
-  id_vars: string[];
+  key_cols: string[];
   metas: IMeta[];
   inputs: IInput[];
   state: IDisplayState;
@@ -642,7 +642,7 @@ export class Display implements IDisplay {
     {
       name,
       description,
-      id_vars,
+      key_cols,
       metas,
       inputs,
       state,
@@ -650,7 +650,7 @@ export class Display implements IDisplay {
     } : {
       name: string,
       description?: string,
-      id_vars: string[],
+      key_cols: string[],
       metas: IMeta[],
       inputs?: IInput[] | undefined,
       state: IDisplayState,
@@ -659,7 +659,7 @@ export class Display implements IDisplay {
   ) {
     this.name = name;
     this.description = description === undefined ? name : description;
-    this.id_vars = id_vars;
+    this.key_cols = key_cols;
     this.metas = metas;
     this.inputs = inputs === undefined ? [] : inputs;
     this.state = state;

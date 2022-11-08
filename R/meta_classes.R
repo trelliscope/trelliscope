@@ -347,3 +347,9 @@ HrefMeta <- R6::R6Class("HrefMeta",
   graph = GraphMeta,
   href = HrefMeta
 )
+
+# currency
+# https://www.w3schools.com/tags/ref_language_codes.asp
+# https://www.w3schools.com/tags/ref_country_codes.asp
+# https://www.six-group.com/en/products-services/financial-information/data-standards.html#scrollTo=maintenance-agency
+# https://medium.com/@samanthaming/format-currency-in-es6-with-intl-numberformat-f07e9b6321f9

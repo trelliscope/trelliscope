@@ -66,7 +66,7 @@ We can specify a trelliscope display from this as easily as:
 ``` r
 disp <- dat |>
   trelliscope(name = "Highway mpg vs. City mpg")
-#> Using the variable(s): 'manufacturer, class' to uniquely identify each row of the data.
+#> Using the variable(s): 'manufacturer', 'class' to uniquely identify each row of the data.
 ```
 
 But we can provide fine control over the app with the use of many
@@ -121,7 +121,7 @@ disp <- dat |>
       width = 100, height = 6),
     input_number(name = "rank", label = "Rank this panel")
   )
-#> Using the variable(s): 'manufacturer, class' to uniquely identify each row of the data.
+#> Using the variable(s): 'manufacturer', 'class' to uniquely identify each row of the data.
   # write_display()
 ```
 
@@ -137,7 +137,7 @@ disp |> as_json()
 #> {
 #>   "name": "Highway mpg vs. City mpg",
 #>   "description": "Highway mpg vs. City mpg",
-#>   "id_vars": ["manufacturer", "class"],
+#>   "key_cols": ["manufacturer", "class"],
 #>   "metas": [
 #>     {
 #>       "sortable": true,

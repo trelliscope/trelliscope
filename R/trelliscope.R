@@ -3,45 +3,30 @@
 #' a column that indicate the panels to be displayed.
 #' @param name Name of the trelliscope display.
 #' @param description Description of the trelliscope display.
-#' @param id_vars Variable names in `df` that uniquely define a row of the
-#' data. If not supplied, an attempt will be made to infer them.
+#' @param tags Optional vector of tag names to identify the display in the
+#'   case that there are many to search through.
+#' @param key_cols Variable names in `df` that uniquely define a row of the
+#'   data. If not supplied, an attempt will be made to infer them.
 #' @param path Directory in which to place the trelliscope display when
-#' it is written using [`write_display()`].
+#'   it is written using [`write_display()`].
 #' @param force_plot Should the panels be forced to be plotted, even if they
-#' have already been plotted and have not changed since the previous plotting?
+#'   have already been plotted and have not changed since the previous plotting?
 #' @export
 #' @importFrom utils head
+#' @importFrom dplyr group_cols
 trelliscope <- function(
-  df, name, description = name, id_vars = NULL,
+  df, name, description = name, key_cols = NULL, tags = NULL,
   path = tempfile(), force_plot = FALSE
 ) {
   panel_col <- check_and_get_panel_col(df)
-  if (is.null(id_vars)) {
-    n <- nrow(df)
-    nms <- names(df)
-    char_cols <- which(unname(unlist(lapply(df, function(x)
-      inherits(x, c("character", "factor"))))))
-    id_vars <- character(0)
-    for (ii in char_cols) {
-      if (nrow(dplyr::distinct(df[utils::head(char_cols, ii)])) == n) {
-        id_vars <- nms[utils::head(char_cols, ii)]
-        break
-      }
-    }
-    if (length(id_vars) == 0) {
-      message("Could not find columns of the data that uniquely define each ",
-        "row. Creating a new variable '__id__' as an identifier")
-      df[["__id__"]] <- seq_len(n)
-      id_var <- "__id__"
-    } else {
-      message("Using the variable(s): '", paste0(id_vars, collapse = ", "),
-        "' to uniquely identify each row of the data.")
-    }
-  }
+  if (is.null(key_cols))
+    key_cols <- get_key_cols(df)
+
   obj <- Display$new(df = df, name = name, description = description,
-    id_vars = id_vars, path = path, force_plot = force_plot,
+    key_cols = key_cols, path = path, force_plot = force_plot,
     panel_col = panel_col)
   class(obj) <- c("R6", "trelliscope_display")
+
   obj
 }
 
@@ -60,4 +45,38 @@ check_and_get_panel_col <- function(df) {
     msg = paste0("Couldn't find a column in the trelliscope input data frame ",
       "that references a plot or image."))
   names(panel_col_idx)
+}
+
+get_key_cols <- function(df) {
+  if (!is.null(attr(df, "facet_cols"))) {
+    key_cols <- attr(df, "facet_cols")
+  } else if (!is.null(attr(df, "key_cols"))) {
+    key_cols <- attr(df, "key_cols")
+  } else if (inherits(df, "grouped_df")) {
+    idx <- dplyr::group_cols(data = df)
+    key_cols <- names(df)[idx]
+    df <- dplyr::ungroup(df)
+  } else {
+    n <- nrow(df)
+    nms <- names(df)
+    char_cols <- which(unname(unlist(lapply(df, function(x)
+      inherits(x, c("character", "factor"))))))
+    key_cols <- character(0)
+    for (ii in char_cols) {
+      if (nrow(dplyr::distinct(df[utils::head(char_cols, ii)])) == n) {
+        key_cols <- nms[utils::head(char_cols, ii)]
+        break
+      }
+    }
+    if (length(key_cols) == 0) {
+      stop("Could not find columns of the data that uniquely define each ",
+        "row.")
+    }
+  }
+
+  if (is.null(attr(df, "facet_cols")))
+    message("Using the variable(s): '", paste0(key_cols, collapse = "', '"),
+      "' to uniquely identify each row of the data.")
+
+  key_cols
 }

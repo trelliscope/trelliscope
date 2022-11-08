@@ -6,7 +6,7 @@ dat <- ggplot2::mpg |>
     class2 = factor(class)
   )
 
-x <- trelliscope(dat, name = "test", id_vars = c("manufacturer", "class"))
+x <- trelliscope(dat, name = "test", key_cols = c("manufacturer", "class"))
 
 test_that("add_meta_def", {
   expect_error(

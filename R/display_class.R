@@ -5,11 +5,12 @@ Display <- R6::R6Class(
     path = NULL,
     force_plot = NULL,
     panel_col = NULL,
+    panels_written = FALSE,
     # if the user specifies meta labels using add_meta_labels(), we keep track
     # of them here so that we can apply them just before writing out the object
     meta_labels = list(),
     initialize = function(
-      df, name, description, id_vars, path, force_plot, panel_col
+      df, name, description, key_cols, path, force_plot, panel_col
     ) {
       assertthat::assert_that(inherits(df, "data.frame"),
         msg = "Argument 'df' must be a data frame")
@@ -22,10 +23,10 @@ Display <- R6::R6Class(
       check_character(path, "path")
       check_scalar(force_plot, "force_plot")
       check_logical(force_plot, "force_plot")
-      check_character(id_vars, "id_vars")
+      check_character(key_cols, "key_cols")
       private$name <- name
       private$description <- description
-      private$id_vars <- id_vars
+      private$key_cols <- key_cols
       self$path <- path
       self$force_plot <- force_plot
       self$panel_col <- panel_col
@@ -69,7 +70,7 @@ Display <- R6::R6Class(
       list(
         name = private$name,
         description = private$description,
-        id_vars = I(private$id_vars),
+        key_cols = I(private$key_cols),
         metas = unname(lapply(private$metas, function(x) x$as_list())),
         state = private$state$as_list(),
         views = unname(lapply(private$views, function(x) x$as_list())),
@@ -83,7 +84,7 @@ Display <- R6::R6Class(
   private = list(
     name = NULL,
     description = NULL,
-    id_vars = NULL,
+    key_cols = NULL,
     metas = list(),
     inputs = list(),
     state = NULL,

@@ -4,19 +4,19 @@ infer <- function(disp) {
   disp <- infer_meta(disp)
   disp2 <- disp$clone()
   st <- disp2$get("state")
-  newst <- infer_state(st, disp$df, disp$get("id_vars"))
+  newst <- infer_state(st, disp$df, disp$get("key_cols"))
   disp2$set_state(newst)
   for (view in disp2$get("views")) {
     view2 <- view$clone()
     st <- view2$get("state")
-    newst <- infer_state(st, disp$df, disp$get("id_vars"), view2$get("name"))
+    newst <- infer_state(st, disp$df, disp$get("key_cols"), view2$get("name"))
     view2$set_state(newst)
     disp2$set_view(view2, verbose = FALSE)
   }
   disp2
 }
 
-infer_state <- function(state, df, id_vars, view = NULL) {
+infer_state <- function(state, df, key_cols, view = NULL) {
   view_str <- ""
   if (!is.null(view))
     view_str <- paste0(" for view '", view, "'")
@@ -34,7 +34,7 @@ infer_state <- function(state, df, id_vars, view = NULL) {
   if (is.null(lbls)) {
     message("No labels definition supplied", view_str, ". ",
       "Using default.")
-    state2$set(state_labels(id_vars))
+    state2$set(state_labels(key_cols))
   }
 
   state2

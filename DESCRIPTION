@@ -12,12 +12,18 @@ RoxygenNote: 7.2.1
 Suggests:
     testthat (>= 3.0.0),
     covr,
-    dplyr,
-    ggplot2,
-    tidyr
+    tidyr,
+    plotly
 Config/testthat/edition: 3
 Imports:
     R6,
     assertthat,
     jsonlite,
-    purrr
+    purrr,
+    ggplot2 (>= 3.2.1),
+    dplyr,
+    rlang,
+    svglite,
+    progress,
+    htmlwidgets,
+    htmltools

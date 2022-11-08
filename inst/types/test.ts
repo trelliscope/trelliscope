@@ -85,7 +85,7 @@ console.log('newVarf2', newVarf2);
 const displ = {
   "name": "Highway mpg vs. City mpg",
   "description": "Highway mpg vs. City mpg",
-  "id_vars": ["manufacturer", "class"],
+  "key_cols": ["manufacturer", "class"],
   "metas": [
     {
       "sortable": true,

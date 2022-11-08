@@ -3,3 +3,4 @@
 ^README\.Rmd$
 ^\.github$
 ^codecov\.yml$
+^inst/types/node_modules$

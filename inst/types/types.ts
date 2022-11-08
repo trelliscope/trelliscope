@@ -161,7 +161,7 @@ export interface IView {
 export interface IDisplay {
   name: string;
   description: string;
-  id_vars: string[];
+  key_cols: string[];
   metas: IMeta[];
   inputs: IInput[];
   state: IDisplayState;

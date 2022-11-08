@@ -28,7 +28,7 @@ test_that("trelliscope instantiation", {
   ))
 
   dat2 <- dat[, -c(1:2)]
-  suppressMessages(expect_message(
+  suppressMessages(expect_error(
     trelliscope(dat2, name = "test"),
     regexp = "Could not find columns of the data that uniquely define each row"
   ))

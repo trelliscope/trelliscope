@@ -8,7 +8,8 @@ trelliscope(
   df,
   name,
   description = name,
-  id_vars = NULL,
+  key_cols = NULL,
+  tags = NULL,
   path = tempfile(),
   force_plot = FALSE
 )
@@ -21,8 +22,11 @@ a column that indicate the panels to be displayed.}
 
 \item{description}{Description of the trelliscope display.}
 
-\item{id_vars}{Variable names in \code{df} that uniquely define a row of the
+\item{key_cols}{Variable names in \code{df} that uniquely define a row of the
 data. If not supplied, an attempt will be made to infer them.}
+
+\item{tags}{Optional vector of tag names to identify the display in the
+case that there are many to search through.}
 
 \item{path}{Directory in which to place the trelliscope display when
 it is written using \code{\link[=write_display]{write_display()}}.}
