@@ -17,20 +17,22 @@ dat$plot <- "a.png"
 dat$plot <- img_panel(dat$plot)
 dat$plot2 <- img_panel_local(dat$plot)
 attr(dat$date2, "label") <- "test date label with label attribute"
+# dat$bad <- hms::as_hms(1)
 
 suppressMessages(
   x <- trelliscope(dat, name = "test") %>%
     add_meta_labels(id = "test id label with add_meta_labels")
 )
 
-test_that("infer", {
+test_that2("infer", {
   expect_message(
     infer(x),
-    regexp = "No layout definition supplied"
+    regexp = "No \"layout\" definition supplied"
   ) |> suppressMessages()
+
   expect_message(
     infer(x),
-    regexp = "No labels definition supplied"
+    regexp = "No \"labels\" definition supplied"
   ) |> suppressMessages()
 
   b <- x |>
@@ -38,11 +40,12 @@ test_that("infer", {
 
   expect_message(
     a <- infer(b),
-    regexp = "No layout definition supplied for view"
+    regexp = "No \"layout\" definition supplied for view"
   ) |> suppressMessages()
+
   expect_message(
     infer(b),
-    regexp = "No labels definition supplied for view"
+    regexp = "No \"labels\" definition supplied for view"
   ) |> suppressMessages()
 
   expect_equal(
@@ -63,30 +66,31 @@ test_that("infer", {
   )
 })
 
-test_that("meta variable inference", {
+test_that2("meta variable inference", {
   b <- x |>
     add_meta_def(meta_string("letters", label = "test label with meta_string"))
 
-  expect_message(
-    d <- infer_meta(b),
-    regexp = "Cannot find a data type for variable: lst"
-  ) |> suppressMessages()
+  # expect_message(
+  #   d <- infer_meta(b),
+  #   regexp = "Cannot find a data type for variable"
+  # ) |> suppressMessages()
 
   expect_message(
     d <- infer_meta(b),
-    regexp = "The following variables had their meta definition inferred"
+    regexp = "Meta definitions inferred"
   ) |> suppressMessages()
 
   # make sure b didn't get updated
   expect_length(b$get("metas"), 1)
 
-  expect_length(d$get("metas"), 15)
-  expect_length(d$df, 15)
+  expect_length(d$get("metas"), ncol(dat) - 1)
+  expect_length(d$df, ncol(dat)) # the "bad" columns shouldn't be removed
+  expect_equal(d$df_cols_ignore, "lst")
 
   metas <- d$get("metas")
   lbls <- lapply(metas, function(x) x$get("label"))
 
-  expect_length(unlist(lbls), 15)
+  expect_length(unlist(lbls), ncol(dat) - 1)
   expect_equal(lbls$id, "test id label with add_meta_labels")
   expect_equal(lbls$date2, "test date label with label attribute")
   expect_equal(lbls$letters, "test label with meta_string")

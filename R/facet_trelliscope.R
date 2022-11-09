@@ -9,7 +9,6 @@
 #'   plotted, e.g. correlation coefficient if plot is a scatterplot.
 #' @param data data used for faceting. Defaults to the first layer data
 #' @importFrom ggplot2 facet_wrap waiver
-#' @importFrom dplyr %>%
 #' @export
 facet_trelliscope <- function(facets,
   scales = "same", add_plot_metrics = FALSE,
@@ -34,8 +33,8 @@ ggplot_add.facet_trelliscope <- function(object, plot, object_name) {
   return(plot)
 }
 
-panels_build <- function(x, ...) {
-  UseMethod("panels_build")
+build_panels <- function(x, ...) {
+  UseMethod("build_panels")
 }
 
 #' Render the panels of a trelliscope display
@@ -52,7 +51,8 @@ panels_build <- function(x, ...) {
 #' @export
 #' @importFrom rlang :=
 #' @importFrom dplyr count across
-panels_build.facet_trelliscope <- function(
+#' @importFrom cli cli_progress_along
+build_panels.facet_trelliscope <- function(
   x, data_col = "data", panel_col = "panel", unnest_cols = NULL,
   as_plotly = FALSE, plotly_args = NULL, plotly_cfg = NULL
 ) {
@@ -110,16 +110,16 @@ panels_build.facet_trelliscope <- function(
       "' matches one of the facet columns. Try a different 'data_col'.")
 
   if (data_col %in% names(data))
-    warning("A variable with name matching data_col='", data_col,
-      "' exists in the data and is being overwritten", call. = FALSE)
+    wrn("A variable with name matching data_col='{data_col}' \\
+      exists in the data and is being overwritten")
 
   unnest_cols2 <- c(facet_cols, unnest_cols)
   # group by all the facets
-  data <- data %>%
-    dplyr::ungroup() %>%
-    # dplyr::mutate(.id = row_number()) %>%
-    dplyr::mutate(.id = seq_len(nrow(data))) %>%
-    tidyr::nest({{ data_col }} := !dplyr::all_of(unnest_cols2)) %>%
+  data <- data |>
+    dplyr::ungroup() |>
+    # dplyr::mutate(.id = row_number()) |>
+    dplyr::mutate(.id = seq_len(nrow(data))) |>
+    tidyr::nest({{ data_col }} := !dplyr::all_of(unnest_cols2)) |>
     dplyr::ungroup()
 
   if (!is.null(unnest_cols)) {
@@ -151,17 +151,15 @@ panels_build.facet_trelliscope <- function(
   }
 
   # TODO: use furrr and progressr if nrow(data) > N
-  # pb <- progress::progress_bar$new(
-  #   format = ":what [:bar] :percent :current/:total eta::eta",
-  #   total = nrow(data), width = getOption("width") - 8)
-  # pb$tick(0, tokens = list(what = "calculating         "))
-
   if (panel_col %in% names(data))
-    warning("A variable with name matching panel_col='", panel_col,
-      "' exists in the data and is being overwritten", call. = FALSE)
-  data[[panel_col]] <- lapply(seq_len(nrow(data)), function(i) {
-    make_plot_obj(data[i, ])
-  })
+    wrn("A variable with name matching panel_col='{panel_col}' \\
+      exists in the data and is being overwritten")
+  data[[panel_col]] <- lapply(
+    cli::cli_progress_along(nrow(data), "Building panels", clear = FALSE),
+    function(i) {
+      make_plot_obj(data[i, ])
+    }
+  )
   class(data[[panel_col]]) <- c("trelliscope_panels", "list")
   attr(data, "facet_cols") <- facet_cols
 
@@ -198,9 +196,9 @@ upgrade_scales_param <- function(scales, plot_facet) {
   if (!inherits(plot_facet, "FacetNull")) {
     for (item_val in list(list(1, "x"), list(2, "y"))) {
       if (scales[item_val[[1]]] == "sliced") {
-        message(
-          "If a panel is being displayed with 'facet_wrap' or 'facet_grid', ",
-          "the ", item_val[[2]], " scale can not be sliced. Using 'free' instead."
+        msg("If a panel is being displayed with 'facet_wrap' or \\
+          'facet_grid', the {item_val[[2]]} scale can not be sliced. \\
+          Using 'free' instead."
         )
         scales[item_val[[1]]] <- "free"
       }
@@ -269,9 +267,8 @@ add_range_info_to_scales <- function(plot, scales_info, facet_cols) {
         scale_info$data_type <- "discrete"
 
         if (scale_info$scale_type == "sliced") {
-          message(
-            "facet_trelliscope does not know how to handle a 'sliced' scale for discrete data. ",
-            "Using 'free' type"
+          msg("facet_trelliscope does not know how to handle a 'sliced' \\
+            scale for discrete data. Using 'free' type."
           )
           scale_info$scale_type <- "free"
         } else {
@@ -331,8 +328,8 @@ add_range_info_to_scales <- function(plot, scales_info, facet_cols) {
 plot_clone <- utils::getFromNamespace("plot_clone", "ggplot2")
 
 add_trelliscope_scales <- function(p, scales_info, ...) {
-  p %>%
-    add_trelliscope_scale(scales_info$x_info$name, scales_info$x_info, ...) %>%
+  p |>
+    add_trelliscope_scale(scales_info$x_info$name, scales_info$x_info, ...) |>
     add_trelliscope_scale(scales_info$y_info$name, scales_info$y_info, ...)
 }
 
@@ -363,11 +360,8 @@ add_trelliscope_scale <- function(
       is.null(p$scales$get_scales(axis_name))
     ) {
       # warn as it isn't a free axis
-      message(
-        "Axis: '", axis_name, "' is missing a global aesthetic. ",
-        "Add a custom scale to change default behavior",
-        call. = FALSE
-      )
+      msg("Axis: '{axis_name}' is missing a global aesthetic. \\
+        Add a custom scale to change default behavior")
     }
 
     return(p)
@@ -404,10 +398,10 @@ add_trelliscope_scale <- function(
 
       } else if (scale_type == "sliced") {
         if (packageVersion("ggplot2") > "2.2.1") {
-          dt_range <- rlang::eval_tidy(p$mapping[[axis_name]], data = p$data) %>%
+          dt_range <- rlang::eval_tidy(p$mapping[[axis_name]], data = p$data) |>
             range(na.rm = TRUE)
         } else {
-          dt_range <- eval(p$mapping[[axis_name]], envir = p$data) %>%
+          dt_range <- eval(p$mapping[[axis_name]], envir = p$data) |>
             range(na.rm = TRUE)
         }
 

@@ -17,13 +17,13 @@ Suggests:
 Config/testthat/edition: 3
 Imports:
     R6,
-    assertthat,
     jsonlite,
     purrr,
     ggplot2 (>= 3.2.1),
     dplyr,
     rlang,
     svglite,
-    progress,
     htmlwidgets,
-    htmltools
+    htmltools,
+    digest,
+    cli

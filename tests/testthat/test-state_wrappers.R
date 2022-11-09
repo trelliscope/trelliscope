@@ -1,6 +1,6 @@
 # TODO: move all this testing to the class tests and just make sure
 # the wrappers run without error (all error handling is in classes)
-test_that("state_layout", {
+test_that2("state_layout", {
   obj <- state_layout(nrow = 2, ncol = 3, arrange = "cols", page = 1)
 
   expect_s3_class(obj, "trelliscope_state_def")
@@ -12,7 +12,7 @@ test_that("state_layout", {
   )
 })
 
-test_that("state_labels", {
+test_that2("state_labels", {
   obj <- state_labels(varnames = c("a", "b", "c"))
 
   expect_s3_class(obj, "trelliscope_state_def")
@@ -32,7 +32,7 @@ test_that("state_labels", {
   )
 })
 
-test_that("state_sort", {
+test_that2("state_sort", {
   obj <- state_sort(varname = "a", dir = "desc")
 
   expect_s3_class(obj, "trelliscope_state_def")
@@ -45,7 +45,7 @@ test_that("state_sort", {
 
   expect_error(
     state_sort(varname = "a", dir = "descc"),
-    regexp = "must be one of asc, desc"
+    regexp = "must be one of \"asc\""
   )
 
   expect_error(
@@ -57,7 +57,7 @@ test_that("state_sort", {
   expect_true(obj$check_with_data(iris))
 })
 
-test_that("filter_string", {
+test_that2("filter_string", {
   obj <- filter_string(varname = "a", regexp = "stuff")
 
   expect_s3_class(obj, "trelliscope_state_def")
@@ -70,7 +70,7 @@ test_that("filter_string", {
 
   expect_error(
     state_sort(varname = "a", dir = "descc"),
-    regexp = "must be one of asc, desc"
+    regexp = "must be one of \"asc\""
   )
 
   expect_error(
@@ -82,7 +82,7 @@ test_that("filter_string", {
   expect_true(obj$check_with_data(iris))
 })
 
-test_that("filter_range", {
+test_that2("filter_range", {
   obj <- filter_range(varname = "a", min = 1)
 
   expect_s3_class(obj, "trelliscope_state_def")

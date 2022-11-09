@@ -8,7 +8,6 @@
 # @param name name of the display that the panel belongs to
 # @param width width in pixels of each panel
 # @param height height in pixels of each panel
-# @param jsonp should json for panel be jsonp (TRUE) or json (FALSE)?
 write_panel <- function(x, key, base_path, panel_path,
   width, height, format = "png", html_head = NULL) {
   if (inherits(x, "htmlwidget")) {
@@ -23,6 +22,7 @@ write_panel <- function(x, key, base_path, panel_path,
   }
 }
 
+#' @importFrom htmlwidgets saveWidget
 write_htmlwidget_deps <- function(x, base_path, panel_path) {
   deps_path <- file.path(base_path, "libs")
   widget_name <- class(x)[1]
@@ -60,37 +60,6 @@ unit_to_px <- function(x, res) {
   attr(ret, "unit") <- NULL
   attr(ret, "valid.unit") <- NULL
   ret
-}
-
-
-get_png_units <- function(width, height, orig_width = width, res = 72,
-  base_point_size = 12, pixelratio = 2) {
-
-  width <- as.numeric(gsub("px", "", width))
-  height <- as.numeric(gsub("px", "", height))
-  orig_width <- as.numeric(gsub("px", "", orig_width))
-
-  # need to convert unit to pixels
-  # need to have 'fac' factor if coming from unit
-  width_is_unit <- height_is_unit <- FALSE
-  if (inherits(width, "unit")) {
-    width <- unit_to_px(width, res)
-    orig_width <- width
-    width_is_unit <- TRUE
-  }
-  if (inherits(height, "unit")) {
-    height <- unit_to_px(height, res)
-    height_is_unit <- TRUE
-  }
-
-  fac <- max(min(width / orig_width, 1), 0.65) * 1.5
-
-  list(
-    res = res * pixelratio * fac,
-    width = width * pixelratio * ifelse(width_is_unit, fac, 1),
-    height = height * pixelratio * ifelse(height_is_unit, fac, 1),
-    pointsize = base_point_size * fac
-  )
 }
 
 get_png_units <- function(width, height, orig_width = width, res = 72,
@@ -160,8 +129,8 @@ make_png <- function(p, file, width, height, orig_width = width, res = 72,
   if (!file.exists(file)) {
     if (unknown_object) {
       cls <- paste(class(p), collapse = "', '")
-      message("The panel object of class '", cls,
-        "' is not a standard plot object and did not produce a panel file.")
+      msg("The panel object of class '{cls}' is not a standard plot object \\
+        and did not produce a panel file.")
     }
     pngfun(filename = file, width = width * pixelratio,
       height = height * pixelratio, pointsize = units$pointsize)

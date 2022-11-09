@@ -16,7 +16,7 @@ Meta <- R6::R6Class("Meta",
       if (is.null(tags))
         tags <- character(0)
       check_atomic(tags, "tags", self$error_msg)
-      private$tags <- as.character(tags)
+      private$tags <- I(as.character(tags))
     },
     get = function(name) {
       private[[name]]
@@ -25,13 +25,13 @@ Meta <- R6::R6Class("Meta",
     #   private[[el]] <- val
     # },
     error_msg = function(txt) {
-      paste0("While defining a '", private$type,
-        "' meta variable for the variable'",
-        private$varname, "': ", txt)
+      paste0("While defining a {.val ", private$type,
+        "} meta variable for the variable {.val ",
+        private$varname, "}: ", txt)
     },
     data_error_msg = function(txt) {
-      paste0("While checking meta variable definition for variable '",
-        private$varname, "' against the data: ", txt)
+      paste0("While checking meta variable definition for variable {.val ",
+        private$varname, "} against the data: ", txt)
     },
     as_list = function() {
       self$finalize()

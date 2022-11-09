@@ -11,7 +11,7 @@ tmp <- matrix(c(
 ), ncol = 2)
 dat$lst <- apply(tmp, 1, as.list)
 
-test_that("LayoutState", {
+test_that2("LayoutState", {
   obj <- LayoutState$new()
   expect_true(obj$check_with_data(dat))
 
@@ -22,11 +22,11 @@ test_that("LayoutState", {
 
   expect_error(
     LayoutState$new(arrange = "stuff"),
-    regexp = "must be one of rows, cols"
+    regexp = "must be one of \"rows\""
   )
 })
 
-test_that("LabelState", {
+test_that2("LabelState", {
   obj <- LabelState$new(c("Species", "date"))
   expect_true(obj$check_with_data(dat))
 
@@ -42,7 +42,7 @@ test_that("LabelState", {
   )
 })
 
-test_that("SortState", {
+test_that2("SortState", {
   obj <- SortState$new("date")
   obj_meta <- DateMeta$new("date")
 
@@ -77,11 +77,11 @@ test_that("SortState", {
 
   expect_error(
     SortState$new("date", dir = "ascc"),
-    regexp = "'dir' must be one of"
+    regexp = "\"dir\" must be one of"
   )
 })
 
-test_that("CategoryFilterState", {
+test_that2("CategoryFilterState", {
   obj <- CategoryFilterState$new("datestring", values = "2023-02-24")
   obj_meta1 <- StringMeta$new("datestring")
   obj_meta2 <- FactorMeta$new("datestring")
@@ -119,7 +119,7 @@ test_that("CategoryFilterState", {
   )
 })
 
-test_that("NumberRangeFilterState", {
+test_that2("NumberRangeFilterState", {
   obj <- NumberRangeFilterState$new("Sepal.Length", min = 1)
   obj_meta1 <- NumberMeta$new("Sepal.Length")
   obj_meta2 <- StringMeta$new("Species")
@@ -150,16 +150,16 @@ test_that("NumberRangeFilterState", {
 
   expect_error(
     NumberRangeFilterState$new("stuff", min = "a"),
-    regexp = "'min' must be numeric"
+    regexp = "\"min\" must be numeric"
   )
 
   expect_error(
     NumberRangeFilterState$new("stuff", max = "a"),
-    regexp = "'max' must be numeric"
+    regexp = "\"max\" must be numeric"
   )
 })
 
-test_that("DateRangeFilterState", {
+test_that2("DateRangeFilterState", {
   obj <- DateRangeFilterState$new("date", min = as.Date("2010-01-01"))
   obj_meta1 <- DateMeta$new("date")
   obj_meta2 <- StringMeta$new("Species")
@@ -190,16 +190,16 @@ test_that("DateRangeFilterState", {
 
   expect_error(
     DateRangeFilterState$new("stuff", min = "a"),
-    regexp = "'min' must have class 'Date'"
+    regexp = "\"min\" must have class 'Date'"
   )
 
   expect_error(
     DateRangeFilterState$new("stuff", max = "a"),
-    regexp = "'max' must have class 'Date'"
+    regexp = "\"max\" must have class 'Date'"
   )
 })
 
-test_that("DatetimeRangeFilterState", {
+test_that2("DatetimeRangeFilterState", {
   obj <- DatetimeRangeFilterState$new("datetime",
     min = as.POSIXct("2010-01-01"))
   obj_meta1 <- DatetimeMeta$new("datetime")
@@ -233,11 +233,11 @@ test_that("DatetimeRangeFilterState", {
 
   expect_error(
     DatetimeRangeFilterState$new("stuff", min = "a"),
-    regexp = "'min' must have class 'POSIXct'"
+    regexp = "\"min\" must have class 'POSIXct'"
   )
 
   expect_error(
     DatetimeRangeFilterState$new("stuff", max = "a"),
-    regexp = "'max' must have class 'POSIXct'"
+    regexp = "\"max\" must have class 'POSIXct'"
   )
 })

@@ -12,7 +12,7 @@ read_case <- function(obj) {
 # -------------------------------------------------------- #
 # meta                                                     #
 # -------------------------------------------------------- #
-test_that("typescript meta comparison", {
+test_that2("typescript meta comparison", {
   meta_num_min <- NumberMeta$new(
     varname = "numvar"
   ) |> case_to_string()
@@ -70,7 +70,7 @@ test_that("typescript meta comparison", {
 # -------------------------------------------------------- #
 # inputs                                                   #
 # -------------------------------------------------------- #
-test_that("typescript inputs comparison", {
+test_that2("typescript inputs comparison", {
   options <- c("a", "b", "c")
 
   input_radio <- RadioInput$new(name = "radio", options = options) |>
@@ -107,7 +107,7 @@ test_that("typescript inputs comparison", {
 # -------------------------------------------------------- #
 # states                                                   #
 # -------------------------------------------------------- #
-test_that("typescript states comparison", {
+test_that2("typescript states comparison", {
   state_layout <- LayoutState$new() |>
     case_to_string()
   ts <- read_case(state_layout)

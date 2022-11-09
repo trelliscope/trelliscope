@@ -2,7 +2,7 @@ Input <- R6::R6Class("Input",
   public = list(
     initialize = function(name, label = name, active = TRUE, type) {
       self_error_msg <- function(txt)
-        paste0("While defining a '", type, "' input: ", txt)
+        paste0("While defining a {.val ", type, "} input: ", txt)
       check_scalar(name, "name", self_error_msg)
       check_character(name, "name", self_error_msg)
       check_scalar(label, "name", self_error_msg)
@@ -24,7 +24,8 @@ Input <- R6::R6Class("Input",
       to_json(self$as_list(), pretty = pretty)
     },
     error_msg = function(txt) {
-      paste0("While defining a '", private$type, "' input: ", txt)
+      type <- private$type
+      paste0("While defining a {.val ", type, "} input: ", txt)
     }
   ),
   private = list(

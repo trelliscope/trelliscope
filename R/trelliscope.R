@@ -18,16 +18,30 @@ trelliscope <- function(
   df, name, description = name, key_cols = NULL, tags = NULL,
   path = tempfile(), force_plot = FALSE
 ) {
+  if (inherits(df, "facet_trelliscope")) {
+    # msg("
+    #   An object from {.fn facet_trelliscope} was passed to {.fn trelliscope}.
+    #   {.emph Building panels...}")
+    msg("{.emph Note:} For more control over building panels, you can \\
+      call {.fn build_panels} explicitly before passing to {.fn trelliscope}.",
+      .frequency = "regularly", .frequency_id = "explicit_build_note")
+    df <- build_panels(df)
+  }
+
   panel_col <- check_and_get_panel_col(df)
   if (is.null(key_cols))
     key_cols <- get_key_cols(df)
 
   obj <- Display$new(df = df, name = name, description = description,
     key_cols = key_cols, path = path, force_plot = force_plot,
-    panel_col = panel_col)
+    panel_col = panel_col, tags = tags)
   class(obj) <- c("R6", "trelliscope_display")
 
   obj
+}
+
+#' @export
+print.trelliscope_display <- function(x, ...) {
 }
 
 check_and_get_panel_col <- function(df) {
@@ -37,11 +51,11 @@ check_and_get_panel_col <- function(df) {
   panel_col_idx <- which(unlist(lapply(df, function(a)
     inherits(a, c("img_panel", "trelliscope_panels")))))
   if (length(panel_col_idx) > 1) {
-    message("Found multiple columns that indicate a panel, using the first ",
-      " one found: '", names(panel_col_idx)[1], "'")
+    msg("Found multiple columns that indicate a panel, using the first \\
+      one found: '{names(panel_col_idx)[1]}")
     panel_col_idx <- panel_col_idx[1]
   }
-  assertthat::assert_that(length(panel_col_idx) == 1,
+  assert(length(panel_col_idx) == 1,
     msg = paste0("Couldn't find a column in the trelliscope input data frame ",
       "that references a plot or image."))
   names(panel_col_idx)
@@ -75,8 +89,8 @@ get_key_cols <- function(df) {
   }
 
   if (is.null(attr(df, "facet_cols")))
-    message("Using the variable(s): '", paste0(key_cols, collapse = "', '"),
-      "' to uniquely identify each row of the data.")
+    msg("Using the variable{?s} {.val {key_cols}} \\
+      to uniquely identify each row of the data.")
 
   key_cols
 }

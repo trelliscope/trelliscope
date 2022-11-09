@@ -1,4 +1,4 @@
-test_that("RadioInput", {
+test_that2("RadioInput", {
   expect_error(
     RadioInput$new(list(), "Is it good?", options = c("no", "yes")),
     regexp = "must be a scalar"
@@ -23,7 +23,7 @@ test_that("RadioInput", {
   )
 })
 
-test_that("CheckboxInput", {
+test_that2("CheckboxInput", {
   expect_error(
     CheckboxInput$new("good", "Is it good?", options = NULL),
     regexp = "with at least one element"
@@ -43,7 +43,7 @@ test_that("CheckboxInput", {
   )
 })
 
-test_that("SelectInput", {
+test_that2("SelectInput", {
   expect_error(
     SelectInput$new("good", "Is it good?", options = NULL),
     regexp = "with at least one element"
@@ -58,7 +58,7 @@ test_that("SelectInput", {
   )
 })
 
-test_that("MultiselectInput", {
+test_that2("MultiselectInput", {
   expect_error(
     MultiselectInput$new("good", "Is it good?", options = NULL),
     regexp = "with at least one element"
@@ -73,7 +73,7 @@ test_that("MultiselectInput", {
   )
 })
 
-test_that("TextInput", {
+test_that2("TextInput", {
   expect_error(
     TextInput$new("opinion", "What do you think?", width = "a"),
     regexp = "must be an integer"
@@ -89,7 +89,7 @@ test_that("TextInput", {
   )
 })
 
-test_that("NumberInput", {
+test_that2("NumberInput", {
   obj <- NumberInput$new("rank", "What would you rank on a scale of 1 to 10?")
 
   expect_equal(

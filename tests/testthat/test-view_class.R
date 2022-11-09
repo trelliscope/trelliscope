@@ -1,4 +1,4 @@
-test_that("view class", {
+test_that2("view class", {
   x <- View$new(
     name = "test view",
     state_labels(c("manufacturer", "class")),

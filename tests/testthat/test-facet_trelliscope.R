@@ -1,3 +1,3 @@
-test_that("facet_trellisope", {
+test_that2("facet_trellisope", {
 
 })

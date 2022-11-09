@@ -1,5 +1,5 @@
 
-test_that("meta wrappers", {
+test_that2("meta wrappers", {
   expect_error(
     obj <- meta_string(
       varname = "Species",

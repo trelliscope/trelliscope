@@ -4,7 +4,7 @@ dat <- ggplot2::mpg |>
     ggplot2::qplot(hwy, cty, data = x)
   }))
 
-test_that("trelliscope instantiation", {
+test_that2("trelliscope instantiation", {
   expect_error(
     trelliscope(iris, name = "test"),
     regexp = "that references a plot or image"

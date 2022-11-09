@@ -31,10 +31,10 @@ add_meta_defs <- function(disp, ...) {
 add_meta_labels <- function(disp, ...) {
   check_display_object(disp)
   args <- list(...)
-  assertthat::assert_that(length(names(args)) == length(args),
+  assert(length(names(args)) == length(args),
     msg = "Arguments must be named")
   names_diff <- setdiff(names(args), names(disp$df))
-  assertthat::assert_that(length(names_diff) == 0,
+  assert(length(names_diff) == 0,
     msg = paste0("The following variables are not in the data: ",
       paste(names_diff, collapse = ", ")))
   disp2 <- disp$clone()
@@ -86,7 +86,7 @@ set_sort <- function(disp, varnames, dirs = "asc", add = FALSE) {
   check_display_object(disp)
   if (length(dirs) == 1)
     dirs <- rep(dirs, length(varnames))
-  assertthat::assert_that(length(varnames) == length(dirs),
+  assert(length(varnames) == length(dirs),
     msg = "In setting sort state, 'varnames' must have same length as 'dirs'")
   disp2 <- disp$clone()
   state <- disp2$get("state")
@@ -114,7 +114,7 @@ set_filters <- function(disp, ..., add = TRUE) {
   state <- disp2$get("state")
   state2 <- state$clone()
   for (ii in seq_along(objs)) {
-    assertthat::assert_that(inherits(objs[[ii]], "trelliscope_filter_def"),
+    assert(inherits(objs[[ii]], "trelliscope_filter_def"),
       msg = "Can only add filter definitions to set_filter()")
     objs[[ii]]$check_with_data(disp$df)
     state2$set(objs[[ii]], add = ii != 1 || add)
@@ -149,7 +149,7 @@ add_inputs <- function(disp, ...) {
   check_display_object(disp)
   disp2 <- disp$clone()
   for (inpt in list(...)) {
-    assertthat::assert_that(inherits(inpt, "trelliscope_input_def"),
+    assert(inherits(inpt, "trelliscope_input_def"),
       msg = "Can only add input definitions to add_inputs()")
     disp2$set_input(inpt)
   }
@@ -162,9 +162,9 @@ add_inputs <- function(disp, ...) {
 #' or a number specifying the number of spaces to indent.
 #' @export
 as_json <- function(obj, pretty = TRUE) {
-  assertthat::assert_that(inherits(obj, "R6"),
+  assert(inherits(obj, "R6"),
     msg = "as_json() only applies to R6 objects")
-  assertthat::assert_that(!is.null(obj$as_json),
+  assert(!is.null(obj$as_json),
     msg = "Object provided to as_json() must have its own as_json() method")
   if (inherits(obj, "trelliscope_display")) {
     obj <- infer(obj)

@@ -13,6 +13,7 @@ infer <- function(disp) {
     view2$set_state(newst)
     disp2$set_view(view2, verbose = FALSE)
   }
+  disp2 <- infer_panel_type(disp2)
   disp2
 }
 
@@ -24,16 +25,16 @@ infer_state <- function(state, df, key_cols, view = NULL) {
   state2 <- state$clone()
   lyt <- state2$get("layout")
   if (is.null(lyt)) {
-    message("No layout definition supplied", view_str, ". ",
-      "Using default.")
+    msg("No {.val layout} definition supplied{view_str}. \\
+      {.emph Using default.}")
     # TODO: maybe use nrow(df) and panel dimensions for a better initial state
     state2$set(state_layout(nrow = 2, ncol = 3))
   }
 
   lbls <- state2$get("labels")
   if (is.null(lbls)) {
-    message("No labels definition supplied", view_str, ". ",
-      "Using default.")
+    msg("No {.val labels} definition supplied{view_str}. \\
+      {.emph Using default.}")
     state2$set(state_labels(key_cols))
   }
 
@@ -56,17 +57,18 @@ infer_meta <- function(disp) {
   for (nm in needs_meta) {
     cur_meta <- infer_meta_variable(disp2$df[[nm]], nm)
     if (is.null(cur_meta)) {
-      message("Note: Cannot find a data type for variable: ", nm,
-        ". This variable will not be available in the display.")
+      # if (!nm %in% disp2$panel_col && !is.list(disp2$df[[nm]]))
+      #   msg("Cannot find a data type for variable {.val {nm}}. \\
+      #     This variable will not be available in the display.")
       needs_removed <- c(needs_removed, nm)
     } else {
       disp2 <- add_meta_def(disp2, cur_meta)
     }
   }
-  disp2$df <- disp2$df[, setdiff(names(disp2$df), needs_removed)]
+  disp2$df_cols_ignore <- needs_removed
 
-  message("The following variables had their meta definition inferred: ",
-    paste(setdiff(needs_meta, needs_removed), collapse = ", "))
+  msg("Meta definition{?s} inferred for variable{?s} \\
+    {.val {setdiff(needs_meta, needs_removed)}}")
 
   # finalize labels if NULL with the following priority:
   # 1. use from disp$meta_labels if defined
@@ -108,4 +110,24 @@ infer_meta_variable <- function(x, nm) {
     }
   }
   res
+}
+
+infer_panel_type <- function(disp) {
+  x <- disp$clone()
+  pnls <- x$df[[x$panel_col]]
+  if (inherits(pnls, "trelliscope_panels")) {
+    panel1 <- pnls[[1]]
+    if (inherits(panel1, "htmlwidget")) {
+      x$set("panel_type", "iframe")
+    } else  {
+      x$set("panel_type", "img")
+    }
+  } else if (inherits(pnls, "img_panel")) {
+      x$set("panel_type", "img")
+  } else if (inherits(pnls, "iframe_panel")) {
+      x$set("panel_type", "iframe")
+  } else {
+    stop("Could not infer panel type")
+  }
+  x
 }

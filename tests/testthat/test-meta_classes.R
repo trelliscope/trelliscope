@@ -14,17 +14,17 @@ dat$lat <- runif(150, -90, 90)
 dat$long <- runif(150, 0, 180)
 dat$href <- "https://google.com"
 
-test_that("NumberMeta", {
+test_that2("NumberMeta", {
   obj <- NumberMeta$new("Sepal.Length", tags = "stuff")
   expect_true(
     obj$check_with_data(dat)
   )
 
-  expect_equal(obj$get("tags"), "stuff")
+  expect_equal(obj$get("tags"), I("stuff"))
 
   expect_equal(
     as.character(obj$as_json(pretty = FALSE)),
-    '{"locale":true,"digits":null,"sortable":true,"filterable":true,"tags":"stuff","label":"Sepal.Length","type":"number","varname":"Sepal.Length"}'
+    '{"locale":true,"digits":null,"sortable":true,"filterable":true,"tags":["stuff"],"label":"Sepal.Length","type":"number","varname":"Sepal.Length"}'
   )
 
   expect_true(
@@ -57,7 +57,7 @@ test_that("NumberMeta", {
   )
 })
 
-test_that("StringMeta", {
+test_that2("StringMeta", {
   obj <- StringMeta$new("Species")
   expect_true(
     obj$check_with_data(dat)
@@ -83,7 +83,7 @@ test_that("StringMeta", {
   )
 })
 
-test_that("FactorMeta", {
+test_that2("FactorMeta", {
   obj <- FactorMeta$new("Species",
     levels = c("setosa", "versicolor", "virginica"))
   expect_true(
@@ -108,7 +108,7 @@ test_that("FactorMeta", {
   )
 })
 
-test_that("DateMeta", {
+test_that2("DateMeta", {
   obj <- DateMeta$new("date")
   expect_true(
     obj$check_with_data(dat)
@@ -130,7 +130,7 @@ test_that("DateMeta", {
   )
 })
 
-test_that("DatetimeMeta", {
+test_that2("DatetimeMeta", {
   obj <- DatetimeMeta$new("datetime")
   expect_true(
     obj$check_with_data(dat)
@@ -147,7 +147,7 @@ test_that("DatetimeMeta", {
   )
 })
 
-test_that("GeoMeta", {
+test_that2("GeoMeta", {
   obj <- GeoMeta$new("coords", latvar = "lat", longvar = "long")
   expect_true(
     obj$check_with_data(dat)
@@ -165,7 +165,7 @@ test_that("GeoMeta", {
   )
 })
 
-test_that("GraphMeta", {
+test_that2("GraphMeta", {
   obj <- GraphMeta$new("lst", idvarname = "id", direction = "to")
   expect_true(
     obj$check_with_data(dat)
@@ -183,7 +183,7 @@ test_that("GraphMeta", {
   )
 })
 
-test_that("HrefMeta", {
+test_that2("HrefMeta", {
   obj <- HrefMeta$new("href")
   expect_true(
     obj$check_with_data(dat)

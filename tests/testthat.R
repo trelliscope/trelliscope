@@ -14,4 +14,8 @@ suppressPackageStartupMessages({
   library(dplyr, warn.conflicts = FALSE)
 })
 
+test_that2 <- function(desc, code) {
+  invisible(cli::test_that_cli(desc, configs = "plain", code = code))
+}
+
 test_check("trelliscope")

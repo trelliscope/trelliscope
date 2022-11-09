@@ -8,7 +8,7 @@ dat <- ggplot2::mpg |>
 
 x <- trelliscope(dat, name = "test", key_cols = c("manufacturer", "class"))
 
-test_that("add_meta_def", {
+test_that2("add_meta_def", {
   expect_error(
     list() |> add_meta_def(meta_string("test")),
     regexp = "Expecting a trelliscope display object"
@@ -35,7 +35,7 @@ test_that("add_meta_def", {
 })
 
 # if we don't specify factor levels, it will infer them
-test_that("meta factor levels inference", {
+test_that2("meta factor levels inference", {
   b <- x |>
     add_meta_def(meta_factor("manufacturer", "vehicle manufacturer"))
   expect_equal(
@@ -51,7 +51,7 @@ test_that("meta factor levels inference", {
   )
 })
 
-test_that("add_meta_defs", {
+test_that2("add_meta_defs", {
   expect_error(
     list() |> add_meta_defs(),
     regexp = "Expecting a trelliscope display object"
@@ -87,7 +87,7 @@ test_that("add_meta_defs", {
   )
 })
 
-test_that("add_meta_labels", {
+test_that2("add_meta_labels", {
   expect_error(
     list() |> add_meta_defs(),
     regexp = "Expecting a trelliscope display object"
@@ -100,7 +100,7 @@ test_that("add_meta_labels", {
   expect_length(x$meta_labels, 0)
 })
 
-test_that("set_layout", {
+test_that2("set_layout", {
   expect_error(
     list() |> set_layout(),
     regexp = "Expecting a trelliscope display object"
@@ -127,7 +127,7 @@ test_that("set_layout", {
   expect_equal(b$get("state")$get("layout")$get("nrow"), 1)
 })
 
-test_that("set_labels", {
+test_that2("set_labels", {
   expect_error(
     list() |> set_labels("test"),
     regexp = "Expecting a trelliscope display object"
@@ -156,7 +156,7 @@ test_that("set_labels", {
   expect_equal(b$get("state")$get("labels")$get("varnames"), I("manufacturer"))
 })
 
-test_that("set_sort", {
+test_that2("set_sort", {
   expect_error(
     list() |> set_sort("test"),
     regexp = "Expecting a trelliscope display object"
@@ -194,7 +194,7 @@ test_that("set_sort", {
   )
 })
 
-test_that("set_filters", {
+test_that2("set_filters", {
   expect_error(
     list() |> set_filters(),
     regexp = "Expecting a trelliscope display object"
@@ -250,7 +250,7 @@ test_that("set_filters", {
   )
 })
 
-test_that("add_view", {
+test_that2("add_view", {
   expect_error(
     list() |> add_view("test view", a = 1),
     regexp = "Expecting a trelliscope display object"
@@ -292,7 +292,7 @@ test_that("add_view", {
   ) |> suppressMessages()
 })
 
-test_that("input pipe functions", {
+test_that2("input pipe functions", {
   b <- x |>
     add_inputs(
       input_radio(name = "good_radio",
@@ -320,7 +320,7 @@ test_that("input pipe functions", {
   )
 })
 
-test_that("as_json", {
+test_that2("as_json", {
   expect_error(
     as_json(x),
     regexp = NA # no error

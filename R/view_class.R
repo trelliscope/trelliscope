@@ -17,8 +17,8 @@ View <- R6::R6Class("View",
       lyt_idx <- which(types == "layout")
       lyt <- NULL
       if (length(lyt_idx) > 1) {
-        message("Multiple layout definitions supplied for view '", name, "'. ",
-          "Using the last-defined definition.")
+        msg("Multiple layout definitions supplied for view '{name}'. \\
+          Using the last-defined definition.")
         lyt <- objs[[tail(lyt_idx, 1)]]
       } else if (length(lyt_idx) == 1) {
         lyt <- objs[[lyt_idx]]
@@ -27,8 +27,8 @@ View <- R6::R6Class("View",
       lbl_idx <- which(types == "labels")
       lbl <- NULL
       if (length(lbl_idx) > 1) {
-        message("Multiple labels definitions supplied for view '", name, "'. ",
-          "Using the last-defined definition.")
+        msg("Multiple labels definitions supplied for view '{name}'. \\
+          Using the last-defined definition.")
         lbl <- objs[[tail(lbl_idx, 1)]]
       } else if (length(lbl_idx) == 1) {
         lbl <- objs[[lbl_idx]]

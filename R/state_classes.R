@@ -9,24 +9,24 @@ DisplayState <- R6::R6Class("DisplayState",
     set = function(obj, add = FALSE) {
       if (obj$get("type") == "layout") {
         if (!is.null(private$layout))
-          message("Replacing existing layout state specification")
+          msg("Replacing existing layout state specification")
         private$layout <- obj
       } else if (obj$get("type") == "labels") {
         if (!is.null(private$labels))
-          message("Replacing existing labels state specification")
+          msg("Replacing existing labels state specification")
         private$labels <- obj
       } else if (obj$get("type") == "sort") {
         varname <- obj$get("varname")
         if (add) {
           if (!is.null(private$sort[[varname]]))
-            message("Replacing existing sort state specification for ",
-              "variable ", varname)
+            msg("Replacing existing sort state specification for \\
+              variable {.val {varname}}")
           # make sure it is in the order we want by adding to the end
           private$sort[[varname]] <- NULL
           private$sort[[varname]] <- obj
         } else {
           if (length(private$sort) > 0)
-            message("Replacing entire existing sort specification")
+            msg("Replacing entire existing sort specification")
           tmp <- list(obj)
           names(tmp) <- varname
           private$sort <- tmp
@@ -35,14 +35,14 @@ DisplayState <- R6::R6Class("DisplayState",
         varname <- obj$get("varname")
         if (add) {
           if (!is.null(private$filter[[varname]]))
-            message("Replacing existing filter state specification for ",
-              "variable ", varname)
+            msg("Replacing existing filter state specification for \\
+              variable {.val {varname}}")
           # make sure it is in the order we want by adding to the end
           private$filter[[varname]] <- NULL
           private$filter[[varname]] <- obj
         } else {
           if (length(private$filter) > 0)
-            message("Replacing entire existing filter specification")
+            msg("Replacing entire existing filter specification")
           tmp <- list(obj)
           names(tmp) <- varname
           private$filter <- tmp
@@ -149,7 +149,7 @@ LabelState <- R6::R6Class("LabelState",
     },
     check_with_data = function(df) {
       dff <- setdiff(private$varnames, names(df))
-      assertthat::assert_that(length(dff) == 0,
+      assert(length(dff) == 0,
         msg = self$data_error_msg(paste0("Label variables not found in data: ",
           paste0(dff, collapse = ", "))))
     }
@@ -173,13 +173,13 @@ SortState <- R6::R6Class("SortState",
       private$dir <- dir
     },
     check_with_data = function(df) {
-      assertthat::assert_that(private$varname %in% names(df),
+      assert(private$varname %in% names(df),
         msg = paste0("'", private$varname,
           "' not found in the dataset that the ", private$type,
           " state definition is being applied to"))
     },
     check_with_meta = function(meta) {
-      assertthat::assert_that(meta$get("sortable"),
+      assert(meta$get("sortable"),
         msg = self$error_msg(paste0("'", private$varname, "' is not sortable")))
     }
   ),
@@ -202,7 +202,7 @@ FilterState <- R6::R6Class("FilterState",
       self$applies_to <- applies_to
     },
     check_with_data = function(df) {
-      assertthat::assert_that(private$varname %in% names(df),
+      assert(private$varname %in% names(df),
         msg = paste0("'", private$varname,
           "' not found in the dataset that the ", private$type,
           " state definition is being applied to"))
@@ -212,13 +212,13 @@ FilterState <- R6::R6Class("FilterState",
     },
     check_with_meta = function(meta) {
       # # don't need this because we are in control of applying meta to filter
-      # assertthat::assert_that(private$varname == meta$get("varname"),
+      # assert(private$varname == meta$get("varname"),
       #   msg = self$error_msg("filter variable name must match"))
-      assertthat::assert_that(meta$get("type") %in% self$applies_to,
+      assert(meta$get("type") %in% self$applies_to,
         msg = self$error_msg(paste0("the meta type applied to variable '",
           private$varname, "' is not compatible with this filter")))
       # # this is redundant:
-      # assertthat::assert_that(meta$get("filterable"),
+      # assert(meta$get("filterable"),
       #   msg = self$error_msg(paste0("'", private$varname,
       #   "' is not filterable")))
     }
@@ -249,7 +249,7 @@ CategoryFilterState <- R6::R6Class("CategoryFilterState",
     },
     extra_check = function(df) {
       dff <- setdiff(private$values, unique(df[[private$varname]]))
-      assertthat::assert_that(length(dff) == 0,
+      assert(length(dff) == 0,
         msg = self$data_error_msg(paste0("could not find the value(s): ",
         paste0(dff, collapse = ", "), " in the variable '",
         private$varname, "'")))
