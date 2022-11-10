@@ -93,7 +93,7 @@ read_json_p <- function(f) {
   res
 }
 
-#' @importFrom digest digest
+#' @importFrom rlang hash
 check_app_config <- function(app_path, jsonp) {
   f <- list.files(app_path, pattern = "^config\\.json", full.names = TRUE)
 
@@ -103,7 +103,7 @@ check_app_config <- function(app_path, jsonp) {
     cfg <- list(
       name = "Trelliscope App",
       data_type = ifelse(jsonp, "jsonp", "json"),
-      id = digest::digest(Sys.time(), algo = "crc32")
+      id = substr(rlang::hash(Sys.time()), 1, 8)
     )
     txt <- get_jsonp_text(jsonp, paste0("__loadAppConfig__", cfg$id))
     cat(paste0(txt$st, as.character(to_json(cfg, pretty = TRUE)), txt$nd),

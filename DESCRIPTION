@@ -25,7 +25,6 @@ Imports:
     svglite,
     htmlwidgets,
     htmltools,
-    digest,
     cli
 Depends: 
     R (>= 2.10)
