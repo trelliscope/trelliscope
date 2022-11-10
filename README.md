@@ -27,7 +27,7 @@ devtools::install_github("trelliscope/trelliscope")
 
 ## Overview
 
-Trelliscope provides a simple mechanism to make an collection of
+Trelliscope provides a simple mechanism to make a collection of
 visualizations and display them as interactive [small
 multiples](https://en.wikipedia.org/wiki/Small_multiple). This is a
 useful general visualization technique for many scenarios, particularly

@@ -34,7 +34,7 @@ devtools::install_github("trelliscope/trelliscope")
 
 ## Overview
 
-Trelliscope provides a simple mechanism to make an collection of visualizations and display them as interactive [small multiples](https://en.wikipedia.org/wiki/Small_multiple). This is a useful general visualization technique for many scenarios, particularly when looking at a somewhat large dataset comprised of many natural subsets.
+Trelliscope provides a simple mechanism to make a collection of visualizations and display them as interactive [small multiples](https://en.wikipedia.org/wiki/Small_multiple). This is a useful general visualization technique for many scenarios, particularly when looking at a somewhat large dataset comprised of many natural subsets.
 
 The Trelliscope R package provides utilities to create the visualizations, specify metadata about the visualizations that can be used to interactively navigate them, and specify other aspects of how the visualization viewer should behave. These specifications are given to a Trelliscope viewer written in JavaScript.
 
