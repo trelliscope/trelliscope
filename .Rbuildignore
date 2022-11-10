@@ -4,3 +4,4 @@
 ^\.github$
 ^codecov\.yml$
 ^inst/types/node_modules$
+^data-raw$

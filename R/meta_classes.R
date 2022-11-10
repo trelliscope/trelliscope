@@ -105,6 +105,35 @@ NumberMeta <- R6::R6Class("NumberMeta",
   )
 )
 
+CurrencyMeta <- R6::R6Class("CurrencyMeta",
+  inherit = Meta,
+  public = list(
+    initialize = function(varname, label = NULL, tags = NULL,
+      digits = "USD"
+    ) {
+      super$initialize(
+        type = "currency",
+        varname = varname,
+        label = label,
+        tags = tags,
+        filterable = TRUE,
+        sortable = TRUE
+      )
+      if (!is.null(code)) {
+        check_scalar(code, "code", self$error_msg)
+        check_enum(code, unique(currencies$code_alpha, "code", self$error_msg))
+        private$code <- code
+      }
+    },
+    check_variable = function(df) {
+      check_numeric(df[[private$varname]], private$varname, self$data_error_msg)
+    }
+  ),
+  private = list(
+    code = NULL
+  )
+)
+
 StringMeta <- R6::R6Class("StringMeta",
   inherit = Meta,
   public = list(
@@ -345,11 +374,6 @@ HrefMeta <- R6::R6Class("HrefMeta",
   datetime = DatetimeMeta,
   geo = GeoMeta,
   graph = GraphMeta,
-  href = HrefMeta
+  href = HrefMeta,
+  currency = CurrencyMeta
 )
-
-# currency
-# https://www.w3schools.com/tags/ref_language_codes.asp
-# https://www.w3schools.com/tags/ref_country_codes.asp
-# https://www.six-group.com/en/products-services/financial-information/data-standards.html#scrollTo=maintenance-agency
-# https://medium.com/@samanthaming/format-currency-in-es6-with-intl-numberformat-f07e9b6321f9

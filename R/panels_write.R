@@ -21,7 +21,8 @@ write_panels <- function(disp, width = 500, height = 500, format = "png") {
   panel_col <- check_and_get_panel_col(df)
   key_cols <- disp2$get("key_cols")
   panel_keys <- apply(df[, key_cols], 1,
-    function(df) paste(df, collapse = "_"))
+    function(df) sanitize(paste(df, collapse = "_")))
+  # TODO: make sure that when sanitized, keys are still unique
 
   panel_path <- file.path(disp2$get_display_path(), "panels")
 

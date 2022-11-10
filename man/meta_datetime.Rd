@@ -18,6 +18,7 @@ Specify a "datetime" metadata variable
 }
 \seealso{
 Other {metadata types}: 
+\code{\link{meta_currency}()},
 \code{\link{meta_date}()},
 \code{\link{meta_factor}()},
 \code{\link{meta_geo}()},

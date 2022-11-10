@@ -22,6 +22,7 @@ Specify a "factor" metadata variable
 }
 \seealso{
 Other {metadata types}: 
+\code{\link{meta_currency}()},
 \code{\link{meta_datetime}()},
 \code{\link{meta_date}()},
 \code{\link{meta_geo}()},

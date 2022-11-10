@@ -27,23 +27,3 @@ Map over multiple inputs simultaneously and return a vector of plots
 \details{
 See purrr::map2()
 }
-\examples{
-\donttest{
-library(tidyr)
-library(purrr)
-library(plotly)
-library(dplyr)
-
-iris \%>\%
-  nest(data = -Species) \%>\%
-  mutate(
-    mod = map(data, ~ lm(Sepal.Length ~ Sepal.Width, data = .x)),
-    panel = map2_plot(data, mod, function(data, mod) {
-      plot_ly(data = data, x = ~Sepal.Width, y = ~Sepal.Length,
-        type = "scatter", mode = "markers", name = "data") \%>\%
-        add_trace(data = data, x = ~Sepal.Width, y = ~predict(mod),
-          mode = "lines", name = "lm")
-    })) \%>\%
-  trelliscope(name = "iris")
-}
-}

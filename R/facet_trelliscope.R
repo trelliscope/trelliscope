@@ -33,10 +33,6 @@ ggplot_add.facet_trelliscope <- function(object, plot, object_name) {
   return(plot)
 }
 
-build_panels <- function(x, ...) {
-  UseMethod("build_panels")
-}
-
 #' Render the panels of a trelliscope display
 #' @param x A ggplot object created with [facet_trelliscope()].
 #' @param data_col The name of the column to store the nested data in.
@@ -52,10 +48,13 @@ build_panels <- function(x, ...) {
 #' @importFrom rlang :=
 #' @importFrom dplyr count across
 #' @importFrom cli cli_progress_along
-build_panels.facet_trelliscope <- function(
+build_panels <- function(
   x, data_col = "data", panel_col = "panel", unnest_cols = NULL,
   as_plotly = FALSE, plotly_args = NULL, plotly_cfg = NULL
 ) {
+  assert(inherits(x, "facet_trelliscope"),
+    msg = "{.fun build_panels} only works with ggplot objects that \\
+      use {.fun facet_trelliscope}")
   check_scalar(panel_col, "panel_col")
   check_scalar(data_col, "data_col")
   check_character(panel_col, "panel_col")

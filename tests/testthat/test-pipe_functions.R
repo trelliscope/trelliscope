@@ -2,7 +2,8 @@ dat <- ggplot2::mpg |>
   tidyr::nest(data = !dplyr::one_of(c("manufacturer", "class"))) |>
   dplyr::mutate(
     mean_cty = purrr::map_dbl(data, function(x) mean(x$cty)),
-    panel = map_plot(data, function(x) ggplot2::qplot(hwy, cty, data = x)),
+    panel = map_plot(data, ~
+      (ggplot2::ggplot(aes(hwy, cty), data = .x)) + geom_point()),
     class2 = factor(class)
   )
 

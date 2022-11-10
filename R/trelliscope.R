@@ -40,10 +40,6 @@ trelliscope <- function(
   obj
 }
 
-#' @export
-print.trelliscope_display <- function(x, ...) {
-}
-
 check_and_get_panel_col <- function(df) {
   # look for a column with one of the following classes:
   # - img_panel (which includes img_panel_local)

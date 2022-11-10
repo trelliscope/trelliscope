@@ -27,3 +27,6 @@ Imports:
     htmltools,
     digest,
     cli
+Depends: 
+    R (>= 2.10)
+LazyData: true

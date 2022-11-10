@@ -60,7 +60,7 @@ check_panels <- function(x) {
     ff <- list.files(panel_path)
     ff <- tools::file_path_sans_ext(ff)
     keys <- apply(x$df[x$get("key_cols")], 1,
-      function(x) paste(x, collapse = "_"))
+      function(x) sanitize(paste(x, collapse = "_")))
     extra <- setdiff(keys, ff)
     assert(length(extra) == 0,
       msg = paste0("Found ", length(extra), " panel keys that do not have ",

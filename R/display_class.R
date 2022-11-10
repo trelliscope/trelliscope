@@ -90,6 +90,24 @@ Display <- R6::R6Class(
     },
     as_json = function(pretty = TRUE) {
       to_json(self$as_list(), pretty = pretty)
+    },
+    print = function() {
+      cli::cli_bullets(c(
+        "A trelliscope display",
+        "*" = "{.strong Name}: {.val {private$name}}",
+        "*" = "{.strong Description}: {.val {private$description}}",
+        "*" = ifelse(length(private$tags) == 0,
+          "{.strong Tags}: {.emph none}",
+          "{.strong Tags}: {.val {private$tags}}"
+        ),
+        "*" = "{.strong Key columns}: {.val {private$key_cols}}"
+      ))
+      cli::cli_div(theme = list(.val = list(color = "darkgray")))
+      cli::cli_bullets(c("*" = "{.strong Path}: {.val {self$path}}"))
+      cli::cli_end()
+      wrt <- ifelse(self$panels_written, "yes", "no")
+      cli::cli_bullets(c("*" = "{.strong Panels written}: {.emph {wrt}}"))
+      print_meta_info_df(self$get("metas"), self$df, self$meta_labels)
     }
   ),
   private = list(
@@ -104,3 +122,107 @@ Display <- R6::R6Class(
     panel_type = NULL
   )
 )
+
+#' @importFrom cli cli_bullets cli_code cli_div cli_end
+#' @importFrom dplyr tibble bind_rows
+#' @importFrom utils capture.output
+cli_print_tbl <- function(x) {
+  nr <- nrow(x)
+  a <- utils::capture.output(print(x, n = 8, width = getOption("width") - 4))
+  a <- a[-1]
+  a <- gsub("^[0-9] ", "", a)
+  a <- gsub("^# ", "", a)
+  a <- gsub("^ +", "", a)
+  lns <- paste(rep("\u2500", nchar(a[1])), collapse = "")
+  a[2] <- lns
+  a <- c(lns, a, lns)
+  a <- gsub("^", "    ", a)
+  if (nr > 8)
+    a <- a[-length(a)]
+  cli::cli_div(theme = list(.code = list(color = "darkgray")))
+  cli::cli_code(a, language = NULL)
+  cli::cli_end()
+}
+
+print_meta_info_df <- function(metas, df, meta_labels) {
+  def_metas <- names(metas)
+  needs_meta <- setdiff(names(df), def_metas)
+
+  if (length(metas) > 0) {
+    mt <- lapply(metas, function(x) {
+      nm <- x$get("varname")
+      lbl <- x$get("label")
+      if (!is.null(meta_labels[[nm]]))
+        lbl <- meta_labels[[nm]]
+      nc <- nchar(lbl)
+      lbl <- substr(lbl, 1, 20)
+      if (nchar(lbl) != nc)
+        lbl <- paste0(lbl, "\u2026")
+      tags <- x$get("tags")
+      if (length(tags) == 0) {
+        tags <- "[]"
+      } else {
+        paste0(tags, collapse = ", ")
+      }
+      dplyr::tibble(
+        name = nm,
+        type = x$get("type"),
+        label = lbl,
+        tags = tags
+      )
+    }) |>
+    dplyr::bind_rows()
+
+    cli::cli_bullets(c("*" = "Defined metadata variables:"))
+    cli_print_tbl(mt)
+  }
+
+  needs_removed <- character(0)
+  nmt <- list()
+  for (nm in needs_meta) {
+    cur_meta <- infer_meta_variable(df[[nm]], nm)
+    if (is.null(cur_meta)) {
+      needs_removed <- c(needs_removed, nm)
+    } else {
+      lbl <- "[none]"
+      if (!is.null(meta_labels[[nm]]))
+        lbl <- meta_labels[[nm]]
+      nmt <- c(nmt, list(tibble(
+        name = nm,
+        "inferred type" = cur_meta$get("type"),
+        label = lbl
+      )))
+    }
+  }
+
+  if (length(nmt) > 0) {
+    nmt <- bind_rows(nmt)
+    cli::cli_bullets(c("*" = "Metadata variables that will be inferred:"))
+    cli_print_tbl(nmt)
+  }
+
+  if (length(needs_removed) > 0)
+    cli::cli_bullets(c("*" = "Variables that will be ignored as metadata:
+      {.val {needs_removed}}"))
+}
+
+  # cfm <- function(x, envir = parent.frame)
+  #   cli_format_method(cli_text(x, .envir = envir))
+
+  # names <- c(cfm("{.strong name}"), rep("", length(metas)))
+  # labels <- c(cfm("{.strong label}"), rep("", length(metas)))
+  # types <- c(cfm("{.strong type}"), rep("", length(metas)))
+  # tags <- c(cfm("{.strong tags}"), rep("", length(metas)))
+
+  # for (ii in seq_along(metas)) {
+  #   x <- metas[[ii]]
+  #   names[ii + 1] <- x$get("varname")
+  #   types[ii + 1] <- x$get("type")
+  #   labels[ii + 1] <- x$get("label")
+  #   tags[ii + 1] <- paste0(x$get("tags"), collapse = ", ")
+  # }
+
+  # fr <- function(a)
+  #   ansi_align(a, max(ansi_nchar(a)), "left")
+
+  # glue::glue("  {fr(names)}  {fr(types)}  {fr(tags)}")

@@ -31,7 +31,7 @@ check_integer <- function(x, name, err_fn = paste0) {
 }
 
 check_enum <- function(x, vals, name, err_fn = paste0) {
-  assert(x %in% vals,
+  assert(all(x %in% vals),
     msg = err_fn("{.val {name}} must be one of {.val {vals}}"))
 }
 

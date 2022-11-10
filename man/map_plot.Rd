@@ -21,17 +21,3 @@ Apply a function to each element of a vector and return a vector of plots
 \details{
 See \code{\link[purrr:map]{purrr::map()}}
 }
-\examples{
-\donttest{
-library(dplyr)
-library(tidyr)
-library(purrr)
-
-x <- ggplot2::mpg |>
-  tidyr::nest(data = !dplyr::one_of(c("manufacturer", "class"))) |>
-  dplyr::mutate(panel = map_plot(data, function(x) {
-    ggplot2::qplot(hwy, cty, data = x)
-  })) |>
-  trelliscope(name = "test")
-}
-}

@@ -28,6 +28,7 @@ add_meta_defs <- function(disp, ...) {
 #' @details This function can be useful if you don't want to go to the trouble
 #' of explicitly setting meta variable definitions but still want variable
 #' descriptions.
+#' @export
 add_meta_labels <- function(disp, ...) {
   check_display_object(disp)
   args <- list(...)

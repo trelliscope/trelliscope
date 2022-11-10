@@ -1,8 +1,8 @@
 dat <- ggplot2::mpg |>
   tidyr::nest(data = !dplyr::one_of(c("manufacturer", "class"))) |>
-  dplyr::mutate(panel = map_plot(data, function(x) {
-    ggplot2::qplot(hwy, cty, data = x)
-  }))
+  dplyr::mutate(panel = map_plot(data, ~
+    (ggplot2::ggplot(aes(hwy, cty), data = .x) + ggplot2::geom_point())
+  ))
 
 test_that2("trelliscope instantiation", {
   expect_error(
@@ -15,10 +15,10 @@ test_that2("trelliscope instantiation", {
     regexp = "argument \"name\" is missing"
   ))
 
-  expect_message(
+  suppressMessages(expect_message(
     x <- trelliscope(dat, name = "test"),
-    regexp = "Using the variable\\(s\\)"
-  )
+    regexp = "Using the variables"
+  ))
   expect_equal(x$get("name"), "test")
 
   dat$panel2 <- dat$panel
@@ -30,6 +30,6 @@ test_that2("trelliscope instantiation", {
   dat2 <- dat[, -c(1:2)]
   suppressMessages(expect_error(
     trelliscope(dat2, name = "test"),
-    regexp = "Could not find columns of the data that uniquely define each row"
+    regexp = "Could not find columns of the data that uniquely"
   ))
 })

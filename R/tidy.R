@@ -6,19 +6,6 @@
 #' @param ... additional arguments passed on to .f (see [`purrr::map()`] for
 #' details)
 #' @details See [`purrr::map()`]
-#' @examples
-#' \donttest{
-#' library(dplyr)
-#' library(tidyr)
-#' library(purrr)
-#'
-#' x <- ggplot2::mpg |>
-#'   tidyr::nest(data = !dplyr::one_of(c("manufacturer", "class"))) |>
-#'   dplyr::mutate(panel = map_plot(data, function(x) {
-#'     ggplot2::qplot(hwy, cty, data = x)
-#'   })) |>
-#'   trelliscope(name = "test")
-#' }
 #' @importFrom purrr map
 #' @export
 map_plot <- function(.x, .f, ...) {
@@ -38,25 +25,6 @@ map_plot <- function(.x, .f, ...) {
 #' @param .l A list of lists. The length of .l determines the number of
 #' arguments that .f will be called with. List names will be used if present.
 #' @details See purrr::map2()
-#' @examples
-#' \donttest{
-#' library(tidyr)
-#' library(purrr)
-#' library(plotly)
-#' library(dplyr)
-#'
-#' iris %>%
-#'   nest(data = -Species) %>%
-#'   mutate(
-#'     mod = map(data, ~ lm(Sepal.Length ~ Sepal.Width, data = .x)),
-#'     panel = map2_plot(data, mod, function(data, mod) {
-#'       plot_ly(data = data, x = ~Sepal.Width, y = ~Sepal.Length,
-#'         type = "scatter", mode = "markers", name = "data") %>%
-#'         add_trace(data = data, x = ~Sepal.Width, y = ~predict(mod),
-#'           mode = "lines", name = "lm")
-#'     })) %>%
-#'   trelliscope(name = "iris")
-#' }
 #' @export
 map2_plot <- function(.x, .y, .f, ...) {
   structure(

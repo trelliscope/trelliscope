@@ -42,7 +42,27 @@ meta_number <- function(
     label = label,
     tags = tags,
     digits = digits,
-    local = locale
+    locale = locale
+  ) |>
+  add_meta_class()
+}
+
+#' Specify a "currency" metadata variable
+#' @inheritParams meta_string
+#' @param code Currency code. See [currencies] for a list of possibilities.
+#' @family {metadata types}
+#' @export
+meta_currency <- function(
+  varname,
+  label = NULL,
+  tags = NULL,
+  code = "USD"
+) {
+  CurrencyMeta$new(
+    varname = varname,
+    label = label,
+    tags = tags,
+    code = code
   ) |>
   add_meta_class()
 }
