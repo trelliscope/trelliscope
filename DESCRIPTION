@@ -12,7 +12,6 @@ RoxygenNote: 7.2.1
 Suggests:
     testthat (>= 3.0.0),
     covr,
-    tidyr,
     plotly
 Config/testthat/edition: 3
 Imports:
@@ -25,7 +24,8 @@ Imports:
     svglite,
     htmlwidgets,
     htmltools,
-    cli
+    cli,
+    tidyr
 Depends: 
     R (>= 2.10)
 LazyData: true

@@ -127,7 +127,7 @@ infer_panel_type <- function(disp) {
   } else if (inherits(pnls, "iframe_panel")) {
       x$set("panel_type", "iframe")
   } else {
-    stop("Could not infer panel type")
+    assert(FALSE, "Could not infer panel type")
   }
   x
 }

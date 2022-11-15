@@ -28,8 +28,8 @@ write_panels <- function(disp, width = 500, height = 500, format = "png") {
 
   if (!dir.exists(panel_path)) {
     res <- dir.create(panel_path, recursive = TRUE)
-    if (!res)
-      stop("Could not create directory for panels: ", panel_path)
+    assert(res == TRUE,
+      "Could not create directory for panels: {panel_path}")
   }
 
   html_head <- NULL

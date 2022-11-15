@@ -9,6 +9,7 @@
 #'   plotted, e.g. correlation coefficient if plot is a scatterplot.
 #' @param data data used for faceting. Defaults to the first layer data
 #' @importFrom ggplot2 facet_wrap waiver
+#' @importFrom tidyr nest
 #' @export
 facet_trelliscope <- function(facets,
   scales = "same", add_plot_metrics = FALSE,
@@ -63,9 +64,8 @@ build_panels <- function(
     check_character(unnest_cols, "unnest_cols")
 
   if (as_plotly) {
-    if (!requireNamespace("plotly", quietly = TRUE))
-      stop("Package 'plotly' is needed for as_plotly = TRUE Please install it.",
-        call. = FALSE)
+    assert(requireNamespace("plotly", quietly = TRUE),
+      "Package 'plotly' is needed for as_plotly = TRUE Please install it.")
   }
 
   attrs <- attr(x, "trelliscope")
@@ -87,26 +87,24 @@ build_panels <- function(
     data <- attrs$data
   }
 
-  if (is.null(data)) {
-    stop("non-NULL data must be provided either in the first plot layer ",
-      "or in the 'data' parameter")
-  }
+  assert(!is.null(data),
+    "Non-NULL data must be provided either in the first plot layer \
+    or in the 'data' parameter")
 
   # character vector of facet columns
   # TODO need to work with facet_trelliscope(~ disp < 5)
   facet_cols <- unlist(lapply(attrs$facet_cols, rlang::as_name))
   facet_cols <- setdiff(facet_cols, "~")
-  if (!all(facet_cols %in% names(data))) {
-    stop("All facet_trelliscope facet columns must be found in the ",
-      "data being used.")
-  }
+  assert(all(facet_cols %in% names(data)),
+    "All facet_trelliscope facet columns must be found in the data being \
+    used.")
 
-  if (panel_col %in% facet_cols)
-    stop("The variable panel_col='", panel_col,
-      "' matches one of the facet columns. Try a different 'panel_col'.")
-  if (data_col %in% facet_cols)
-    stop("The variable data_col='", data_col,
-      "' matches one of the facet columns. Try a different 'data_col'.")
+  assert(!panel_col %in% facet_cols,
+    "The variable panel_col='{panel_col}' matches one of the facet \
+    columns. Try a different 'panel_col'.")
+  assert(!data_col %in% facet_cols,
+    "The variable data_col='{data_col}' matches one of the facet columns. \
+    Try a different 'data_col'.")
 
   if (data_col %in% names(data))
     wrn("A variable with name matching data_col='{data_col}' \\
@@ -122,11 +120,11 @@ build_panels <- function(
     dplyr::ungroup()
 
   if (!is.null(unnest_cols)) {
-    nn <- nrow(dplyr::count(data, dplyr::across(facet_cols)))
-    if (nrow(data) != nn)
-      stop("The values of unnest_cols='",
-        paste0(unnest_cols, collapse = "', '", " must be distinct within ",
-        "the values of facet_cols."))
+    nn <- nrow(dplyr::distinct(data,
+      dplyr::across(dplyr::all_of(facet_cols))))
+    assert(nrow(data) == nn,
+      "The values of unnest_cols={unnest_cols} must be distinct within \
+      the values of facet_cols.")
   }
 
   # get ranges of all data
@@ -136,8 +134,9 @@ build_panels <- function(
   # swaps out the data with a subset and removes the facet
   make_plot_obj <- function(dt, pos = -1) {
     q <- x
-    nms <- setdiff(names(dt), data_col)
     tmp <- dt[[data_col]][[1]]
+    # add in unnested variables
+    nms <- setdiff(names(dt), data_col)
     for (nm in nms) tmp[[nm]] <- dt[[nm]]
     q$data <- tmp[, c(nms, setdiff(names(tmp), nms))]
     q <- add_trelliscope_scales(q, scales_info, show_warnings = (pos == 1))
@@ -154,7 +153,8 @@ build_panels <- function(
     wrn("A variable with name matching panel_col='{panel_col}' \\
       exists in the data and is being overwritten")
   data[[panel_col]] <- lapply(
-    cli::cli_progress_along(nrow(data), "Building panels", clear = FALSE),
+    cli::cli_progress_along(data[[data_col]], "Building panels",
+      clear = FALSE),
     function(i) {
       make_plot_obj(data[i, ])
     }
@@ -166,11 +166,14 @@ build_panels <- function(
 }
 
 upgrade_scales_param <- function(scales, plot_facet) {
-  if (length(scales) > 2)
-    stop("scales must not be longer than length 2")
+  assert(length(scales) <= 2,
+    "Scales must not be longer than length 2")
 
-  if (any(is.na(scales)) || is.null(scales) || length(scales) == 0)
-    stop("scales must be a character vector of size 1 or 2")
+  assert(length(scales) > 0 && !all(is.na(scales)) && !is.null(scales),
+    "Scales must be a character vector of size 1 or 2")
+
+  valid_vals <- c("same", "free", "free_x", "free_y", "sliced",
+    "sliced_x", "sliced_y")
 
   if (length(scales) == 1) {
     scales <- switch(scales,
@@ -181,15 +184,15 @@ upgrade_scales_param <- function(scales, plot_facet) {
       "sliced" = c("sliced", "sliced"),
       "sliced_x" = c("sliced", "same"),
       "sliced_y" = c("same", "sliced"),
-      stop(
-        "if scales is of length 1, it may only be one of the following values: ",
-        "c('same', 'free', 'free_x', 'free_y', 'sliced', 'sliced_x', 'sliced_y')"
-      )
+      assert(FALSE,
+        "If scales is of length 1, it may only be one of the following \
+        values: {valid_vals}")
     )
   }
 
-  if (!all(scales %in% c("same", "free", "sliced")))
-    stop("a length 2 scales parameter can only be made of 'same', 'free', or 'sliced' values")
+  assert(all(scales %in% c("same", "free", "sliced")),
+    "A length 2 scales parameter can only be made of 'same', 'free', or \
+    'sliced' values")
 
   # sliced is not allowed for faceted columns
   if (!inherits(plot_facet, "FacetNull")) {
@@ -231,12 +234,12 @@ add_range_info_to_scales <- function(plot, scales_info, facet_cols) {
       same = switch(y_scale_type, same = "fixed", "free_y")
     )
 
-    if (packageVersion("ggplot2") > "2.2.1") {
-      facet_part <- ggplot2::facet_wrap(
-        dplyr::vars(facet_cols), scales = scales_val)
-    } else {
-      facet_part <- ggplot2::facet_wrap(facet_cols, scales = scales_val)
-    }
+    # if (packageVersion("ggplot2") > "2.2.1") {
+    facet_part <- ggplot2::facet_wrap(
+      dplyr::vars(facet_cols), scales = scales_val)
+    # } else {
+    #   facet_part <- ggplot2::facet_wrap(facet_cols, scales = scales_val)
+    # }
 
     if (inherits(scale_plot$facet, "FacetNull")) {
       # add a facet_wrap with scales == free and get limits
@@ -300,25 +303,25 @@ add_range_info_to_scales <- function(plot, scales_info, facet_cols) {
       return(scale_info)
     }
 
-    if (packageVersion("ggplot2") > "2.2.1") {
-      scales_info$x_info <- calculate_scale_info(
-        scales_info$x_info,
-        scale_plot_built$layout$panel_scales_x
-      )
-      scales_info$y_info <- calculate_scale_info(
-        scales_info$y_info,
-        scale_plot_built$layout$panel_scales_y
-      )
-    } else {
-      scales_info$x_info <- calculate_scale_info(
-        scales_info$x_info,
-        scale_plot_built$layout$panel_scales[[scales_info$x_info$name]]
-      )
-      scales_info$y_info <- calculate_scale_info(
-        scales_info$y_info,
-        scale_plot_built$layout$panel_scales[[scales_info$y_info$name]]
-      )
-    }
+    # if (packageVersion("ggplot2") > "2.2.1") {
+    scales_info$x_info <- calculate_scale_info(
+      scales_info$x_info,
+      scale_plot_built$layout$panel_scales_x
+    )
+    scales_info$y_info <- calculate_scale_info(
+      scales_info$y_info,
+      scale_plot_built$layout$panel_scales_y
+    )
+    # } else {
+    #   scales_info$x_info <- calculate_scale_info(
+    #     scales_info$x_info,
+    #     scale_plot_built$layout$panel_scales[[scales_info$x_info$name]]
+    #   )
+    #   scales_info$y_info <- calculate_scale_info(
+    #     scales_info$y_info,
+    #     scale_plot_built$layout$panel_scales[[scales_info$y_info$name]]
+    #   )
+    # }
   }
 
   scales_info

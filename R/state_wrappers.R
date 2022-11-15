@@ -65,8 +65,9 @@ filter_range <- function(varname, min = NULL, max = NULL) {
   } else if (inherits(min, "POSIXct") || inherits(max, "POSIXct")) {
     res <- DatetimeRangeFilterState$new(varname, min = min, max = max)
   } else {
-    stop("filter_range() must have one of min or max with numeric, ",
-      "date, or datetime types.", call. = FALSE)
+    assert(FALSE,
+      "filter_range() must have one of min or max with numeric, date, \
+      or datetime types.")
   }
   add_state_class(res, extra = "trelliscope_filter_def")
 }

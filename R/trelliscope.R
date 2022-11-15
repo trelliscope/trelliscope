@@ -78,10 +78,8 @@ get_key_cols <- function(df) {
         break
       }
     }
-    if (length(key_cols) == 0) {
-      stop("Could not find columns of the data that uniquely define each ",
-        "row.")
-    }
+    assert(length(key_cols) > 0,
+      "Could not find columns of the data that uniquely define each row.")
   }
 
   if (is.null(attr(df, "facet_cols")))

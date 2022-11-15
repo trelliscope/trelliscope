@@ -12,6 +12,7 @@ suppressPackageStartupMessages({
   library(ggplot2, warn.conflicts = FALSE)
   library(tidyr, warn.conflicts = FALSE)
   library(dplyr, warn.conflicts = FALSE)
+  library(tidyr, warn.conflicts = FALSE)
 })
 
 test_that2 <- function(desc, code) {

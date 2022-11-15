@@ -57,6 +57,44 @@ test_that2("NumberMeta", {
   )
 })
 
+test_that2("CurrencyMeta", {
+  obj <- CurrencyMeta$new("Sepal.Length", tags = "stuff")
+  expect_true(
+    obj$check_with_data(dat)
+  )
+
+  expect_equal(obj$get("tags"), I("stuff"))
+
+  expect_equal(
+    as.character(obj$as_json(pretty = FALSE)),
+    '{"code":"USD","sortable":true,"filterable":true,"tags":["stuff"],"label":"Sepal.Length","type":"currency","varname":"Sepal.Length"}'
+  )
+
+  expect_true(
+    is.list(obj$as_list())
+  )
+
+  obj <- CurrencyMeta$new("Sepal.Length",
+    label = "Sepal length of the iris")
+
+  obj <- CurrencyMeta$new("whatever")
+  expect_error(
+    obj$check_with_data(dat),
+    regexp = "Could not find variable"
+  )
+
+  obj <- CurrencyMeta$new("Species")
+  expect_error(
+    obj$check_with_data(dat),
+    regexp = "must be numeric"
+  )
+
+  expect_error(
+    CurrencyMeta$new("Sepal.Length", code = "ASD"),
+    regexp = "must be one of"
+  )
+})
+
 test_that2("StringMeta", {
   obj <- StringMeta$new("Species")
   expect_true(

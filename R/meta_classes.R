@@ -109,7 +109,7 @@ CurrencyMeta <- R6::R6Class("CurrencyMeta",
   inherit = Meta,
   public = list(
     initialize = function(varname, label = NULL, tags = NULL,
-      digits = "USD"
+      code = "USD"
     ) {
       super$initialize(
         type = "currency",
@@ -121,7 +121,7 @@ CurrencyMeta <- R6::R6Class("CurrencyMeta",
       )
       if (!is.null(code)) {
         check_scalar(code, "code", self$error_msg)
-        check_enum(code, unique(currencies$code_alpha, "code", self$error_msg))
+        check_enum(code, unique(currencies$code_alpha), "code", self$error_msg)
         private$code <- code
       }
     },

@@ -105,6 +105,8 @@ Display <- R6::R6Class(
       cli::cli_div(theme = list(.val = list(color = "darkgray")))
       cli::cli_bullets(c("*" = "{.strong Path}: {.val {self$path}}"))
       cli::cli_end()
+      cli::cli_bullets(
+        c("*" = "{.strong Number of panels}: {.val {nrow(self$df)}}"))
       wrt <- ifelse(self$panels_written, "yes", "no")
       cli::cli_bullets(c("*" = "{.strong Panels written}: {.emph {wrt}}"))
       print_meta_info_df(self$get("metas"), self$df, self$meta_labels)

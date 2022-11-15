@@ -32,8 +32,7 @@ write_htmlwidget_deps <- function(x, base_path, panel_path) {
 
   html_head <- readLines(file.path(deps_path, "index.html"))
   idx <- which(grepl("<body>", html_head))
-  if (length(idx) == 0)
-    stop("problem...")
+  assert(length(idx) > 0, "problem...")
   html_head <- html_head[1:idx]
   html_head <- gsub("src=\"", "src=\"../../../libs/", html_head)
   html_head <- gsub("href=\"", "href=\"../../../libs/", html_head)
@@ -108,7 +107,6 @@ make_png <- function(p, file, width, height, orig_width = width, res = 72,
     height = units$height,
     pointsize = units$pointsize)
 
-  unknown_object <- FALSE
   dv <- grDevices::dev.cur()
   tryCatch({
     if (inherits(p, c("trellis", "ggplot"))) {
@@ -118,25 +116,19 @@ make_png <- function(p, file, width, height, orig_width = width, res = 72,
     } else if (inherits(p, "gtable")) {
       grid::grid.draw(p)
     } else {
-      unknown_object <- TRUE
-      try(print(p), silent = TRUE)
+      if (file.exists(file))
+        unlink(file)
+      try(capture.output(print(p)), silent = TRUE)
+      # if panel function didn't plot anything then make a blank panel
+      # res = res * pixelratio,
+      if (!file.exists(file)) {
+        msg("The panel object of class '{class(p)}' is not a standard \\
+        plot object and did not produce a panel file.")
+        print(blank_image("no panel"))
+      }
     }
   },
   finally = grDevices::dev.off(dv))
-
-  # if panel function didn't plot anything then make a blank panel
-  # res = res * pixelratio,
-  if (!file.exists(file)) {
-    if (unknown_object) {
-      cls <- paste(class(p), collapse = "', '")
-      msg("The panel object of class '{cls}' is not a standard plot object \\
-        and did not produce a panel file.")
-    }
-    pngfun(filename = file, width = width * pixelratio,
-      height = height * pixelratio, pointsize = units$pointsize)
-    blank_image("no panel")
-    grDevices::dev.off()
-  }
 }
 
 #' @importFrom svglite svglite

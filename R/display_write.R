@@ -121,8 +121,8 @@ check_app_config <- function(app_path, jsonp) {
 #' @param id The id of the display. Can be found in `config.json[p]`.
 #' @export
 update_display_list <- function(app_path, jsonp = TRUE, id) {
-  if (!dir.exists(file.path(app_path, "displays")))
-    stop("The directory '", app_path, "' does not contain any displays.")
+  assert(dir.exists(file.path(app_path, "displays")),
+    "The directory '{app_path}' does not contain any displays.")
   dispfile <- paste0("displayInfo.json", ifelse(jsonp, "p", ""))
   ff <- list.files(file.path(app_path, "displays"), full.names = TRUE)
   idx <- which(unlist(lapply(ff, function(f)

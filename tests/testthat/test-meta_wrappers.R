@@ -20,6 +20,15 @@ test_that2("meta wrappers", {
   expect_s3_class(obj, "R6")
   expect_s3_class(obj, "trelliscope_meta_def")
 
+  obj <- meta_currency(
+    varname = "Sepal.Length",
+    label = "Sepal length",
+    tags = c("tag1", "tag2"),
+    code = "XCD"
+  )
+  expect_s3_class(obj, "R6")
+  expect_s3_class(obj, "trelliscope_meta_def")
+
   obj <- meta_factor(
     varname = "Species",
     label = "Iris species",
