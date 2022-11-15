@@ -5,6 +5,7 @@
 
 export type MetaType = 'string' | 'number' | 'factor' | 'date' | 'datetime' | 'href' | 'geo' | 'graph';
 export type GraphDirection = 'none' | 'from' | 'to';
+export type CurrencyCode = 'AED' | 'AFN' | 'ALL' | 'AMD' | 'ANG' | 'AOA' | 'ARS' | 'AUD' | 'AWG' | 'AZN' | 'BAM' | 'BBD' | 'BDT' | 'BGN' | 'BHD' | 'BIF' | 'BMD' | 'BND' | 'BOB' | 'BOV' | 'BRL' | 'BSD' | 'BTN' | 'BWP' | 'BYN' | 'BZD' | 'CAD' | 'CDF' | 'CHE' | 'CHF' | 'CHW' | 'CLF' | 'CLP' | 'CNY' | 'COP' | 'COU' | 'CRC' | 'CUC' | 'CUP' | 'CVE' | 'CZK' | 'DJF' | 'DKK' | 'DOP' | 'DZD' | 'EGP' | 'ERN' | 'ETB' | 'EUR' | 'FJD' | 'FKP' | 'GBP' | 'GEL' | 'GHS' | 'GIP' | 'GMD' | 'GNF' | 'GTQ' | 'GYD' | 'HKD' | 'HNL' | 'HRK' | 'HTG' | 'HUF' | 'IDR' | 'ILS' | 'INR' | 'IQD' | 'IRR' | 'ISK' | 'JMD' | 'JOD' | 'JPY' | 'KES' | 'KGS' | 'KHR' | 'KMF' | 'KPW' | 'KRW' | 'KWD' | 'KYD' | 'KZT' | 'LAK' | 'LBP' | 'LKR' | 'LRD' | 'LSL' | 'LYD' | 'MAD' | 'MDL' | 'MGA' | 'MKD' | 'MMK' | 'MNT' | 'MOP' | 'MRU' | 'MUR' | 'MVR' | 'MWK' | 'MXN' | 'MXV' | 'MYR' | 'MZN' | 'NAD' | 'NGN' | 'NIO' | 'NOK' | 'NPR' | 'NZD' | 'OMR' | 'PAB' | 'PEN' | 'PGK' | 'PHP' | 'PKR' | 'PLN' | 'PYG' | 'QAR' | 'RON' | 'RSD' | 'RUB' | 'RWF' | 'SAR' | 'SBD' | 'SCR' | 'SDG' | 'SEK' | 'SGD' | 'SHP' | 'SLE' | 'SLL' | 'SOS' | 'SRD' | 'SSP' | 'STN' | 'SVC' | 'SYP' | 'SZL' | 'THB' | 'TJS' | 'TMT' | 'TND' | 'TOP' | 'TRY' | 'TTD' | 'TWD' | 'TZS' | 'UAH' | 'UGX' | 'USD' | 'USN' | 'UYI' | 'UYU' | 'UYW' | 'UZS' | 'VED' | 'VES' | 'VND' | 'VUV' | 'WST' | 'XAF' | 'XAG' | 'XAU' | 'XBA' | 'XBB' | 'XBC' | 'XBD' | 'XCD' | 'XDR' | 'XOF' | 'XPD' | 'XPF' | 'XPT' | 'XSU' | 'XTS' | 'XUA' | 'XXX' | 'YER' | 'ZAR' | 'ZMW' | 'ZWL';
 
 export interface IMeta {
   varname: string;
@@ -18,6 +19,10 @@ export interface IMeta {
 export interface INumberMeta extends IMeta {
   digits: number | null; // should be integer
   locale: boolean;
+}
+
+export interface ICurrencyMeta extends IMeta {
+  code: CurrencyCode;
 }
 
 export interface IStringMeta extends IMeta {
@@ -158,12 +163,38 @@ export interface IView {
 /* display                                                */
 /* ------------------------------------------------------ */
 
+export type PanelType = 'img' | 'iframe' | 'REST';
+
 export interface IDisplay {
   name: string;
   description: string;
+  tags: string[];
   key_cols: string[];
   metas: IMeta[];
   inputs: IInput[];
   state: IDisplayState;
   views: IView[];
+  panel_type: PanelType;
+}
+
+/* ------------------------------------------------------ */
+/* display list                                           */
+/* ------------------------------------------------------ */
+
+export interface IDisplayListItem {
+  name: string;
+  description: string;
+  tags: string[];
+}
+
+/* ------------------------------------------------------ */
+/* config                                                 */
+/* ------------------------------------------------------ */
+
+export type AppDataType = 'jsonp' | 'json';
+
+export interface IConfig {
+  name: string;
+  data_type: AppDataType;
+  id: string;
 }

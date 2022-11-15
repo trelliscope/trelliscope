@@ -117,6 +117,3 @@ test_that2("trelliscope printing", {
 #     input_radio(name = "looks_correct",
 #       label = "Does the data look correct?", options = c("no", "yes"))
 #   )
-
-
-

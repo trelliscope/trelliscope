@@ -1,8 +1,8 @@
-import { runInThisContext } from "vm";
 import {
   // meta
   IMeta,
   INumberMeta,
+  ICurrencyMeta,
   IStringMeta,
   IFactorMeta,
   IDateMeta,
@@ -12,6 +12,7 @@ import {
   IGraphMeta,
   MetaType,
   GraphDirection,
+  CurrencyCode,
   // inputs
   IInput,
   IRadioInput,
@@ -40,6 +41,12 @@ import {
   IView,
   // display
   IDisplay,
+  PanelType,
+  // display list
+  IDisplayListItem,
+  // config
+  AppDataType,
+  IConfig,
 } from "./types";
 
 /* ------------------------------------------------------ */
@@ -91,6 +98,26 @@ export class NumberMeta extends Meta implements INumberMeta {
     super('number', varname, tags, label, true, true);
     this.digits = digits === undefined ? null : digits;
     this.locale = locale === undefined ? true : locale;
+  };
+}
+
+export class CurrencyMeta extends Meta implements ICurrencyMeta {
+  code: CurrencyCode;
+  constructor(
+    {
+      varname,
+      label,
+      tags,
+      code
+    } : {
+      varname: string,
+      label?: string | undefined,
+      tags?: string[],
+      code?: CurrencyCode
+    }
+  ) {
+    super('number', varname, tags, label, true, true);
+    this.code = code === undefined ? 'USD' : code;
   };
 }
 
@@ -633,36 +660,96 @@ export class View implements IView {
 export class Display implements IDisplay {
   name: string;
   description: string;
+  tags: string[];
   key_cols: string[];
   metas: IMeta[];
   inputs: IInput[];
   state: IDisplayState;
   views: IView[];
+  panel_type: PanelType;
   constructor(
     {
       name,
       description,
+      tags,
       key_cols,
       metas,
       inputs,
       state,
       views,
+      panel_type,
     } : {
       name: string,
       description?: string,
+      tags?: string[],
       key_cols: string[],
       metas: IMeta[],
       inputs?: IInput[] | undefined,
       state: IDisplayState,
       views?: IView[] | undefined,
+      panel_type: PanelType
     }
   ) {
     this.name = name;
     this.description = description === undefined ? name : description;
+    this.tags = tags === undefined ? [] : tags;
     this.key_cols = key_cols;
     this.metas = metas;
     this.inputs = inputs === undefined ? [] : inputs;
     this.state = state;
     this.views = views === undefined ? [] : views;
+    this.panel_type = panel_type;
+  }
+}
+
+/* ------------------------------------------------------ */
+/* display list                                           */
+/* ------------------------------------------------------ */
+
+export class DisplayListItem implements IDisplayListItem {
+  name: string;
+  description: string;
+  tags: string[];
+  constructor(
+    {
+      name,
+      description,
+      tags,
+    } : {
+      name: string,
+      description?: string,
+      tags?: string[],
+    }
+  ) {
+    this.name = name;
+    this.description = description === undefined ? name : description;
+    this.tags = tags === undefined ? [] : tags;
+  }
+}
+
+// var displayList: DisplayListItem[] = [...]
+
+/* ------------------------------------------------------ */
+/* config                                                 */
+/* ------------------------------------------------------ */
+
+export class Config implements IConfig {
+  name: string;
+  data_type: AppDataType;
+  id: string;
+  constructor(
+    {
+      name,
+      data_type,
+      id,
+    } : {
+      name: string;
+      data_type: AppDataType;
+      id: string;
+    }
+  ) {
+    this.name = name;
+    this.data_type = data_type;
+    this.id = id;
   }
 }

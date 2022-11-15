@@ -179,6 +179,7 @@ const view2 = new View({
 
 const displ = new Display({
   name: 'test display',
+  panel_type: 'img',
   key_cols: ['a', 'b'],
   metas: [
     new StringMeta({ varname: 'stringvar' }),
