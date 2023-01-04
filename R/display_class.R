@@ -10,8 +10,12 @@ Display <- R6::R6Class(
     # if the user specifies meta labels using add_meta_labels(), we keep track
     # of them here so that we can apply them just before writing out the object
     meta_labels = list(),
+    # if the user specifies meta tags using add_meta_tags(), we keep track
+    # of them here so that we can apply them just before writing out the object
+    meta_tags = list(),
     initialize = function(
-      df, name, description, tags, key_cols, path, force_plot, panel_col
+      df, name, description, tags, key_cols, path, force_plot, panel_col,
+      key_sig = NULL
     ) {
       assert(inherits(df, "data.frame"),
         msg = "Argument 'df' must be a data frame")
@@ -25,11 +29,16 @@ Display <- R6::R6Class(
       check_scalar(force_plot, "force_plot")
       check_logical(force_plot, "force_plot")
       check_character(key_cols, "key_cols")
+      if (!is.null(key_sig)) {
+        check_scalar(key_sig, "key_sig")
+        check_character(key_sig, "key_sig")
+      }
       check_atomic(tags, "tags")
       private$name <- name
       private$description <- description
       private$tags <- I(as.character(tags))
       private$key_cols <- key_cols
+      private$key_sig <- key_sig
       self$path <- path
       self$force_plot <- force_plot
       self$panel_col <- panel_col
@@ -81,11 +90,13 @@ Display <- R6::R6Class(
         description = private$description,
         tags = private$tags,
         key_cols = I(private$key_cols),
+        key_sig = private$key_sig,
         metas = unname(lapply(private$metas, function(x) x$as_list())),
         state = private$state$as_list(),
         views = unname(lapply(private$views, function(x) x$as_list())),
         inputs = unname(lapply(private$inputs, function(x) x$as_list())),
-        panel_type = private$panel_type
+        panel_type = private$panel_type,
+        panel_format = private$panel_format
       )
     },
     as_json = function(pretty = TRUE) {
@@ -109,7 +120,8 @@ Display <- R6::R6Class(
         c("*" = "{.strong Number of panels}: {.val {nrow(self$df)}}"))
       wrt <- ifelse(self$panels_written, "yes", "no")
       cli::cli_bullets(c("*" = "{.strong Panels written}: {.emph {wrt}}"))
-      print_meta_info_df(self$get("metas"), self$df, self$meta_labels)
+      print_meta_info_df(self$get("metas"), self$df,
+        self$meta_labels, self$meta_tags)
     }
   ),
   private = list(
@@ -117,11 +129,13 @@ Display <- R6::R6Class(
     description = NULL,
     tags = NULL,
     key_cols = NULL,
+    key_sig = NULL,
     metas = list(),
     inputs = list(),
     state = NULL,
     views = list(),
-    panel_type = NULL
+    panel_type = NULL,
+    panel_format = NULL
   )
 )
 
@@ -146,26 +160,33 @@ cli_print_tbl <- function(x) {
   cli::cli_end()
 }
 
-print_meta_info_df <- function(metas, df, meta_labels) {
+print_meta_info_df <- function(metas, df, meta_labels, meta_tags) {
   def_metas <- names(metas)
-  needs_meta <- setdiff(names(df), def_metas)
+  needs_meta <- setdiff(names(df), c(def_metas, "__PANEL_KEY__"))
 
   if (length(metas) > 0) {
     mt <- lapply(metas, function(x) {
       nm <- x$get("varname")
+      # TODO: label value needs to match logic in infer.R
       lbl <- x$get("label")
       if (!is.null(meta_labels[[nm]]))
         lbl <- meta_labels[[nm]]
       nc <- nchar(lbl)
-      lbl <- substr(lbl, 1, 20)
+      lbl <- substr(lbl, 1, 25)
       if (nchar(lbl) != nc)
         lbl <- paste0(lbl, "\u2026")
       tags <- x$get("tags")
+      if (length(tags) == 0 && length(meta_tags[[nm]] > 0))
+        tags <- meta_tags[[nm]]
       if (length(tags) == 0) {
         tags <- "[]"
       } else {
-        paste0(tags, collapse = ", ")
+        tags <- paste0(tags, collapse = ", ")
       }
+      nc <- nchar(tags)
+      tags <- substr(tags, 1, 25)
+      if (nchar(tags) != nc)
+        tags <- paste0(tags, "\u2026")
       dplyr::tibble(
         name = nm,
         type = x$get("type"),

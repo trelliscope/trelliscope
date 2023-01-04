@@ -109,6 +109,7 @@ check_app_config <- function(app_path, jsonp) {
     cat(paste0(txt$st, as.character(to_json(cfg, pretty = TRUE)), txt$nd),
       file = file.path(app_path,
         paste0("config", ifelse(jsonp, ".jsonp", ".json"))))
+    cat(cfg$id, file = file.path(app_path, "id"))
   }
   cfg
 }
@@ -129,7 +130,7 @@ update_display_list <- function(app_path, jsonp = TRUE, id) {
     dir.exists(f) && file.exists(file.path(f, dispfile)))))
   lst <- lapply(ff[idx], function(f) {
     cur <- read_json_p(file.path(f, dispfile))
-    cur[c("name", "description", "tags")]
+    cur[c("name", "description", "tags", "key_sig")]
   })
   txt <- get_jsonp_text(jsonp, paste0("__loadDisplayList__", id))
   cat(paste0(txt$st, as.character(to_json(lst, pretty = TRUE)), txt$nd),

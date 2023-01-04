@@ -101,14 +101,14 @@ test_that2("add_meta_labels", {
   expect_length(x$meta_labels, 0)
 })
 
-test_that2("set_layout", {
+test_that2("set_default_layout", {
   expect_error(
-    list() |> set_layout(),
+    list() |> set_default_layout(),
     regexp = "Expecting a trelliscope display object"
   )
 
   b <- x |>
-    set_layout()
+    set_default_layout()
   obj <- b$get("state")$get("layout")
   expect_true(!is.null(obj))
   expect_equal(obj$get("type"), "layout")
@@ -118,7 +118,7 @@ test_that2("set_layout", {
 
   expect_message(
     a <- b |>
-      set_layout(nrow = 3, ncol = 3),
+      set_default_layout(nrow = 3, ncol = 3),
     regexp = "Replacing existing layout state specification"
   )
 
@@ -128,14 +128,14 @@ test_that2("set_layout", {
   expect_equal(b$get("state")$get("layout")$get("nrow"), 1)
 })
 
-test_that2("set_labels", {
+test_that2("set_default_labels", {
   expect_error(
-    list() |> set_labels("test"),
+    list() |> set_default_labels("test"),
     regexp = "Expecting a trelliscope display object"
   )
 
   b <- x |>
-    set_labels(varnames = "manufacturer")
+    set_default_labels(varnames = "manufacturer")
 
   obj <- b$get("state")$get("labels")
   expect_true(!is.null(obj))
@@ -147,7 +147,7 @@ test_that2("set_labels", {
 
   expect_message(
     a <- b |>
-      set_labels(varnames = NULL),
+      set_default_labels(varnames = NULL),
     "Replacing existing labels state specification"
   )
 
@@ -157,20 +157,20 @@ test_that2("set_labels", {
   expect_equal(b$get("state")$get("labels")$get("varnames"), I("manufacturer"))
 })
 
-test_that2("set_sort", {
+test_that2("set_default_sort", {
   expect_error(
-    list() |> set_sort("test"),
+    list() |> set_default_sort("test"),
     regexp = "Expecting a trelliscope display object"
   )
 
   expect_error(
     b <- x |>
-      set_sort(varnames = c("a", "b"), dirs = rep("asc", 3)),
+      set_default_sort(varnames = c("a", "b"), dirs = rep("asc", 3)),
     regexp = "must have same length"
   )
 
   b <- x |>
-    set_sort(varnames = c("manufacturer", "class"), dirs = c("asc", "desc"))
+    set_default_sort(varnames = c("manufacturer", "class"), dirs = c("asc", "desc"))
 
   obj <- b$get("state")$get("sort")
   expect_length(obj, 2)
@@ -181,7 +181,7 @@ test_that2("set_sort", {
 
   expect_message(
     a <- b |>
-      set_sort(varnames = "manufacturer", dirs = "asc", add = TRUE),
+      set_default_sort(varnames = "manufacturer", dirs = "asc", add = TRUE),
     regexp = "Replacing existing sort state specification for variable"
   )
 
@@ -190,20 +190,20 @@ test_that2("set_sort", {
 
   expect_message(
     b |>
-      set_sort(varnames = "manufacturer", dirs = "desc"),
+      set_default_sort(varnames = "manufacturer", dirs = "desc"),
     regexp = "Replacing entire existing sort"
   )
 })
 
-test_that2("set_filters", {
+test_that2("set_default_filters", {
   expect_error(
-    list() |> set_filters(),
+    list() |> set_default_filters(),
     regexp = "Expecting a trelliscope display object"
   )
 
   expect_error(
     b <- x |>
-      set_filters(
+      set_default_filters(
         filter_string("a", values = c("audi", "volkswagen"))
       ),
     regexp = "not found in the dataset"
@@ -211,14 +211,14 @@ test_that2("set_filters", {
 
   expect_error(
     b <- x |>
-      set_filters(
+      set_default_filters(
         filter_string("manufacturer", values = c("a", "b"))
       ),
     regexp = "could not find the value"
   )
 
   b <- x |>
-    set_filters(
+    set_default_filters(
       filter_string("manufacturer", values = c("audi", "volkswagen")),
       filter_range("mean_cty", min = 20)
     )
@@ -232,7 +232,7 @@ test_that2("set_filters", {
 
   expect_message(
     a <- b |>
-      set_filters(
+      set_default_filters(
         filter_string("manufacturer", regexp = "for")
       ),
     regexp = "Replacing existing filter state specification for variable"
@@ -243,7 +243,7 @@ test_that2("set_filters", {
 
   expect_message(
     b |>
-      set_filters(
+      set_default_filters(
         filter_string("manufacturer", regexp = "for"),
         add = FALSE
       ),

@@ -41,6 +41,7 @@ import {
   IView,
   // display
   IDisplay,
+  PanelFormat,
   PanelType,
   // display list
   IDisplayListItem,
@@ -662,43 +663,53 @@ export class Display implements IDisplay {
   description: string;
   tags: string[];
   key_cols: string[];
+  key_sig: string;
   metas: IMeta[];
   inputs: IInput[];
   state: IDisplayState;
   views: IView[];
   panel_type: PanelType;
+  panel_format?: PanelFormat;
   constructor(
     {
       name,
       description,
       tags,
       key_cols,
+      key_sig,
       metas,
       inputs,
       state,
       views,
       panel_type,
+      panel_format,
     } : {
       name: string,
       description?: string,
       tags?: string[],
       key_cols: string[],
+      key_sig: string,
       metas: IMeta[],
       inputs?: IInput[] | undefined,
       state: IDisplayState,
       views?: IView[] | undefined,
-      panel_type: PanelType
+      panel_type: PanelType,
+      panel_format: PanelFormat | undefined,
     }
   ) {
     this.name = name;
     this.description = description === undefined ? name : description;
     this.tags = tags === undefined ? [] : tags;
     this.key_cols = key_cols;
+    this.key_sig = key_sig;
     this.metas = metas;
     this.inputs = inputs === undefined ? [] : inputs;
     this.state = state;
     this.views = views === undefined ? [] : views;
     this.panel_type = panel_type;
+    if (panel_format !== undefined) {
+      this.panel_format = panel_format;
+    }
   }
 }
 

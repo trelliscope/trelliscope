@@ -1,6 +1,6 @@
 plotdir <- tempfile()
 dir.create(plotdir)
-mpg2 <- filter(mpg, manufacturer == "volkswagen")
+mpg2 <- dplyr::filter(ggplot2::mpg, manufacturer == "volkswagen")
 get_x_range <- function(obj)
   obj$scales$get_scales("x")$limits
   # ggplot_build(obj)$layout$panel_scales_x[[1]]$range$range

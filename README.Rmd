@@ -2,6 +2,10 @@
 output: github_document
 ---
 
+TODO:
+- Document `add_meta_tags()`
+- Document default `write_panels(..., force = FALSE)`
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
@@ -183,7 +187,7 @@ In between `trelliscope() |> write_display()`, there are many functions we can c
 - `write_panels()`: allows finer control over how panels are written (e.g. plot dimensions, file format, etc.)
 - `add_meta_defs()`: specify metadata variable definitions (e.g. plain text variable descriptions, types, tags)
 - `add_meta_labels()`: as an alternative to fully specifying metadata variable definitions, this is a convenience function to only supply labels for all of the variables
-- `set_labels()`, `set_layout()`, `set_sort()`, `set_filters()`: specify the initial state of the appear
+- `set_default_labels()`, `set_default_layout()`, `set_default_sort()`, `set_default_filters()`: specify the initial state of the display
 - `add_view()`: add any number of pre-defined "views" that navigate the user to specified states of the display
 - `add_inputs()`: specify inputs that can collect user feedback for each panel in the display
 
@@ -272,43 +276,43 @@ disp
 
 We still haven't specified labels for `country` and `continent`. If labels are not provided, they will be set to the variable name. In the case of these two varibles, the variable name is clear enough to not need to specify the labels.
 
-#### `set_labels()`
+#### `set_default_labels()`
 
-By default, the "key columns" will be shown as labels. If we'd like to change what labels are shown when the display is opened, we can use `set_labels()`, e.g.:
+By default, the "key columns" will be shown as labels. If we'd like to change what labels are shown when the display is opened, we can use `set_default_labels()`, e.g.:
 
 ```{r}
 disp <- disp |>
-  set_labels(c("country", "continent", "wiki_link"))
+  set_default_labels(c("country", "continent", "wiki_link"))
 ```
 
-#### `set_layout()`
+#### `set_default_layout()`
 
 We can also set the default panel layout:
 
 ```{r}
 disp <- disp |>
-  set_layout(nrow = 3, ncol = 5)
+  set_default_layout(nrow = 3, ncol = 5)
 ```
 
-#### `set_sort()`
+#### `set_default_sort()`
 
-We can set the default sort order with `set_sort()`:
+We can set the default sort order with `set_default_sort()`:
 
 ```{r}
 disp <- disp |>
-  set_sort(c("continent", "mean_lifeexp"), dir = c("asc", "desc"))
+  set_default_sort(c("continent", "mean_lifeexp"), dir = c("asc", "desc"))
 ```
 
-#### `set_filters()`
+#### `set_default_filters()`
 
-We can set the default filter state with `set_filters()`. Currently there are two different kinds of filters:
+We can set the default filter state with `set_default_filters()`. Currently there are two different kinds of filters:
 
 - `filter_range(varname, min = ..., max = ...)`: works with numeric, date, or datetime variables
 - `filter_string(varname, values = ...)`: works with factor or string variables
 
 ```{r}
 disp <- disp |>
-  set_filters(
+  set_default_filters(
     filter_string("continent", values = "Africa"),
     filter_range("mean_lifeexp", max = 50)
   )

@@ -87,18 +87,22 @@ test_that2("trelliscope printing", {
   ))
 })
 
+# TODO: test key_sig:
+# - If it is explicitly specified in trelliscope(), make sure it isn't overridden
+# - Make sure it is set even when not calling write_display or panels already written
+
 # TODO: once print method reflects this info, test it
 # disp <- disp |>
-#   set_labels(c("class", "mean_cty"))
+#   set_default_labels(c("class", "mean_cty"))
 
 # disp <- disp |>
-#   set_layout(nrow = 3, ncol = 5)
+#   set_default_layout(nrow = 3, ncol = 5)
 
 # disp <- disp |>
-#   set_sort(c("class", "mean_cty"), dir = c("asc", "desc"))
+#   set_default_sort(c("class", "mean_cty"), dir = c("asc", "desc"))
 
 # disp <- disp |>
-#   set_filters(
+#   set_default_filters(
 #     filter_string("class", values = "compact"),
 #     filter_range("mean_cty", max = 22)
 #   )

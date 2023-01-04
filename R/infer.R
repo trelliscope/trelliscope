@@ -25,16 +25,16 @@ infer_state <- function(state, df, key_cols, view = NULL) {
   state2 <- state$clone()
   lyt <- state2$get("layout")
   if (is.null(lyt)) {
-    msg("No {.val layout} definition supplied{view_str}. \\
-      {.emph Using default.}")
+    msg("No default {.val layout} state supplied{view_str}. \\
+      {.emph Using nrow=2, ncol=3.}")
     # TODO: maybe use nrow(df) and panel dimensions for a better initial state
     state2$set(state_layout(nrow = 2, ncol = 3))
   }
 
   lbls <- state2$get("labels")
   if (is.null(lbls)) {
-    msg("No {.val labels} definition supplied{view_str}. \\
-      {.emph Using default.}")
+    msg("No default {.val labels} state supplied{view_str}. \\
+      {.emph Using {paste0(key_cols, collapse = ', ')}.}")
     state2$set(state_labels(key_cols))
   }
 
@@ -50,7 +50,7 @@ infer_meta <- function(disp) {
   disp2 <- disp$clone()
   def_metas <- names(disp2$get("metas"))
 
-  needs_meta <- setdiff(names(disp2$df), def_metas)
+  needs_meta <- setdiff(names(disp2$df), c(def_metas, "__PANEL_KEY__"))
   # TODO: check to see if there are geo metas and ignore the lat/long varnames
   needs_removed <- character(0)
 
@@ -76,14 +76,19 @@ infer_meta <- function(disp) {
   # 3. set it to varname
   metas <- disp2$get("metas")
   for (meta in metas) {
+    curvar <- meta$get("varname")
     lbl <- NULL
     if (is.null(meta$get("label"))) {
-      lbl <- attr(disp2$df[[meta$get("varname")]], "label")
+      lbl <- attr(disp2$df[[curvar]], "label")
       if (is.null(lbl))
-        lbl <- disp2$meta_labels[[meta$get("varname")]]
+        lbl <- disp2$meta_labels[[curvar]]
       if (is.null(lbl))
-        lbl <- meta$get("varname")
+        lbl <- curvar
       meta$set("label", lbl)
+    }
+    # also set tags if they were specified with add_meta_tags()
+    if (is.null(meta$get("tags")) && !is.null(disp2$meta_tags[[curvar]])) {
+      meta$set("label", disp2$meta_tags[[curvar]])
     }
   }
 
@@ -124,8 +129,10 @@ infer_panel_type <- function(disp) {
     }
   } else if (inherits(pnls, "img_panel")) {
       x$set("panel_type", "img")
+      x$df <- dplyr::rename(x$df, "__PANEL_KEY__" := x$panel_col)
   } else if (inherits(pnls, "iframe_panel")) {
       x$set("panel_type", "iframe")
+      x$df <- dplyr::rename(x$df, "__PANEL_KEY__" := x$panel_col)
   } else {
     assert(FALSE, "Could not infer panel type")
   }

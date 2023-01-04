@@ -11,12 +11,14 @@
 #'   it is written using [`write_display()`].
 #' @param force_plot Should the panels be forced to be plotted, even if they
 #'   have already been plotted and have not changed since the previous plotting?
+#' @param key_sig A string "signature" that represents the panels for this
+#'   display. This should not be specified unless you know what you are doing.
 #' @export
 #' @importFrom utils head
 #' @importFrom dplyr group_cols
 trelliscope <- function(
   df, name, description = name, key_cols = NULL, tags = NULL,
-  path = tempfile(), force_plot = FALSE
+  path = tempfile(), force_plot = FALSE, key_sig = NULL
 ) {
   if (inherits(df, "facet_trelliscope")) {
     # msg("
@@ -34,7 +36,7 @@ trelliscope <- function(
 
   obj <- Display$new(df = df, name = name, description = description,
     key_cols = key_cols, path = path, force_plot = force_plot,
-    panel_col = panel_col, tags = tags)
+    panel_col = panel_col, tags = tags, key_sig = key_sig)
   class(obj) <- c("R6", "trelliscope_display")
 
   obj
@@ -69,12 +71,16 @@ get_key_cols <- function(df) {
   } else {
     n <- nrow(df)
     nms <- names(df)
+    # use character columns first to find unique, then numeric
     char_cols <- which(unname(unlist(lapply(df, function(x)
       inherits(x, c("character", "factor"))))))
+    num_cols <- which(unname(unlist(lapply(df, function(x)
+      is.numeric(x)))))
     key_cols <- character(0)
-    for (ii in char_cols) {
-      if (nrow(dplyr::distinct(df[utils::head(char_cols, ii)])) == n) {
-        key_cols <- nms[utils::head(char_cols, ii)]
+    all_cols <- c(char_cols, num_cols)
+    for (ii in all_cols) {
+      if (nrow(dplyr::distinct(df[utils::head(all_cols, ii)])) == n) {
+        key_cols <- nms[utils::head(all_cols, ii)]
         break
       }
     }

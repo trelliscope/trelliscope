@@ -44,11 +44,34 @@ add_meta_labels <- function(disp, ...) {
   disp2
 }
 
+#' Specify tags for meta variables
+#' @param disp A trelliscope display object created with [`trelliscope()`].
+#' @param ... A named set of vectors of tags, where each name must correspond to
+#' one of the variables in the dataset
+#' @details This function can be useful if you don't want to go to the trouble
+#' of explicitly setting meta variable definitions but still want variable
+#' tags.
+#' @export
+add_meta_tags <- function(disp, ...) {
+  check_display_object(disp)
+  args <- list(...)
+  assert(length(names(args)) == length(args),
+    msg = "Arguments must be named")
+  names_diff <- setdiff(names(args), names(disp$df))
+  assert(length(names_diff) == 0,
+    msg = paste0("The following variables are not in the data: ",
+      paste(names_diff, collapse = ", ")))
+  disp2 <- disp$clone()
+  for (nm in names(args))
+    disp2$meta_tags[[nm]] <- args[[nm]]
+  disp2
+}
+
 #' Add a layout state specification to a trelliscope display
 #' @param disp A trelliscope display object created with [`trelliscope()`].
 #' @inheritParams state_layout
 #' @export
-set_layout <- function(disp, nrow = 1, ncol = 1, arrange = "rows", page = 1) {
+set_default_layout <- function(disp, nrow = 1, ncol = 1, arrange = "rows", page = 1) {
   check_display_object(disp)
   obj <- state_layout(nrow = nrow, ncol = ncol, arrange = arrange, page = page)
   obj$check_with_data(disp$df)
@@ -64,7 +87,7 @@ set_layout <- function(disp, nrow = 1, ncol = 1, arrange = "rows", page = 1) {
 #' @param disp A trelliscope display object created with [`trelliscope()`].
 #' @inheritParams state_labels
 #' @export
-set_labels <- function(disp, varnames) {
+set_default_labels <- function(disp, varnames) {
   check_display_object(disp)
   obj <- state_labels(varnames = varnames)
   obj$check_with_data(disp$df)
@@ -83,7 +106,7 @@ set_labels <- function(disp, varnames) {
 #' @param add Should an existing sort specification be added to? If FALSE
 #' (default), the entire sort specification will be overridden.
 #' @export
-set_sort <- function(disp, varnames, dirs = "asc", add = FALSE) {
+set_default_sort <- function(disp, varnames, dirs = "asc", add = FALSE) {
   check_display_object(disp)
   if (length(dirs) == 1)
     dirs <- rep(dirs, length(varnames))
@@ -108,7 +131,7 @@ set_sort <- function(disp, varnames, dirs = "asc", add = FALSE) {
 #' @param add Should existing filter state specifications be added to?
 #' Default is TRUE. If FALSE, the entire sort specification will be overridden.
 #' @export
-set_filters <- function(disp, ..., add = TRUE) {
+set_default_filters <- function(disp, ..., add = TRUE) {
   check_display_object(disp)
   objs <- list(...)
   disp2 <- disp$clone()

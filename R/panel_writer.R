@@ -138,12 +138,13 @@ make_svg <- function(p, file, width, height) {
   dev.off()
 }
 
-#' @importFrom ggplot2 aes_string element_blank element_rect geom_text
-#' ggplot labs scale_y_continuous theme unit
+#' @importFrom ggplot2 aes element_blank element_rect geom_text ggplot labs
+#' scale_y_continuous theme unit
 blank_image <- function(txt = "no thumbnail") {
-  ggplot2::ggplot(data = data.frame(x = 0.5, y = 0.75, label = txt)) +
-    ggplot2::geom_text(ggplot2::aes_string(
-      x = "x", y = "y", label = "label"), size = 8) +
+  dd <- data.frame(x = 0.5, y = 0.75, label = txt)
+  ggplot2::ggplot() +
+    ggplot2::geom_text(ggplot2::aes(
+      x = dd$x, y = dd$y, label = dd$label), size = 8) +
     ggplot2::labs(x = NULL, y = NULL, title = NULL) +
     ggplot2::scale_x_continuous(expand = c(0, 0), limits = c(0, 1)) +
     ggplot2::scale_y_continuous(expand = c(0, 0), limits = c(0, 1)) +

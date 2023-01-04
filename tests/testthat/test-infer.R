@@ -27,12 +27,12 @@ suppressMessages(
 test_that2("infer", {
   expect_message(
     infer(x),
-    regexp = "No \"layout\" definition supplied"
+    regexp = "No default \"layout\" state supplied"
   ) |> suppressMessages()
 
   expect_message(
     infer(x),
-    regexp = "No \"labels\" definition supplied"
+    regexp = "No default \"labels\" state supplied"
   ) |> suppressMessages()
 
   b <- x |>
@@ -40,12 +40,12 @@ test_that2("infer", {
 
   expect_message(
     a <- infer(b),
-    regexp = "No \"layout\" definition supplied for view"
+    regexp = "No default \"layout\" state supplied for view"
   ) |> suppressMessages()
 
   expect_message(
     infer(b),
-    regexp = "No \"labels\" definition supplied for view"
+    regexp = "No default \"labels\" state supplied for view"
   ) |> suppressMessages()
 
   expect_equal(

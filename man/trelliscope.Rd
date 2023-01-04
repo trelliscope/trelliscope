@@ -11,7 +11,8 @@ trelliscope(
   key_cols = NULL,
   tags = NULL,
   path = tempfile(),
-  force_plot = FALSE
+  force_plot = FALSE,
+  key_sig = NULL
 )
 }
 \arguments{
@@ -33,6 +34,9 @@ it is written using \code{\link[=write_display]{write_display()}}.}
 
 \item{force_plot}{Should the panels be forced to be plotted, even if they
 have already been plotted and have not changed since the previous plotting?}
+
+\item{key_sig}{A string "signature" that represents the panels for this
+display. This should not be specified unless you know what you are doing.}
 }
 \description{
 Instantiate a trelliscope display object

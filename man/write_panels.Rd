@@ -4,7 +4,7 @@
 \alias{write_panels}
 \title{Write panels}
 \usage{
-write_panels(disp, width = 500, height = 500, format = "png")
+write_panels(disp, width = 500, height = 500, format = "png", force = FALSE)
 }
 \arguments{
 \item{disp}{A trelliscope display object created with \code{\link[=trelliscope]{trelliscope()}}.}
@@ -15,6 +15,12 @@ write_panels(disp, width = 500, height = 500, format = "png")
 
 \item{format}{The format of the image if it is not an htmlwidget. Can be
 either "png" or "svg".}
+
+\item{force}{Should the panels be forced to be written? If \code{FALSE}, the
+content of the panel column along with the \code{width}, \code{height}, and
+\code{format} parameters will be used to determine if the panel content matches
+panels that have already been written, in which case writing the panels
+will be skipped.}
 }
 \description{
 Write panels

@@ -6,17 +6,6 @@
 # * https://r-pkgs.org/tests.html
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
-suppressPackageStartupMessages({
-  library(testthat, warn.conflicts = FALSE)
-  library(trelliscope, warn.conflicts = FALSE)
-  library(ggplot2, warn.conflicts = FALSE)
-  library(tidyr, warn.conflicts = FALSE)
-  library(dplyr, warn.conflicts = FALSE)
-  library(tidyr, warn.conflicts = FALSE)
-})
-
-test_that2 <- function(desc, code) {
-  invisible(cli::test_that_cli(desc, configs = "plain", code = code))
-}
+library(testthat)
 
 test_check("trelliscope")

@@ -1,4 +1,7 @@
 
+TODO: - Document `add_meta_tags()` - Document default
+`write_panels(..., force = FALSE)`
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # trelliscope
@@ -321,8 +324,9 @@ behaves. These include the following:
 -   `add_meta_labels()`: as an alternative to fully specifying metadata
     variable definitions, this is a convenience function to only supply
     labels for all of the variables
--   `set_labels()`, `set_layout()`, `set_sort()`, `set_filters()`:
-    specify the initial state of the appear
+-   `set_default_labels()`, `set_default_layout()`,
+    `set_default_sort()`, `set_default_filters()`: specify the initial
+    state of the display
 -   `add_view()`: add any number of pre-defined “views” that navigate
     the user to specified states of the display
 -   `add_inputs()`: specify inputs that can collect user feedback for
@@ -354,7 +358,8 @@ disp
 #> • Tags: none
 #> • Key columns: "continent" and "country"
 #> • Path:
-#>   "/var/folders/7b/thg__1xx7w98wc4rs8t3djrw0000gn/T//RtmpFMUvmk/file1325a6ed7615e"
+#>   "/var/folders/7b/thg__1xx7w98wc4rs8t3djrw0000gn/T//Rtmpo0hbmD/file164951d2bb35c"
+#> • Number of panels: 142
 #> • Panels written: no
 #> • Metadata variables that will be inferred:
 #>     ───────────────────────────────────
@@ -389,8 +394,8 @@ plot column of the data frame is an htmlwidget such as a ggplotly plot.
 ``` r
 disp <- disp |>
   write_panels(width = 800, height = 500, format = "svg")
-#> Writing panels ■■■■■■■■■■■■■■■                   46% | ETA:  2s
-#> Writing panels ■■■■■■■■■■■■■■■■■■■■■■■■■■■       88% | ETA:  1s
+#> Writing panels ■■■■■■■■■■■■■■                    43% | ETA:  3s
+#> Writing panels ■■■■■■■■■■■■■■■■■■■■■■■■          75% | ETA:  1s
 #> Writing panels ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
 ```
 
@@ -456,15 +461,16 @@ disp
 #> • Tags: none
 #> • Key columns: "continent" and "country"
 #> • Path:
-#>   "/var/folders/7b/thg__1xx7w98wc4rs8t3djrw0000gn/T//RtmpFMUvmk/file1325a6ed7615e"
+#>   "/var/folders/7b/thg__1xx7w98wc4rs8t3djrw0000gn/T//Rtmpo0hbmD/file164951d2bb35c"
+#> • Number of panels: 142
 #> • Panels written: yes
 #> • Defined metadata variables:
-#>     ────────────────────────────────────────────
-#>     name      type   label                 tags 
-#>     ────────────────────────────────────────────
-#>     mean_gdp  number Mean of annual GDP p… []   
-#>     wiki_link href   Wikipedia country pa… []   
-#>     ────────────────────────────────────────────
+#>     ─────────────────────────────────────────────────
+#>     name      type   label                      tags 
+#>     ─────────────────────────────────────────────────
+#>     mean_gdp  number Mean of annual GDP per ca… []   
+#>     wiki_link href   Wikipedia country page     []   
+#>     ─────────────────────────────────────────────────
 #> • Metadata variables that will be inferred:
 #>     ───────────────────────────────────
 #>     name         `inferred type` label 
@@ -506,15 +512,16 @@ disp
 #> • Tags: none
 #> • Key columns: "continent" and "country"
 #> • Path:
-#>   "/var/folders/7b/thg__1xx7w98wc4rs8t3djrw0000gn/T//RtmpFMUvmk/file1325a6ed7615e"
+#>   "/var/folders/7b/thg__1xx7w98wc4rs8t3djrw0000gn/T//Rtmpo0hbmD/file164951d2bb35c"
+#> • Number of panels: 142
 #> • Panels written: yes
 #> • Defined metadata variables:
-#>     ────────────────────────────────────────────
-#>     name      type   label                 tags 
-#>     ────────────────────────────────────────────
-#>     mean_gdp  number Mean of annual GDP p… []   
-#>     wiki_link href   Wikipedia country pa… []   
-#>     ────────────────────────────────────────────
+#>     ─────────────────────────────────────────────────
+#>     name      type   label                      tags 
+#>     ─────────────────────────────────────────────────
+#>     mean_gdp  number Mean of annual GDP per ca… []   
+#>     wiki_link href   Wikipedia country page     []   
+#>     ─────────────────────────────────────────────────
 #> • Metadata variables that will be inferred:
 #>     ───────────────────────────────────────────────────────────────────
 #>     name         `inferred type` label                                 
@@ -532,39 +539,39 @@ labels are not provided, they will be set to the variable name. In the
 case of these two varibles, the variable name is clear enough to not
 need to specify the labels.
 
-#### `set_labels()`
+#### `set_default_labels()`
 
 By default, the “key columns” will be shown as labels. If we’d like to
 change what labels are shown when the display is opened, we can use
-`set_labels()`, e.g.:
+`set_default_labels()`, e.g.:
 
 ``` r
 disp <- disp |>
-  set_labels(c("country", "continent", "wiki_link"))
+  set_default_labels(c("country", "continent", "wiki_link"))
 ```
 
-#### `set_layout()`
+#### `set_default_layout()`
 
 We can also set the default panel layout:
 
 ``` r
 disp <- disp |>
-  set_layout(nrow = 3, ncol = 5)
+  set_default_layout(nrow = 3, ncol = 5)
 ```
 
-#### `set_sort()`
+#### `set_default_sort()`
 
-We can set the default sort order with `set_sort()`:
+We can set the default sort order with `set_default_sort()`:
 
 ``` r
 disp <- disp |>
-  set_sort(c("continent", "mean_lifeexp"), dir = c("asc", "desc"))
+  set_default_sort(c("continent", "mean_lifeexp"), dir = c("asc", "desc"))
 ```
 
-#### `set_filters()`
+#### `set_default_filters()`
 
-We can set the default filter state with `set_filters()`. Currently
-there are two different kinds of filters:
+We can set the default filter state with `set_default_filters()`.
+Currently there are two different kinds of filters:
 
 -   `filter_range(varname, min = ..., max = ...)`: works with numeric,
     date, or datetime variables
@@ -573,7 +580,7 @@ there are two different kinds of filters:
 
 ``` r
 disp <- disp |>
-  set_filters(
+  set_default_filters(
     filter_string("continent", values = "Africa"),
     filter_range("mean_lifeexp", max = 50)
   )
@@ -658,10 +665,10 @@ specified before with `write_display()`.
 write_display(disp)
 #> ℹ Meta definitions inferred for variables "country", "continent",
 #>   "mean_lifeexp", and "min_lifeexp"
-#> ℹ No "layout" definition supplied for view 'Countries with high life expectancy
-#>   (min >= 60)'. Using default.
-#> ℹ No "labels" definition supplied for view 'Countries with high life expectancy
-#>   (min >= 60)'. Using default.
+#> ℹ No default "layout" state supplied for view 'Countries with high life
+#>   expectancy (min >= 60)'. Using nrow=2, ncol=3.
+#> ℹ No default "labels" state supplied for view 'Countries with high life
+#>   expectancy (min >= 60)'. Using continent, country.
 ```
 
 list.files(disp\$path)
@@ -677,15 +684,16 @@ we have been building:
 disp |> as_json()
 #> ℹ Meta definitions inferred for variables "country", "continent",
 #>   "mean_lifeexp", and "min_lifeexp"
-#> ℹ No "layout" definition supplied for view 'Countries with high life expectancy
-#>   (min >= 60)'. Using default.
-#> ℹ No "labels" definition supplied for view 'Countries with high life expectancy
-#>   (min >= 60)'. Using default.
+#> ℹ No default "layout" state supplied for view 'Countries with high life
+#>   expectancy (min >= 60)'. Using nrow=2, ncol=3.
+#> ℹ No default "labels" state supplied for view 'Countries with high life
+#>   expectancy (min >= 60)'. Using continent, country.
 #> {
 #>   "name": "life expectancy",
 #>   "description": "life expectancy",
 #>   "tags": [],
 #>   "key_cols": ["continent", "country"],
+#>   "key_sig": "1258af3315ef6667a81ac39dc24da591",
 #>   "metas": [
 #>     {
 #>       "locale": true,
@@ -836,6 +844,7 @@ disp |> as_json()
 #>       "name": "looks_correct"
 #>     }
 #>   ],
-#>   "panel_type": "img"
+#>   "panel_type": "img",
+#>   "panel_format": "svg"
 #> }
 ```

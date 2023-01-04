@@ -163,6 +163,8 @@ export interface IView {
 /* display                                                */
 /* ------------------------------------------------------ */
 
+export type PanelFormat = 'apng' | 'avif' | 'gif' | 'jpg' | 'jpeg' | 'jfif' | 'pjpeg' | 'pjp' | 'png' | 'svg' | 'webp';
+
 export type PanelType = 'img' | 'iframe' | 'REST';
 
 export interface IDisplay {
@@ -170,11 +172,13 @@ export interface IDisplay {
   description: string;
   tags: string[];
   key_cols: string[];
+  key_sig: string;
   metas: IMeta[];
   inputs: IInput[];
   state: IDisplayState;
   views: IView[];
   panel_type: PanelType;
+  panel_format?: PanelFormat;
 }
 
 /* ------------------------------------------------------ */
