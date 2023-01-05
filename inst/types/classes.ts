@@ -670,6 +670,7 @@ export class Display implements IDisplay {
   views: IView[];
   panel_type: PanelType;
   panel_format?: PanelFormat;
+  thumbnail_url: string;
   constructor(
     {
       name,
@@ -683,6 +684,7 @@ export class Display implements IDisplay {
       views,
       panel_type,
       panel_format,
+      thumbnail_url,
     } : {
       name: string,
       description?: string,
@@ -695,6 +697,7 @@ export class Display implements IDisplay {
       views?: IView[] | undefined,
       panel_type: PanelType,
       panel_format: PanelFormat | undefined,
+      thumbnail_url: string,
     }
   ) {
     this.name = name;
@@ -710,6 +713,7 @@ export class Display implements IDisplay {
     if (panel_format !== undefined) {
       this.panel_format = panel_format;
     }
+    this.thumbnail_url = thumbnail_url;
   }
 }
 
@@ -721,20 +725,28 @@ export class DisplayListItem implements IDisplayListItem {
   name: string;
   description: string;
   tags: string[];
+  key_sig: string;
+  thumbnail_url: string;
   constructor(
     {
       name,
       description,
       tags,
+      key_sig,
+      thumbnail_url,
     } : {
       name: string,
       description?: string,
       tags?: string[],
+      key_sig: string,
+      thumbnail_url: string,
     }
   ) {
     this.name = name;
     this.description = description === undefined ? name : description;
     this.tags = tags === undefined ? [] : tags;
+    this.key_sig = key_sig;
+    this.thumbnail_url = thumbnail_url;
   }
 }
 

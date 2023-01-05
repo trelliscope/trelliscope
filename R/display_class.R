@@ -96,7 +96,8 @@ Display <- R6::R6Class(
         views = unname(lapply(private$views, function(x) x$as_list())),
         inputs = unname(lapply(private$inputs, function(x) x$as_list())),
         panel_type = private$panel_type,
-        panel_format = private$panel_format
+        panel_format = private$panel_format,
+        thumbnail_url = private$thumbnail_url
       )
     },
     as_json = function(pretty = TRUE) {
@@ -135,7 +136,8 @@ Display <- R6::R6Class(
     state = NULL,
     views = list(),
     panel_type = NULL,
-    panel_format = NULL
+    panel_format = NULL,
+    thumbnail_url = NULL
   )
 )
 

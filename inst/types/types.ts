@@ -179,6 +179,7 @@ export interface IDisplay {
   views: IView[];
   panel_type: PanelType;
   panel_format?: PanelFormat;
+  thumbnail_url: string;
 }
 
 /* ------------------------------------------------------ */
@@ -189,6 +190,8 @@ export interface IDisplayListItem {
   name: string;
   description: string;
   tags: string[];
+  key_sig: string;
+  thumbnail_url: string;
 }
 
 /* ------------------------------------------------------ */

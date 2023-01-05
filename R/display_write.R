@@ -27,12 +27,30 @@ write_display <- function(disp, force_write = FALSE, jsonp = TRUE) {
 
   x <- infer(x)
   check_panels(x)
+  get_thumbnail_url(x)
 
   write_display_info(x, jsonp, cfg$id)
   write_meta_data(x, jsonp, cfg$id)
   update_display_list(x$path, jsonp, cfg$id)
 
   invisible(x)
+}
+
+get_thumbnail_url <- function(x) {
+  # don't need to clone x because we are already working with a cloned object
+  # outside the user's session
+  format <- x$get("panel_format")
+  key <- utils::head(x$df[["__PANEL_KEY__"]], 1)
+
+  # these panels were created in R/trelliscope
+  if (!is.null(format)) {
+    nm <- sanitize(x$get("name"))
+    thurl <- paste0("displays/", nm, "/panels/", key, ".", format)
+  } else {
+    thurl <- key
+  }
+
+  x$set("thumbnail_url", thurl)
 }
 
 write_meta_data <- function(x, jsonp, id) {
@@ -130,7 +148,7 @@ update_display_list <- function(app_path, jsonp = TRUE, id) {
     dir.exists(f) && file.exists(file.path(f, dispfile)))))
   lst <- lapply(ff[idx], function(f) {
     cur <- read_json_p(file.path(f, dispfile))
-    cur[c("name", "description", "tags", "key_sig")]
+    cur[c("name", "description", "tags", "key_sig", "thumbnail_url")]
   })
   txt <- get_jsonp_text(jsonp, paste0("__loadDisplayList__", id))
   cat(paste0(txt$st, as.character(to_json(lst, pretty = TRUE)), txt$nd),
