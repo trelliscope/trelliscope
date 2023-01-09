@@ -13,7 +13,7 @@ write_display <- function(disp, force_write = FALSE, jsonp = TRUE) {
     dir.create(disp$get_display_path(), recursive = TRUE)
 
   cfg <- check_app_config(disp$path, jsonp)
-  cfg_jsonp <- cfg$data_type == "jsonp"
+  cfg_jsonp <- cfg$datatype == "jsonp"
   if (cfg_jsonp != jsonp) {
     jsonp <- cfg_jsonp
     message("Using jsonp=", jsonp)
@@ -120,7 +120,7 @@ check_app_config <- function(app_path, jsonp) {
   } else {
     cfg <- list(
       name = "Trelliscope App",
-      data_type = ifelse(jsonp, "jsonp", "json"),
+      datatype = ifelse(jsonp, "jsonp", "json"),
       id = substr(rlang::hash(Sys.time()), 1, 8)
     )
     txt <- get_jsonp_text(jsonp, paste0("__loadAppConfig__", cfg$id))
