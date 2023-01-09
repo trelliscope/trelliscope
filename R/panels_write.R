@@ -49,10 +49,10 @@ write_panels <- function(
   cur_hash <- rlang::hash(c(height, width, format, df[[panel_col]]))
 
   disp2$df[["__PANEL_KEY__"]] <- panel_keys
-  if (is.null(disp2$get("key_sig")))
-    disp2$set("key_sig", rlang::hash(sort(panel_keys)))
+  if (is.null(disp2$get("keysig")))
+    disp2$set("keysig", rlang::hash(sort(panel_keys)))
 
-  disp2$set("panel_format", format)
+  disp2$set("panelformat", format)
 
   if (!force && file.exists(file.path(panel_path, "hash"))) {
     prev_hash <- readLines(file.path(panel_path, "hash"), warn = FALSE)[1]
@@ -89,8 +89,8 @@ write_panels <- function(
 }
 
 get_panel_paths_from_keys <- function(disp, format) {
-  key_cols <- disp$get("key_cols")
-  apply(disp$df[, key_cols], 1,
+  keycols <- disp$get("keycols")
+  apply(disp$df[, keycols], 1,
     function(df) sanitize(paste(df, collapse = "_")))
   # TODO: make sure that when sanitized, keys are still unique
 }

@@ -318,8 +318,8 @@ we can call that give us better control over how our display looks and
 behaves. These include the following:
 
 -   `write_panels()`: allows finer control over how panels are written
-    (e.g. plot dimensions, file format, etc.)
--   `add_meta_defs()`: specify metadata variable definitions (e.g. plain
+    (e.g. plot dimensions, file format, etc.)
+-   `add_meta_defs()`: specify metadata variable definitions (e.g. plain
     text variable descriptions, types, tags)
 -   `add_meta_labels()`: as an alternative to fully specifying metadata
     variable definitions, this is a convenience function to only supply
@@ -358,7 +358,7 @@ disp
 #> • Tags: none
 #> • Key columns: "continent" and "country"
 #> • Path:
-#>   "/var/folders/7b/thg__1xx7w98wc4rs8t3djrw0000gn/T//Rtmpo0hbmD/file164951d2bb35c"
+#>   "/var/folders/7b/thg__1xx7w98wc4rs8t3djrw0000gn/T//Rtmpbdtikg/file498e2c304d13"
 #> • Number of panels: 142
 #> • Panels written: no
 #> • Metadata variables that will be inferred:
@@ -394,8 +394,8 @@ plot column of the data frame is an htmlwidget such as a ggplotly plot.
 ``` r
 disp <- disp |>
   write_panels(width = 800, height = 500, format = "svg")
-#> Writing panels ■■■■■■■■■■■■■■                    43% | ETA:  3s
-#> Writing panels ■■■■■■■■■■■■■■■■■■■■■■■■          75% | ETA:  1s
+#> Writing panels ■■■■■■■■■■■■■                     39% | ETA:  3s
+#> Writing panels ■■■■■■■■■■■■■■■■■■■               60% | ETA:  2s
 #> Writing panels ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
 ```
 
@@ -461,7 +461,7 @@ disp
 #> • Tags: none
 #> • Key columns: "continent" and "country"
 #> • Path:
-#>   "/var/folders/7b/thg__1xx7w98wc4rs8t3djrw0000gn/T//Rtmpo0hbmD/file164951d2bb35c"
+#>   "/var/folders/7b/thg__1xx7w98wc4rs8t3djrw0000gn/T//Rtmpbdtikg/file498e2c304d13"
 #> • Number of panels: 142
 #> • Panels written: yes
 #> • Defined metadata variables:
@@ -512,7 +512,7 @@ disp
 #> • Tags: none
 #> • Key columns: "continent" and "country"
 #> • Path:
-#>   "/var/folders/7b/thg__1xx7w98wc4rs8t3djrw0000gn/T//Rtmpo0hbmD/file164951d2bb35c"
+#>   "/var/folders/7b/thg__1xx7w98wc4rs8t3djrw0000gn/T//Rtmpbdtikg/file498e2c304d13"
 #> • Number of panels: 142
 #> • Panels written: yes
 #> • Defined metadata variables:
@@ -692,8 +692,8 @@ disp |> as_json()
 #>   "name": "life expectancy",
 #>   "description": "life expectancy",
 #>   "tags": [],
-#>   "key_cols": ["continent", "country"],
-#>   "key_sig": "1258af3315ef6667a81ac39dc24da591",
+#>   "keycols": ["continent", "country"],
+#>   "keysig": "1258af3315ef6667a81ac39dc24da591",
 #>   "metas": [
 #>     {
 #>       "locale": true,
@@ -844,7 +844,8 @@ disp |> as_json()
 #>       "name": "looks_correct"
 #>     }
 #>   ],
-#>   "panel_type": "img",
-#>   "panel_format": "svg"
+#>   "paneltype": "img",
+#>   "panelformat": "svg",
+#>   "thumbnailurl": null
 #> }
 ```

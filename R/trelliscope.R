@@ -32,11 +32,11 @@ trelliscope <- function(
 
   panel_col <- check_and_get_panel_col(df)
   if (is.null(key_cols))
-    key_cols <- get_key_cols(df)
+    key_cols <- get_keycols(df)
 
   obj <- Display$new(df = df, name = name, description = description,
-    key_cols = key_cols, path = path, force_plot = force_plot,
-    panel_col = panel_col, tags = tags, key_sig = key_sig)
+    keycols = key_cols, path = path, force_plot = force_plot,
+    panel_col = panel_col, tags = tags, keysig = key_sig)
   class(obj) <- c("R6", "trelliscope_display")
 
   obj
@@ -59,14 +59,14 @@ check_and_get_panel_col <- function(df) {
   names(panel_col_idx)
 }
 
-get_key_cols <- function(df) {
+get_keycols <- function(df) {
   if (!is.null(attr(df, "facet_cols"))) {
-    key_cols <- attr(df, "facet_cols")
-  } else if (!is.null(attr(df, "key_cols"))) {
-    key_cols <- attr(df, "key_cols")
+    keycols <- attr(df, "facet_cols")
+  } else if (!is.null(attr(df, "keycols"))) {
+    keycols <- attr(df, "keycols")
   } else if (inherits(df, "grouped_df")) {
     idx <- dplyr::group_cols(data = df)
-    key_cols <- names(df)[idx]
+    keycols <- names(df)[idx]
     df <- dplyr::ungroup(df)
   } else {
     n <- nrow(df)
@@ -76,21 +76,21 @@ get_key_cols <- function(df) {
       inherits(x, c("character", "factor"))))))
     num_cols <- which(unname(unlist(lapply(df, function(x)
       is.numeric(x)))))
-    key_cols <- character(0)
+    keycols <- character(0)
     all_cols <- c(char_cols, num_cols)
     for (ii in all_cols) {
       if (nrow(dplyr::distinct(df[utils::head(all_cols, ii)])) == n) {
-        key_cols <- nms[utils::head(all_cols, ii)]
+        keycols <- nms[utils::head(all_cols, ii)]
         break
       }
     }
-    assert(length(key_cols) > 0,
+    assert(length(keycols) > 0,
       "Could not find columns of the data that uniquely define each row.")
   }
 
   if (is.null(attr(df, "facet_cols")))
-    msg("Using the variable{?s} {.val {key_cols}} \\
+    msg("Using the variable{?s} {.val {keycols}} \\
       to uniquely identify each row of the data.")
 
-  key_cols
+  keycols
 }

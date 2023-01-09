@@ -14,8 +14,8 @@ Display <- R6::R6Class(
     # of them here so that we can apply them just before writing out the object
     meta_tags = list(),
     initialize = function(
-      df, name, description, tags, key_cols, path, force_plot, panel_col,
-      key_sig = NULL
+      df, name, description, tags, keycols, path, force_plot, panel_col,
+      keysig = NULL
     ) {
       assert(inherits(df, "data.frame"),
         msg = "Argument 'df' must be a data frame")
@@ -28,17 +28,17 @@ Display <- R6::R6Class(
       check_character(path, "path")
       check_scalar(force_plot, "force_plot")
       check_logical(force_plot, "force_plot")
-      check_character(key_cols, "key_cols")
-      if (!is.null(key_sig)) {
-        check_scalar(key_sig, "key_sig")
-        check_character(key_sig, "key_sig")
+      check_character(keycols, "keycols")
+      if (!is.null(keysig)) {
+        check_scalar(keysig, "keysig")
+        check_character(keysig, "keysig")
       }
       check_atomic(tags, "tags")
       private$name <- name
       private$description <- description
       private$tags <- I(as.character(tags))
-      private$key_cols <- key_cols
-      private$key_sig <- key_sig
+      private$keycols <- keycols
+      private$keysig <- keysig
       self$path <- path
       self$force_plot <- force_plot
       self$panel_col <- panel_col
@@ -89,15 +89,15 @@ Display <- R6::R6Class(
         name = private$name,
         description = private$description,
         tags = private$tags,
-        key_cols = I(private$key_cols),
-        key_sig = private$key_sig,
+        keycols = I(private$keycols),
+        keysig = private$keysig,
         metas = unname(lapply(private$metas, function(x) x$as_list())),
         state = private$state$as_list(),
         views = unname(lapply(private$views, function(x) x$as_list())),
         inputs = unname(lapply(private$inputs, function(x) x$as_list())),
-        panel_type = private$panel_type,
-        panel_format = private$panel_format,
-        thumbnail_url = private$thumbnail_url
+        paneltype = private$paneltype,
+        panelformat = private$panelformat,
+        thumbnailurl = private$thumbnailurl
       )
     },
     as_json = function(pretty = TRUE) {
@@ -112,7 +112,7 @@ Display <- R6::R6Class(
           "{.strong Tags}: {.emph none}",
           "{.strong Tags}: {.val {private$tags}}"
         ),
-        "*" = "{.strong Key columns}: {.val {private$key_cols}}"
+        "*" = "{.strong Key columns}: {.val {private$keycols}}"
       ))
       cli::cli_div(theme = list(.val = list(color = "darkgray")))
       cli::cli_bullets(c("*" = "{.strong Path}: {.val {self$path}}"))
@@ -129,15 +129,15 @@ Display <- R6::R6Class(
     name = NULL,
     description = NULL,
     tags = NULL,
-    key_cols = NULL,
-    key_sig = NULL,
+    keycols = NULL,
+    keysig = NULL,
     metas = list(),
     inputs = list(),
     state = NULL,
     views = list(),
-    panel_type = NULL,
-    panel_format = NULL,
-    thumbnail_url = NULL
+    paneltype = NULL,
+    panelformat = NULL,
+    thumbnailurl = NULL
   )
 )
 

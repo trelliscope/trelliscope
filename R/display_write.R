@@ -39,7 +39,7 @@ write_display <- function(disp, force_write = FALSE, jsonp = TRUE) {
 get_thumbnail_url <- function(x) {
   # don't need to clone x because we are already working with a cloned object
   # outside the user's session
-  format <- x$get("panel_format")
+  format <- x$get("panelformat")
   key <- utils::head(x$df[["__PANEL_KEY__"]], 1)
 
   # these panels were created in R/trelliscope
@@ -50,7 +50,7 @@ get_thumbnail_url <- function(x) {
     thurl <- key
   }
 
-  x$set("thumbnail_url", thurl)
+  x$set("thumbnailurl", thurl)
 }
 
 write_meta_data <- function(x, jsonp, id) {
@@ -77,7 +77,7 @@ check_panels <- function(x) {
   if (inherits(pnls, "trelliscope_panels")) {
     ff <- list.files(panel_path)
     ff <- tools::file_path_sans_ext(ff)
-    keys <- apply(x$df[x$get("key_cols")], 1,
+    keys <- apply(x$df[x$get("keycols")], 1,
       function(x) sanitize(paste(x, collapse = "_")))
     extra <- setdiff(keys, ff)
     assert(length(extra) == 0,
@@ -148,7 +148,7 @@ update_display_list <- function(app_path, jsonp = TRUE, id) {
     dir.exists(f) && file.exists(file.path(f, dispfile)))))
   lst <- lapply(ff[idx], function(f) {
     cur <- read_json_p(file.path(f, dispfile))
-    cur[c("name", "description", "tags", "key_sig", "thumbnail_url")]
+    cur[c("name", "description", "tags", "keysig", "thumbnailurl")]
   })
   txt <- get_jsonp_text(jsonp, paste0("__loadDisplayList__", id))
   cat(paste0(txt$st, as.character(to_json(lst, pretty = TRUE)), txt$nd),

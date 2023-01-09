@@ -87,7 +87,7 @@ test_that2("trelliscope printing", {
   ))
 })
 
-# TODO: test key_sig:
+# TODO: test keysig:
 # - If it is explicitly specified in trelliscope(), make sure it isn't overridden
 # - Make sure it is set even when not calling write_display or panels already written
 

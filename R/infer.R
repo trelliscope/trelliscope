@@ -4,12 +4,12 @@ infer <- function(disp) {
   disp <- infer_meta(disp)
   disp2 <- disp$clone()
   st <- disp2$get("state")
-  newst <- infer_state(st, disp$df, disp$get("key_cols"))
+  newst <- infer_state(st, disp$df, disp$get("keycols"))
   disp2$set_state(newst)
   for (view in disp2$get("views")) {
     view2 <- view$clone()
     st <- view2$get("state")
-    newst <- infer_state(st, disp$df, disp$get("key_cols"), view2$get("name"))
+    newst <- infer_state(st, disp$df, disp$get("keycols"), view2$get("name"))
     view2$set_state(newst)
     disp2$set_view(view2, verbose = FALSE)
   }
@@ -17,7 +17,7 @@ infer <- function(disp) {
   disp2
 }
 
-infer_state <- function(state, df, key_cols, view = NULL) {
+infer_state <- function(state, df, keycols, view = NULL) {
   view_str <- ""
   if (!is.null(view))
     view_str <- paste0(" for view '", view, "'")
@@ -34,8 +34,8 @@ infer_state <- function(state, df, key_cols, view = NULL) {
   lbls <- state2$get("labels")
   if (is.null(lbls)) {
     msg("No default {.val labels} state supplied{view_str}. \\
-      {.emph Using {paste0(key_cols, collapse = ', ')}.}")
-    state2$set(state_labels(key_cols))
+      {.emph Using {paste0(keycols, collapse = ', ')}.}")
+    state2$set(state_labels(keycols))
   }
 
   state2
@@ -123,15 +123,15 @@ infer_panel_type <- function(disp) {
   if (inherits(pnls, "trelliscope_panels")) {
     panel1 <- pnls[[1]]
     if (inherits(panel1, "htmlwidget")) {
-      x$set("panel_type", "iframe")
+      x$set("paneltype", "iframe")
     } else  {
-      x$set("panel_type", "img")
+      x$set("paneltype", "img")
     }
   } else if (inherits(pnls, "img_panel")) {
-      x$set("panel_type", "img")
+      x$set("paneltype", "img")
       x$df <- dplyr::rename(x$df, "__PANEL_KEY__" := x$panel_col)
   } else if (inherits(pnls, "iframe_panel")) {
-      x$set("panel_type", "iframe")
+      x$set("paneltype", "iframe")
       x$df <- dplyr::rename(x$df, "__PANEL_KEY__" := x$panel_col)
   } else {
     assert(FALSE, "Could not infer panel type")

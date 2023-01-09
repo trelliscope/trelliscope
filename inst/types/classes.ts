@@ -662,58 +662,58 @@ export class Display implements IDisplay {
   name: string;
   description: string;
   tags: string[];
-  key_cols: string[];
-  key_sig: string;
+  keycols: string[];
+  keysig: string;
   metas: IMeta[];
   inputs: IInput[];
   state: IDisplayState;
   views: IView[];
-  panel_type: PanelType;
-  panel_format?: PanelFormat;
-  thumbnail_url: string;
+  paneltype: PanelType;
+  panelformat?: PanelFormat;
+  thumbnailurl: string;
   constructor(
     {
       name,
       description,
       tags,
-      key_cols,
-      key_sig,
+      keycols,
+      keysig,
       metas,
       inputs,
       state,
       views,
-      panel_type,
-      panel_format,
-      thumbnail_url,
+      paneltype,
+      panelformat,
+      thumbnailurl,
     } : {
       name: string,
       description?: string,
       tags?: string[],
-      key_cols: string[],
-      key_sig: string,
+      keycols: string[],
+      keysig: string,
       metas: IMeta[],
       inputs?: IInput[] | undefined,
       state: IDisplayState,
       views?: IView[] | undefined,
-      panel_type: PanelType,
-      panel_format: PanelFormat | undefined,
-      thumbnail_url: string,
+      paneltype: PanelType,
+      panelformat: PanelFormat | undefined,
+      thumbnailurl: string,
     }
   ) {
     this.name = name;
     this.description = description === undefined ? name : description;
     this.tags = tags === undefined ? [] : tags;
-    this.key_cols = key_cols;
-    this.key_sig = key_sig;
+    this.keycols = keycols;
+    this.keysig = keysig;
     this.metas = metas;
     this.inputs = inputs === undefined ? [] : inputs;
     this.state = state;
     this.views = views === undefined ? [] : views;
-    this.panel_type = panel_type;
-    if (panel_format !== undefined) {
-      this.panel_format = panel_format;
+    this.paneltype = paneltype;
+    if (panelformat !== undefined) {
+      this.panelformat = panelformat;
     }
-    this.thumbnail_url = thumbnail_url;
+    this.thumbnailurl = thumbnailurl;
   }
 }
 
@@ -725,28 +725,28 @@ export class DisplayListItem implements IDisplayListItem {
   name: string;
   description: string;
   tags: string[];
-  key_sig: string;
-  thumbnail_url: string;
+  keysig: string;
+  thumbnailurl: string;
   constructor(
     {
       name,
       description,
       tags,
-      key_sig,
-      thumbnail_url,
+      keysig,
+      thumbnailurl,
     } : {
       name: string,
       description?: string,
       tags?: string[],
-      key_sig: string,
-      thumbnail_url: string,
+      keysig: string,
+      thumbnailurl: string,
     }
   ) {
     this.name = name;
     this.description = description === undefined ? name : description;
     this.tags = tags === undefined ? [] : tags;
-    this.key_sig = key_sig;
-    this.thumbnail_url = thumbnail_url;
+    this.keysig = keysig;
+    this.thumbnailurl = thumbnailurl;
   }
 }
 
@@ -758,21 +758,21 @@ export class DisplayListItem implements IDisplayListItem {
 
 export class Config implements IConfig {
   name: string;
-  data_type: AppDataType;
+  datatype: AppDataType;
   id: string;
   constructor(
     {
       name,
-      data_type,
+      datatype,
       id,
     } : {
       name: string;
-      data_type: AppDataType;
+      datatype: AppDataType;
       id: string;
     }
   ) {
     this.name = name;
-    this.data_type = data_type;
+    this.datatype = datatype;
     this.id = id;
   }
 }

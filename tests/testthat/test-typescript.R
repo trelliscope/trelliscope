@@ -190,7 +190,7 @@ test_that2("typescript states comparison", {
 
 # const displ = new Display({
 #   name: 'test display',
-#   key_cols: ['a', 'b'],
+#   keycols: ['a', 'b'],
 #   metas: [
 #     new StringMeta({ varname = 'stringvar' }),
 #     new DateMeta({ varname = 'datevar' })
