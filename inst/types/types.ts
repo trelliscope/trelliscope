@@ -56,6 +56,23 @@ export interface IGraphMeta extends IMeta {
 /* inputs                                                 */
 /* ------------------------------------------------------ */
 
+// how the inputs will be stored (client side doesn't have any properties)
+export interface IInputClientSideStorage {
+  type: "localStorage"
+}
+
+// how the inputs will be relayed back to the creator of the display
+export interface IInputEmailFeedback {
+  emailAddress: string;
+  includeMetaVars: string[];
+}
+
+export interface IInputs {
+  inputs: IInput[];
+  storageInterface: IInputClientSideStorage;
+  feedbackInterface: IInputEmailFeedback;
+}
+
 export type InputType = 'radio' | 'checkbox' | 'select' | 'multiselect' | 'text' | 'number';
 
 export interface IInput {
@@ -174,7 +191,7 @@ export interface IDisplay {
   keycols: string[];
   keysig: string;
   metas: IMeta[];
-  inputs: IInput[];
+  inputs: IInputs | null;
   state: IDisplayState;
   views: IView[];
   paneltype: PanelType;
