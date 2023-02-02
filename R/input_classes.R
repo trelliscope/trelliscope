@@ -70,9 +70,8 @@ Inputs <- R6::R6Class("Inputs",
       nm <- obj$get("name")
       if (!is.null(private$inputs[[nm]])) {
         msg("Overwriting input '{nm}'")
-      } else {
-        private$inputs[[nm]] <- obj
       }
+      private$inputs[[nm]] <- obj
     }
   ),
   private = list(
