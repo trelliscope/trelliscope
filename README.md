@@ -25,6 +25,7 @@ You can install the development version of trelliscope from
 
 ``` r
 # install.packages("devtools")
+# load_all()
 devtools::install_github("trelliscope/trelliscope")
 ```
 
@@ -318,8 +319,8 @@ we can call that give us better control over how our display looks and
 behaves. These include the following:
 
 -   `write_panels()`: allows finer control over how panels are written
-    (e.g. plot dimensions, file format, etc.)
--   `add_meta_defs()`: specify metadata variable definitions (e.g. plain
+    (e.g. plot dimensions, file format, etc.)
+-   `add_meta_defs()`: specify metadata variable definitions (e.g. plain
     text variable descriptions, types, tags)
 -   `add_meta_labels()`: as an alternative to fully specifying metadata
     variable definitions, this is a convenience function to only supply
@@ -358,7 +359,7 @@ disp
 #> • Tags: none
 #> • Key columns: "continent" and "country"
 #> • Path:
-#>   "/var/folders/7b/thg__1xx7w98wc4rs8t3djrw0000gn/T//Rtmpbdtikg/file498e2c304d13"
+#>   "/var/folders/7b/thg__1xx7w98wc4rs8t3djrw0000gn/T//RtmpkwHX8B/file475673ed1779"
 #> • Number of panels: 142
 #> • Panels written: no
 #> • Metadata variables that will be inferred:
@@ -394,8 +395,8 @@ plot column of the data frame is an htmlwidget such as a ggplotly plot.
 ``` r
 disp <- disp |>
   write_panels(width = 800, height = 500, format = "svg")
-#> Writing panels ■■■■■■■■■■■■■                     39% | ETA:  3s
-#> Writing panels ■■■■■■■■■■■■■■■■■■■               60% | ETA:  2s
+#> Writing panels ■■■■■■■                           21% | ETA:  4s
+#> Writing panels ■■■■■■■■■■■■■■■■■■■■■■■■          76% | ETA:  1s
 #> Writing panels ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
 ```
 
@@ -461,7 +462,7 @@ disp
 #> • Tags: none
 #> • Key columns: "continent" and "country"
 #> • Path:
-#>   "/var/folders/7b/thg__1xx7w98wc4rs8t3djrw0000gn/T//Rtmpbdtikg/file498e2c304d13"
+#>   "/var/folders/7b/thg__1xx7w98wc4rs8t3djrw0000gn/T//RtmpkwHX8B/file475673ed1779"
 #> • Number of panels: 142
 #> • Panels written: yes
 #> • Defined metadata variables:
@@ -512,7 +513,7 @@ disp
 #> • Tags: none
 #> • Key columns: "continent" and "country"
 #> • Path:
-#>   "/var/folders/7b/thg__1xx7w98wc4rs8t3djrw0000gn/T//Rtmpbdtikg/file498e2c304d13"
+#>   "/var/folders/7b/thg__1xx7w98wc4rs8t3djrw0000gn/T//RtmpkwHX8B/file475673ed1779"
 #> • Number of panels: 142
 #> • Panels written: yes
 #> • Defined metadata variables:
@@ -653,7 +654,8 @@ disp <- disp |>
       width = 100, height = 6),
     input_radio(name = "looks_correct",
       label = "Does the data look correct?", options = c("no", "yes"))
-  )
+  ) |>
+  add_input_email("johndoe123@fakemail.net")
 ```
 
 #### Output
@@ -827,25 +829,35 @@ disp |> as_json()
 #>       }
 #>     }
 #>   ],
-#>   "inputs": [
-#>     {
-#>       "height": 6,
-#>       "width": 100,
-#>       "type": "text",
-#>       "active": true,
-#>       "label": "Comments about this panel",
-#>       "name": "comments"
+#>   "inputs": {
+#>     "inputs": [
+#>       {
+#>         "height": 6,
+#>         "width": 100,
+#>         "type": "text",
+#>         "active": true,
+#>         "label": "Comments about this panel",
+#>         "name": "comments"
+#>       },
+#>       {
+#>         "options": ["no", "yes"],
+#>         "type": "radio",
+#>         "active": true,
+#>         "label": "Does the data look correct?",
+#>         "name": "looks_correct"
+#>       }
+#>     ],
+#>     "storageInterface": {
+#>       "type": "localStorage"
 #>     },
-#>     {
-#>       "options": ["no", "yes"],
-#>       "type": "radio",
-#>       "active": true,
-#>       "label": "Does the data look correct?",
-#>       "name": "looks_correct"
+#>     "feedbackInterface": {
+#>       "feedbackEmail": "johndoe123@fakemail.net",
+#>       "includeMetaVars": []
 #>     }
-#>   ],
+#>   },
 #>   "paneltype": "img",
 #>   "panelformat": "svg",
+#>   "panelaspect": 1.6,
 #>   "thumbnailurl": null
 #> }
 ```

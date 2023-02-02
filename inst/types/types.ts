@@ -196,6 +196,7 @@ export interface IDisplay {
   views: IView[];
   paneltype: PanelType;
   panelformat?: PanelFormat;
+  panelaspect: number,
   thumbnailurl: string;
 }
 

@@ -5,3 +5,5 @@
 ^codecov\.yml$
 ^inst/types/node_modules$
 ^data-raw$
+^inst/htmlwidgets/lib/trelliscope_widget/css/.*\.map$
+^inst/htmlwidgets/lib/trelliscope_widget/js/.*\.map$

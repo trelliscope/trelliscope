@@ -56,6 +56,11 @@ check_numeric <- function(x, name, err_fn = paste0) {
     msg = err_fn("{.val {name}} must be numeric"))
 }
 
+check_pos_numeric <- function(x, name, err_fn = paste0) {
+  assert(is.numeric(x) && x > 0,
+    msg = err_fn("{.val {name}} must be numeric and positive"))
+}
+
 check_logical <- function(x, name, err_fn = paste0) {
   assert(is.logical(x),
     msg = err_fn("{.val {name}} must be logical"))

@@ -13,7 +13,7 @@ infer <- function(disp) {
     view2$set_state(newst)
     disp2$set_view(view2, verbose = FALSE)
   }
-  disp2 <- infer_panel_type(disp2)
+  # disp2 <- infer_panel_type(disp2)
   disp2
 }
 
@@ -115,26 +115,4 @@ infer_meta_variable <- function(x, nm) {
     }
   }
   res
-}
-
-infer_panel_type <- function(disp) {
-  x <- disp$clone()
-  pnls <- x$df[[x$panel_col]]
-  if (inherits(pnls, "trelliscope_panels")) {
-    panel1 <- pnls[[1]]
-    if (inherits(panel1, "htmlwidget")) {
-      x$set("paneltype", "iframe")
-    } else  {
-      x$set("paneltype", "img")
-    }
-  } else if (inherits(pnls, "img_panel")) {
-      x$set("paneltype", "img")
-      x$df <- dplyr::rename(x$df, "__PANEL_KEY__" := x$panel_col)
-  } else if (inherits(pnls, "iframe_panel")) {
-      x$set("paneltype", "iframe")
-      x$df <- dplyr::rename(x$df, "__PANEL_KEY__" := x$panel_col)
-  } else {
-    assert(FALSE, "Could not infer panel type")
-  }
-  x
 }

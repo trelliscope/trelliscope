@@ -1,3 +1,87 @@
+InputClientSideStorage <- R6::R6Class("InputClientSideStorage",
+  public = list(
+    as_list = function() {
+      as.list(private)
+    }
+  ),
+  private = list(
+    type = "localStorage"
+  )
+)
+
+InputEmailFeedback <- R6::R6Class("InputEmailFeedback",
+  public = list(
+    initialize = function(email = NULL, vars = c()) {
+      # # properties are currently only populated through pipe functions
+      # self_error_msg <- function(txt)
+      #   paste0("While defining email for input feedback: ", txt)
+      # check_atomic(email, "email", self_error_msg)
+      # check_character(email, "email", self_error_msg)
+      # private$feedbackEmail <- email
+      # private$includeMetaVars <- vars
+    },
+    set = function(x, val) {
+      private[[x]] <- val
+    },
+    as_list = function() {
+      vars <- private$includeMetaVars
+      if (is.null(vars) || length(vars == 0 || !is.character(vars)))
+        vars <- list()
+      if (length(vars) == 1)
+        vars <- I(vars)
+      assert(!is.null(private$feedbackEmail),
+        msg = "This display has inputs. Must provide a feedback email via
+        `add_input_email()`.")
+      list(
+        feedbackEmail = private$feedbackEmail,
+        includeMetaVars = vars
+      )
+    }
+  ),
+  private = list(
+    feedbackEmail = NULL,
+    includeMetaVars = c()
+  )
+)
+
+Inputs <- R6::R6Class("Inputs",
+  public = list(
+    initialize = function() {
+      private$feedbackInterface <- InputEmailFeedback$new()
+      private$storageInterface <- InputClientSideStorage$new()
+    },
+    get = function(x) {
+      private[[x]]
+    },
+    set = function(nm, val) {
+      private[[nm]] <- val
+    },
+    as_list = function() {
+      list(
+        inputs = unname(lapply(private$inputs, function(x) x$as_list())),
+        storageInterface = private$storageInterface$as_list(),
+        feedbackInterface = private$feedbackInterface$as_list()
+      )
+    },
+    as_json = function(pretty = TRUE) {
+      to_json(self$as_list(), pretty = pretty)
+    },
+    add_input = function(obj) {
+      nm <- obj$get("name")
+      if (!is.null(private$inputs[[nm]])) {
+        msg("Overwriting input '{nm}'")
+      } else {
+        private$inputs[[nm]] <- obj
+      }
+    }
+  ),
+  private = list(
+    inputs = NULL,
+    storageInterface = NULL,
+    feedbackInterface = NULL
+  )
+)
+
 Input <- R6::R6Class("Input",
   public = list(
     initialize = function(name, label = name, active = TRUE, type) {

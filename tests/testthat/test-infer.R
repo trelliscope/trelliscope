@@ -83,14 +83,14 @@ test_that2("meta variable inference", {
   # make sure b didn't get updated
   expect_length(b$get("metas"), 1)
 
-  expect_length(d$get("metas"), ncol(dat) - 1)
+  expect_length(d$get("metas"), ncol(dat) - 2)
   expect_length(d$df, ncol(dat)) # the "bad" columns shouldn't be removed
   expect_equal(d$df_cols_ignore, "lst")
 
   metas <- d$get("metas")
   lbls <- lapply(metas, function(x) x$get("label"))
 
-  expect_length(unlist(lbls), ncol(dat) - 1)
+  expect_length(unlist(lbls), ncol(dat) - 2)
   expect_equal(lbls$id, "test id label with add_meta_labels")
   expect_equal(lbls$date2, "test date label with label attribute")
   expect_equal(lbls$letters, "test label with meta_string")

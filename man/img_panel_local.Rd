@@ -4,10 +4,13 @@
 \alias{img_panel_local}
 \title{Cast a vector of URLs pointing to local images as an image panel source}
 \usage{
-img_panel_local(x)
+img_panel_local(x, aspect_ratio = 1.5)
 }
 \arguments{
-\item{x}{a vector of URLs pointing to images}
+\item{x}{A vector of URLs pointing to images.}
+
+\item{aspect_ratio}{Specifies the aspect ratio (width / height) to use when
+displaying the image in the browser.}
 }
 \description{
 Cast a vector of URLs pointing to local images as an image panel source

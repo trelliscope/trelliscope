@@ -309,9 +309,9 @@ test_that2("input pipe functions", {
       input_number(name = "rank", label = "Rank this panel")
     )
 
-  expect_length(b$get("inputs"), 6)
+  expect_length(b$get("inputs")$get("inputs"), 6)
   expect_length(x$get("inputs"), 0)
-  for (inpt in b$get("inputs"))
+  for (inpt in b$get("inputs")$get("inputs"))
     expect_s3_class(inpt, "trelliscope_input_def")
 
   expect_message(

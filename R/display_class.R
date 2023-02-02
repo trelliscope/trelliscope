@@ -12,6 +12,7 @@ Display <- R6::R6Class(
     meta_labels = list(),
     # if the user specifies meta tags using add_meta_tags(), we keep track
     # of them here so that we can apply them just before writing out the object
+    fidelius_pars = NULL,
     meta_tags = list(),
     initialize = function(
       df, name, description, tags, keycols, path, force_plot, panel_col,
@@ -71,12 +72,9 @@ Display <- R6::R6Class(
       private$views[[nm]] <- obj
     },
     set_input = function(obj) {
-      nm <- obj$get("name")
-      if (!is.null(private$inputs[[nm]])) {
-        msg("Overwriting input '{nm}'")
-      } else {
-        private$inputs[[nm]] <- obj
-      }
+      if (is.null(private$inputs))
+        private$inputs <- Inputs$new()
+      private$inputs$add_input(obj)
     },
     get = function(name) {
       private[[name]]
@@ -85,6 +83,9 @@ Display <- R6::R6Class(
       file.path(self$path, "displays", sanitize(private$name))
     },
     as_list = function() {
+      inputs <- NULL
+      if (!is.null(private$inputs))
+        inputs <- private$inputs$as_list()
       list(
         name = private$name,
         description = private$description,
@@ -94,14 +95,25 @@ Display <- R6::R6Class(
         metas = unname(lapply(private$metas, function(x) x$as_list())),
         state = private$state$as_list(),
         views = unname(lapply(private$views, function(x) x$as_list())),
-        inputs = unname(lapply(private$inputs, function(x) x$as_list())),
+        inputs = inputs,
         paneltype = private$paneltype,
         panelformat = private$panelformat,
+        panelaspect = private$panelaspect,
         thumbnailurl = private$thumbnailurl
       )
     },
     as_json = function(pretty = TRUE) {
       to_json(self$as_list(), pretty = pretty)
+    },
+    get_meta_names = function() {
+      nms <- setdiff(names(self$df), "__PANEL_KEY__")
+      ignore <- c()
+      for (nm in nms) {
+        cur_meta <- infer_meta_variable(self$df[[nm]], nm)
+        if (is.null(cur_meta))
+          ignore <- c(ignore, nm)
+      }
+      setdiff(nms, ignore)
     },
     print = function() {
       cli::cli_bullets(c(
@@ -132,11 +144,12 @@ Display <- R6::R6Class(
     keycols = NULL,
     keysig = NULL,
     metas = list(),
-    inputs = list(),
+    inputs = NULL,
     state = NULL,
     views = list(),
     paneltype = NULL,
     panelformat = NULL,
+    panelaspect = NULL,
     thumbnailurl = NULL
   )
 )

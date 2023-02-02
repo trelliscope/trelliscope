@@ -1,3 +1,5 @@
 .DS_Store
 _ignore
 node_modules
+inst/htmlwidgets/lib/trelliscope_widget/css/.*.map
+inst/htmlwidgets/lib/trelliscope_widget/js/.*.map

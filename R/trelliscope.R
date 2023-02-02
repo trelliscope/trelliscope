@@ -39,6 +39,8 @@ trelliscope <- function(
     panel_col = panel_col, tags = tags, keysig = key_sig)
   class(obj) <- c("R6", "trelliscope_display")
 
+  obj <- infer_panel_type(obj)
+
   obj
 }
 
@@ -57,6 +59,34 @@ check_and_get_panel_col <- function(df) {
     msg = paste0("Couldn't find a column in the trelliscope input data frame ",
       "that references a plot or image."))
   names(panel_col_idx)
+}
+
+infer_panel_type <- function(disp) {
+  x <- disp$clone()
+  pnls <- x$df[[x$panel_col]]
+  if (inherits(pnls, "trelliscope_panels")) {
+    panel1 <- pnls[[1]]
+    if (inherits(panel1, "htmlwidget")) {
+      x$set("paneltype", "iframe")
+    } else  {
+      x$set("paneltype", "img")
+    }
+  } else if (inherits(pnls, "img_panel")) {
+      x$set("paneltype", "img")
+      x$set("panelaspect", attr(pnls, "aspect_ratio"))
+      x$panels_written <- NA
+      x$df <- dplyr::rename(x$df, "__PANEL_KEY__" := x$panel_col)
+      x$panel_col <- "__PANEL_KEY__"
+  } else if (inherits(pnls, "iframe_panel")) {
+      x$set("paneltype", "iframe")
+      x$set("panelaspect", attr(pnls, "aspect_ratio"))
+      x$panels_written <- NA
+      x$df <- dplyr::rename(x$df, "__PANEL_KEY__" := x$panel_col)
+      x$panel_col <- "__PANEL_KEY__"
+  } else {
+    assert(FALSE, "Could not infer panel type")
+  }
+  x
 }
 
 get_keycols <- function(df) {

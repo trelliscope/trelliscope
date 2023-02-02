@@ -22,7 +22,7 @@ write_display <- function(disp, force_write = FALSE, jsonp = TRUE) {
   x <- disp$clone()
 
   writable <- !inherits(x$df[[x$panel_col]], c("img_panel", "iframe_panel"))
-  if ((!x$panels_written || force_write) && writable)
+  if (writable && (!x$panels_written || force_write))
     x <- write_panels(x)
 
   x <- infer(x)

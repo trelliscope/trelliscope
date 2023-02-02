@@ -19,6 +19,10 @@ write_panels <- function(
   disp, width = 500, height = 500, format = "png", force = FALSE
 ) {
   check_display_object(disp)
+  check_scalar(width, "width")
+  check_pos_numeric(width, "width")
+  check_scalar(height, "height")
+  check_pos_numeric(height, "height")
 
   disp2 <- disp$clone()
   app_path <- disp2$path
@@ -85,6 +89,8 @@ write_panels <- function(
   cat(cur_hash, file = file.path(panel_path, "hash"))
 
   disp2$panels_written <- TRUE
+  disp2$set("panelaspect", width / height)
+
   disp2
 }
 

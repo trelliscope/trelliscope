@@ -44,6 +44,8 @@ write_htmlwidget_deps <- function(x, base_path, panel_path) {
 
 #' @importFrom htmltools as.tags
 write_htmlwidget <- function(x, key, panel_path, html_head) {
+  x$sizingPolicy <- htmlwidgets::sizingPolicy(
+    defaultWidth = "100vw", defaultHeight = "100vh", padding = 0)
   p <- htmltools::as.tags(x, standalone = TRUE)
 
   html <- paste0(

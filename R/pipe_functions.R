@@ -180,6 +180,59 @@ add_inputs <- function(disp, ...) {
   disp2
 }
 
+#' Specify an email address to which input feedback can be sent
+#' @param email An email address.
+#' @param disp A trelliscope display object created with [`trelliscope()`].
+#' @export
+add_input_email <- function(disp, email) {
+  check_display_object(disp)
+  disp2 <- disp$clone()
+  if (length(disp$get("inputs")) == 0) {
+    wrn("There are no inputs for this display. Ignoring `add_input_email()`")
+  } else {
+    inputs2 <- disp2$get("inputs")$clone()
+    itfc <- inputs2$get("feedbackInterface")$clone()
+    itfc$set("feedbackEmail", email)
+    inputs2$set("feedbackInterface", itfc)
+    disp2$set("inputs", inputs2)
+  }
+  disp2
+}
+
+#' Specify meta variables whose values should be provided in input feedback
+#' @param disp A trelliscope display object created with [`trelliscope()`].
+#' @param vars A vector of meta variable names found in the display.
+#' @export
+add_input_vars <- function(disp, vars) {
+  check_display_object(disp)
+  disp2 <- disp$clone()
+  if (length(disp$get("inputs")) == 0) {
+    wrn("There are no inputs for this display. Ignoring `add_input_vars()`")
+  } else {
+    nms <- disp$get_meta_names()
+    assert(all(vars %in% nms), msg = "In `add_input_vars()`, 'vars' can only
+      be valid meta variables that are found in the data.")
+    inputs2 <- disp2$get("inputs")$clone()
+    itfc <- inputs2$get("feedbackInterface")$clone()
+    itfc$set("includeMetaVars", vars)
+    inputs2$set("feedbackInterface", itfc)
+    disp2$set("inputs", inputs2)
+  }
+  disp2
+}
+
+#' Use fidelius to password protect a trelliscope display
+#' @param disp A trelliscope display object created with [`trelliscope()`].
+#' "trelliscopejs_widget".
+#' @param ... Arguments passed to the charm() function in the fidelius package.
+#' @export
+add_charm <- function(disp, ...) {
+  check_display_object(disp)
+  disp2 <- disp$clone()
+  disp2$fidelius_pars <- list(...)
+  disp2
+}
+
 #' Convert any trelliscope R6 object to JSON
 #' @param obj Any R6 object created with trelliscope functions.
 #' @param pretty Adds indentation whitespace to JSON output. Can be TRUE/FALSE

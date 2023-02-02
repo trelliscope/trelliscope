@@ -33,6 +33,7 @@ You can install the development version of trelliscope from [GitHub](https://git
 
 ``` r
 # install.packages("devtools")
+# load_all()
 devtools::install_github("trelliscope/trelliscope")
 ```
 
@@ -369,7 +370,8 @@ disp <- disp |>
       width = 100, height = 6),
     input_radio(name = "looks_correct",
       label = "Does the data look correct?", options = c("no", "yes"))
-  )
+  ) |>
+  add_input_email("johndoe123@fakemail.net")
 ```
 
 #### Output
