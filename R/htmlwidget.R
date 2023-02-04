@@ -1,10 +1,14 @@
-
+#' View a trelliscope display
+#' @param disp A trelliscope display object created with [`trelliscope()`].
+#' @export
 view_display <- function(
-  obj, spa = TRUE, width = NULL, height = NULL
+  disp
+  # spa = TRUE, width = NULL, height = NULL
 ) {
-  path <- obj$path
+  path <- disp$path
   config_info <- list.files(path, pattern = "config.json")
   id <- readLines(file.path(path, "id"), warn = FALSE)[1]
+  spa <- TRUE
 
   x <- list(
     id = id,
@@ -36,7 +40,7 @@ view_display <- function(
   el_tags <- htmltools::as.tags(wdgt, standalone = FALSE)
   htmltools::save_html(el_tags, file = index_html, libdir = "lib")
 
-  fidelius_pars <- obj$fidelius_pars
+  fidelius_pars <- disp$fidelius_pars
   if (!is.null(fidelius_pars)) {
     rlang::check_installed("fidelius",
       reason = "to encrypt your Trelliscope display.")
