@@ -338,7 +338,7 @@ add_trelliscope_scales <- function(p, scales_info, ...) {
 #' @importFrom rlang eval_tidy
 #' @importFrom ggplot2 scale_x_continuous scale_y_continuous scale_x_time
 #' scale_y_time scale_x_date scale_y_date scale_x_datetime scale_y_datetime
-#' scale_x_discrete scale_y_discrete
+#' scale_x_discrete scale_y_discrete scale_x_log10 scale_y_log10
 # the goal is to add a scale if a scale doesn't already exist.
 # if a scale exists, we should NOT overwrite it.
 add_trelliscope_scale <- function(
@@ -381,21 +381,21 @@ add_trelliscope_scale <- function(
           !is.null(scale_info$scale$trans$name) &&
           scale_info$scale$trans$name == "log-10"
         ) {
-          scale_fn <- switch(axis_name, "x" = scale_x_log10,
-            "y" = scale_y_log10)
+          scale_fn <- switch(axis_name, "x" = ggplot2::scale_x_log10,
+            "y" = ggplot2::scale_y_log10)
         } else {
-          scale_fn <- switch(axis_name, "x" = scale_x_continuous,
-            "y" = scale_y_continuous)
+          scale_fn <- switch(axis_name, "x" = ggplot2::scale_x_continuous,
+            "y" = ggplot2::scale_y_continuous)
         }
       } else if (inherits(scale_info$scale, "ScaleContinuousTime")) {
-        scale_fn <- switch(axis_name, "x" = scale_x_time,
-          "y" = scale_y_time)
+        scale_fn <- switch(axis_name, "x" = ggplot2::scale_x_time,
+          "y" = ggplot2::scale_y_time)
       } else if (inherits(scale_info$scale, "ScaleContinuousDate")) {
-        scale_fn <- switch(axis_name, "x" = scale_x_date,
-          "y" = scale_y_date)
+        scale_fn <- switch(axis_name, "x" = ggplot2::scale_x_date,
+          "y" = ggplot2::scale_y_date)
       } else if (inherits(scale_info$scale, "ScaleContinuousDatetime")) {
-        scale_fn <- switch(axis_name, "x" = scale_x_datetime,
-          "y" = scale_y_datetime)
+        scale_fn <- switch(axis_name, "x" = ggplot2::scale_x_datetime,
+          "y" = ggplot2::scale_y_datetime)
       }
 
       if (scale_type == "free") {
