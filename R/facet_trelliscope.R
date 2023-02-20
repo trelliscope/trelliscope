@@ -343,7 +343,7 @@ add_trelliscope_scales <- function(p, scales_info, ...) {
 # if a scale exists, we should NOT overwrite it.
 add_trelliscope_scale <- function(
   p, axis_name, scale_info, show_warnings = FALSE
-  ) {
+) {
   axis_scales <- p$scales$get_scales(axis_name)
   if (!is.null(axis_scales$limits)) {
     # return if there already is a limit set for this axis
@@ -376,16 +376,27 @@ add_trelliscope_scale <- function(
       #   "y" = scale_y_continuous,
       # )
       #
-      scale_fn <- switch(class(scale_info$scale)[1],
-        "ScaleContinuousPosition" =
-          switch(axis_name, "x" = scale_x_continuous, "y" = scale_y_continuous),
-        "ScaleContinuousTime" =
-          switch(axis_name, "x" = scale_x_time, "y" = scale_y_time),
-        "ScaleContinuousDate" =
-          switch(axis_name, "x" = scale_x_date, "y" = scale_y_date),
-        "ScaleContinuousDatetime" =
-          switch(axis_name, "x" = scale_x_datetime, "y" = scale_y_datetime)
-      )
+      if (inherits(scale_info$scale, "ScaleContinuousPosition")) {
+        if (
+          !is.null(scale_info$scale$trans$name) &&
+          scale_info$scale$trans$name == "log-10"
+        ) {
+          scale_fn <- switch(axis_name, "x" = scale_x_log10,
+            "y" = scale_y_log10)
+        } else {
+          scale_fn <- switch(axis_name, "x" = scale_x_continuous,
+            "y" = scale_y_continuous)
+        }
+      } else if (inherits(scale_info$scale, "ScaleContinuousTime")) {
+        scale_fn <- switch(axis_name, "x" = scale_x_time,
+          "y" = scale_y_time)
+      } else if (inherits(scale_info$scale, "ScaleContinuousDate")) {
+        scale_fn <- switch(axis_name, "x" = scale_x_date,
+          "y" = scale_y_date)
+      } else if (inherits(scale_info$scale, "ScaleContinuousDatetime")) {
+        scale_fn <- switch(axis_name, "x" = scale_x_datetime,
+          "y" = scale_y_datetime)
+      }
 
       if (scale_type == "free") {
         # "Use NA to refer to the existing minimum or maximum."
