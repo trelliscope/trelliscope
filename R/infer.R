@@ -87,8 +87,8 @@ infer_meta <- function(disp) {
       meta$set("label", lbl)
     }
     # also set tags if they were specified with add_meta_tags()
-    if (is.null(meta$get("tags")) && !is.null(disp2$meta_tags[[curvar]])) {
-      meta$set("label", disp2$meta_tags[[curvar]])
+    if (length(meta$get("tags")) == 0 && !is.null(disp2$meta_tags[[curvar]])) {
+      meta$set("tags", disp2$meta_tags[[curvar]])
     }
   }
 
