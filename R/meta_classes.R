@@ -47,6 +47,7 @@ Meta <- R6::R6Class("Meta",
       res <- as.list(private)
       if (is.null(res$label))
         res$label <- res$varname
+      res$tags <- I(res$tags)
       res
     },
     set = function(name, val) {
