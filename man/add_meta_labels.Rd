@@ -7,7 +7,7 @@
 add_meta_labels(trdf, ...)
 }
 \arguments{
-\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope]{as_trelliscope()}} or a
+\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope_df]{as_trelliscope_df()}} or a
 data frame which will be cast as such.}
 
 \item{...}{A named set of labels, where each name must correspond to one

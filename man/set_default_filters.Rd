@@ -7,7 +7,7 @@
 set_default_filters(trdf, ..., add = TRUE)
 }
 \arguments{
-\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope]{as_trelliscope()}} or a
+\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope_df]{as_trelliscope_df()}} or a
 data frame which will be cast as such.}
 
 \item{...}{Filter state specifications (e.g. \code{\link[=filter_string]{filter_string()}},

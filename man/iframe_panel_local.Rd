@@ -17,5 +17,5 @@ Cast a vector of URLs pointing to html pages as an image panel source
 }
 \note{
 \code{x} must be paths relative to the \code{path} argument passed to
-\code{\link{as_trelliscope}}.
+\code{\link{as_trelliscope_df}}.
 }

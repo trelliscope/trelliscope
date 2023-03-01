@@ -1,5 +1,5 @@
 #' Write panels
-#' @param trdf A trelliscope data frame created with [`as_trelliscope()`] or a
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`] or a
 #' data frame which will be cast as such.
 #' @param width Width in pixels of each panel.
 #' @param height Height in pixels of each panel.

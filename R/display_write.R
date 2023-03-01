@@ -1,5 +1,5 @@
 #' Write the contents of a display
-#' @param trdf A trelliscope data frame created with [`as_trelliscope()`] or a
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`] or a
 #' data frame which will be cast as such.
 #' @param force_write Should the panels be forced to be written even if they
 #'   have already been written?

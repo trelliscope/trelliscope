@@ -7,7 +7,7 @@
 write_trelliscope(trdf, force_write = FALSE, jsonp = TRUE)
 }
 \arguments{
-\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope]{as_trelliscope()}} or a
+\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope_df]{as_trelliscope_df()}} or a
 data frame which will be cast as such.}
 
 \item{force_write}{Should the panels be forced to be written even if they

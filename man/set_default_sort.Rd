@@ -7,7 +7,7 @@
 set_default_sort(trdf, varnames, dirs = "asc", add = FALSE)
 }
 \arguments{
-\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope]{as_trelliscope()}} or a
+\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope_df]{as_trelliscope_df()}} or a
 data frame which will be cast as such.}
 
 \item{varnames}{A vector of variable names to sort on.}

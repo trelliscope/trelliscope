@@ -1,4 +1,4 @@
-#' Instantiate a trelliscope display object
+#' Instantiate a trelliscope data frame
 #' @param df A data frame that contains the metadata of the display as well as
 #' a column that indicate the panels to be displayed.
 #' @param name Name of the trelliscope display.
@@ -16,7 +16,7 @@
 #' @export
 #' @importFrom utils head
 #' @importFrom dplyr group_cols
-as_trelliscope <- function(
+as_trelliscope_df <- function(
   df, name = NULL, description = name, key_cols = NULL, tags = NULL,
   path = tempfile(), force_plot = FALSE, key_sig = NULL
 ) {

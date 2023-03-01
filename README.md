@@ -15,8 +15,8 @@ coverage](https://codecov.io/gh/trelliscope/trelliscope/branch/main/graph/badge.
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-This repository contains an experimental rewrite of the trelliscopejs R
-package. It is currently under heavy development.
+This repository contains an rewrite of the trelliscopejs R package, now
+simply called trelliscope.
 
 ## Installation
 
@@ -51,6 +51,9 @@ specify a collection of visualizations as a data frame, with one column
 representing the plot (either as a plot object such as ggplot or as a
 reference to an image such as a png, svg, or even html file), and the
 other columns representing metadata about each visualization.
+
+This package provides utilities to help build these data frames and then
+explore them in an interactive viewer.
 
 ### Example
 
@@ -102,7 +105,7 @@ visdf <- gapminder |>
 visdf
 #> # A tibble: 142 × 5
 #>    country     continent data              mean_lifeexp panel     
-#>    <fct>       <fct>     <list>                   <dbl> <trllscp_>
+#>    <fct>       <fct>     <list>                   <dbl> <nstd_pnl>
 #>  1 Afghanistan Asia      <tibble [12 × 4]>         37.5 <gg>      
 #>  2 Albania     Europe    <tibble [12 × 4]>         68.4 <gg>      
 #>  3 Algeria     Africa    <tibble [12 × 4]>         59.0 <gg>      
@@ -116,14 +119,14 @@ visdf
 #> # … with 132 more rows
 ```
 
-Here we have create the basic construct that is needed to create a
-Trelliscope display. We have a data frame with 142 rows, one for each
-country. We have metadata such as the country and continent names, as
-well as the mean life expectency, and then we have a column “panel” that
-contains a plot for each country of life expectancy vs. year. (Note: We
-show the `package::` prefixes for each function used in this example to
-highlight what packages are being used but will remove these from future
-examples).
+Here we have built a data frame of visualizations, the basic construct
+that is needed to create a Trelliscope display. We have a data frame
+with 142 rows, one for each country. We have country metadata such as
+the country and continent names, as well as the mean life expectency,
+and then we have a column “panel” that contains a plot for each country
+of life expectancy vs. year. (Note: We show the `package::` prefixes for
+each function used in this example to highlight what packages are being
+used but will remove these from future examples).
 
 There is a lot going on in the code example above that should be
 familiar if you have experience with Tidyverse packages such as dplyr
@@ -149,19 +152,18 @@ Once you have data in this form, you can create a Trelliscope display by
 simply doing the following:
 
 ``` r
-trelliscope(visdf, name = "life expectancy") |> write_display()
+as_trelliscope_df(visdf, name = "life expectancy") |> write_trelliscope()
 ```
 
-Passing the data frame to `trelliscope()` creates a display object that
-provides information about the display that will be created from the
-data frame, such the name of the display and an optional description and
-tags, as well as the directory where the dispay will be written (if not
-specified it is placed in a temporary directory). Then `write_display()`
-writes out and shows the display using the Trelliscope JavaScript viewer
-app.
+Passing the data frame to `as_trelliscope_df()` creates a trelliscope
+data frame that provides information about the display that will be
+created from the data frame, such the name of the display and an
+optional description and tags, as well as the directory where the dispay
+will be written (if not specified it is placed in a temporary
+directory). Then `write_trelliscope()` writes out and shows the display
+using the Trelliscope JavaScript viewer app.
 
-\[screenshot (TODO: this package is not yet wired up to the old
-viewer)\]
+\[screenshot (TODO)\]
 
 Now from the app you can interatively view all 142 of the
 visualizations, with controls to specify what order they should appear
@@ -178,23 +180,21 @@ population, etc. that could help us navigate to interesting
 visualizations in the display.
 
 There are many functions provided that operate on the object that comes
-out of `trelliscope()` that allow us to specify more information about
-the display and its behavior before we write it out with
-`write_display()`. We will discuss several of these later.
+out of `as_trelliscope_df()` that allow us to specify more information
+about the display and its behavior before we write it out with
+`write_trelliscope()`. We will discuss several of these later.
 
 ### Conveniently creating visualization data frames from ggplot2
 
-Before getting into functions that can be used between
-`facet_trelliscope()` and `write_display()`, we will discuss a utility
-function `facet_trelliscope()` that makes it easier to achieve the same
+A utility function, `facet_panels()` makes it easier to achieve the same
 result as what we showed in the previous example staying strictly within
 ggplot and not needing to rely on the other tidyverse functions to nest
 the data, etc.
 
-`facet_trelliscope()` works in a very similar manner as ggplot2’s
-`facet_wrap()`, in that we are specifying that we want the same
-visualization specification to be applied to each facet of the data that
-we specify.
+The `facet_panels()` function works in a very similar manner as
+ggplot2’s `facet_wrap()`, in that we are specifying that we want the
+same visualization specification to be applied to each facet of the data
+that we specify.
 
 For example, using ggplot2, we might do the following to visualize each
 country separately:
@@ -208,24 +208,23 @@ ggplot(aes(year, lifeExp), data = gapminder) +
 This will plot life expectancy vs. year for each of the 142 countries
 and lay the plots out in a page.
 
-With Trelliscope, we can swap out `facet_wrap()` with
-`facet_trelliscope()`:
+With Trelliscope, we can swap out `facet_wrap()` with `facet_panels()`:
 
 ``` r
 p <- ggplot(aes(year, lifeExp), data = gapminder) +
   geom_point() +
-  facet_trelliscope(~ continent + country)
+  facet_panels(~ continent + country)
 ```
 
 This creates a ggplot object that we can turn into a data frame suitable
 for Trelliscope with the following:
 
 ``` r
-visdf <- build_panels(p)
+visdf <- nest_panels(p)
 visdf
 #> # A tibble: 142 × 4
 #>    country     continent data              panel     
-#>    <fct>       <fct>     <list>            <trllscp_>
+#>    <fct>       <fct>     <list>            <nstd_pnl>
 #>  1 Afghanistan Asia      <tibble [12 × 5]> <gg>      
 #>  2 Albania     Europe    <tibble [12 × 5]> <gg>      
 #>  3 Algeria     Africa    <tibble [12 × 5]> <gg>      
@@ -242,22 +241,24 @@ visdf
 This builds a data frame similar to what we produced in the first
 example, which we can modify in any way we would like to add more
 per-country metadata (e.g. calculate mean life expectancy, merge other
-demographic statistics, etc.) and then pass this to `trelliscope()` to
-create our display (note that we can pass `p` directly to
-`trelliscope()` as well in which case it will build the panels for us,
-but it can be useful to have more control over additional modifications
-to the data frame and the panel building).
+demographic statistics, etc.) and then pass this to
+`as_trelliscope_df()` to create our data frame of visualizations. Note
+that we can pass `p` directly to `as_trelliscope_df()` as well in which
+case it will build the panels for us, but it can be useful to have more
+control over additional modifications to the data frame and the panel
+building.
 
-`build_panels()` has a few arguments that allow us to specify more about
-how we want the panels built. One is `as_plotly` which we can set to
-`TRUE` to have the plots converted to interactive plotly plots:
+The `nest_panels()` function has a few arguments that allow us to
+specify more about how we want the panels built. One is `as_plotly`
+which we can set to `TRUE` to have the plots converted to interactive
+plotly plots:
 
 ``` r
-visdf <- build_panels(p, as_plotly = TRUE)
+visdf <- nest_panels(p, as_plotly = TRUE)
 visdf
 #> # A tibble: 142 × 4
 #>    country     continent data              panel     
-#>    <fct>       <fct>     <list>            <trllscp_>
+#>    <fct>       <fct>     <list>            <nstd_pnl>
 #>  1 Afghanistan Asia      <tibble [12 × 5]> <plotly>  
 #>  2 Albania     Europe    <tibble [12 × 5]> <plotly>  
 #>  3 Algeria     Africa    <tibble [12 × 5]> <plotly>  
@@ -272,11 +273,11 @@ visdf
 ```
 
 If you are plotting with ggplot2, there are several benefits to using
-`facet_trelliscope()`. First, it fits more naturally into the ggplot2
+`facet_panels()`. First, it fits more naturally into the ggplot2
 paradigm, where you can build a Trelliscope visualization exactly as you
 would with building a ggplot2 visualization. Second, you can make use of
-the `scales` argument in `facet_trelliscope()` (which behaves similarly
-to the same argument in `facet_wrap()`) to ensure that the x and y axis
+the `scales` argument in `facet_panels()` (which behaves similarly to
+the same argument in `facet_wrap()`) to ensure that the x and y axis
 ranges of your plots behave the way you want. The default is for all
 plots to have the same `"fixed"` axis ranges. This is an important
 consideration in visualizing small multiples because if you are making
@@ -300,23 +301,23 @@ df |>
     panel = map_plot(...),
     ...
   ) |>
-  trelliscope(...) |>
-  write_display(...)
+  as_trelliscope_df(...) |>
+  write_trelliscope(...)
 ```
 
-or using `facet_trelliscope()`:
+or using `facet_panels()`:
 
 ``` r
 df |>
-  (ggplot(...) + ... + facet_trelliscope()) |>
-  build_panels() |>
-  trelliscope() |>
-  write_display()
+  (ggplot(...) + ... + facet_panels()) |>
+  nest_panels() |>
+  as_trelliscope_df() |>
+  write_trelliscope()
 ```
 
-In between `trelliscope() |> write_display()`, there are many functions
-we can call that give us better control over how our display looks and
-behaves. These include the following:
+In between `as_trelliscope_df() |> write_trelliscope()`, there are many
+functions we can call that give us better control over how our display
+looks and behaves. These include the following:
 
 -   `write_panels()`: allows finer control over how panels are written
     (e.g. plot dimensions, file format, etc.)
@@ -333,33 +334,56 @@ behaves. These include the following:
 -   `add_inputs()`: specify inputs that can collect user feedback for
     each panel in the display
 
-Each of these functions takes a Trelliscope display object (created with
-`trelliscope()`) and returns a modified Trelliscope display object,
+Each of these functions takes a trelliscope data frame (created with
+`as_trelliscope_df()`) and returns a modified trelliscope data frame,
 making them suitable for chaining.
 
-To illustrate some of these, let’s create a display object:
+To illustrate some of these, let’s create a trelliscope data frame:
 
 ``` r
-disp <- (ggplot(aes(year, lifeExp), data = gapminder) +
+x <- (ggplot(aes(year, lifeExp), data = gapminder) +
   geom_point() +
-  facet_trelliscope(~ continent + country)) |>
-  build_panels() |>
+  facet_panels(~ continent + country)) |>
+  nest_panels() |>
   mutate(
     mean_lifeexp = purrr::map_dbl(data, ~ mean(.x$lifeExp)),
     min_lifeexp = purrr::map_dbl(data, ~ min(.x$lifeExp)),
     mean_gdp = purrr::map_dbl(data, ~ mean(.x$gdpPercap)),
     wiki_link = paste0("https://en.wikipedia.org/wiki/", country)
   ) |>
-  trelliscope(name = "life expectancy")
+  as_trelliscope_df(name = "life expectancy")
 
-disp
+x
+#> ℹ Trelliscope data frame. Call show_info() for more information
+#> # A tibble: 142 × 8
+#>    country     continent data              panel mean_…¹ min_l…² mean_…³ wiki_…⁴
+#>    <fct>       <fct>     <list>            <nst>   <dbl>   <dbl>   <dbl> <chr>  
+#>  1 Afghanistan Asia      <tibble [12 × 5]> <gg>     37.5    28.8    803. https:…
+#>  2 Albania     Europe    <tibble [12 × 5]> <gg>     68.4    55.2   3255. https:…
+#>  3 Algeria     Africa    <tibble [12 × 5]> <gg>     59.0    43.1   4426. https:…
+#>  4 Angola      Africa    <tibble [12 × 5]> <gg>     37.9    30.0   3607. https:…
+#>  5 Argentina   Americas  <tibble [12 × 5]> <gg>     69.1    62.5   8956. https:…
+#>  6 Australia   Oceania   <tibble [12 × 5]> <gg>     74.7    69.1  19981. https:…
+#>  7 Austria     Europe    <tibble [12 × 5]> <gg>     73.1    66.8  20412. https:…
+#>  8 Bahrain     Asia      <tibble [12 × 5]> <gg>     65.6    50.9  18078. https:…
+#>  9 Bangladesh  Asia      <tibble [12 × 5]> <gg>     49.8    37.5    818. https:…
+#> 10 Belgium     Europe    <tibble [12 × 5]> <gg>     73.6    68    19901. https:…
+#> # … with 132 more rows, and abbreviated variable names ¹​mean_lifeexp,
+#> #   ²​min_lifeexp, ³​mean_gdp, ⁴​wiki_link
+```
+
+As you can see, `x` is still a data frame. To see more information about
+trelliscope-specific settings, you can use `show_info()`:
+
+``` r
+show_info(x)
 #> A trelliscope display
 #> • Name: "life expectancy"
 #> • Description: "life expectancy"
 #> • Tags: none
 #> • Key columns: "continent" and "country"
 #> • Path:
-#>   "/var/folders/7b/thg__1xx7w98wc4rs8t3djrw0000gn/T//RtmpkwHX8B/file475673ed1779"
+#>   "/var/folders/7b/thg__1xx7w98wc4rs8t3djrw0000gn/T//RtmpIdyzPk/file17b1a51b472aa"
 #> • Number of panels: 142
 #> • Panels written: no
 #> • Metadata variables that will be inferred:
@@ -376,32 +400,18 @@ disp
 #> • Variables that will be ignored as metadata: "data" and "panel"
 ```
 
-#### `write_panels()`
+<!-- #### `write_panels()`
 
-The optional chain function `write_panels()` can be used to have finer
-control over how panels get written to disk. It also can give the
-advantage of making panel writing a separate step so that it does not
-need to be repeated every time a display might be modified.
+The optional chain function `write_panels()` can be used to have finer control over how panels get written to disk. It also can give the advantage of making panel writing a separate step so that it does not need to be repeated every time a display might be modified.
 
-The main arguments are `width`, `height`, and `format`. The `width` and
-`height` are specified in pixels, and are mainly to provide information
-about the plot’s aspect ratio and size of text and glyphs. The actual
-dimensions of the plot as shown in the viewer will vary (the aspect
-ratio remains fixed) depending on how many plots are shown at once.
+The main arguments are `width`, `height`, and `format`. The `width` and `height` are specified in pixels, and are mainly to provide information about the plot's aspect ratio and size of text and glyphs. The actual dimensions of the plot as shown in the viewer will vary (the aspect ratio remains fixed) depending on how many plots are shown at once.
 
-The file format can be either `png` or `svg`. This is ignored if the
-plot column of the data frame is an htmlwidget such as a ggplotly plot.
+The file format can be either `png` or `svg`. This is ignored if the plot column of the data frame is an htmlwidget such as a ggplotly plot.
 
-``` r
 disp <- disp |>
   write_panels(width = 800, height = 500, format = "svg")
-#> Writing panels ■■■■■■■                           21% | ETA:  4s
-#> Writing panels ■■■■■■■■■■■■■■■■■■■■■■■■          76% | ETA:  1s
-#> Writing panels ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
-```
 
-Once the panels are written, a note is made in the `disp` object so that
-it knows it doesn’t have to be done with writing out the display.
+Once the panels are written, a note is made in the `disp` object so that it knows it doesn't have to be done with writing out the display. -->
 
 #### `add_meta_defs()`
 
@@ -442,12 +452,12 @@ function help files.
     relationships between variables (currently not supported)
 
 We can provide these specifications by calling `add_meta_defs()` on our
-display object. This function takes as arguments any number of
+trelliscope data frame. This function takes as arguments any number of
 `meta_*()` function calls. For example, let’s build up our object to
 include some of these metadata variable specifications:
 
 ``` r
-disp <- disp |>
+x <- x |>
   add_meta_defs(
     meta_number("mean_gdp",
       label = "Mean of annual GDP per capita (US$, inflation-adjusted)",
@@ -455,33 +465,23 @@ disp <- disp |>
     meta_href("wiki_link", label = "Wikipedia country page")
   )
 
-disp
-#> A trelliscope display
-#> • Name: "life expectancy"
-#> • Description: "life expectancy"
-#> • Tags: none
-#> • Key columns: "continent" and "country"
-#> • Path:
-#>   "/var/folders/7b/thg__1xx7w98wc4rs8t3djrw0000gn/T//RtmpkwHX8B/file475673ed1779"
-#> • Number of panels: 142
-#> • Panels written: yes
-#> • Defined metadata variables:
-#>     ─────────────────────────────────────────────────
-#>     name      type   label                      tags 
-#>     ─────────────────────────────────────────────────
-#>     mean_gdp  number Mean of annual GDP per ca… []   
-#>     wiki_link href   Wikipedia country page     []   
-#>     ─────────────────────────────────────────────────
-#> • Metadata variables that will be inferred:
-#>     ───────────────────────────────────
-#>     name         `inferred type` label 
-#>     ───────────────────────────────────
-#>     country      factor          [none]
-#>     continent    factor          [none]
-#>     mean_lifeexp number          [none]
-#>     min_lifeexp  number          [none]
-#>     ───────────────────────────────────
-#> • Variables that will be ignored as metadata: "data" and "panel"
+x
+#> ℹ Trelliscope data frame. Call show_info() for more information
+#> # A tibble: 142 × 8
+#>    country     continent data              panel mean_…¹ min_l…² mean_…³ wiki_…⁴
+#>    <fct>       <fct>     <list>            <nst>   <dbl>   <dbl>   <dbl> <chr>  
+#>  1 Afghanistan Asia      <tibble [12 × 5]> <gg>     37.5    28.8    803. https:…
+#>  2 Albania     Europe    <tibble [12 × 5]> <gg>     68.4    55.2   3255. https:…
+#>  3 Algeria     Africa    <tibble [12 × 5]> <gg>     59.0    43.1   4426. https:…
+#>  4 Angola      Africa    <tibble [12 × 5]> <gg>     37.9    30.0   3607. https:…
+#>  5 Argentina   Americas  <tibble [12 × 5]> <gg>     69.1    62.5   8956. https:…
+#>  6 Australia   Oceania   <tibble [12 × 5]> <gg>     74.7    69.1  19981. https:…
+#>  7 Austria     Europe    <tibble [12 × 5]> <gg>     73.1    66.8  20412. https:…
+#>  8 Bahrain     Asia      <tibble [12 × 5]> <gg>     65.6    50.9  18078. https:…
+#>  9 Bangladesh  Asia      <tibble [12 × 5]> <gg>     49.8    37.5    818. https:…
+#> 10 Belgium     Europe    <tibble [12 × 5]> <gg>     73.6    68    19901. https:…
+#> # … with 132 more rows, and abbreviated variable names ¹​mean_lifeexp,
+#> #   ²​min_lifeexp, ³​mean_gdp, ⁴​wiki_link
 ```
 
 If metadata variable definitions are not provided (such as here where we
@@ -500,39 +500,29 @@ names indicating the variable name and the values indicating the labels.
 For example:
 
 ``` r
-disp <- disp |>
+x <- x |>
   add_meta_labels(
     mean_lifeexp = "Mean of annual life expectancies",
     min_lifeexp = "Lowest observed annual life expectancy"
   )
 
-disp
-#> A trelliscope display
-#> • Name: "life expectancy"
-#> • Description: "life expectancy"
-#> • Tags: none
-#> • Key columns: "continent" and "country"
-#> • Path:
-#>   "/var/folders/7b/thg__1xx7w98wc4rs8t3djrw0000gn/T//RtmpkwHX8B/file475673ed1779"
-#> • Number of panels: 142
-#> • Panels written: yes
-#> • Defined metadata variables:
-#>     ─────────────────────────────────────────────────
-#>     name      type   label                      tags 
-#>     ─────────────────────────────────────────────────
-#>     mean_gdp  number Mean of annual GDP per ca… []   
-#>     wiki_link href   Wikipedia country page     []   
-#>     ─────────────────────────────────────────────────
-#> • Metadata variables that will be inferred:
-#>     ───────────────────────────────────────────────────────────────────
-#>     name         `inferred type` label                                 
-#>     ───────────────────────────────────────────────────────────────────
-#>     country      factor          [none]                                
-#>     continent    factor          [none]                                
-#>     mean_lifeexp number          Mean of annual life expectancies      
-#>     min_lifeexp  number          Lowest observed annual life expectancy
-#>     ───────────────────────────────────────────────────────────────────
-#> • Variables that will be ignored as metadata: "data" and "panel"
+x
+#> ℹ Trelliscope data frame. Call show_info() for more information
+#> # A tibble: 142 × 8
+#>    country     continent data              panel mean_…¹ min_l…² mean_…³ wiki_…⁴
+#>    <fct>       <fct>     <list>            <nst>   <dbl>   <dbl>   <dbl> <chr>  
+#>  1 Afghanistan Asia      <tibble [12 × 5]> <gg>     37.5    28.8    803. https:…
+#>  2 Albania     Europe    <tibble [12 × 5]> <gg>     68.4    55.2   3255. https:…
+#>  3 Algeria     Africa    <tibble [12 × 5]> <gg>     59.0    43.1   4426. https:…
+#>  4 Angola      Africa    <tibble [12 × 5]> <gg>     37.9    30.0   3607. https:…
+#>  5 Argentina   Americas  <tibble [12 × 5]> <gg>     69.1    62.5   8956. https:…
+#>  6 Australia   Oceania   <tibble [12 × 5]> <gg>     74.7    69.1  19981. https:…
+#>  7 Austria     Europe    <tibble [12 × 5]> <gg>     73.1    66.8  20412. https:…
+#>  8 Bahrain     Asia      <tibble [12 × 5]> <gg>     65.6    50.9  18078. https:…
+#>  9 Bangladesh  Asia      <tibble [12 × 5]> <gg>     49.8    37.5    818. https:…
+#> 10 Belgium     Europe    <tibble [12 × 5]> <gg>     73.6    68    19901. https:…
+#> # … with 132 more rows, and abbreviated variable names ¹​mean_lifeexp,
+#> #   ²​min_lifeexp, ³​mean_gdp, ⁴​wiki_link
 ```
 
 We still haven’t specified labels for `country` and `continent`. If
@@ -547,7 +537,7 @@ change what labels are shown when the display is opened, we can use
 `set_default_labels()`, e.g.:
 
 ``` r
-disp <- disp |>
+x <- x |>
   set_default_labels(c("country", "continent", "wiki_link"))
 ```
 
@@ -556,7 +546,7 @@ disp <- disp |>
 We can also set the default panel layout:
 
 ``` r
-disp <- disp |>
+x <- x |>
   set_default_layout(nrow = 3, ncol = 5)
 ```
 
@@ -565,7 +555,7 @@ disp <- disp |>
 We can set the default sort order with `set_default_sort()`:
 
 ``` r
-disp <- disp |>
+x <- x |>
   set_default_sort(c("continent", "mean_lifeexp"), dir = c("asc", "desc"))
 ```
 
@@ -580,7 +570,7 @@ Currently there are two different kinds of filters:
     variables
 
 ``` r
-disp <- disp |>
+x <- x |>
   set_default_filters(
     filter_string("continent", values = "Africa"),
     filter_range("mean_lifeexp", max = 50)
@@ -608,16 +598,16 @@ the following:
 
 The `state_*()` functions have the same parameters as and behave
 similarly to their `set_*()` counterparts except that unlike those,
-these do not recieve a display object and return a display object, but
-instead just specify a state. The `filter_*()` functions we have seen
-already.
+these do not recieve a trelliscope data frame and return a trelliscope
+data frame, but instead just specify a state. The `filter_*()` functions
+we have seen already.
 
 For example, suppose we wish to add a view that only shows countries
 with minimum life expectancy greater than or equal to 60, sorted from
 highest to lowest minimum life expectancy:
 
 ``` r
-disp <- disp |>
+x <- x |>
   add_view(
     name = "Countries with high life expectancy (min >= 60)",
     filter_range("min_lifeexp", min = 60),
@@ -648,7 +638,7 @@ question asking if the data looks correct for the panel, we can do the
 following:
 
 ``` r
-disp <- disp |>
+x <- x |>
   add_inputs(
     input_text(name = "comments", label = "Comments about this panel",
       width = 100, height = 6),
@@ -658,19 +648,60 @@ disp <- disp |>
   add_input_email("johndoe123@fakemail.net")
 ```
 
-#### Output
-
-Now that we have built up our display object, we can write it out as
-specified before with `write_display()`.
+Let’s see how all of these operations are reflected in our trelliscope
+data frame:
 
 ``` r
-write_display(disp)
+show_info(x)
+#> A trelliscope display
+#> • Name: "life expectancy"
+#> • Description: "life expectancy"
+#> • Tags: none
+#> • Key columns: "continent" and "country"
+#> • Path:
+#>   "/var/folders/7b/thg__1xx7w98wc4rs8t3djrw0000gn/T//RtmpIdyzPk/file17b1a51b472aa"
+#> • Number of panels: 142
+#> • Panels written: no
+#> • Defined metadata variables:
+#>     ─────────────────────────────────────────────────
+#>     name      type   label                      tags 
+#>     ─────────────────────────────────────────────────
+#>     mean_gdp  number Mean of annual GDP per ca… []   
+#>     wiki_link href   Wikipedia country page     []   
+#>     ─────────────────────────────────────────────────
+#> • Metadata variables that will be inferred:
+#>     ───────────────────────────────────────────────────────────────────
+#>     name         `inferred type` label                                 
+#>     ───────────────────────────────────────────────────────────────────
+#>     country      factor          [none]                                
+#>     continent    factor          [none]                                
+#>     mean_lifeexp number          Mean of annual life expectancies      
+#>     min_lifeexp  number          Lowest observed annual life expectancy
+#>     ───────────────────────────────────────────────────────────────────
+#> • Variables that will be ignored as metadata: "data" and "panel"
+```
+
+#### Output
+
+Now that we have built up our trelliscope data frame, we can write it
+out as specified before with `write_trelliscope()`.
+
+``` r
+write_trelliscope(x)
+#> Writing panels ■                                  1% | ETA:  2m
+#> Writing panels ■■■■■                             15% | ETA: 18s
+#> Writing panels ■■■■■■■■■■■■■■■                   46% | ETA:  7s
+#> Writing panels ■■■■■■■■■■■■■■■■■■■■■■■■          77% | ETA:  3s
+#> Writing panels ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% | ETA:  0s
 #> ℹ Meta definitions inferred for variables "country", "continent",
 #>   "mean_lifeexp", and "min_lifeexp"
 #> ℹ No default "layout" state supplied for view 'Countries with high life
 #>   expectancy (min >= 60)'. Using nrow=2, ncol=3.
 #> ℹ No default "labels" state supplied for view 'Countries with high life
 #>   expectancy (min >= 60)'. Using continent, country.
+#> ℹ Trelliscope written to
+#>   /var/folders/7b/thg__1xx7w98wc4rs8t3djrw0000gn/T//RtmpIdyzPk/file17b1a51b472aa/index.html
+#>   Open this file or call view_trelliscope() to view.
 ```
 
 list.files(disp\$path)
@@ -683,7 +714,7 @@ To see what the JSON representation of this looks like for the display
 we have been building:
 
 ``` r
-disp |> as_json()
+x |> as_json()
 #> ℹ Meta definitions inferred for variables "country", "continent",
 #>   "mean_lifeexp", and "min_lifeexp"
 #> ℹ No default "layout" state supplied for view 'Countries with high life
@@ -695,7 +726,7 @@ disp |> as_json()
 #>   "description": "life expectancy",
 #>   "tags": [],
 #>   "keycols": ["continent", "country"],
-#>   "keysig": "1258af3315ef6667a81ac39dc24da591",
+#>   "keysig": null,
 #>   "metas": [
 #>     {
 #>       "locale": true,
@@ -856,8 +887,8 @@ disp |> as_json()
 #>     }
 #>   },
 #>   "paneltype": "img",
-#>   "panelformat": "svg",
-#>   "panelaspect": 1.6,
+#>   "panelformat": null,
+#>   "panelaspect": null,
 #>   "thumbnailurl": null
 #> }
 ```

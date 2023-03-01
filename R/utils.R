@@ -16,7 +16,7 @@ check_trelliscope_df <- function(obj) {
     msg = "Expecting a trelliscope data frame or data.frame")
 
   if (!inherits(obj, "trelliscope"))
-    obj <- as_trelliscope(obj)
+    obj <- as_trelliscope_df(obj)
 
   obj
 }

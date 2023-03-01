@@ -20,7 +20,7 @@ img_panel <- function(x, aspect_ratio = 1.5) {
 #' @param aspect_ratio Specifies the aspect ratio (width / height) to use when
 #'  displaying the image in the browser.
 #' @note \code{x} must be paths relative to the \code{path} argument passed to
-#'   \code{\link{as_trelliscope}}.
+#'   \code{\link{as_trelliscope_df}}.
 #' @importFrom tools file_ext
 #' @export
 img_panel_local <- function(x, aspect_ratio = 1.5) {
@@ -65,7 +65,7 @@ iframe_panel <- function(x, aspect_ratio = 1.5) {
 #' @param aspect_ratio Specifies the aspect ratio (width / height) to use when
 #'  displaying the image in the browser.
 #' @note \code{x} must be paths relative to the \code{path} argument passed to
-#'   \code{\link{as_trelliscope}}.
+#'   \code{\link{as_trelliscope_df}}.
 #' @export
 iframe_panel_local <- function(x, aspect_ratio = 1.5) {
   check_atomic(x, "iframe_panel_local")

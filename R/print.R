@@ -2,7 +2,7 @@
 print.trelliscope <- function(
   x, ..., n = getOption("trs_max_print", default = 10)
 ) {
-  msg("Trelliscope data frame. Call info() for more information")
+  msg("Trelliscope data frame. Call show_info() for more information")
   if (n > 0) {
     if (inherits(x, "tbl_df")) {
       NextMethod()
@@ -18,6 +18,10 @@ print.trelliscope <- function(
   invisible(x)
 }
 
+#' View trelliscope info of a trelliscope data frame
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`] or a
+#' data frame which will be cast as such.
+#' @export
 show_info <- function(trdf) {
   trobj <- attr(trdf, "trelliscope")
   cli::cli_bullets(c(

@@ -20,7 +20,7 @@ attr(dat$date2, "label") <- "test date label with label attribute"
 # dat$bad <- hms::as_hms(1)
 
 suppressMessages(
-  x <- as_trelliscope(dat, name = "test") |>
+  x <- as_trelliscope_df(dat, name = "test") |>
     add_meta_labels(id = "test id label with add_meta_labels")
 )
 xo <- get_trobj(x)

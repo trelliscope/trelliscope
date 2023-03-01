@@ -6,7 +6,7 @@ print.facet_panels <- function(x, ..., view = TRUE) {
   dsc <- paste(c("Faceted by ", attr(x, "trelliscope")$facets), collapse = "")
   res <- x |>
     nest_panels() |>
-    as_trelliscope(name = nm, description = dsc, path = tempfile()) |>
+    as_trelliscope_df(name = nm, description = dsc, path = tempfile()) |>
     write_trelliscope()
 
   if (interactive() && view)

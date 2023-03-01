@@ -7,7 +7,7 @@ dat <- ggplot2::mpg |>
     class2 = factor(class)
   )
 
-x <- as_trelliscope(dat, name = "test", key_cols = c("manufacturer", "class"))
+x <- as_trelliscope_df(dat, name = "test", key_cols = c("manufacturer", "class"))
 xo <- get_trobj(x)
 
 test_that2("add_meta_def", {
