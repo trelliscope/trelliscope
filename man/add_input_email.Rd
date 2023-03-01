@@ -4,10 +4,11 @@
 \alias{add_input_email}
 \title{Specify an email address to which input feedback can be sent}
 \usage{
-add_input_email(disp, email)
+add_input_email(trdf, email)
 }
 \arguments{
-\item{disp}{A trelliscope display object created with \code{\link[=trelliscope]{trelliscope()}}.}
+\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope]{as_trelliscope()}} or a
+data frame which will be cast as such.}
 
 \item{email}{An email address.}
 }

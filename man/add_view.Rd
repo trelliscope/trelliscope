@@ -4,10 +4,11 @@
 \alias{add_view}
 \title{Add a view specification to a trelliscope display}
 \usage{
-add_view(disp, name, ...)
+add_view(trdf, name, ...)
 }
 \arguments{
-\item{disp}{A trelliscope display object created with \code{\link[=trelliscope]{trelliscope()}}.}
+\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope]{as_trelliscope()}} or a
+data frame which will be cast as such.}
 
 \item{name}{The name of the view.}
 

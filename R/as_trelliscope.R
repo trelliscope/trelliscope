@@ -8,7 +8,7 @@
 #' @param key_cols Variable names in `df` that uniquely define a row of the
 #'   data. If not supplied, an attempt will be made to infer them.
 #' @param path Directory in which to place the trelliscope display when
-#'   it is written using [`write_display()`].
+#'   it is written using [`write_trelliscope()`].
 #' @param force_plot Should the panels be forced to be plotted, even if they
 #'   have already been plotted and have not changed since the previous plotting?
 #' @param key_sig A string "signature" that represents the panels for this
@@ -16,32 +16,36 @@
 #' @export
 #' @importFrom utils head
 #' @importFrom dplyr group_cols
-trelliscope <- function(
-  df, name, description = name, key_cols = NULL, tags = NULL,
+as_trelliscope <- function(
+  df, name = NULL, description = name, key_cols = NULL, tags = NULL,
   path = tempfile(), force_plot = FALSE, key_sig = NULL
 ) {
-  if (inherits(df, "facet_trelliscope")) {
+  if (inherits(df, "facet_panels")) {
     # msg("
-    #   An object from {.fn facet_trelliscope} was passed to {.fn trelliscope}.
+    #   An object from {.fn facet_panels} was passed to {.fn trelliscope}.
     #   {.emph Building panels...}")
     msg("{.emph Note:} For more control over building panels, you can \\
-      call {.fn build_panels} explicitly before passing to {.fn trelliscope}.",
+      call {.fn nest_panels} explicitly before passing to {.fn trelliscope}.",
       .frequency = "regularly", .frequency_id = "explicit_build_note")
-    df <- build_panels(df)
+    df <- nest_panels(df)
   }
 
   panel_col <- check_and_get_panel_col(df)
   if (is.null(key_cols))
     key_cols <- get_keycols(df)
 
-  obj <- Display$new(df = df, name = name, description = description,
+  obj <- Display$new(name = name, description = description,
     keycols = key_cols, path = path, force_plot = force_plot,
     panel_col = panel_col, tags = tags, keysig = key_sig)
-  class(obj) <- c("R6", "trelliscope_display")
+  class(obj) <- c("R6", "trelliscope_object")
 
-  obj <- infer_panel_type(obj)
+  attr(df, "trelliscope") <- obj
+  if (!inherits(df, "trelliscope"))
+    class(df) <- c("trelliscope", class(df))
 
-  obj
+  df <- infer_panel_type(df)
+
+  df
 }
 
 check_and_get_panel_col <- function(df) {
@@ -61,37 +65,38 @@ check_and_get_panel_col <- function(df) {
   names(panel_col_idx)
 }
 
-infer_panel_type <- function(disp) {
-  x <- disp$clone()
-  pnls <- x$df[[x$panel_col]]
+infer_panel_type <- function(trdf) {
+  trobj <- attr(trdf, "trelliscope")$clone()
+  pnls <- trdf[[trobj$panel_col]]
   if (inherits(pnls, "trelliscope_panels")) {
     panel1 <- pnls[[1]]
     if (inherits(panel1, "htmlwidget")) {
-      x$set("paneltype", "iframe")
+      trobj$set("paneltype", "iframe")
     } else  {
-      x$set("paneltype", "img")
+      trobj$set("paneltype", "img")
     }
   } else if (inherits(pnls, "img_panel")) {
-      x$set("paneltype", "img")
-      x$set("panelaspect", attr(pnls, "aspect_ratio"))
-      x$panels_written <- NA
-      x$df <- dplyr::rename(x$df, "__PANEL_KEY__" := x$panel_col)
-      x$panel_col <- "__PANEL_KEY__"
+      trobj$set("paneltype", "img")
+      trobj$set("panelaspect", attr(pnls, "aspect_ratio"))
+      trobj$panels_written <- NA
+      trdf <- dplyr::rename(trdf, "__PANEL_KEY__" := trobj$panel_col)
+      trobj$panel_col <- "__PANEL_KEY__"
   } else if (inherits(pnls, "iframe_panel")) {
-      x$set("paneltype", "iframe")
-      x$set("panelaspect", attr(pnls, "aspect_ratio"))
-      x$panels_written <- NA
-      x$df <- dplyr::rename(x$df, "__PANEL_KEY__" := x$panel_col)
-      x$panel_col <- "__PANEL_KEY__"
+      trobj$set("paneltype", "iframe")
+      trobj$set("panelaspect", attr(pnls, "aspect_ratio"))
+      trobj$panels_written <- NA
+      trdf <- dplyr::rename(trdf, "__PANEL_KEY__" := trobj$panel_col)
+      trobj$panel_col <- "__PANEL_KEY__"
   } else {
     assert(FALSE, "Could not infer panel type")
   }
-  x
+  attr(trdf, "trelliscope") <- trobj
+  trdf
 }
 
 get_keycols <- function(df) {
-  if (!is.null(attr(df, "facet_cols"))) {
-    keycols <- attr(df, "facet_cols")
+  if (!is.null(attr(df, "trelliscope")$facet_cols)) {
+    keycols <- attr(df, "trelliscope")$facet_cols
   } else if (!is.null(attr(df, "keycols"))) {
     keycols <- attr(df, "keycols")
   } else if (inherits(df, "grouped_df")) {
@@ -118,7 +123,7 @@ get_keycols <- function(df) {
       "Could not find columns of the data that uniquely define each row.")
   }
 
-  if (is.null(attr(df, "facet_cols")))
+  if (is.null(attr(df, "trelliscope")$facet_cols))
     msg("Using the variable{?s} {.val {keycols}} \\
       to uniquely identify each row of the data.")
 

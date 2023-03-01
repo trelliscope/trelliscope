@@ -4,10 +4,11 @@
 \alias{add_input_vars}
 \title{Specify meta variables whose values should be provided in input feedback}
 \usage{
-add_input_vars(disp, vars)
+add_input_vars(trdf, vars)
 }
 \arguments{
-\item{disp}{A trelliscope display object created with \code{\link[=trelliscope]{trelliscope()}}.}
+\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope]{as_trelliscope()}} or a
+data frame which will be cast as such.}
 
 \item{vars}{A vector of meta variable names found in the display.}
 }

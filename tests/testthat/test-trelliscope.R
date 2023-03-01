@@ -8,17 +8,17 @@ plotdir <- tempfile()
 
 test_that2("trelliscope instantiation", {
   expect_error(
-    trelliscope(iris, name = "test"),
+    as_trelliscope(iris, name = "test"),
     regexp = "that references a plot or image"
   )
 
   suppressMessages(expect_error(
-    trelliscope(dat),
+    as_trelliscope(dat),
     regexp = "argument \"name\" is missing"
   ))
 
   suppressMessages(expect_message(
-    x <- trelliscope(dat, name = "test"),
+    x <- as_trelliscope(dat, name = "test"),
     regexp = "Using the variables"
   ))
   expect_equal(x$get("name"), "test")
@@ -30,13 +30,13 @@ test_that2("trelliscope instantiation", {
 
   dat$panel2 <- dat$panel
   suppressMessages(expect_message(
-    trelliscope(dat, name = "test"),
+    as_trelliscope(dat, name = "test"),
     regexp = "Found multiple columns"
   ))
 
   dat2 <- dat[, -c(1:2)]
   suppressMessages(expect_error(
-    trelliscope(dat2, name = "test"),
+    as_trelliscope(dat2, name = "test"),
     regexp = "Could not find columns of the data that uniquely"
   ))
 })
@@ -44,14 +44,14 @@ test_that2("trelliscope instantiation", {
 test_that2("trelliscope printing", {
   disp <- (ggplot(aes(hwy, cty), data = mpg2) +
     geom_point() +
-    facet_trelliscope(~ class)) |>
-    build_panels() |>
+    facet_panels(~ class)) |>
+    nest_panels() |>
     mutate(
       mean_cty = purrr::map_dbl(data, ~ mean(.x$cty)),
       min_cty = purrr::map_dbl(data, ~ min(.x$cty)),
       wiki_link = paste0("https://en.wikipedia.org/wiki/", class)
     ) |>
-    trelliscope(name = "mpg", path = plotdir)
+    as_trelliscope(name = "mpg", path = plotdir)
 
   suppressMessages(expect_message(
     disp$print(),
@@ -88,8 +88,8 @@ test_that2("trelliscope printing", {
 })
 
 # TODO: test keysig:
-# - If it is explicitly specified in trelliscope(), make sure it isn't overridden
-# - Make sure it is set even when not calling write_display or panels already written
+# - If it is explicitly specified in as_trelliscope(), make sure it isn't overridden
+# - Make sure it is set even when not calling write_trelliscope or panels already written
 
 # TODO: once print method reflects this info, test it
 # disp <- disp |>

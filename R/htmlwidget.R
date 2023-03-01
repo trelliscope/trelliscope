@@ -1,11 +1,27 @@
 #' View a trelliscope display
-#' @param disp A trelliscope display object created with [`trelliscope()`].
+#' @param trdf A trelliscope data frame created with [`as_trelliscope()`] or a
+#' data frame which will be cast as such.
 #' @export
-view_display <- function(
-  disp
-  # spa = TRUE, width = NULL, height = NULL
-) {
-  path <- disp$path
+view_trelliscope <- function(trdf = NULL) {
+  if (is.null(trdf)) {
+    url <- getOption("trelliscope_latest_display_url")
+    if (is.null(url)) {
+      msg("Cannot view. A trelliscope object was not provided.")
+      return(NULL)
+    }
+  } else {
+    trobj <- attr(trdf, "trelliscope")
+    url <- file.path(trobj$path, "index.html")
+  }
+
+  options(trelliscope_latest_display_url = url)
+
+  get_viewer()(url)
+}
+
+# spa = TRUE, width = NULL, height = NULL
+write_widget <- function(trobj) {
+  path <- trobj$path
   config_info <- list.files(path, pattern = "config.json")
   id <- readLines(file.path(path, "id"), warn = FALSE)[1]
   spa <- TRUE
@@ -40,7 +56,7 @@ view_display <- function(
   el_tags <- htmltools::as.tags(wdgt, standalone = FALSE)
   htmltools::save_html(el_tags, file = index_html, libdir = "lib")
 
-  fidelius_pars <- disp$fidelius_pars
+  fidelius_pars <- trobj$fidelius_pars
   if (!is.null(fidelius_pars)) {
     rlang::check_installed("fidelius",
       reason = "to encrypt your Trelliscope display.")
@@ -48,35 +64,42 @@ view_display <- function(
     do.call(fidelius::charm, fidelius_pars)
   }
 
-  viewer <- get_viewer(wdgt)
-  if (!is.null(viewer))
-    viewer(index_html)
+  options(trelliscope_latest_display_url = index_html)
+  msg("Trelliscope written to {index_html}
+    Open this file or call view_trelliscope() to view.")
 
   invisible(index_html)
 }
 
-get_viewer <- function(wdgt) {
+get_viewer <- function() {
   viewer <- getOption("viewer")
-  if (!is.null(viewer)) {
-    viewerFunc <- function(url) {
-
-      # get the requested pane height (it defaults to NULL)
-      paneHeight <- wdgt$sizingPolicy$viewer$paneHeight
-
-      # convert maximize to -1 for compatibility with older versions of rstudio
-      # (newer versions convert 'maximize' to -1 interally, older versions
-      # will simply ignore the height if it's less than zero)
-      if (identical(paneHeight, "maximize"))
-        paneHeight <- -1
-
-      # call the viewer
-      viewer(url, height = paneHeight)
-    }
-  } else {
-    viewerFunc <- utils::browseURL
-  }
-  viewerFunc
+  if (is.null(viewer))
+    viewer <- utils::browseURL
+  viewer
 }
+
+# get_viewer <- function(wdgt) {
+#   viewer <- getOption("viewer")
+#   if (!is.null(viewer)) {
+#     viewerFunc <- function(url) {
+
+#       # get the requested pane height (it defaults to NULL)
+#       paneHeight <- wdgt$sizingPolicy$viewer$paneHeight
+
+#       # convert maximize to -1 for compatibility with older versions of rstudio
+#       # (newer versions convert 'maximize' to -1 interally, older versions
+#       # will simply ignore the height if it's less than zero)
+#       if (identical(paneHeight, "maximize"))
+#         paneHeight <- -1
+
+#       # call the viewer
+#       viewer(url, height = paneHeight)
+#     }
+#   } else {
+#     viewerFunc <- utils::browseURL
+#   }
+#   viewerFunc
+# }
 
 # nolint start
 

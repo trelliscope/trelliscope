@@ -11,7 +11,7 @@
 #' @importFrom ggplot2 facet_wrap waiver
 #' @importFrom tidyr nest
 #' @export
-facet_trelliscope <- function(facets,
+facet_panels <- function(facets,
   scales = "same", add_plot_metrics = FALSE,
   data = ggplot2::waiver()
 ) {
@@ -23,19 +23,19 @@ facet_trelliscope <- function(facets,
     data = data
   )
 
-  class(ret) <- "facet_trelliscope"
+  class(ret) <- "facet_panels"
   ret
 }
 
-ggplot_add.facet_trelliscope <- function(object, plot, object_name) {
+ggplot_add.facet_panels <- function(object, plot, object_name) {
   attr(plot, "trelliscope") <- object[
     c("facets", "facet_cols", "scales", "add_plot_metrics", "data")]
-  class(plot) <- c("facet_trelliscope", class(plot))
+  class(plot) <- c("facet_panels", class(plot))
   return(plot)
 }
 
 #' Render the panels of a trelliscope display
-#' @param x A ggplot object created with [facet_trelliscope()].
+#' @param x A ggplot object created with [facet_panels()].
 #' @param data_col The name of the column to store the nested data in.
 #' @param panel_col The name of the column to store the rendered panels in.
 #' @param unnest_cols An optional vector of extra variable names in `x`
@@ -49,13 +49,13 @@ ggplot_add.facet_trelliscope <- function(object, plot, object_name) {
 #' @importFrom rlang :=
 #' @importFrom dplyr count across
 #' @importFrom cli cli_progress_along
-build_panels <- function(
+nest_panels <- function(
   x, data_col = "data", panel_col = "panel", unnest_cols = NULL,
   as_plotly = FALSE, plotly_args = NULL, plotly_cfg = NULL
 ) {
-  assert(inherits(x, "facet_trelliscope"),
-    msg = "{.fun build_panels} only works with ggplot objects that \\
-      use {.fun facet_trelliscope}")
+  assert(inherits(x, "facet_panels"),
+    msg = "{.fun nest_panels} only works with ggplot objects that \\
+      use {.fun facet_panels}")
   check_scalar(panel_col, "panel_col")
   check_scalar(data_col, "data_col")
   check_character(panel_col, "panel_col")
@@ -68,10 +68,17 @@ build_panels <- function(
       "Package 'plotly' is needed for as_plotly = TRUE Please install it.")
   }
 
+  # default name and description
+  nm <- x$labels$title
+  if (is.null(nm))
+    nm <- "ggplot"
+  dsc <- paste(c("Faceted by ", attr(x, "trelliscope")$facets), collapse = "")
+  x$labels$title <- NULL
+
   attrs <- attr(x, "trelliscope")
 
   # remove special class
-  class(x) <- setdiff(class(x), "facet_trelliscope")
+  class(x) <- setdiff(class(x), "facet_panels")
 
   # pp <- ggplot2::ggplot_build(x)
 
@@ -92,11 +99,11 @@ build_panels <- function(
     or in the 'data' parameter")
 
   # character vector of facet columns
-  # TODO need to work with facet_trelliscope(~ disp < 5)
+  # TODO need to work with facet_panels(~ disp < 5)
   facet_cols <- unlist(lapply(attrs$facet_cols, rlang::as_name))
   facet_cols <- setdiff(facet_cols, "~")
   assert(all(facet_cols %in% names(data)),
-    "All facet_trelliscope facet columns must be found in the data being \
+    "All facet_panels facet columns must be found in the data being \
     used.")
 
   assert(!panel_col %in% facet_cols,
@@ -160,7 +167,11 @@ build_panels <- function(
     }
   )
   class(data[[panel_col]]) <- c("trelliscope_panels", "list")
-  attr(data, "facet_cols") <- facet_cols
+  attr(data, "trelliscope") <- list(
+    facet_cols = facet_cols,
+    name = nm,
+    description = dsc
+  )
 
   data
 }
@@ -269,7 +280,7 @@ add_range_info_to_scales <- function(plot, scales_info, facet_cols) {
         scale_info$data_type <- "discrete"
 
         if (scale_info$scale_type == "sliced") {
-          msg("facet_trelliscope does not know how to handle a 'sliced' \\
+          msg("facet_panels does not know how to handle a 'sliced' \\
             scale for discrete data. Using 'free' type."
           )
           scale_info$scale_type <- "free"

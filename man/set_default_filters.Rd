@@ -4,10 +4,11 @@
 \alias{set_default_filters}
 \title{Add a filter state specifications to a trelliscope display}
 \usage{
-set_default_filters(disp, ..., add = TRUE)
+set_default_filters(trdf, ..., add = TRUE)
 }
 \arguments{
-\item{disp}{A trelliscope display object created with \code{\link[=trelliscope]{trelliscope()}}.}
+\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope]{as_trelliscope()}} or a
+data frame which will be cast as such.}
 
 \item{...}{Filter state specifications (e.g. \code{\link[=filter_string]{filter_string()}},
 \code{\link[=filter_range]{filter_range()}}).}

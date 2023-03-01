@@ -1,20 +1,21 @@
 
-infer <- function(disp) {
-  check_display_object(disp)
-  disp <- infer_meta(disp)
-  disp2 <- disp$clone()
-  st <- disp2$get("state")
-  newst <- infer_state(st, disp$df, disp$get("keycols"))
-  disp2$set_state(newst)
-  for (view in disp2$get("views")) {
+infer <- function(trdf) {
+  check_trelliscope_df(trdf)
+  trdf <- infer_meta(trdf)
+  trobj <- attr(trdf, "trelliscope")$clone()
+  st <- trobj$get("state")
+  newst <- infer_state(st, trdf, trobj$get("keycols"))
+  trobj$set_state(newst)
+  for (view in trobj$get("views")) {
     view2 <- view$clone()
     st <- view2$get("state")
-    newst <- infer_state(st, disp$df, disp$get("keycols"), view2$get("name"))
+    newst <- infer_state(st, trdf, trobj$get("keycols"), view2$get("name"))
     view2$set_state(newst)
-    disp2$set_view(view2, verbose = FALSE)
+    trobj$set_view(view2, verbose = FALSE)
   }
-  # disp2 <- infer_panel_type(disp2)
-  disp2
+  attr(trdf, "trelliscope") <- trobj
+  # trdf <- infer_panel_type(trdf)
+  trdf
 }
 
 infer_state <- function(state, df, keycols, view = NULL) {
@@ -42,57 +43,60 @@ infer_state <- function(state, df, keycols, view = NULL) {
 }
 
 #' Infer meta variable definitions
-#' @param disp A trelliscope display object created with [`trelliscope()`].
+#' @param trdf A trelliscope data frame created with [`as_trelliscope()`] or a
+#' data frame which will be cast as such.
 #' @export
-infer_meta <- function(disp) {
-  check_display_object(disp)
+infer_meta <- function(trdf) {
+  check_trelliscope_df(trdf)
 
-  disp2 <- disp$clone()
-  def_metas <- names(disp2$get("metas"))
+  trobj <- attr(trdf, "trelliscope")$clone()
+  def_metas <- names(trobj$get("metas"))
 
-  needs_meta <- setdiff(names(disp2$df), c(def_metas, "__PANEL_KEY__"))
+  needs_meta <- setdiff(names(trdf), c(def_metas, "__PANEL_KEY__"))
   # TODO: check to see if there are geo metas and ignore the lat/long varnames
   needs_removed <- character(0)
 
   for (nm in needs_meta) {
-    cur_meta <- infer_meta_variable(disp2$df[[nm]], nm)
+    cur_meta <- infer_meta_variable(trdf[[nm]], nm)
     if (is.null(cur_meta)) {
-      # if (!nm %in% disp2$panel_col && !is.list(disp2$df[[nm]]))
+      # if (!nm %in% trobj$panel_col && !is.list(trdf[[nm]]))
       #   msg("Cannot find a data type for variable {.val {nm}}. \\
       #     This variable will not be available in the display.")
       needs_removed <- c(needs_removed, nm)
     } else {
-      disp2 <- add_meta_def(disp2, cur_meta)
+      trdf <- add_meta_def(trdf, cur_meta)
+      trobj <- attr(trdf, "trelliscope")$clone()
     }
   }
-  disp2$df_cols_ignore <- needs_removed
+  trdf_cols_ignore <- needs_removed
 
   msg("Meta definition{?s} inferred for variable{?s} \\
     {.val {setdiff(needs_meta, needs_removed)}}")
 
   # finalize labels if NULL with the following priority:
-  # 1. use from disp$meta_labels if defined
-  # 2. use from attr(disp$df[[varname]], "label") if defined
+  # 1. use from trobj$meta_labels if defined
+  # 2. use from attr(trdf[[varname]], "label") if defined
   # 3. set it to varname
-  metas <- disp2$get("metas")
+  metas <- trobj$get("metas")
   for (meta in metas) {
     curvar <- meta$get("varname")
     lbl <- NULL
     if (is.null(meta$get("label"))) {
-      lbl <- attr(disp2$df[[curvar]], "label")
+      lbl <- attr(trdf[[curvar]], "label")
       if (is.null(lbl))
-        lbl <- disp2$meta_labels[[curvar]]
+        lbl <- trobj$meta_labels[[curvar]]
       if (is.null(lbl))
         lbl <- curvar
       meta$set("label", lbl)
     }
     # also set tags if they were specified with add_meta_tags()
-    if (length(meta$get("tags")) == 0 && !is.null(disp2$meta_tags[[curvar]])) {
-      meta$set("tags", disp2$meta_tags[[curvar]])
+    if (length(meta$get("tags")) == 0 && !is.null(trobj$meta_tags[[curvar]])) {
+      meta$set("tags", trobj$meta_tags[[curvar]])
     }
   }
 
-  disp2
+  attr(trdf, "trelliscope") <- trobj
+  trdf
 }
 
 infer_meta_variable <- function(x, nm) {

@@ -2,7 +2,7 @@ dat <- iris
 sq <- seq_len(nrow(dat))
 dat$id <- as.character(sq)
 dat$letters <- rep(letters, 10)[1:150]
-dat$date <- Sys.Date() + 1:150
+dat$date <- as.Date("2000-01-01") + 1:150
 dat$datetime <- as.POSIXct(dat$date)
 dat$datestring <- as.character(dat$date)
 tmp <- matrix(c(
@@ -82,7 +82,7 @@ test_that2("SortState", {
 })
 
 test_that2("CategoryFilterState", {
-  obj <- CategoryFilterState$new("datestring", values = "2023-02-24")
+  obj <- CategoryFilterState$new("datestring", values = "2000-01-02")
   obj_meta1 <- StringMeta$new("datestring")
   obj_meta2 <- FactorMeta$new("datestring")
   obj_meta3 <- DateMeta$new("date")
@@ -97,13 +97,13 @@ test_that2("CategoryFilterState", {
 
   expect_equal(
     obj$as_list(),
-    list(values = I("2023-02-24"), regexp = NULL, filtertype = "category",
+    list(values = I("2000-01-02"), regexp = NULL, filtertype = "category",
       varname = "datestring", type = "filter")
   )
 
   expect_equal(
     as.character(obj$as_json()),
-    '{"values":["2023-02-24"],"regexp":null,"filtertype":"category","varname":"datestring","type":"filter"}'
+    '{"values":["2000-01-02"],"regexp":null,"filtertype":"category","varname":"datestring","type":"filter"}'
   )
 
   obj <- CategoryFilterState$new("datestring", values = "stuff")

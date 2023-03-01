@@ -4,10 +4,11 @@
 \alias{add_meta_def}
 \title{Add a meta variable definition to a trelliscope display}
 \usage{
-add_meta_def(disp, obj)
+add_meta_def(trdf, obj)
 }
 \arguments{
-\item{disp}{A trelliscope display object created with \code{\link[=trelliscope]{trelliscope()}}.}
+\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope]{as_trelliscope()}} or a
+data frame which will be cast as such.}
 
 \item{obj}{A meta variable definition created with a meta_*() function.}
 }

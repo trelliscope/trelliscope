@@ -7,7 +7,7 @@ test_that("adding inputs", {
       class2 = factor(class)
     )
 
-  x <- trelliscope(dat, name = "test", key_cols = c("manufacturer", "class")) |>
+  x <- as_trelliscope(dat, name = "test", key_cols = c("manufacturer", "class")) |>
     add_inputs(
       input_text(name = "comments", label = "Comments about this panel",
         width = 100, height = 6),

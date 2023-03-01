@@ -4,10 +4,11 @@
 \alias{set_default_layout}
 \title{Add a layout state specification to a trelliscope display}
 \usage{
-set_default_layout(disp, nrow = 1, ncol = 1, arrange = "rows", page = 1)
+set_default_layout(trdf, nrow = 1, ncol = 1, arrange = "rows", page = 1)
 }
 \arguments{
-\item{disp}{A trelliscope display object created with \code{\link[=trelliscope]{trelliscope()}}.}
+\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope]{as_trelliscope()}} or a
+data frame which will be cast as such.}
 
 \item{nrow}{Number of rows of panels to show.}
 
