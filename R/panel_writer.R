@@ -136,7 +136,7 @@ make_png <- function(p, file, width, height, orig_width = width, res = 72,
 #' @importFrom svglite svglite
 make_svg <- function(p, file, width, height) {
   svglite::svglite(filename = file,
-    width = width / 72, height = height / 72, scaling = 1.75)
+    width = width / 72, height = height / 72, scaling = 2)
   print(p)
   dev.off()
 }

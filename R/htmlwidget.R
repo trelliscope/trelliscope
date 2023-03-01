@@ -10,6 +10,7 @@ view_trelliscope <- function(trdf = NULL) {
       return(NULL)
     }
   } else {
+    trdf <- check_trelliscope_df(trdf)
     trobj <- attr(trdf, "trelliscope")
     url <- file.path(trobj$path, "index.html")
   }
