@@ -19,7 +19,7 @@ print.trelliscope <- function(
 }
 
 show_info <- function(trdf) {
-  trobj <- attr(trdf, "attributes")
+  trobj <- attr(trdf, "trelliscope")
   cli::cli_bullets(c(
     "A trelliscope display",
     "*" = "{.strong Name}: {.val {trobj$get('name')}}",

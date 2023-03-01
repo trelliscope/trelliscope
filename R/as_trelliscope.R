@@ -51,9 +51,9 @@ as_trelliscope <- function(
 check_and_get_panel_col <- function(df) {
   # look for a column with one of the following classes:
   # - img_panel (which includes img_panel_local)
-  # - trelliscope_panels
+  # - nested_panels
   panel_col_idx <- which(unlist(lapply(df, function(a)
-    inherits(a, c("img_panel", "trelliscope_panels")))))
+    inherits(a, c("img_panel", "nested_panels")))))
   if (length(panel_col_idx) > 1) {
     msg("Found multiple columns that indicate a panel, using the first \\
       one found: '{names(panel_col_idx)[1]}")
@@ -68,7 +68,7 @@ check_and_get_panel_col <- function(df) {
 infer_panel_type <- function(trdf) {
   trobj <- attr(trdf, "trelliscope")$clone()
   pnls <- trdf[[trobj$panel_col]]
-  if (inherits(pnls, "trelliscope_panels")) {
+  if (inherits(pnls, "nested_panels")) {
     panel1 <- pnls[[1]]
     if (inherits(panel1, "htmlwidget")) {
       trobj$set("paneltype", "iframe")

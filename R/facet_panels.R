@@ -69,9 +69,9 @@ nest_panels <- function(
   }
 
   # default name and description
-  nm <- x$labels$title
-  if (is.null(nm))
-    nm <- "ggplot"
+  dnm <- x$labels$title
+  if (is.null(dnm))
+    dnm <- "ggplot"
   dsc <- paste(c("Faceted by ", attr(x, "trelliscope")$facets), collapse = "")
   x$labels$title <- NULL
 
@@ -166,10 +166,10 @@ nest_panels <- function(
       make_plot_obj(data[i, ])
     }
   )
-  class(data[[panel_col]]) <- c("trelliscope_panels", "list")
+  class(data[[panel_col]]) <- c("nested_panels", "list")
   attr(data, "trelliscope") <- list(
     facet_cols = facet_cols,
-    name = nm,
+    name = dnm,
     description = dsc
   )
 

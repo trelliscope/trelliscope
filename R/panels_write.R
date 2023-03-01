@@ -19,7 +19,7 @@
 write_panels <- function(
   trdf, width = 500, height = 500, format = "png", force = FALSE
 ) {
-  check_trelliscope_df(trdf)
+  trdf <- check_trelliscope_df(trdf)
   check_scalar(width, "width")
   check_pos_numeric(width, "width")
   check_scalar(height, "height")

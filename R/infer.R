@@ -1,6 +1,6 @@
 
 infer <- function(trdf) {
-  check_trelliscope_df(trdf)
+  trdf <- check_trelliscope_df(trdf)
   trdf <- infer_meta(trdf)
   trobj <- attr(trdf, "trelliscope")$clone()
   st <- trobj$get("state")
@@ -47,7 +47,7 @@ infer_state <- function(state, df, keycols, view = NULL) {
 #' data frame which will be cast as such.
 #' @export
 infer_meta <- function(trdf) {
-  check_trelliscope_df(trdf)
+  trdf <- check_trelliscope_df(trdf)
 
   trobj <- attr(trdf, "trelliscope")$clone()
   def_metas <- names(trobj$get("metas"))
@@ -68,7 +68,7 @@ infer_meta <- function(trdf) {
       trobj <- attr(trdf, "trelliscope")$clone()
     }
   }
-  trdf_cols_ignore <- needs_removed
+  trobj$df_cols_ignore <- needs_removed
 
   msg("Meta definition{?s} inferred for variable{?s} \\
     {.val {setdiff(needs_meta, needs_removed)}}")

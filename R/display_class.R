@@ -17,10 +17,14 @@ Display <- R6::R6Class(
       name, description, tags, keycols, path, force_plot, panel_col,
       keysig = NULL
     ) {
-      check_scalar(name, "name")
-      check_character(name, "name")
-      check_scalar(description, "description")
-      check_character(description, "description")
+      if (!is.null(name)) {
+        check_scalar(name, "name")
+        check_character(name, "name")
+      }
+      if (!is.null(description)) {
+        check_scalar(description, "description")
+        check_character(description, "description")
+      }
       check_scalar(path, "path")
       check_character(path, "path")
       check_scalar(force_plot, "force_plot")
@@ -53,10 +57,10 @@ Display <- R6::R6Class(
         msg("Replacing existing meta variable definition for {name}")
       private$metas[[name]] <- obj
     },
-    # set_metas = function(objs) {
-    #   for (obj in objs)
-    #     self$set_meta(obj)
-    # },
+    set_metas = function(objs, trdf) {
+      for (obj in objs)
+        self$set_meta(obj, trdf)
+    },
     set_state = function(obj) {
       private$state <- obj
     },

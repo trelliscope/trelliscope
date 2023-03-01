@@ -23,6 +23,7 @@ suppressMessages(
   x <- as_trelliscope(dat, name = "test") |>
     add_meta_labels(id = "test id label with add_meta_labels")
 )
+xo <- get_trobj(x)
 
 test_that2("infer", {
   expect_message(
@@ -48,20 +49,22 @@ test_that2("infer", {
     regexp = "No default \"labels\" state supplied for view"
   ) |> suppressMessages()
 
+  ao <- get_trobj(a)
+  bo <- get_trobj(b)
   expect_equal(
-    a$get("views")[[1]]$get("state")$get("labels")$get("type"),
+    ao$get("views")[[1]]$get("state")$get("labels")$get("type"),
     "labels"
   )
   expect_equal(
-    a$get("views")[[1]]$get("state")$get("layout")$get("type"),
+    ao$get("views")[[1]]$get("state")$get("layout")$get("type"),
     "layout"
   )
   expect_equal(
-    b$get("views")[[1]]$get("state")$get("labels"),
+    bo$get("views")[[1]]$get("state")$get("labels"),
     NULL
   )
   expect_equal(
-    b$get("views")[[1]]$get("state")$get("layout"),
+    bo$get("views")[[1]]$get("state")$get("layout"),
     NULL
   )
 })
@@ -80,14 +83,16 @@ test_that2("meta variable inference", {
     regexp = "Meta definitions inferred"
   ) |> suppressMessages()
 
+  bo <- get_trobj(b)
+  dob <- get_trobj(d)
+
   # make sure b didn't get updated
-  expect_length(b$get("metas"), 1)
+  expect_length(bo$get("metas"), 1)
 
-  expect_length(d$get("metas"), ncol(dat) - 2)
-  expect_length(d$df, ncol(dat)) # the "bad" columns shouldn't be removed
-  expect_equal(d$df_cols_ignore, "lst")
+  expect_length(dob$get("metas"), ncol(dat) - 2)
+  expect_equal(dob$df_cols_ignore, "lst")
 
-  metas <- d$get("metas")
+  metas <- dob$get("metas")
   lbls <- lapply(metas, function(x) x$get("label"))
 
   expect_length(unlist(lbls), ncol(dat) - 2)

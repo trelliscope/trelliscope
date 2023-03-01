@@ -4,13 +4,14 @@
 \alias{as_json}
 \title{Convert any trelliscope R6 object to JSON}
 \usage{
-as_json(df, pretty = TRUE)
+as_json(trdf, pretty = TRUE)
 }
 \arguments{
+\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope]{as_trelliscope()}} or a
+data frame which will be cast as such.}
+
 \item{pretty}{Adds indentation whitespace to JSON output. Can be TRUE/FALSE
 or a number specifying the number of spaces to indent.}
-
-\item{obj}{Any R6 object created with trelliscope functions.}
 }
 \description{
 Convert any trelliscope R6 object to JSON

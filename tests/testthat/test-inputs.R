@@ -18,9 +18,9 @@ test_that("adding inputs", {
   x2 <- x %>%
     add_input_email("johndoe123@fakemail.com")
 
-  expect_error(x$as_json(), "provide a feedback email")
+  expect_error(get_trobj(x)$as_json(), "provide a feedback email")
 
-  expect_equal(x2$as_list()$inputs$feedbackInterface$feedbackEmail,
+  expect_equal(get_trobj(x2)$as_list()$inputs$feedbackInterface$feedbackEmail,
     "johndoe123@fakemail.com")
 
   expect_error(add_input_vars(x, "asdf"), "can only be valid meta variables")

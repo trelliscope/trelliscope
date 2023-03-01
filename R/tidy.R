@@ -11,7 +11,7 @@
 map_plot <- function(.x, .f, ...) {
   structure(
     purrr::map(.x, .f, ...),
-    class = c("trelliscope_panels", "list")
+    class = c("nested_panels", "list")
   )
 }
 
@@ -29,7 +29,7 @@ map_plot <- function(.x, .f, ...) {
 map2_plot <- function(.x, .y, .f, ...) {
   structure(
     purrr::map2(.x, .y, .f, ...),
-    class = c("trelliscope_panels", "list")
+    class = c("nested_panels", "list")
   )
 }
 
@@ -38,12 +38,12 @@ map2_plot <- function(.x, .y, .f, ...) {
 pmap_plot <- function(.l, .f, ...) {
   structure(
     purrr::pmap(.l, .f, ...),
-    class = c("trelliscope_panels", "list")
+    class = c("nested_panels", "list")
   )
 }
 
 #' @export
-`[.trelliscope_panels` <- function(x, i, j, ..., drop = TRUE) {
+`[.nested_panels` <- function(x, i, j, ..., drop = TRUE) {
   cls <- class(x)
   x <- NextMethod()
   structure(x, class = cls)

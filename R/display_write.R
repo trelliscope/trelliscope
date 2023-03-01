@@ -8,7 +8,7 @@
 #'   trelliscope app without the need for a web server.
 #' @export
 write_trelliscope <- function(trdf, force_write = FALSE, jsonp = TRUE) {
-  check_trelliscope_df(trdf)
+  trdf <- check_trelliscope_df(trdf)
   trobj <- attr(trdf, "trelliscope")$clone()
 
   if (!dir.exists(trobj$get_display_path()))
@@ -85,7 +85,7 @@ check_panels <- function(trdf) {
 
   pnls <- trdf[[x$panel_col]]
   panel_path <- file.path(x$get_display_path(), "panels")
-  if (inherits(pnls, "trelliscope_panels")) {
+  if (inherits(pnls, "nested_panels")) {
     ff <- list.files(panel_path)
     ff <- tools::file_path_sans_ext(ff)
     keys <- apply(trdf[x$get("keycols")], 1,

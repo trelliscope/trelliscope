@@ -12,8 +12,13 @@ to_json <- function(x, pretty = FALSE) {
 check_trelliscope_df <- function(obj) {
   # assert(inherits(attr(obj, "trelliscope"), "trelliscope_object"),
   #   msg = "Expecting a trelliscope data frame")
-  assert(inherits(obj, "trelliscope"),
-    msg = "Expecting a trelliscope data frame")
+  assert(inherits(obj, "data.frame"),
+    msg = "Expecting a trelliscope data frame or data.frame")
+
+  if (!inherits(obj, "trelliscope"))
+    obj <- as_trelliscope(obj)
+
+  obj
 }
 
 # check_trelliscope_object <- function(obj) {

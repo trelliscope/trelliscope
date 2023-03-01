@@ -4,7 +4,7 @@
 #' @param obj A meta variable definition created with a meta_*() function.
 #' @export
 add_meta_def <- function(trdf, obj) {
-  check_trelliscope_df(trdf)
+  trdf <- check_trelliscope_df(trdf)
   trobj <- attr(trdf, "trelliscope")$clone()
   trobj$set_meta(obj, trdf)
   attr(trdf, "trelliscope") <- trobj
@@ -17,10 +17,10 @@ add_meta_def <- function(trdf, obj) {
 #' @param ... Any number of objects created with meta_*() functions.
 #' @export
 add_meta_defs <- function(trdf, ...) {
-  check_trelliscope_df(trdf)
+  trdf <- check_trelliscope_df(trdf)
   objs <- list(...)
   trobj <- attr(trdf, "trelliscope")$clone()
-  trobj$set_metas(objs)
+  trobj$set_metas(objs, trdf)
   attr(trdf, "trelliscope") <- trobj
   trdf
 }
@@ -35,7 +35,7 @@ add_meta_defs <- function(trdf, ...) {
 #' descriptions.
 #' @export
 add_meta_labels <- function(trdf, ...) {
-  check_trelliscope_df(trdf)
+  trdf <- check_trelliscope_df(trdf)
   args <- list(...)
   assert(length(names(args)) == length(args),
     msg = "Arguments must be named")
@@ -60,7 +60,7 @@ add_meta_labels <- function(trdf, ...) {
 #' tags.
 #' @export
 add_meta_tags <- function(trdf, ...) {
-  check_trelliscope_df(trdf)
+  trdf <- check_trelliscope_df(trdf)
   args <- list(...)
   assert(length(names(args)) == length(args),
     msg = "Arguments must be named")
@@ -81,7 +81,7 @@ add_meta_tags <- function(trdf, ...) {
 #' @inheritParams state_layout
 #' @export
 set_default_layout <- function(trdf, nrow = 1, ncol = 1, arrange = "rows", page = 1) {
-  check_trelliscope_df(trdf)
+  trdf <- check_trelliscope_df(trdf)
   obj <- state_layout(nrow = nrow, ncol = ncol, arrange = arrange, page = page)
   obj$check_with_data(trdf)
   trobj <- attr(trdf, "trelliscope")$clone()
@@ -99,7 +99,7 @@ set_default_layout <- function(trdf, nrow = 1, ncol = 1, arrange = "rows", page 
 #' @inheritParams state_labels
 #' @export
 set_default_labels <- function(trdf, varnames) {
-  check_trelliscope_df(trdf)
+  trdf <- check_trelliscope_df(trdf)
   obj <- state_labels(varnames = varnames)
   obj$check_with_data(trdf)
   trobj <- attr(trdf, "trelliscope")$clone()
@@ -120,7 +120,7 @@ set_default_labels <- function(trdf, varnames) {
 #' (default), the entire sort specification will be overridden.
 #' @export
 set_default_sort <- function(trdf, varnames, dirs = "asc", add = FALSE) {
-  check_trelliscope_df(trdf)
+  trdf <- check_trelliscope_df(trdf)
   if (length(dirs) == 1)
     dirs <- rep(dirs, length(varnames))
   assert(length(varnames) == length(dirs),
@@ -147,7 +147,7 @@ set_default_sort <- function(trdf, varnames, dirs = "asc", add = FALSE) {
 #' Default is TRUE. If FALSE, the entire sort specification will be overridden.
 #' @export
 set_default_filters <- function(trdf, ..., add = TRUE) {
-  check_trelliscope_df(trdf)
+  trdf <- check_trelliscope_df(trdf)
   objs <- list(...)
   trobj <- attr(trdf, "trelliscope")$clone()
   state <- trobj$get("state")
@@ -172,7 +172,7 @@ set_default_filters <- function(trdf, ..., add = TRUE) {
 #' [`state_sort()`], [`filter_string()`], [`filter_range()`].
 #' @export
 add_view <- function(trdf, name, ...) {
-  check_trelliscope_df(trdf)
+  trdf <- check_trelliscope_df(trdf)
   view <- View$new(name, ...)
   trobj <- attr(trdf, "trelliscope")$clone()
   view$check_with_data(trdf)
@@ -189,7 +189,7 @@ add_view <- function(trdf, name, ...) {
 #' [`input_select()`], [`input_multiselect()`], [`input_text()`]
 #' @export
 add_inputs <- function(trdf, ...) {
-  check_trelliscope_df(trdf)
+  trdf <- check_trelliscope_df(trdf)
   trobj <- attr(trdf, "trelliscope")$clone()
   for (inpt in list(...)) {
     assert(inherits(inpt, "trelliscope_input_def"),
@@ -206,7 +206,7 @@ add_inputs <- function(trdf, ...) {
 #' data frame which will be cast as such.
 #' @export
 add_input_email <- function(trdf, email) {
-  check_trelliscope_df(trdf)
+  trdf <- check_trelliscope_df(trdf)
   trobj <- attr(trdf, "trelliscope")$clone()
   if (length(trobj$get("inputs")) == 0) {
     wrn("There are no inputs for this display. Ignoring `add_input_email()`")
@@ -227,7 +227,7 @@ add_input_email <- function(trdf, email) {
 #' @param vars A vector of meta variable names found in the display.
 #' @export
 add_input_vars <- function(trdf, vars) {
-  check_trelliscope_df(trdf)
+  trdf <- check_trelliscope_df(trdf)
   trobj <- attr(trdf, "trelliscope")$clone()
   if (length(trobj$get("inputs")) == 0) {
     wrn("There are no inputs for this display. Ignoring `add_input_vars()`")
@@ -248,11 +248,10 @@ add_input_vars <- function(trdf, vars) {
 #' Use fidelius to password protect a trelliscope display
 #' @param trdf A trelliscope data frame created with [`as_trelliscope()`] or a
 #' data frame which will be cast as such.
-#' "trelliscopejs_widget".
 #' @param ... Arguments passed to the charm() function in the fidelius package.
 #' @export
 add_charm <- function(trdf, ...) {
-  check_trelliscope_df(trdf)
+  trdf <- check_trelliscope_df(trdf)
   trobj <- attr(trdf, "trelliscope")$clone()
   trobj$fidelius_pars <- list(...)
   attr(trdf, "trelliscope") <- trobj
@@ -260,19 +259,20 @@ add_charm <- function(trdf, ...) {
 }
 
 #' Convert any trelliscope R6 object to JSON
-#' @param obj Any R6 object created with trelliscope functions.
+#' @param trdf A trelliscope data frame created with [`as_trelliscope()`] or a
+#' data frame which will be cast as such.
 #' @param pretty Adds indentation whitespace to JSON output. Can be TRUE/FALSE
 #' or a number specifying the number of spaces to indent.
 #' @export
-as_json <- function(df, pretty = TRUE) {
-  obj <- attr(df, "trelliscope")$clone()
+as_json <- function(trdf, pretty = TRUE) {
+  obj <- attr(trdf, "trelliscope")$clone()
   assert(inherits(obj, "R6"),
     msg = "as_json() only applies to R6 objects")
   assert(!is.null(obj$as_json),
     msg = "Object provided to as_json() must have its own as_json() method")
   if (inherits(obj, "trelliscope_object")) {
-    df <- infer(df)
-    obj <- attr(df, "trelliscope")
+    trdf <- infer(trdf)
+    obj <- attr(trdf, "trelliscope")
   }
   obj$as_json(pretty = pretty)
 }

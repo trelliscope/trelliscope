@@ -14,10 +14,12 @@ test_that2("facet_trellisope", {
   expect_s3_class(a, c("facet_panels", "ggplot"))
 
   a1 <- as_trelliscope(a, name = "mpg1", path = plotdir)
-  expect_false(a1$panels_written)
+  expect_s3_class(a1, "data.frame")
+  expect_s3_class(a1, "trelliscope")
+  expect_false(get_trobj(a1)$panels_written)
   a2 <- write_panels(a1, format = "svg")
-  expect_false(a1$panels_written)
-  expect_true(a2$panels_written)
+  expect_false(get_trobj(a1)$panels_written)
+  expect_true(get_trobj(a2)$panels_written)
   expect_true(dir.exists(file.path(plotdir, "displays/mpg1")))
   expect_false(file.exists(file.path(plotdir,
     "displays/mpg1/displayInfo.jsonp")))
@@ -29,12 +31,19 @@ test_that2("facet_trellisope", {
     facet_panels(~ manufacturer + class)) |>
     nest_panels(as_plotly = TRUE, plotly_cfg = list(displaylogo = FALSE))
   expect_s3_class(a4, "data.frame")
-  expect_s3_class(a4$panel, "trelliscope_panels")
+  expect_s3_class(a4$panel, "nested_panels")
 
   a5 <- suppressMessages(as_trelliscope(a4, name = "mpg2", path = plotdir) |>
     write_trelliscope())
   dl <- read_json_p(file.path(plotdir, "displays/displayList.jsonp"))
   expect_true(nrow(dl) == 2)
+
+  # panels auto-build if printed
+  a55 <- (ggplot(aes(hwy, cty), data = mpg2) + geom_point() +
+    facet_panels(~ manufacturer + class))
+  a55df <- suppressMessages(print(a55, view = FALSE))
+  expect_s3_class(a55df, "trelliscope")
+  expect_true(length(list.files(get_trobj(a55df)$path)) > 0)
 
   # panels auto-build if needed
   a6 <- (ggplot(aes(hwy, cty), data = mpg2) + geom_point() +
@@ -47,11 +56,11 @@ test_that2("facet_trellisope", {
   b1 <- as_trelliscope(b, name = "mpg4", path = plotdir)
   expect_message(
     write_panels(b1),
-    "is not a standard plot object"
+    "not a standard plot object"
   )
 
   tmp <- b$panel[2:3]
-  expect_s3_class(tmp, "trelliscope_panels")
+  expect_s3_class(tmp, "nested_panels")
 })
 
 test_that2("facet_trellisope scales", {

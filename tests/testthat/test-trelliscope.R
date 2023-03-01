@@ -12,19 +12,15 @@ test_that2("trelliscope instantiation", {
     regexp = "that references a plot or image"
   )
 
-  suppressMessages(expect_error(
-    as_trelliscope(dat),
-    regexp = "argument \"name\" is missing"
-  ))
-
   suppressMessages(expect_message(
     x <- as_trelliscope(dat, name = "test"),
     regexp = "Using the variables"
   ))
-  expect_equal(x$get("name"), "test")
+  xo <- get_trobj(x)
+  expect_equal(xo$get("name"), "test")
 
   suppressMessages(expect_message(
-    x$print(),
+    show_info(x),
     "Key columns"
   ))
 
@@ -54,14 +50,14 @@ test_that2("trelliscope printing", {
     as_trelliscope(name = "mpg", path = plotdir)
 
   suppressMessages(expect_message(
-    disp$print(),
+    show_info(disp),
     "Panels written: no"
   ))
 
   disp <- disp |>
     write_panels(width = 800, height = 500, format = "svg")
   suppressMessages(expect_message(
-    disp$print(),
+    show_info(disp),
     "Panels written: yes"
   ))
 
@@ -73,7 +69,7 @@ test_that2("trelliscope printing", {
       meta_href("wiki_link", label = "Wikipedia page for vehicle class")
     )
   suppressMessages(expect_message(
-    disp$print(),
+    show_info(disp),
     "Defined metadata variables"
   ))
 
@@ -82,7 +78,7 @@ test_that2("trelliscope printing", {
       min_cty = "Lowest observed city miles per gallon"
     )
   suppressMessages(expect_message(
-    disp$print(),
+    show_info(disp),
     "Lowest observed"
   ))
 })
