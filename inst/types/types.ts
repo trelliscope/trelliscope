@@ -45,10 +45,15 @@ export interface IHrefMeta extends IMeta {
 }
 
 export interface IGeoMeta extends IMeta {
+  latvar: string;
+  longvar: string;
 }
 
 export interface IGraphMeta extends IMeta {
   idvarname: string;
+  linkidvarname: string;
+  labelvarname: string;
+  params: object;
   direction: GraphDirection;
 }
 

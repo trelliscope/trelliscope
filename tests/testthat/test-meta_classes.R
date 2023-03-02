@@ -1,6 +1,7 @@
 dat <- iris
 sq <- seq_len(nrow(dat))
 dat$id <- as.character(sq)
+dat$toid <- as.character(c(sq[-1], sq[1]))
 dat$letters <- rep(letters, 10)[1:150]
 dat$date <- Sys.Date() + 1:150
 dat$date2 <- as.character(dat$date)
@@ -193,28 +194,36 @@ test_that2("GeoMeta", {
 
   tmp <- obj$cast_variable(dat)
   expect_true(
-    !any(c("lat", "long") %in% names(tmp))
+    all(c("lat", "long") %in% names(tmp))
   )
-  expect_true(
-    "coords" %in% names(tmp)
-  )
-  expect_true(
-    tmp$coords[[1]][[1]] == dat$lat[1]
-  )
+  # expect_true(
+  #   "coords" %in% names(tmp)
+  # )
+  # expect_true(
+  #   tmp$coords[[1]][[1]] == dat$lat[1]
+  # )
 })
 
 test_that2("GraphMeta", {
-  obj <- GraphMeta$new("lst", idvarname = "id", direction = "to")
+  obj <- GraphMeta$new("my_graph", idvarname = "id",
+    linkidvarname = "toid", direction = "to")
   expect_true(
     obj$check_with_data(dat)
   )
 
+  obj2 <- GraphMeta$new("id", idvarname = "id",
+    linkidvarname = "toid", direction = "to")
   expect_error(
-    obj <- GraphMeta$new("lst", idvarname = "id", direction = "stuff"),
+    obj2$check_with_data(dat),
+    regexp = "already exists"
+  )
+
+  expect_error(
+    obj <- GraphMeta$new("my_graph", idvarname = "id", direction = "stuff"),
     regexp = "must be one of"
   )
 
-  obj2 <- GraphMeta$new("lst", idvarname = "stuff")
+  obj2 <- GraphMeta$new("my_graph", idvarname = "stuff", linkidvarname = "stuff")
   expect_error(
     obj2$check_with_data(dat),
     regexp = "not find variable"

@@ -61,7 +61,8 @@ test_that2("typescript meta comparison", {
   ts <- read_case(meta_geo)
   expect_equal(meta_geo, ts)
 
-  meta_grph <- GraphMeta$new(varname = "graphvar", idvarname = "idvar") |>
+  meta_grph <- GraphMeta$new(varname = "graphvar", idvarname = "idvar",
+    linkidvarname = "linkidvar", labelvarname = "idvar") |>
     case_to_string()
   ts <- read_case(meta_grph)
   expect_equal(meta_grph, ts)

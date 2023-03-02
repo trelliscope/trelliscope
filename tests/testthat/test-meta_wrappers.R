@@ -46,7 +46,8 @@ test_that2("meta wrappers", {
   expect_s3_class(obj, "R6")
   expect_s3_class(obj, "trelliscope_meta_def")
 
-  obj <- meta_graph(varname = "var1", idvarname = "idvar", direction = "to")
+  obj <- meta_graph(varname = "var1", idvarname = "idvar",
+    linkidvarname = "toidvar", direction = "to")
   expect_s3_class(obj, "R6")
   expect_s3_class(obj, "trelliscope_meta_def")
 

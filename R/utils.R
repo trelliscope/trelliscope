@@ -104,6 +104,11 @@ check_has_var <- function(df, name, err_fn = paste0) {
       in the dataset that the meta definitions are being applied to"))
 }
 
+check_not_has_var <- function(df, name, err_fn = paste0) {
+  assert(!name %in% names(df),
+    msg = err_fn("Variable {.val {name}} already exists in the data"))
+}
+
 check_graphvar <- function(
   x, name, idvar, idvarname, err_fn = paste0
 ) {
@@ -128,7 +133,7 @@ check_latvar <- function(x, name, err_fn = paste0) {
 
 check_longvar <- function(x, name, err_fn = paste0) {
   assert(is.numeric(x) &&
-    all(x >= 0 & x <= 180, na.rm = TRUE),
+    all(abs(x) <= 180, na.rm = TRUE),
     msg = err_fn("The variable specifying longitude, \\
       {.val {name}} must be numeric and between 0 and 180"))
 }
@@ -152,4 +157,8 @@ msg <- function(x, envir = parent.frame(), ...) {
 #' @importFrom cli cli_warn
 wrn <- function(x, envir = parent.frame(), ...) {
   cli::cli_warn(c("!" = x), .envir = envir, ...)
+}
+
+empty_object <- function() {
+  structure(list(), names = character(0))
 }

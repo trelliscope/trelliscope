@@ -125,6 +125,8 @@ meta_datetime <- function(
 
 #' Specify a "geo" metadata variable
 #' @inheritParams meta_string
+#' @param varname Name of the new variable that will act as geographical
+#' coordinates (cannot exist in dataset).
 #' @param latvar Name of variable that contains the latitude.
 #' @param longvar Name of variable that contains the longitude.
 #' @family {metadata types}
@@ -148,8 +150,14 @@ meta_geo <- function(
 
 #' Specify a "graph" metadata variable
 #' @inheritParams meta_string
-#' @param idvarname Name of the variable in the data that the link items
-#' specified in `varname` refer to.
+#' @param varname Name of the new variable that will act as a graph
+#' (cannot exist in dataset).
+#' @param idvarname Name of the variable in the data that identifies the
+#' node that each entity belongs to.
+#' @param linkidvarname Name of the variable in the data that contains the
+#' identifier of the node that each entity links to
+#' @param labelvarname Name of the variable in the data that is used to
+#' label the nodes in the graph.
 #' @param direction Direction of the links specifed in `varname`. One of
 #' "none", "to", or "from". Determines whether and how arrows are shown
 #' in the network graph in the app.
@@ -160,6 +168,8 @@ meta_graph <- function(
   label = NULL,
   tags = NULL,
   idvarname,
+  linkidvarname,
+  labelvarname = idvarname,
   direction = c("none", "to", "from")
 ) {
   direction <- match.arg(direction)
@@ -168,6 +178,8 @@ meta_graph <- function(
     label = label,
     tags = tags,
     idvarname = idvarname,
+    linkidvarname = linkidvarname,
+    labelvarname = labelvarname,
     direction = direction
   ) |>
   add_meta_class()

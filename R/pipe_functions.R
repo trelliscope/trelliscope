@@ -1,3 +1,11 @@
+cast_var <- function(df, obj) {
+  lbl <- attr(df[[obj$get("varname")]], "label")
+  df <- obj$cast_variable(df)
+  if (!is.null(lbl))
+    attr(df[[obj$get("varname")]], "label") <- lbl
+  df
+}
+
 #' Add a meta variable definition to a trelliscope display
 #' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`] or a
 #' data frame which will be cast as such.
@@ -7,6 +15,7 @@ add_meta_def <- function(trdf, obj) {
   trdf <- check_trelliscope_df(trdf)
   trobj <- attr(trdf, "trelliscope")$clone()
   trobj$set_meta(obj, trdf)
+  trdf <- cast_var(trdf, obj)
   attr(trdf, "trelliscope") <- trobj
   trdf
 }
@@ -21,6 +30,8 @@ add_meta_defs <- function(trdf, ...) {
   objs <- list(...)
   trobj <- attr(trdf, "trelliscope")$clone()
   trobj$set_metas(objs, trdf)
+  for (obj in objs)
+    trdf <- cast_var(trdf, obj)
   attr(trdf, "trelliscope") <- trobj
   trdf
 }

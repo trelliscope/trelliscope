@@ -14,6 +14,9 @@ import {
   GraphDirection,
   CurrencyCode,
   // inputs
+  IInputClientSideStorage,
+  IInputEmailFeedback,
+  IInputs,
   IInput,
   IRadioInput,
   ICheckboxInput,
@@ -221,13 +224,19 @@ export class DatetimeMeta extends Meta implements IDatetimeMeta {
 }
 
 export class GeoMeta extends Meta implements IGeoMeta {
+  latvar: string;
+  longvar: string;
   constructor(
     {
       varname,
+      latvar,
+      longvar,
       label,
       tags
     } : {
       varname: string,
+      latvar: string,
+      longvar: string,
       label?: string | undefined,
       tags?: string[]
     }
@@ -237,9 +246,11 @@ export class GeoMeta extends Meta implements IGeoMeta {
       varname,
       tags,
       label,
-      true,
+      false, // TODO: change to TRUE when implemented in app
       false
     );
+    this.latvar = latvar;
+    this.longvar = longvar;
   };
 }
 
@@ -268,6 +279,9 @@ export class HrefMeta extends Meta implements IHrefMeta {
 
 export class GraphMeta extends Meta implements IGraphMeta {
   idvarname: string;
+  linkidvarname: string;
+  labelvarname: string;
+  params: object;
   direction: GraphDirection;
   constructor(
     {
@@ -275,9 +289,15 @@ export class GraphMeta extends Meta implements IGraphMeta {
       label,
       tags,
       idvarname,
+      linkidvarname,
+      labelvarname,
+      // params,
       direction
     } : {
       varname: string,
+      linkidvarname: string,
+      labelvarname?: string,
+      params?: object,
       label?: string | undefined,
       tags?: string[],
       idvarname: string,
@@ -293,6 +313,9 @@ export class GraphMeta extends Meta implements IGraphMeta {
       false
     );
     this.idvarname = idvarname;
+    this.linkidvarname = linkidvarname;
+    this.labelvarname = labelvarname === undefined ? idvarname : labelvarname;
+    this.params = {};
     this.direction = direction === undefined ? 'none' : direction;
   };
 }
@@ -300,6 +323,52 @@ export class GraphMeta extends Meta implements IGraphMeta {
 /* ------------------------------------------------------ */
 /* inputs                                                 */
 /* ------------------------------------------------------ */
+
+
+export class InputClientSideStorage implements IInputClientSideStorage {
+  type: "localStorage";
+  constructor() {
+    this.type = "localStorage";
+  }
+}
+
+export class InputEmailFeedback implements IInputEmailFeedback {
+  emailAddress: string;
+  includeMetaVars: string[];
+  constructor(
+    {
+      emailAddress,
+      includeMetaVars,
+    } : {
+      emailAddress: string,
+      includeMetaVars: string[],
+    }
+  ) {
+    this.emailAddress = emailAddress;
+    this.includeMetaVars = includeMetaVars;
+  }
+}
+
+export class Inputs implements IInputs {
+  inputs: IInput[];
+  storageInterface: IInputClientSideStorage;
+  feedbackInterface: IInputEmailFeedback;
+  constructor(
+    {
+      inputs,
+      storageInterface,
+      feedbackInterface,
+    } : {
+      inputs: IInput[],
+      storageInterface: IInputClientSideStorage,
+      feedbackInterface: IInputEmailFeedback,
+    }
+  ) {
+    this.inputs = inputs;
+    this.storageInterface = storageInterface;
+    this.feedbackInterface = feedbackInterface;
+  }
+}
 
 export class Input implements IInput {
   type: InputType;
@@ -665,12 +734,13 @@ export class Display implements IDisplay {
   keycols: string[];
   keysig: string;
   metas: IMeta[];
-  inputs: IInput[];
+  inputs: IInputs | null;
   state: IDisplayState;
   views: IView[];
   paneltype: PanelType;
   panelformat?: PanelFormat;
   thumbnailurl: string;
+  panelaspect: number;
   constructor(
     {
       name,
@@ -685,6 +755,7 @@ export class Display implements IDisplay {
       paneltype,
       panelformat,
       thumbnailurl,
+      panelaspect,
     } : {
       name: string,
       description?: string,
@@ -692,12 +763,13 @@ export class Display implements IDisplay {
       keycols: string[],
       keysig: string,
       metas: IMeta[],
-      inputs?: IInput[] | undefined,
+      inputs?: IInputs | null,
       state: IDisplayState,
       views?: IView[] | undefined,
       paneltype: PanelType,
       panelformat: PanelFormat | undefined,
       thumbnailurl: string,
+      panelaspect: number,
     }
   ) {
     this.name = name;
@@ -706,13 +778,14 @@ export class Display implements IDisplay {
     this.keycols = keycols;
     this.keysig = keysig;
     this.metas = metas;
-    this.inputs = inputs === undefined ? [] : inputs;
+    this.inputs = inputs === undefined ? null : inputs;
     this.state = state;
     this.views = views === undefined ? [] : views;
     this.paneltype = paneltype;
     if (panelformat !== undefined) {
       this.panelformat = panelformat;
     }
+    this.panelaspect = panelaspect;
     this.thumbnailurl = thumbnailurl;
   }
 }

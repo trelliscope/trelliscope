@@ -7,7 +7,8 @@
 meta_geo(varname, label = NULL, tags = NULL, latvar, longvar)
 }
 \arguments{
-\item{varname}{Name of the variable.}
+\item{varname}{Name of the new variable that will act as geographical
+coordinates (cannot exist in dataset).}
 
 \item{label}{Description of the variable.}
 
