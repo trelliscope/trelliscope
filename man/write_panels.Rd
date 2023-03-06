@@ -7,8 +7,8 @@
 write_panels(trdf, width = 500, height = 500, format = "png", force = FALSE)
 }
 \arguments{
-\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope_df]{as_trelliscope_df()}} or a
-data frame which will be cast as such.}
+\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope_df]{as_trelliscope_df()}}
+or a data frame which will be cast as such.}
 
 \item{width}{Width in pixels of each panel.}
 

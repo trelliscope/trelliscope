@@ -7,8 +7,8 @@
 as_json(trdf, pretty = TRUE)
 }
 \arguments{
-\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope_df]{as_trelliscope_df()}} or a
-data frame which will be cast as such.}
+\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope_df]{as_trelliscope_df()}}
+or a data frame which will be cast as such.}
 
 \item{pretty}{Adds indentation whitespace to JSON output. Can be TRUE/FALSE
 or a number specifying the number of spaces to indent.}

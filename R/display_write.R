@@ -1,6 +1,6 @@
 #' Write the contents of a display
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`] or a
-#' data frame which will be cast as such.
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+#' or a data frame which will be cast as such.
 #' @param force_write Should the panels be forced to be written even if they
 #'   have already been written?
 #' @param jsonp If true, app files are written as "jsonp" format, otherwise

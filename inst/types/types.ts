@@ -17,12 +17,15 @@ export interface IMeta {
 }
 
 export interface INumberMeta extends IMeta {
-  digits: number | null; // should be integer
+  digits: number; // should be integer (less than 0 means show all digits)
+  log: boolean;
   locale: boolean;
 }
 
 export interface ICurrencyMeta extends IMeta {
   code: CurrencyCode;
+  digits: number; // should be integer (less than 0 means show all digits)
+  log: boolean;
 }
 
 export interface IStringMeta extends IMeta {

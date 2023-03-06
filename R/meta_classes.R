@@ -58,7 +58,9 @@ Meta <- R6::R6Class("Meta",
         self$check_varname(df)
       if (!is.null(self$check_variable))
         self$check_variable(df)
+      return(TRUE)
     },
+    infer_from_data = function(df) {},
     cast_variable = identity
   ),
   private = list(
@@ -76,7 +78,8 @@ NumberMeta <- R6::R6Class("NumberMeta",
   public = list(
     initialize = function(varname, label = NULL, tags = NULL,
       digits = NULL,
-      locale = TRUE
+      locale = TRUE,
+      log = NULL
     ) {
       super$initialize(
         type = "number",
@@ -96,14 +99,34 @@ NumberMeta <- R6::R6Class("NumberMeta",
         check_logical(locale, "locale", self$error_msg)
         private$locale <- locale
       }
+      if (!is.null(log)) {
+        check_scalar(log, "log", self$error_msg)
+        check_logical(log, "log", self$error_msg)
+        private$log <- log
+      }
     },
     check_variable = function(df) {
       check_numeric(df[[private$varname]], private$varname, self$data_error_msg)
+      if (!is.null(private$log) && private$log == TRUE)
+        check_pos_numeric(df[[private$varname]], private$varname,
+          self$data_error_msg)
+    },
+    infer_from_data = function(df) {
+      if (is.null(private$log)) {
+        private$log <- needs_log(df[[private$varname]])
+        if (private$log)
+          msg("Inferred that variable '{private$varname}' should \
+            be shown on log scale.")
+      }
+      if (is.null(private$digits)) {
+        private$digits <- compute_digits(df[[private$varname]])
+      }
     }
   ),
   private = list(
     digits = NULL,
-    locale = TRUE
+    locale = TRUE,
+    log = NULL
   )
 )
 
@@ -111,7 +134,9 @@ CurrencyMeta <- R6::R6Class("CurrencyMeta",
   inherit = Meta,
   public = list(
     initialize = function(varname, label = NULL, tags = NULL,
-      code = "USD"
+      code = "USD",
+      log = NULL,
+      digits = 2
     ) {
       super$initialize(
         type = "currency",
@@ -126,13 +151,34 @@ CurrencyMeta <- R6::R6Class("CurrencyMeta",
         check_enum(code, unique(currencies$code_alpha), "code", self$error_msg)
         private$code <- code
       }
+      if (!is.null(log)) {
+        check_scalar(log, "log", self$error_msg)
+        check_logical(log, "log", self$error_msg)
+        private$log <- log
+      }
+      check_scalar(digits, "digits", self$error_msg)
+      check_numeric(digits, "digits", self$error_msg)
+      private$digits <- round(abs(digits))
     },
     check_variable = function(df) {
       check_numeric(df[[private$varname]], private$varname, self$data_error_msg)
+      if (!is.null(private$log) && private$log == TRUE)
+        check_pos_numeric(df[[private$varname]], private$varname,
+          self$data_error_msg)
+    },
+    infer_from_data = function(df) {
+      if (is.null(private$log)) {
+        private$log <- needs_log(df[[private$varname]])
+        if (private$log)
+          msg("Inferred that variable '{private$varname}' should \
+            be shown on log scale.")
+      }
     }
   ),
   private = list(
-    code = NULL
+    code = NULL,
+    log = NULL,
+    digits = 2
   )
 )
 

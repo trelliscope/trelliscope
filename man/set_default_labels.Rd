@@ -7,8 +7,8 @@
 set_default_labels(trdf, varnames)
 }
 \arguments{
-\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope_df]{as_trelliscope_df()}} or a
-data frame which will be cast as such.}
+\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope_df]{as_trelliscope_df()}}
+or a data frame which will be cast as such.}
 
 \item{varnames}{A vector of variable names whose values should appear
 as labels. If NULL, no labels will be displayed.

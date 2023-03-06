@@ -4,7 +4,9 @@ dat <- ggplot2::mpg |>
     mean_cty = purrr::map_dbl(data, function(x) mean(x$cty)),
     panel = map_plot(data, ~
       (ggplot2::ggplot(aes(hwy, cty), data = .x)) + geom_point()),
-    class2 = factor(class)
+    class2 = factor(class),
+    # to test needs_log
+    long_tail = 10^seq_len(dplyr::n()) / 1e20
   )
 
 x <- as_trelliscope_df(dat, name = "test", key_cols = c("manufacturer", "class"))
@@ -35,6 +37,16 @@ test_that2("add_meta_def", {
       add_meta_def(meta_string("manufacturer", "vehicle manufacturer")),
     regexp = "Replacing existing meta variable definition"
   )
+
+  # see if log is inferred correctly
+  suppressMessages(b <- x |>
+    add_meta_def(meta_number("long_tail")) |>
+    add_meta_def(meta_number("mean_cty")))
+  bo <- get_trobj(b)
+
+  # see if digits is inferred correctly
+  expect_equal(bo$get("metas")$long_tail$get("digits"), -1)
+  expect_equal(bo$get("metas")$mean_cty$get("digits"), 1)
 })
 
 # if we don't specify factor levels, it will infer them

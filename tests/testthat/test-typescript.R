@@ -14,7 +14,9 @@ read_case <- function(obj) {
 # -------------------------------------------------------- #
 test_that2("typescript meta comparison", {
   meta_num_min <- NumberMeta$new(
-    varname = "numvar"
+    varname = "numvar",
+    digits = 2,
+    log = FALSE,
   ) |> case_to_string()
   ts <- read_case(meta_num_min)
   expect_equal(meta_num_min, ts)
@@ -24,6 +26,7 @@ test_that2("typescript meta comparison", {
     label = "numvar label",
     tags = c("a", "b", "c"),
     digits = 2,
+    log = FALSE,
     locale = FALSE
   ) |> case_to_string()
   ts <- read_case(meta_num_full)

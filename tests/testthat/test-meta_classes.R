@@ -16,7 +16,9 @@ dat$long <- runif(150, 0, 180)
 dat$href <- "https://google.com"
 
 test_that2("NumberMeta", {
-  obj <- NumberMeta$new("Sepal.Length", tags = "stuff")
+  obj <- NumberMeta$new(
+    "Sepal.Length", tags = "stuff", log = FALSE
+  )
   expect_true(
     obj$check_with_data(dat)
   )
@@ -25,7 +27,7 @@ test_that2("NumberMeta", {
 
   expect_equal(
     as.character(obj$as_json(pretty = FALSE)),
-    '{"locale":true,"digits":null,"sortable":true,"filterable":true,"tags":["stuff"],"label":"Sepal.Length","type":"number","varname":"Sepal.Length"}'
+    '{"log":false,"locale":true,"digits":null,"sortable":true,"filterable":true,"tags":["stuff"],"label":"Sepal.Length","type":"number","varname":"Sepal.Length"}'
   )
 
   expect_true(
@@ -35,7 +37,7 @@ test_that2("NumberMeta", {
   obj <- NumberMeta$new("Sepal.Length",
     label = "Sepal length of the iris")
 
-  obj <- NumberMeta$new("whatever", digits = 2, local = FALSE)
+  obj <- NumberMeta$new("whatever", digits = 2, locale = FALSE)
   expect_error(
     obj$check_with_data(dat),
     regexp = "Could not find variable"
@@ -59,7 +61,7 @@ test_that2("NumberMeta", {
 })
 
 test_that2("CurrencyMeta", {
-  obj <- CurrencyMeta$new("Sepal.Length", tags = "stuff")
+  obj <- CurrencyMeta$new("Sepal.Length", tags = "stuff", log = FALSE)
   expect_true(
     obj$check_with_data(dat)
   )
@@ -68,7 +70,7 @@ test_that2("CurrencyMeta", {
 
   expect_equal(
     as.character(obj$as_json(pretty = FALSE)),
-    '{"code":"USD","sortable":true,"filterable":true,"tags":["stuff"],"label":"Sepal.Length","type":"currency","varname":"Sepal.Length"}'
+    '{"digits":2,"log":false,"code":"USD","sortable":true,"filterable":true,"tags":["stuff"],"label":"Sepal.Length","type":"currency","varname":"Sepal.Length"}'
   )
 
   expect_true(

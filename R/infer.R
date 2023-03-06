@@ -43,8 +43,8 @@ infer_state <- function(state, df, keycols, view = NULL) {
 }
 
 #' Infer meta variable definitions
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`] or a
-#' data frame which will be cast as such.
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+#' or a data frame which will be cast as such.
 #' @export
 infer_meta <- function(trdf) {
   trdf <- check_trelliscope_df(trdf)

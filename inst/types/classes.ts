@@ -82,46 +82,58 @@ export class Meta implements IMeta {
 }
 
 export class NumberMeta extends Meta implements INumberMeta {
-  digits: number | null;
+  digits: number;
   locale: boolean;
+  log: boolean;
   constructor(
     {
       varname,
       label,
       tags,
       digits,
-      locale
+      locale,
+      log
     } : {
       varname: string,
       label?: string | undefined,
       tags?: string[],
       digits?: number,
-      locale?: boolean
+      locale?: boolean,
+      log?: boolean,
     }
   ) {
     super('number', varname, tags, label, true, true);
-    this.digits = digits === undefined ? null : digits;
+    this.digits = digits === undefined ? 2 : digits;
     this.locale = locale === undefined ? true : locale;
+    this.log = log === undefined ? false : log;
   };
 }
 
 export class CurrencyMeta extends Meta implements ICurrencyMeta {
   code: CurrencyCode;
+  digits: number;
+  log: boolean;
   constructor(
     {
       varname,
       label,
       tags,
-      code
+      code,
+      digits,
+      log,
     } : {
       varname: string,
       label?: string | undefined,
       tags?: string[],
-      code?: CurrencyCode
+      code?: CurrencyCode,
+      digits?: number,
+      log?: boolean,
     }
   ) {
     super('number', varname, tags, label, true, true);
     this.code = code === undefined ? 'USD' : code;
+    this.digits = digits === undefined ? 2 : digits;
+    this.log = log === undefined ? false : log;
   };
 }
 

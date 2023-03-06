@@ -7,8 +7,8 @@
 add_meta_def(trdf, obj)
 }
 \arguments{
-\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope_df]{as_trelliscope_df()}} or a
-data frame which will be cast as such.}
+\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope_df]{as_trelliscope_df()}}
+or a data frame which will be cast as such.}
 
 \item{obj}{A meta variable definition created with a meta_*() function.}
 }

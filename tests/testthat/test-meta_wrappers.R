@@ -24,7 +24,8 @@ test_that2("meta wrappers", {
     varname = "Sepal.Length",
     label = "Sepal length",
     tags = c("tag1", "tag2"),
-    code = "XCD"
+    code = "XCD",
+    log = 
   )
   expect_s3_class(obj, "R6")
   expect_s3_class(obj, "trelliscope_meta_def")

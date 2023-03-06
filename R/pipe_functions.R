@@ -7,8 +7,8 @@ cast_var <- function(df, obj) {
 }
 
 #' Add a meta variable definition to a trelliscope display
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`] or a
-#' data frame which will be cast as such.
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+#' or a data frame which will be cast as such.
 #' @param obj A meta variable definition created with a meta_*() function.
 #' @export
 add_meta_def <- function(trdf, obj) {
@@ -21,8 +21,8 @@ add_meta_def <- function(trdf, obj) {
 }
 
 #' Add multiple meta variable definitions to a trelliscope display
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`] or a
-#' data frame which will be cast as such.
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+#' or a data frame which will be cast as such.
 #' @param ... Any number of objects created with meta_*() functions.
 #' @export
 add_meta_defs <- function(trdf, ...) {
@@ -37,8 +37,8 @@ add_meta_defs <- function(trdf, ...) {
 }
 
 #' Specify labels for meta variables
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`] or a
-#' data frame which will be cast as such.
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+#' or a data frame which will be cast as such.
 #' @param ... A named set of labels, where each name must correspond to one
 #' of the variables in the dataset
 #' @details This function can be useful if you don't want to go to the trouble
@@ -62,8 +62,8 @@ add_meta_labels <- function(trdf, ...) {
 }
 
 #' Specify tags for meta variables
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`] or a
-#' data frame which will be cast as such.
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+#' or a data frame which will be cast as such.
 #' @param ... A named set of vectors of tags, where each name must correspond to
 #' one of the variables in the dataset
 #' @details This function can be useful if you don't want to go to the trouble
@@ -87,8 +87,8 @@ add_meta_tags <- function(trdf, ...) {
 }
 
 #' Add a layout state specification to a trelliscope display
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`] or a
-#' data frame which will be cast as such.
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+#' or a data frame which will be cast as such.
 #' @inheritParams state_layout
 #' @export
 set_default_layout <- function(trdf, nrow = 1, ncol = 1, arrange = "rows", page = 1) {
@@ -105,8 +105,8 @@ set_default_layout <- function(trdf, nrow = 1, ncol = 1, arrange = "rows", page 
 }
 
 #' Add a labels state specification to a trelliscope display
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`] or a
-#' data frame which will be cast as such.
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+#' or a data frame which will be cast as such.
 #' @inheritParams state_labels
 #' @export
 set_default_labels <- function(trdf, varnames) {
@@ -123,8 +123,8 @@ set_default_labels <- function(trdf, varnames) {
 }
 
 #' Add a labels state specification to a trelliscope display
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`] or a
-#' data frame which will be cast as such.
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+#' or a data frame which will be cast as such.
 #' @param varnames A vector of variable names to sort on.
 #' @param dirs A vector of directions to sort on ("asc" or "desc").
 #' @param add Should an existing sort specification be added to? If FALSE
@@ -150,8 +150,8 @@ set_default_sort <- function(trdf, varnames, dirs = "asc", add = FALSE) {
 }
 
 #' Add a filter state specifications to a trelliscope display
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`] or a
-#' data frame which will be cast as such.
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+#' or a data frame which will be cast as such.
 #' @param ... Filter state specifications (e.g. [`filter_string()`],
 #' [`filter_range()`]).
 #' @param add Should existing filter state specifications be added to?
@@ -175,8 +175,8 @@ set_default_filters <- function(trdf, ..., add = TRUE) {
 }
 
 #' Add a view specification to a trelliscope display
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`] or a
-#' data frame which will be cast as such.
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+#' or a data frame which will be cast as such.
 #' @param name The name of the view.
 #' @param ... Any number of state specifications that define the view. These
 #' can be specified with any of [`state_layout()`], [`state_labels()`],
@@ -193,8 +193,8 @@ add_view <- function(trdf, name, ...) {
 }
 
 #' Add inputs to a trelliscope display
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`] or a
-#' data frame which will be cast as such.
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+#' or a data frame which will be cast as such.
 #' @param ... Any number of input specifications. These can be specified with
 #' any of [`input_number()`], [`input_radio()`], [`input_checkbox()`],
 #' [`input_select()`], [`input_multiselect()`], [`input_text()`]
@@ -213,8 +213,8 @@ add_inputs <- function(trdf, ...) {
 
 #' Specify an email address to which input feedback can be sent
 #' @param email An email address.
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`] or a
-#' data frame which will be cast as such.
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+#' or a data frame which will be cast as such.
 #' @export
 add_input_email <- function(trdf, email) {
   trdf <- check_trelliscope_df(trdf)
@@ -233,8 +233,8 @@ add_input_email <- function(trdf, email) {
 }
 
 #' Specify meta variables whose values should be provided in input feedback
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`] or a
-#' data frame which will be cast as such.
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+#' or a data frame which will be cast as such.
 #' @param vars A vector of meta variable names found in the display.
 #' @export
 add_input_vars <- function(trdf, vars) {
@@ -257,8 +257,8 @@ add_input_vars <- function(trdf, vars) {
 }
 
 #' Use fidelius to password protect a trelliscope display
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`] or a
-#' data frame which will be cast as such.
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+#' or a data frame which will be cast as such.
 #' @param ... Arguments passed to the charm() function in the fidelius package.
 #' @export
 add_charm <- function(trdf, ...) {
@@ -270,8 +270,8 @@ add_charm <- function(trdf, ...) {
 }
 
 #' Convert any trelliscope R6 object to JSON
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`] or a
-#' data frame which will be cast as such.
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+#' or a data frame which will be cast as such.
 #' @param pretty Adds indentation whitespace to JSON output. Can be TRUE/FALSE
 #' or a number specifying the number of spaces to indent.
 #' @export

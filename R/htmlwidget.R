@@ -1,6 +1,6 @@
 #' View a trelliscope display
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`] or a
-#' data frame which will be cast as such.
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+#' or a data frame which will be cast as such.
 #' @export
 view_trelliscope <- function(trdf = NULL) {
   if (is.null(trdf)) {

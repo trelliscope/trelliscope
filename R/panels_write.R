@@ -1,6 +1,6 @@
 #' Write panels
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`] or a
-#' data frame which will be cast as such.
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+#' or a data frame which will be cast as such.
 #' @param width Width in pixels of each panel.
 #' @param height Height in pixels of each panel.
 #' @param format The format of the image if it is not an htmlwidget. Can be
@@ -62,6 +62,8 @@ write_panels <- function(
 
   if (!force && file.exists(file.path(panel_path, "hash"))) {
     prev_hash <- readLines(file.path(panel_path, "hash"), warn = FALSE)[1]
+    # need to grab aspect ratio from previous
+    browser()
     if (prev_hash == cur_hash) {
       msg("Current panel content matches panels that have already been \\
         written. Skipping panel writing. To override this, use \\

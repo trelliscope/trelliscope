@@ -7,8 +7,8 @@
 add_inputs(trdf, ...)
 }
 \arguments{
-\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope_df]{as_trelliscope_df()}} or a
-data frame which will be cast as such.}
+\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope_df]{as_trelliscope_df()}}
+or a data frame which will be cast as such.}
 
 \item{...}{Any number of input specifications. These can be specified with
 any of \code{\link[=input_number]{input_number()}}, \code{\link[=input_radio]{input_radio()}}, \code{\link[=input_checkbox]{input_checkbox()}},

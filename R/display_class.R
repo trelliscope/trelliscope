@@ -52,6 +52,7 @@ Display <- R6::R6Class(
       assert(inherits(obj, "trelliscope_meta_def"),
         msg = "Meta variable definition must come from a meta_*() function")
       obj$check_with_data(trdf)
+      obj$infer_from_data(trdf)
       name <- obj$get("varname")
       if (!is.null(private$metas[[name]]))
         msg("Replacing existing meta variable definition for {name}")

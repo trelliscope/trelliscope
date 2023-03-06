@@ -25,9 +25,11 @@ meta_string <- function(
 #' Specify a "number" metadata variable
 #' @inheritParams meta_string
 #' @param digits How many digits to round to when displaying the number.
-#' If `NULL`, all digits will be shown.
-#' @param locale Should the variable be displayed using its local?
+#' If not specified, a value will be inferred. If -1, all digits will be shown.
+#' @param locale Should the variable be displayed using its locale?
 #' For example, 1234.56 in US would be displayed as 1,234.56.
+#' @param log Should the variable's distribution be shown on the log scale?
+#' If not specified, an inference will be made based on its values.
 #' @family {metadata types}
 #' @export
 meta_number <- function(
@@ -35,14 +37,16 @@ meta_number <- function(
   label = NULL,
   tags = NULL,
   digits = NULL,
-  locale = TRUE
+  locale = TRUE,
+  log = NULL
 ) {
   NumberMeta$new(
     varname = varname,
     label = label,
     tags = tags,
     digits = digits,
-    locale = locale
+    locale = locale,
+    log = log
   ) |>
   add_meta_class()
 }
@@ -50,19 +54,26 @@ meta_number <- function(
 #' Specify a "currency" metadata variable
 #' @inheritParams meta_string
 #' @param code Currency code. See [currencies] for a list of possibilities.
+#' @param digits How many digits to round to when displaying the number.
+#' If `NULL`, all digits will be shown. Default is 2.
+#' @param log Should the variable's distribution be shown on the log scale?
+#' If not specified, an inference will be made based on its values.
 #' @family {metadata types}
 #' @export
 meta_currency <- function(
   varname,
   label = NULL,
   tags = NULL,
-  code = "USD"
+  code = "USD",
+  digits = 2,
+  log = NULL
 ) {
   CurrencyMeta$new(
     varname = varname,
     label = label,
     tags = tags,
-    code = code
+    code = code,
+    log = log
   ) |>
   add_meta_class()
 }

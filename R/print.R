@@ -19,8 +19,8 @@ print.trelliscope <- function(
 }
 
 #' View trelliscope info of a trelliscope data frame
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`] or a
-#' data frame which will be cast as such.
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+#' or a data frame which will be cast as such.
 #' @export
 show_info <- function(trdf) {
   trobj <- attr(trdf, "trelliscope")
