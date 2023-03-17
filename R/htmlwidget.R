@@ -15,6 +15,8 @@ view_trelliscope <- function(trdf = NULL) {
     url <- file.path(trobj$path, "index.html")
   }
 
+  # if ()
+
   options(trelliscope_latest_display_url = url)
 
   get_viewer()(url)

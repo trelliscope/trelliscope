@@ -46,6 +46,11 @@ import {
   IDisplay,
   PanelFormat,
   PanelType,
+  PanelSourceType,
+  IPanelSource,
+  IFilePanelSource,
+  IRESTPanelSource,
+  ILocalWebSocketPanelSource,
   // display list
   IDisplayListItem,
   // config
@@ -739,6 +744,55 @@ export class View implements IView {
 /* display                                                */
 /* ------------------------------------------------------ */
 
+export class PanelSource implements IPanelSource {
+  type: PanelSourceType;
+  constructor(
+    type: PanelSourceType,
+  ) {
+    this.type = type;
+  }
+}
+
+export class FilePanelSource extends PanelSource implements IFilePanelSource {
+  constructor() { super('file') };
+}
+
+export class RESTPanelSource extends PanelSource implements IRESTPanelSource {
+  url: string;
+  apiKey: string | undefined;
+  headers: string | undefined;
+  constructor(
+    {
+      url,
+      apiKey,
+      headers,
+    } : {
+      url: string;
+      apiKey: string | undefined;
+      headers: string | undefined;    
+    }
+  ) {
+    super('REST');
+    this.url = url;
+    this.apiKey = apiKey;
+    this.headers = headers;
+  }
+}
+
+export class LocalWebSocketPanelSource extends PanelSource implements ILocalWebSocketPanelSource {
+  port: number;
+  constructor(
+    {
+      port
+    } : {
+      port: number;
+    }
+  ) {
+    super('REST');
+    this.port = port;
+  }
+}
+
 export class Display implements IDisplay {
   name: string;
   description: string;
@@ -753,6 +807,7 @@ export class Display implements IDisplay {
   panelformat?: PanelFormat;
   thumbnailurl: string;
   panelaspect: number;
+  panelsource: PanelSource;
   constructor(
     {
       name,
@@ -768,6 +823,7 @@ export class Display implements IDisplay {
       panelformat,
       thumbnailurl,
       panelaspect,
+      panelsource,
     } : {
       name: string,
       description?: string,
@@ -782,6 +838,7 @@ export class Display implements IDisplay {
       panelformat: PanelFormat | undefined,
       thumbnailurl: string,
       panelaspect: number,
+      panelsource: PanelSource,
     }
   ) {
     this.name = name;
@@ -798,6 +855,7 @@ export class Display implements IDisplay {
       this.panelformat = panelformat;
     }
     this.panelaspect = panelaspect;
+    this.panelsource = panelsource;
     this.thumbnailurl = thumbnailurl;
   }
 }

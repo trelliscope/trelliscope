@@ -18,7 +18,7 @@
 #' @importFrom dplyr group_cols
 as_trelliscope_df <- function(
   df, name = NULL, description = name, key_cols = NULL, tags = NULL,
-  path = tempfile(), force_plot = FALSE, key_sig = NULL
+  path = tempfile(), force_plot = FALSE, key_sig = NULL, server = NULL
 ) {
   if (inherits(df, "facet_panels")) {
     # msg("
@@ -30,13 +30,19 @@ as_trelliscope_df <- function(
     df <- nest_panels(df)
   }
 
-  panel_col <- check_and_get_panel_col(df)
+  if (is.null(server)) {
+    panel_col <- check_and_get_panel_col(df)
+  } else {
+    df[["__server__"]] <- as.integer(NA)
+    panel_col <- "__server__"
+    # TODO: check server object
+  }
   if (is.null(key_cols))
     key_cols <- get_keycols(df)
 
   obj <- Display$new(name = name, description = description,
     keycols = key_cols, path = path, force_plot = force_plot,
-    panel_col = panel_col, tags = tags, keysig = key_sig)
+    panel_col = panel_col, tags = tags, keysig = key_sig, server = server)
   class(obj) <- c("R6", "trelliscope_object")
 
   attr(df, "trelliscope") <- obj
@@ -68,7 +74,9 @@ check_and_get_panel_col <- function(df) {
 infer_panel_type <- function(trdf) {
   trobj <- attr(trdf, "trelliscope")$clone()
   pnls <- trdf[[trobj$panel_col]]
-  if (inherits(pnls, "nested_panels")) {
+  if (trobj$panel_col == "__server__") {
+    trobj$set("paneltype", "server")
+  } else if (inherits(pnls, "nested_panels")) {
     panel1 <- pnls[[1]]
     if (inherits(panel1, "htmlwidget")) {
       trobj$set("paneltype", "iframe")

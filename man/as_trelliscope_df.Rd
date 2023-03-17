@@ -12,7 +12,8 @@ as_trelliscope_df(
   tags = NULL,
   path = tempfile(),
   force_plot = FALSE,
-  key_sig = NULL
+  key_sig = NULL,
+  server = NULL
 )
 }
 \arguments{

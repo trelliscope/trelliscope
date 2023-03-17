@@ -11,11 +11,12 @@ Display <- R6::R6Class(
     meta_labels = list(),
     # if the user specifies meta tags using add_meta_tags(), we keep track
     # of them here so that we can apply them just before writing out the object
-    fidelius_pars = NULL,
     meta_tags = list(),
+    fidelius_pars = NULL,
+    server = NULL,
     initialize = function(
       name, description, tags, keycols, path, force_plot, panel_col,
-      keysig = NULL
+      keysig = NULL, server = NULL
     ) {
       if (!is.null(name)) {
         check_scalar(name, "name")
@@ -43,7 +44,9 @@ Display <- R6::R6Class(
       self$path <- path
       self$force_plot <- force_plot
       self$panel_col <- panel_col
+      self$server <- server
       private$state <- DisplayState$new()
+      private$panelsource <- FilePanelSource$new()
     },
     set = function(name, val) {
       private[[name]] <- val
@@ -82,6 +85,9 @@ Display <- R6::R6Class(
     },
     get_display_path = function() {
       file.path(self$path, "displays", sanitize(private$name))
+    },
+    get_panel_rel_path = function() {
+      file.path("displays", sanitize(private$name), "panels")
     },
     as_list = function() {
       inputs <- NULL
@@ -130,6 +136,7 @@ Display <- R6::R6Class(
     paneltype = NULL,
     panelformat = NULL,
     panelaspect = NULL,
+    panelsource = NULL,
     thumbnailurl = NULL
   )
 )

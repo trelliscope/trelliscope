@@ -190,7 +190,26 @@ export interface IView {
 
 export type PanelFormat = 'apng' | 'avif' | 'gif' | 'jpg' | 'jpeg' | 'jfif' | 'pjpeg' | 'pjp' | 'png' | 'svg' | 'webp';
 
-export type PanelType = 'img' | 'iframe' | 'REST';
+export type PanelType = 'img' | 'iframe';
+
+export type PanelSourceType = 'file' | 'REST' | 'localWebSocket';
+
+export interface IPanelSource {
+  type: PanelSourceType;
+}
+
+export interface IFilePanelSource extends IPanelSource {
+}
+
+export interface IRESTPanelSource extends IPanelSource {
+  url: string;
+  apiKey: string | undefined;
+  headers: string | undefined;
+}
+
+export interface ILocalWebSocketPanelSource extends IPanelSource {
+  port: number;
+}
 
 export interface IDisplay {
   name: string;
@@ -205,6 +224,7 @@ export interface IDisplay {
   paneltype: PanelType;
   panelformat?: PanelFormat;
   panelaspect: number,
+  panelsource: IPanelSource,
   thumbnailurl: string;
 }
 

@@ -235,6 +235,8 @@ FactorMeta <- R6::R6Class("FactorMeta",
           private$levels <- as.character(sort(unique(df[[private$varname]])))
         }
       }
+      if (any(is.na(df[[private$varname]])))
+        private$levels <- c(private$levels, NA)
       check_atomic_vector(
         df[[private$varname]], private$varname, self$data_error_msg)
       check_exhaustive_levels(

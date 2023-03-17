@@ -63,12 +63,14 @@ write_panels <- function(
   if (!force && file.exists(file.path(panel_path, "hash"))) {
     prev_hash <- readLines(file.path(panel_path, "hash"), warn = FALSE)[1]
     # need to grab aspect ratio from previous
-    browser()
-    if (prev_hash == cur_hash) {
+    ff <- list.files(trobj$get_display_path(),
+      pattern = "displayInfo\\.json", full.names = TRUE)
+    if (prev_hash == cur_hash && length(ff) > 0) {
       msg("Current panel content matches panels that have already been \\
         written. Skipping panel writing. To override this, use \\
         write_panels(..., force = TRUE).")
       trobj$panels_written <- TRUE
+      trobj$set("panelaspect", read_json_p(ff)$panelaspect)
       attr(trdf, "trelliscope") <- trobj
       return(trdf)
     }
