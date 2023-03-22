@@ -91,9 +91,9 @@ add_meta_tags <- function(trdf, ...) {
 #' or a data frame which will be cast as such.
 #' @inheritParams state_layout
 #' @export
-set_default_layout <- function(trdf, nrow = 1, ncol = 1, arrange = "rows", page = 1) {
+set_default_layout <- function(trdf, ncol = 1, page = 1) {
   trdf <- check_trelliscope_df(trdf)
-  obj <- state_layout(nrow = nrow, ncol = ncol, arrange = arrange, page = page)
+  obj <- state_layout(ncol = ncol, page = page)
   obj$check_with_data(trdf)
   trobj <- attr(trdf, "trelliscope")$clone()
   state <- trobj$get("state")

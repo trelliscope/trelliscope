@@ -4,14 +4,10 @@
 \alias{state_layout}
 \title{Specify a "layout" state}
 \usage{
-state_layout(nrow = 1, ncol = 1, arrange = "rows", page = 1)
+state_layout(ncol = 1, page = 1)
 }
 \arguments{
-\item{nrow}{Number of rows of panels to show.}
-
 \item{ncol}{Number of columns of panels to show.}
-
-\item{arrange}{Arrange panels by "rows" or "cols".}
 
 \item{page}{The page number to show.}
 }

@@ -135,9 +135,7 @@ export interface IState {
 }
 
 export interface ILayoutState extends IState {
-  nrow: number;
   ncol: number;
-  arrange: LayoutArrangeType;
   page: number;
 }
 

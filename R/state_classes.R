@@ -108,19 +108,13 @@ State <- R6::R6Class("State",
 LayoutState <- R6::R6Class("LayoutState",
   inherit = State,
   public = list(
-    initialize = function(nrow = 1, ncol = 1, arrange = "rows", page = 1) {
+    initialize = function(ncol = 1, page = 1) {
       super$initialize(type = "layout")
-      check_atomic_vector(nrow, "nrow", self$error_msg)
-      check_integer(nrow, "nrow", self$error_msg)
       check_atomic_vector(ncol, "ncol", self$error_msg)
       check_integer(ncol, "ncol", self$error_msg)
-      check_atomic_vector(arrange, "arrange", self$error_msg)
-      check_enum(arrange, c("rows", "cols"), "arrange", self$error_msg)
       check_atomic_vector(page, "page", self$error_msg)
       check_integer(page, "page", self$error_msg)
-      private$nrow <- nrow
       private$ncol <- ncol
-      private$arrange <- arrange
       private$page <- page
     },
     check_with_data = function(df) {
@@ -130,9 +124,7 @@ LayoutState <- R6::R6Class("LayoutState",
     }
   ),
   private = list(
-    nrow = NULL,
     ncol = NULL,
-    arrange = NULL,
     page = 1
   )
 )

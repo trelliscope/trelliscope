@@ -92,7 +92,7 @@ test_that2("trelliscope printing", {
 #   set_default_labels(c("class", "mean_cty"))
 
 # disp <- disp |>
-#   set_default_layout(nrow = 3, ncol = 5)
+#   set_default_layout(ncol = 5)
 
 # disp <- disp |>
 #   set_default_sort(c("class", "mean_cty"), dir = c("asc", "desc"))

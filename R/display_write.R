@@ -65,7 +65,7 @@ write_meta_data <- function(df, jsonp, id) {
   df <- dplyr::select(df, !dplyr::all_of(x$df_cols_ignore))
 
   txt <- get_jsonp_text(jsonp, paste0("__loadMetaData__", id))
-  cat(paste0(txt$st, as.character(to_json(df)), txt$nd),
+  cat(paste0(txt$st, as.character(to_json(df, factor = "integer")), txt$nd),
     file = file.path(x$get_display_path(),
       paste0("metaData.", ifelse(jsonp, "jsonp", "json"))))
 }

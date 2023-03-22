@@ -564,28 +564,20 @@ export class State implements IState {
 }
 
 export class LayoutState extends State implements ILayoutState {
-  nrow: number;
   ncol: number;
-  arrange: LayoutArrangeType;
   page: number;
   constructor(
     {
-      nrow,
       ncol,
-      arrange,
       page,
     } : {
-      nrow?: number | undefined,
       ncol?: number | undefined,
-      arrange?: LayoutArrangeType | undefined,
       page?: number | undefined,
     }
   ) {
     super('layout');
-    this.nrow = nrow === undefined ? 1 : nrow;
     this.ncol = ncol === undefined ? 1 : ncol;
     this.page = page === undefined ? 1 : page;
-    this.arrange = arrange === undefined ? 'rows' : arrange;
   };
 }
 

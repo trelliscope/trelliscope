@@ -16,13 +16,8 @@ test_that2("LayoutState", {
   expect_true(obj$check_with_data(dat))
 
   expect_error(
-    LayoutState$new(nrow = "a"),
+    LayoutState$new(ncol = "a"),
     regexp = "must be an integer"
-  )
-
-  expect_error(
-    LayoutState$new(arrange = "stuff"),
-    regexp = "must be one of \"rows\""
   )
 })
 

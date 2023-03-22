@@ -298,7 +298,7 @@ We can also set the default panel layout:
 
 ```{r}
 x <- x |>
-  set_default_layout(nrow = 3, ncol = 5)
+  set_default_layout(ncol = 5)
 ```
 
 #### `set_default_sort()`
