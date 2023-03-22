@@ -75,7 +75,8 @@ infer_panel_type <- function(trdf) {
   trobj <- attr(trdf, "trelliscope")$clone()
   pnls <- trdf[[trobj$panel_col]]
   if (trobj$panel_col == "__server__") {
-    trobj$set("paneltype", "server")
+    trobj$set("paneltype",
+      ifelse(tolower(trobj$server$format) == "html", "iframe", "img"))
   } else if (inherits(pnls, "nested_panels")) {
     panel1 <- pnls[[1]]
     if (inherits(panel1, "htmlwidget")) {

@@ -106,6 +106,7 @@ Display <- R6::R6Class(
         paneltype = private$paneltype,
         panelformat = private$panelformat,
         panelaspect = private$panelaspect,
+        panelsource = private$panelsource$as_list(),
         thumbnailurl = private$thumbnailurl
       )
     },
