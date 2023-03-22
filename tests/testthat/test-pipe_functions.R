@@ -139,15 +139,13 @@ test_that2("set_default_layout", {
 
   expect_message(
     a <- b |>
-      set_default_layout(nrow = 3, ncol = 3),
+      set_default_layout(ncol = 3),
     regexp = "Replacing existing layout state specification"
   )
   ao <- get_trobj(a)
 
-  expect_equal(ao$get("state")$get("layout")$get("nrow"), 3)
-
   # make sure "b" wasn't changed
-  expect_equal(bo$get("state")$get("layout")$get("nrow"), 1)
+  expect_equal(bo$get("state")$get("layout")$get("ncol"), 1)
 })
 
 test_that2("set_default_labels", {
@@ -294,7 +292,7 @@ test_that2("add_view", {
   b <- x |>
     add_view(
       name = "test view",
-      state_layout(nrow = 3, ncol = 5),
+      state_layout(ncol = 5),
       state_labels(c("manufacturer", "class")),
       state_sort("manufacturer"),
       state_sort("mean_cty", "desc"),

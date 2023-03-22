@@ -1,11 +1,12 @@
-to_json <- function(x, pretty = FALSE) {
+to_json <- function(x, pretty = FALSE, factor = "string") {
   jsonlite::toJSON(
     x,
     pretty = pretty,
     auto_unbox = TRUE,
     digits = NA,
     null = "null",
-    POSIXt = "ISO8601"
+    POSIXt = "ISO8601",
+    factor = factor
   )
 }
 

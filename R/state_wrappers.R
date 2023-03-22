@@ -4,16 +4,14 @@ add_state_class <- function(x, extra = NULL) {
 }
 
 #' Specify a "layout" state
-#' @param nrow Number of rows of panels to show.
 #' @param ncol Number of columns of panels to show.
-#' @param arrange Arrange panels by "rows" or "cols".
 #' @param page The page number to show.
 #' @export
 state_layout <- function(
-  nrow = 1, ncol = 1, arrange = "rows", page = 1
+  ncol = 1, page = 1
 ) {
   LayoutState$new(
-    nrow = nrow, ncol = ncol, arrange = arrange, page = 1
+    ncol = ncol, page = 1
   ) |>
   add_state_class()
 }

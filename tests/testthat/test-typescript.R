@@ -159,7 +159,7 @@ test_that2("typescript states comparison", {
 
   # displst <- DisplayState$new()
   # displst$set(LabelState$new(varnames = c("a", "b")))
-  # displst$set(LayoutState$new(nrow = 2, ncol = 4))
+  # displst$set(LayoutState$new(ncol = 4))
   #   sort: [
   #     new SortState({ varname = "a" ),
   #     new SortState({ varname = "b", dir: "desc" )
