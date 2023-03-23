@@ -95,6 +95,9 @@ State <- R6::R6Class("State",
     },
     get = function(name) {
       private[[name]]
+    },
+    set = function(name, val) {
+      private[[name]] <- val
     }
     # check_with_data = function(df) {
     #   return(TRUE)
@@ -177,7 +180,8 @@ SortState <- R6::R6Class("SortState",
   ),
   private = list(
     varname = NULL,
-    dir = NULL
+    dir = NULL,
+    metatype = NULL
   )
 )
 
@@ -217,7 +221,8 @@ FilterState <- R6::R6Class("FilterState",
   ),
   private = list(
     varname = NULL,
-    filtertype = NULL
+    filtertype = NULL,
+    metatype = NULL
   )
 )
 
@@ -286,6 +291,7 @@ NumberRangeFilterState <- R6::R6Class("NumberRangeFilterState",
         check_numeric(min, "min", self$error_msg)
       if (!is.null(max))
         check_numeric(max, "max", self$error_msg)
+      private$metatype <- "number"
     }
   )
 )
@@ -300,6 +306,7 @@ DateRangeFilterState <- R6::R6Class("DateRangeFilterState",
         check_date(min, "min", self$error_msg)
       if (!is.null(max))
         check_date(max, "max", self$error_msg)
+      private$metatype <- "date"
     }
   )
 )
@@ -314,6 +321,7 @@ DatetimeRangeFilterState <- R6::R6Class("DatetimeRangeFilterState",
         check_datetime(min, "min", self$error_msg)
       if (!is.null(max))
         check_datetime(max, "max", self$error_msg)
+      private$metatype <- "datetime"
     }
   )
 )

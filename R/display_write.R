@@ -25,6 +25,7 @@ write_trelliscope <- function(trdf, force_write = FALSE, jsonp = TRUE) {
   if (is_server) {
     srvobj <- LocalWebSocketPanelSource$new(port = httpuv::randomPort())
     trobj$set("panelsource", srvobj)
+    srv <- trobj$server
     trobj$set("panelformat", srv$format)
     trobj$set("panelaspect", srv$width / srv$height)
     attr(trdf, "trelliscope") <- trobj

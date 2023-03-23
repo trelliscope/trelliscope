@@ -46,12 +46,12 @@ test_that2("SortState", {
 
   expect_equal(
     obj$as_list(),
-    list(dir = "asc", varname = "date", type = "sort")
+    list(metatype = NULL, dir = "asc", varname = "date", type = "sort")
   )
 
   expect_equal(
     as.character(obj$as_json()),
-    '{"dir":"asc","varname":"date","type":"sort"}'
+    '{"metatype":null,"dir":"asc","varname":"date","type":"sort"}'
   )
 
   expect_error(
@@ -92,13 +92,14 @@ test_that2("CategoryFilterState", {
 
   expect_equal(
     obj$as_list(),
-    list(values = I("2000-01-02"), regexp = NULL, filtertype = "category",
+    list(values = I("2000-01-02"), regexp = NULL,
+      metatype = NULL, filtertype = "category",
       varname = "datestring", type = "filter")
   )
 
   expect_equal(
     as.character(obj$as_json()),
-    '{"values":["2000-01-02"],"regexp":null,"filtertype":"category","varname":"datestring","type":"filter"}'
+    '{"values":["2000-01-02"],"regexp":null,"metatype":null,"filtertype":"category","varname":"datestring","type":"filter"}'
   )
 
   obj <- CategoryFilterState$new("datestring", values = "stuff")
@@ -128,13 +129,13 @@ test_that2("NumberRangeFilterState", {
 
   expect_equal(
     obj$as_list(),
-    list(max = NULL, min = 1, filtertype = "numberrange",
+    list(max = NULL, min = 1, metatype = "number", filtertype = "numberrange",
       varname = "Sepal.Length", type = "filter")
   )
 
   expect_equal(
     as.character(obj$as_json()),
-    '{"max":null,"min":1,"filtertype":"numberrange","varname":"Sepal.Length","type":"filter"}'
+    '{"max":null,"min":1,"metatype":"number","filtertype":"numberrange","varname":"Sepal.Length","type":"filter"}'
   )
 
   obj <- NumberRangeFilterState$new("stuff", min = 1)
@@ -168,13 +169,13 @@ test_that2("DateRangeFilterState", {
 
   expect_equal(
     obj$as_list(),
-    list(max = NULL, min = structure(14610, class = "Date"),
+    list(max = NULL, min = structure(14610, class = "Date"), metatype = "date",
       filtertype = "daterange", varname = "date", type = "filter")
   )
 
   expect_equal(
     as.character(obj$as_json()),
-    '{"max":null,"min":"2010-01-01","filtertype":"daterange","varname":"date","type":"filter"}'
+    '{"max":null,"min":"2010-01-01","metatype":"date","filtertype":"daterange","varname":"date","type":"filter"}'
   )
 
   obj <- DateRangeFilterState$new("stuff", min = as.Date("2010-01-01"))

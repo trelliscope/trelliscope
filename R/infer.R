@@ -4,12 +4,13 @@ infer <- function(trdf) {
   trdf <- infer_meta(trdf)
   trobj <- attr(trdf, "trelliscope")$clone()
   st <- trobj$get("state")
-  newst <- infer_state(st, trdf, trobj$get("keycols"))
+  newst <- infer_state(st, trdf, trobj$get("keycols"), trobj$get("metas"))
   trobj$set_state(newst)
   for (view in trobj$get("views")) {
     view2 <- view$clone()
     st <- view2$get("state")
-    newst <- infer_state(st, trdf, trobj$get("keycols"), view2$get("name"))
+    newst <- infer_state(
+      st, trdf, trobj$get("keycols"), trobj$get("metas"), view2$get("name"))
     view2$set_state(newst)
     trobj$set_view(view2, verbose = FALSE)
   }
@@ -18,7 +19,7 @@ infer <- function(trdf) {
   trdf
 }
 
-infer_state <- function(state, df, keycols, view = NULL) {
+infer_state <- function(state, df, keycols, metas, view = NULL) {
   view_str <- ""
   if (!is.null(view))
     view_str <- paste0(" for view '", view, "'")
@@ -39,6 +40,13 @@ infer_state <- function(state, df, keycols, view = NULL) {
     state2$set(state_labels(keycols))
   }
 
+  # need to add in metatype for sorts and filters
+  flt <- state2$get("filter")
+  for (nm in names(flt))
+    flt[[nm]]$set("metatype", metas[[nm]]$get("type"))
+  srt <- state2$get("sort")
+  for (nm in names(srt))
+    srt[[nm]]$set("metatype", metas[[nm]]$get("type"))
   state2
 }
 

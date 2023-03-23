@@ -48,6 +48,7 @@ import {
   Inputs,
   InputClientSideStorage,
   InputEmailFeedback,
+  PanelSource,
 } from './classes';
 
 // const prefix = 'inst/types/json'
@@ -135,12 +136,13 @@ writeCase(state_layout, 'state_layout');
 const state_label = new LabelState({ varnames: ['a', 'b'] });
 writeCase(state_label, 'state_label');
 
-const state_sort = new SortState({ varname: 'a' });
+const state_sort = new SortState({ varname: 'a', metatype: 'string' });
 writeCase(state_sort, 'state_sort');
 
 const state_catfilt = new CategoryFilterState({
   varname: 'a',
   values: ['a', 'b', 'c'],
+  metatype: 'string'
 });
 writeCase(state_catfilt, 'state_catfilt');
 
@@ -166,13 +168,17 @@ writeCase(displst_min, 'displst_min');
 
 const displst = new DisplayState({
   labels: new LabelState({ varnames: ['a', 'b'] }),
-  layout: new LayoutState({ nrow: 2, ncol: 4 }),
+  layout: new LayoutState({ ncol: 4 }),
   sort: [
-    new SortState({ varname: 'a' }),
-    new SortState({ varname: 'b', dir: 'desc' }),
+    new SortState({ varname: 'a', metatype: 'string' }),
+    new SortState({ varname: 'b', dir: 'desc', metatype: 'string' }),
   ],
   filter: [
-    new CategoryFilterState({ varname: 'a', values: ['a', 'b', 'c'] }),
+    new CategoryFilterState({
+      varname: 'a',
+      values: ['a', 'b', 'c'],
+      metatype: 'string'
+    }),
     new NumberRangeFilterState({ varname: 'a', min: 1 }),
   ],
 });
@@ -208,6 +214,7 @@ const inputs = new Inputs({
   feedbackInterface,
   inputs: [selInput],
 });
+const panelsource = new PanelSource('file');
 
 const displ = new Display({
   name: 'test display',
@@ -224,5 +231,6 @@ const displ = new Display({
   panelformat: 'svg',
   thumbnailurl: 'asdf.svg',
   panelaspect: 1,
+  panelsource
 });
 writeCase(displ, 'displ');

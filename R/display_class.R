@@ -138,6 +138,8 @@ Display <- R6::R6Class(
     panelformat = NULL,
     panelaspect = NULL,
     panelsource = NULL,
-    thumbnailurl = NULL
+    thumbnailurl = NULL,
+    customInfoPage = FALSE,
+    showInfoOnFirstLoad = FALSE
   )
 )

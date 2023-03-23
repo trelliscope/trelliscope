@@ -13,6 +13,9 @@
 #'   have already been plotted and have not changed since the previous plotting?
 #' @param key_sig A string "signature" that represents the panels for this
 #'   display. This should not be specified unless you know what you are doing.
+#' @param server An experimental feature that allows your local R session to
+#'   act as a server so that panels do not need to be pre-rendered. See
+#'   [`local_websocket_server()`].
 #' @export
 #' @importFrom utils head
 #' @importFrom dplyr group_cols

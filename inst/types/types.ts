@@ -146,11 +146,13 @@ export interface ILabelState extends IState {
 export interface ISortState extends IState {
   varname: string;
   dir: SortDirType;
+  metatype: MetaType;
 }
 
 export interface IFilterState extends IState {
   varname: string;
   filtertype: FilterType;
+  metatype: MetaType;
 }
 
 export interface ICategoryFilterState extends IFilterState {
