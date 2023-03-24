@@ -206,6 +206,7 @@ FilterState <- R6::R6Class("FilterState",
         self$extra_check(df)
       return(TRUE)
     },
+    get = function(x) private[[x]],
     check_with_meta = function(meta) {
       # # don't need this because we are in control of applying meta to filter
       # assert(private$varname == meta$get("varname"),

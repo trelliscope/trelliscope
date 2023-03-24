@@ -47,6 +47,21 @@ infer_state <- function(state, df, keycols, metas, view = NULL) {
   srt <- state2$get("sort")
   for (nm in names(srt))
     srt[[nm]]$set("metatype", metas[[nm]]$get("type"))
+
+  # if there is a default filter that is factor, need to translate
+  for (nm in names(flt)) {
+    if (
+      flt[[nm]]$get("filtertype") == "category" &&
+      metas[[nm]]$get("type") == "factor"
+    ) {
+      if (length(flt[[nm]]$get("values")) > 0)
+        flt[[nm]]$set(
+          "values",
+          which(metas[[nm]]$get("levels") %in% flt[[nm]]$get("values"))
+        )
+    }
+  }
+
   state2
 }
 
