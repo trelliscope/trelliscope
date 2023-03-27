@@ -14,7 +14,9 @@ read_case <- function(obj) {
 # -------------------------------------------------------- #
 test_that2("typescript meta comparison", {
   meta_num_min <- NumberMeta$new(
-    varname = "numvar"
+    varname = "numvar",
+    digits = 2,
+    log = FALSE,
   ) |> case_to_string()
   ts <- read_case(meta_num_min)
   expect_equal(meta_num_min, ts)
@@ -24,6 +26,7 @@ test_that2("typescript meta comparison", {
     label = "numvar label",
     tags = c("a", "b", "c"),
     digits = 2,
+    log = FALSE,
     locale = FALSE
   ) |> case_to_string()
   ts <- read_case(meta_num_full)
@@ -61,7 +64,8 @@ test_that2("typescript meta comparison", {
   ts <- read_case(meta_geo)
   expect_equal(meta_geo, ts)
 
-  meta_grph <- GraphMeta$new(varname = "graphvar", idvarname = "idvar") |>
+  meta_grph <- GraphMeta$new(varname = "graphvar", idvarname = "idvar",
+    linkidvarname = "linkidvar", labelvarname = "idvar") |>
     case_to_string()
   ts <- read_case(meta_grph)
   expect_equal(meta_grph, ts)
@@ -118,16 +122,16 @@ test_that2("typescript states comparison", {
   ts <- read_case(state_label)
   expect_equal(state_label, ts)
 
-  state_sort <- SortState$new(varname = "a") |>
-    case_to_string()
+  state_sort <- SortState$new(varname = "a")
+  state_sort$set("metatype", "string")
   ts <- read_case(state_sort)
-  expect_equal(state_sort, ts)
+  expect_equal(case_to_string(state_sort), ts)
 
   state_catfilt <- CategoryFilterState$new(
-    varname = "a", values = c("a", "b", "c")) |>
-    case_to_string()
+    varname = "a", values = c("a", "b", "c"))
+  state_catfilt$set("metatype", "string")
   ts <- read_case(state_catfilt)
-  expect_equal(state_catfilt, ts)
+  expect_equal(case_to_string(state_catfilt), ts)
 
   state_numfilt <- NumberRangeFilterState$new(varname = "a", min = 1) |>
     case_to_string()
@@ -155,7 +159,7 @@ test_that2("typescript states comparison", {
 
   # displst <- DisplayState$new()
   # displst$set(LabelState$new(varnames = c("a", "b")))
-  # displst$set(LayoutState$new(nrow = 2, ncol = 4))
+  # displst$set(LayoutState$new(ncol = 4))
   #   sort: [
   #     new SortState({ varname = "a" ),
   #     new SortState({ varname = "b", dir: "desc" )

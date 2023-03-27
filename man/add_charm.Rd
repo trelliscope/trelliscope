@@ -4,11 +4,11 @@
 \alias{add_charm}
 \title{Use fidelius to password protect a trelliscope display}
 \usage{
-add_charm(disp, ...)
+add_charm(trdf, ...)
 }
 \arguments{
-\item{disp}{A trelliscope display object created with \code{\link[=trelliscope]{trelliscope()}}.
-"trelliscopejs_widget".}
+\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope_df]{as_trelliscope_df()}}
+or a data frame which will be cast as such.}
 
 \item{...}{Arguments passed to the charm() function in the fidelius package.}
 }

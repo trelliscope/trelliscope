@@ -20,7 +20,7 @@ img_panel <- function(x, aspect_ratio = 1.5) {
 #' @param aspect_ratio Specifies the aspect ratio (width / height) to use when
 #'  displaying the image in the browser.
 #' @note \code{x} must be paths relative to the \code{path} argument passed to
-#'   \code{\link{trelliscope}}.
+#'   \code{\link{as_trelliscope_df}}.
 #' @importFrom tools file_ext
 #' @export
 img_panel_local <- function(x, aspect_ratio = 1.5) {
@@ -37,7 +37,7 @@ valid_img_exts <- c("apng", "avif", "gif", "jpg", "jpeg", "jfif", "pjpeg",
   "pjp", "png", "svg", "webp")
 
 check_img_ext <- function(x, fn) {
-  exts <- unique(tools::file_ext(x))
+  exts <- tolower(unique(tools::file_ext(x)))
   assert(all(exts %in% valid_img_exts),
     msg = paste0("For ", fn, "(), all file extensions must be one of ",
       paste(valid_img_exts, collapse = ", ")))
@@ -65,7 +65,7 @@ iframe_panel <- function(x, aspect_ratio = 1.5) {
 #' @param aspect_ratio Specifies the aspect ratio (width / height) to use when
 #'  displaying the image in the browser.
 #' @note \code{x} must be paths relative to the \code{path} argument passed to
-#'   \code{\link{trelliscope}}.
+#'   \code{\link{as_trelliscope_df}}.
 #' @export
 iframe_panel_local <- function(x, aspect_ratio = 1.5) {
   check_atomic(x, "iframe_panel_local")
@@ -77,7 +77,7 @@ iframe_panel_local <- function(x, aspect_ratio = 1.5) {
 }
 
 check_html_ext <- function(x, fn) {
-  exts <- unique(tools::file_ext(x))
+  exts <- tolower(unique(tools::file_ext(x)))
   assert(all(exts == "html"),
     msg = paste0("For ", fn, "(), all file extensions must be .html"))
   TRUE

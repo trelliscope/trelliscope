@@ -1,46 +1,65 @@
 #' Write the contents of a display
-#' @param disp A trelliscope display object created with [`trelliscope()`].
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+#' or a data frame which will be cast as such.
 #' @param force_write Should the panels be forced to be written even if they
 #'   have already been written?
 #' @param jsonp If true, app files are written as "jsonp" format, otherwise
 #'   "json" format. The "jsonp" format makes it possible to browse a
 #'   trelliscope app without the need for a web server.
 #' @export
-write_display <- function(disp, force_write = FALSE, jsonp = TRUE) {
-  check_display_object(disp)
+write_trelliscope <- function(trdf, force_write = FALSE, jsonp = TRUE) {
+  trdf <- check_trelliscope_df(trdf)
+  trobj <- attr(trdf, "trelliscope")$clone()
 
-  if (!dir.exists(disp$get_display_path()))
-    dir.create(disp$get_display_path(), recursive = TRUE)
+  if (!dir.exists(trobj$get_display_path()))
+    dir.create(trobj$get_display_path(), recursive = TRUE)
 
-  cfg <- check_app_config(disp$path, jsonp)
+  cfg <- check_app_config(trobj$path, jsonp)
   cfg_jsonp <- cfg$datatype == "jsonp"
   if (cfg_jsonp != jsonp) {
     jsonp <- cfg_jsonp
     message("Using jsonp=", jsonp)
   }
 
-  x <- disp$clone()
+  is_server <- !is.null(trobj$server)
+  if (is_server) {
+    srvobj <- LocalWebSocketPanelSource$new(port = httpuv::randomPort())
+    trobj$set("panelsource", srvobj)
+    srv <- trobj$server
+    trobj$set("panelformat", srv$format)
+    trobj$set("panelaspect", srv$width / srv$height)
+    attr(trdf, "trelliscope") <- trobj
+  } else {
+    writable <- !inherits(trdf[[trobj$panel_col]],
+      c("img_panel", "iframe_panel"))
+    if (writable && (!trobj$panels_written || force_write))
+      trdf <- write_panels(trdf)
+  }
 
-  writable <- !inherits(x$df[[x$panel_col]], c("img_panel", "iframe_panel"))
-  if (writable && (!x$panels_written || force_write))
-    x <- write_panels(x)
+  trdf <- infer(trdf)
+  if (!is_server) {
+    check_panels(trdf)
+    get_thumbnail_url(trdf)
+  }
 
-  x <- infer(x)
-  check_panels(x)
-  get_thumbnail_url(x)
+  trobj <- attr(trdf, "trelliscope")
+  write_trelliscope_info(trdf, jsonp, cfg$id)
+  write_meta_data(trdf, jsonp, cfg$id)
+  update_display_list(trobj$path, jsonp, cfg$id)
 
-  write_display_info(x, jsonp, cfg$id)
-  write_meta_data(x, jsonp, cfg$id)
-  update_display_list(x$path, jsonp, cfg$id)
+  write_widget(trobj)
 
-  invisible(x)
+  attr(trdf, "trelliscope") <- trobj
+  invisible(trdf)
 }
 
-get_thumbnail_url <- function(x) {
+get_thumbnail_url <- function(trdf) {
+  x <- attr(trdf, "trelliscope")
+
   # don't need to clone x because we are already working with a cloned object
   # outside the user's session
   format <- x$get("panelformat")
-  key <- utils::head(x$df[["__PANEL_KEY__"]], 1)
+  key <- utils::head(trdf[["__PANEL_KEY__"]], 1)
 
   # these panels were created in R/trelliscope
   if (!is.null(format)) {
@@ -53,16 +72,19 @@ get_thumbnail_url <- function(x) {
   x$set("thumbnailurl", thurl)
 }
 
-write_meta_data <- function(x, jsonp, id) {
-  df <- dplyr::select(x$df, !dplyr::all_of(x$df_cols_ignore))
+write_meta_data <- function(df, jsonp, id) {
+  x <- attr(df, "trelliscope")
+
+  df <- dplyr::select(df, !dplyr::all_of(x$df_cols_ignore))
 
   txt <- get_jsonp_text(jsonp, paste0("__loadMetaData__", id))
-  cat(paste0(txt$st, as.character(to_json(df)), txt$nd),
+  cat(paste0(txt$st, as.character(to_json(df, factor = "integer")), txt$nd),
     file = file.path(x$get_display_path(),
       paste0("metaData.", ifelse(jsonp, "jsonp", "json"))))
 }
 
-write_display_info <- function(x, jsonp, id) {
+write_trelliscope_info <- function(df, jsonp, id) {
+  x <- attr(df, "trelliscope")
   display_info <- x$as_json(pretty = TRUE)
 
   txt <- get_jsonp_text(jsonp, paste0("__loadDisplayInfo__", id))
@@ -71,13 +93,15 @@ write_display_info <- function(x, jsonp, id) {
       paste0("displayInfo.", ifelse(jsonp, "jsonp", "json"))))
 }
 
-check_panels <- function(x) {
-  pnls <- x$df[[x$panel_col]]
+check_panels <- function(trdf) {
+  x <- attr(trdf, "trelliscope")
+
+  pnls <- trdf[[x$panel_col]]
   panel_path <- file.path(x$get_display_path(), "panels")
-  if (inherits(pnls, "trelliscope_panels")) {
+  if (inherits(pnls, "nested_panels")) {
     ff <- list.files(panel_path)
     ff <- tools::file_path_sans_ext(ff)
-    keys <- apply(x$df[x$get("keycols")], 1,
+    keys <- apply(trdf[x$get("keycols")], 1,
       function(x) sanitize(paste(x, collapse = "_")))
     extra <- setdiff(keys, ff)
     assert(length(extra) == 0,

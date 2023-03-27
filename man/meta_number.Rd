@@ -4,7 +4,14 @@
 \alias{meta_number}
 \title{Specify a "number" metadata variable}
 \usage{
-meta_number(varname, label = NULL, tags = NULL, digits = NULL, locale = TRUE)
+meta_number(
+  varname,
+  label = NULL,
+  tags = NULL,
+  digits = NULL,
+  locale = TRUE,
+  log = NULL
+)
 }
 \arguments{
 \item{varname}{Name of the variable.}
@@ -14,10 +21,13 @@ meta_number(varname, label = NULL, tags = NULL, digits = NULL, locale = TRUE)
 \item{tags}{Vector of tag names that help classify this variable.}
 
 \item{digits}{How many digits to round to when displaying the number.
-If \code{NULL}, all digits will be shown.}
+If not specified, a value will be inferred. If -1, all digits will be shown.}
 
-\item{locale}{Should the variable be displayed using its local?
+\item{locale}{Should the variable be displayed using its locale?
 For example, 1234.56 in US would be displayed as 1,234.56.}
+
+\item{log}{Should the variable's distribution be shown on the log scale?
+If not specified, an inference will be made based on its values.}
 }
 \description{
 Specify a "number" metadata variable

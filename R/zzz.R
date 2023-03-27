@@ -24,6 +24,6 @@ register_s3_method <- function(pkg, generic, class, fun = NULL) {
 }
 
 .onLoad <- function(libname, pkgname) {
-  register_s3_method("ggplot2", "ggplot_add", "facet_trelliscope")
+  register_s3_method("ggplot2", "ggplot_add", "facet_panels")
 }
 # nocov end

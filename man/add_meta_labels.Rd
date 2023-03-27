@@ -4,10 +4,11 @@
 \alias{add_meta_labels}
 \title{Specify labels for meta variables}
 \usage{
-add_meta_labels(disp, ...)
+add_meta_labels(trdf, ...)
 }
 \arguments{
-\item{disp}{A trelliscope display object created with \code{\link[=trelliscope]{trelliscope()}}.}
+\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope_df]{as_trelliscope_df()}}
+or a data frame which will be cast as such.}
 
 \item{...}{A named set of labels, where each name must correspond to one
 of the variables in the dataset}

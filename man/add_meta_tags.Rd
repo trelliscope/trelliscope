@@ -4,10 +4,11 @@
 \alias{add_meta_tags}
 \title{Specify tags for meta variables}
 \usage{
-add_meta_tags(disp, ...)
+add_meta_tags(trdf, ...)
 }
 \arguments{
-\item{disp}{A trelliscope display object created with \code{\link[=trelliscope]{trelliscope()}}.}
+\item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope_df]{as_trelliscope_df()}}
+or a data frame which will be cast as such.}
 
 \item{...}{A named set of vectors of tags, where each name must correspond to
 one of the variables in the dataset}

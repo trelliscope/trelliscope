@@ -9,18 +9,27 @@ meta_graph(
   label = NULL,
   tags = NULL,
   idvarname,
+  linkidvarname,
+  labelvarname = idvarname,
   direction = c("none", "to", "from")
 )
 }
 \arguments{
-\item{varname}{Name of the variable.}
+\item{varname}{Name of the new variable that will act as a graph
+(cannot exist in dataset).}
 
 \item{label}{Description of the variable.}
 
 \item{tags}{Vector of tag names that help classify this variable.}
 
-\item{idvarname}{Name of the variable in the data that the link items
-specified in \code{varname} refer to.}
+\item{idvarname}{Name of the variable in the data that identifies the
+node that each entity belongs to.}
+
+\item{linkidvarname}{Name of the variable in the data that contains the
+identifier of the node that each entity links to}
+
+\item{labelvarname}{Name of the variable in the data that is used to
+label the nodes in the graph.}
 
 \item{direction}{Direction of the links specifed in \code{varname}. One of
 "none", "to", or "from". Determines whether and how arrows are shown

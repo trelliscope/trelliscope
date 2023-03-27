@@ -14,6 +14,9 @@ import {
   GraphDirection,
   CurrencyCode,
   // inputs
+  IInputClientSideStorage,
+  IInputEmailFeedback,
+  IInputs,
   IInput,
   IRadioInput,
   ICheckboxInput,
@@ -43,6 +46,11 @@ import {
   IDisplay,
   PanelFormat,
   PanelType,
+  PanelSourceType,
+  IPanelSource,
+  IFilePanelSource,
+  IRESTPanelSource,
+  ILocalWebSocketPanelSource,
   // display list
   IDisplayListItem,
   // config
@@ -79,46 +87,58 @@ export class Meta implements IMeta {
 }
 
 export class NumberMeta extends Meta implements INumberMeta {
-  digits: number | null;
+  digits: number;
   locale: boolean;
+  log: boolean;
   constructor(
     {
       varname,
       label,
       tags,
       digits,
-      locale
+      locale,
+      log
     } : {
       varname: string,
       label?: string | undefined,
       tags?: string[],
       digits?: number,
-      locale?: boolean
+      locale?: boolean,
+      log?: boolean,
     }
   ) {
     super('number', varname, tags, label, true, true);
-    this.digits = digits === undefined ? null : digits;
+    this.digits = digits === undefined ? 2 : digits;
     this.locale = locale === undefined ? true : locale;
+    this.log = log === undefined ? false : log;
   };
 }
 
 export class CurrencyMeta extends Meta implements ICurrencyMeta {
   code: CurrencyCode;
+  digits: number;
+  log: boolean;
   constructor(
     {
       varname,
       label,
       tags,
-      code
+      code,
+      digits,
+      log,
     } : {
       varname: string,
       label?: string | undefined,
       tags?: string[],
-      code?: CurrencyCode
+      code?: CurrencyCode,
+      digits?: number,
+      log?: boolean,
     }
   ) {
     super('number', varname, tags, label, true, true);
     this.code = code === undefined ? 'USD' : code;
+    this.digits = digits === undefined ? 2 : digits;
+    this.log = log === undefined ? false : log;
   };
 }
 
@@ -221,13 +241,19 @@ export class DatetimeMeta extends Meta implements IDatetimeMeta {
 }
 
 export class GeoMeta extends Meta implements IGeoMeta {
+  latvar: string;
+  longvar: string;
   constructor(
     {
       varname,
+      latvar,
+      longvar,
       label,
       tags
     } : {
       varname: string,
+      latvar: string,
+      longvar: string,
       label?: string | undefined,
       tags?: string[]
     }
@@ -237,9 +263,11 @@ export class GeoMeta extends Meta implements IGeoMeta {
       varname,
       tags,
       label,
-      true,
+      false, // TODO: change to TRUE when implemented in app
       false
     );
+    this.latvar = latvar;
+    this.longvar = longvar;
   };
 }
 
@@ -268,6 +296,9 @@ export class HrefMeta extends Meta implements IHrefMeta {
 
 export class GraphMeta extends Meta implements IGraphMeta {
   idvarname: string;
+  linkidvarname: string;
+  labelvarname: string;
+  params: object;
   direction: GraphDirection;
   constructor(
     {
@@ -275,9 +306,15 @@ export class GraphMeta extends Meta implements IGraphMeta {
       label,
       tags,
       idvarname,
+      linkidvarname,
+      labelvarname,
+      // params,
       direction
     } : {
       varname: string,
+      linkidvarname: string,
+      labelvarname?: string,
+      params?: object,
       label?: string | undefined,
       tags?: string[],
       idvarname: string,
@@ -293,6 +330,9 @@ export class GraphMeta extends Meta implements IGraphMeta {
       false
     );
     this.idvarname = idvarname;
+    this.linkidvarname = linkidvarname;
+    this.labelvarname = labelvarname === undefined ? idvarname : labelvarname;
+    this.params = {};
     this.direction = direction === undefined ? 'none' : direction;
   };
 }
@@ -300,6 +340,52 @@ export class GraphMeta extends Meta implements IGraphMeta {
 /* ------------------------------------------------------ */
 /* inputs                                                 */
 /* ------------------------------------------------------ */
+
+
+export class InputClientSideStorage implements IInputClientSideStorage {
+  type: "localStorage";
+  constructor() {
+    this.type = "localStorage";
+  }
+}
+
+export class InputEmailFeedback implements IInputEmailFeedback {
+  emailAddress: string;
+  includeMetaVars: string[];
+  constructor(
+    {
+      emailAddress,
+      includeMetaVars,
+    } : {
+      emailAddress: string,
+      includeMetaVars: string[],
+    }
+  ) {
+    this.emailAddress = emailAddress;
+    this.includeMetaVars = includeMetaVars;
+  }
+}
+
+export class Inputs implements IInputs {
+  inputs: IInput[];
+  storageInterface: IInputClientSideStorage;
+  feedbackInterface: IInputEmailFeedback;
+  constructor(
+    {
+      inputs,
+      storageInterface,
+      feedbackInterface,
+    } : {
+      inputs: IInput[],
+      storageInterface: IInputClientSideStorage,
+      feedbackInterface: IInputEmailFeedback,
+    }
+  ) {
+    this.inputs = inputs;
+    this.storageInterface = storageInterface;
+    this.feedbackInterface = feedbackInterface;
+  }
+}
 
 export class Input implements IInput {
   type: InputType;
@@ -478,28 +564,20 @@ export class State implements IState {
 }
 
 export class LayoutState extends State implements ILayoutState {
-  nrow: number;
   ncol: number;
-  arrange: LayoutArrangeType;
   page: number;
   constructor(
     {
-      nrow,
       ncol,
-      arrange,
       page,
     } : {
-      nrow?: number | undefined,
       ncol?: number | undefined,
-      arrange?: LayoutArrangeType | undefined,
       page?: number | undefined,
     }
   ) {
     super('layout');
-    this.nrow = nrow === undefined ? 1 : nrow;
     this.ncol = ncol === undefined ? 1 : ncol;
     this.page = page === undefined ? 1 : page;
-    this.arrange = arrange === undefined ? 'rows' : arrange;
   };
 }
 
@@ -520,36 +598,44 @@ export class LabelState extends State implements ILabelState {
 export class SortState extends State implements ISortState {
   varname: string;
   dir: SortDirType;
+  metatype: MetaType;
   constructor(
     {
       varname,
       dir,
+      metatype,
     } : {
       varname: string,
       dir?: SortDirType | undefined,
+      metatype: MetaType,
     }
   ) {
     super('sort');
     this.varname = varname;
     this.dir = dir === undefined ? 'asc' : dir;
+    this.metatype = metatype;
   };
 }
 
 export class FilterState extends State implements IFilterState {
   varname: string;
   filtertype: FilterType;
+  metatype: MetaType;
   constructor(
     {
       varname,
       filtertype,
+      metatype,
     } : {
       varname: string,
       filtertype: FilterType,
+      metatype: MetaType,
     }
   ) {
     super('filter');
     this.varname = varname;
     this.filtertype = filtertype;
+    this.metatype = metatype;
   };
 }
 
@@ -561,13 +647,15 @@ export class CategoryFilterState extends FilterState implements ICategoryFilterS
       varname,
       regexp,
       values,
+      metatype,
     } : {
       varname: string,
       regexp?: string | undefined,
       values?: string[] | undefined,
+      metatype: MetaType,
     }
   ) {
-    super({ varname, filtertype: 'category' });
+    super({ varname, filtertype: 'category', metatype });
     this.regexp = regexp === undefined ? null : regexp;
     this.values = values === undefined ? [] : values;
   };
@@ -581,13 +669,19 @@ export class NumberRangeFilterState extends FilterState implements INumberRangeF
       varname,
       min,
       max,
+      metatype,
     } : {
       varname: string,
       min?: number | undefined,
       max?: number | undefined,
+      metatype?: MetaType,
     }
   ) {
-    super({ varname, filtertype: 'numberrange' });
+    super({
+      varname,
+      filtertype: 'numberrange',
+      metatype: metatype === undefined ? 'number' : metatype,
+    });
     this.min = min === undefined ? null : min;
     this.max = max === undefined ? null : max;
   };
@@ -601,13 +695,19 @@ export class DateRangeFilterState extends FilterState implements IDateRangeFilte
       varname,
       min,
       max,
+      metatype,
     } : {
       varname: string,
       min?: Date | undefined,
       max?: Date | undefined,
+      metatype?: MetaType,
     }
   ) {
-    super({ varname, filtertype: 'daterange' });
+    super({
+      varname,
+      filtertype: 'daterange',
+      metatype: metatype === undefined ? 'date' : metatype,
+    });
     this.min = min === undefined ? null : min;
     this.max = max === undefined ? null : max;
   };
@@ -621,13 +721,19 @@ export class DatetimeRangeFilterState extends FilterState implements IDatetimeRa
       varname,
       min,
       max,
+      metatype,
     } : {
       varname: string,
       min?: Date | undefined,
       max?: Date | undefined,
+      metatype?: MetaType,
     }
   ) {
-    super({ varname, filtertype: 'datetimerange' });
+    super({
+      varname,
+      filtertype: 'datetimerange',
+      metatype: metatype === undefined ? 'datetime' : metatype,
+    });
     this.min = min === undefined ? null : min;
     this.max = max === undefined ? null : max;
   };
@@ -658,6 +764,55 @@ export class View implements IView {
 /* display                                                */
 /* ------------------------------------------------------ */
 
+export class PanelSource implements IPanelSource {
+  type: PanelSourceType;
+  constructor(
+    type: PanelSourceType,
+  ) {
+    this.type = type;
+  }
+}
+
+export class FilePanelSource extends PanelSource implements IFilePanelSource {
+  constructor() { super('file') };
+}
+
+export class RESTPanelSource extends PanelSource implements IRESTPanelSource {
+  url: string;
+  apiKey: string | undefined;
+  headers: string | undefined;
+  constructor(
+    {
+      url,
+      apiKey,
+      headers,
+    } : {
+      url: string;
+      apiKey: string | undefined;
+      headers: string | undefined;    
+    }
+  ) {
+    super('REST');
+    this.url = url;
+    this.apiKey = apiKey;
+    this.headers = headers;
+  }
+}
+
+export class LocalWebSocketPanelSource extends PanelSource implements ILocalWebSocketPanelSource {
+  port: number;
+  constructor(
+    {
+      port
+    } : {
+      port: number;
+    }
+  ) {
+    super('REST');
+    this.port = port;
+  }
+}
+
 export class Display implements IDisplay {
   name: string;
   description: string;
@@ -665,12 +820,14 @@ export class Display implements IDisplay {
   keycols: string[];
   keysig: string;
   metas: IMeta[];
-  inputs: IInput[];
+  inputs: IInputs | null;
   state: IDisplayState;
   views: IView[];
   paneltype: PanelType;
   panelformat?: PanelFormat;
   thumbnailurl: string;
+  panelaspect: number;
+  panelsource: PanelSource;
   constructor(
     {
       name,
@@ -685,6 +842,8 @@ export class Display implements IDisplay {
       paneltype,
       panelformat,
       thumbnailurl,
+      panelaspect,
+      panelsource,
     } : {
       name: string,
       description?: string,
@@ -692,12 +851,14 @@ export class Display implements IDisplay {
       keycols: string[],
       keysig: string,
       metas: IMeta[],
-      inputs?: IInput[] | undefined,
+      inputs?: IInputs | null,
       state: IDisplayState,
       views?: IView[] | undefined,
       paneltype: PanelType,
       panelformat: PanelFormat | undefined,
       thumbnailurl: string,
+      panelaspect: number,
+      panelsource: PanelSource,
     }
   ) {
     this.name = name;
@@ -706,13 +867,15 @@ export class Display implements IDisplay {
     this.keycols = keycols;
     this.keysig = keysig;
     this.metas = metas;
-    this.inputs = inputs === undefined ? [] : inputs;
+    this.inputs = inputs === undefined ? null : inputs;
     this.state = state;
     this.views = views === undefined ? [] : views;
     this.paneltype = paneltype;
     if (panelformat !== undefined) {
       this.panelformat = panelformat;
     }
+    this.panelaspect = panelaspect;
+    this.panelsource = panelsource;
     this.thumbnailurl = thumbnailurl;
   }
 }

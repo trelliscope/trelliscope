@@ -4,7 +4,14 @@
 \alias{meta_currency}
 \title{Specify a "currency" metadata variable}
 \usage{
-meta_currency(varname, label = NULL, tags = NULL, code = "USD")
+meta_currency(
+  varname,
+  label = NULL,
+  tags = NULL,
+  code = "USD",
+  digits = 2,
+  log = NULL
+)
 }
 \arguments{
 \item{varname}{Name of the variable.}
@@ -14,6 +21,12 @@ meta_currency(varname, label = NULL, tags = NULL, code = "USD")
 \item{tags}{Vector of tag names that help classify this variable.}
 
 \item{code}{Currency code. See \link{currencies} for a list of possibilities.}
+
+\item{digits}{How many digits to round to when displaying the number.
+If \code{NULL}, all digits will be shown. Default is 2.}
+
+\item{log}{Should the variable's distribution be shown on the log scale?
+If not specified, an inference will be made based on its values.}
 }
 \description{
 Specify a "currency" metadata variable

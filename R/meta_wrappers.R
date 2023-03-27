@@ -25,9 +25,11 @@ meta_string <- function(
 #' Specify a "number" metadata variable
 #' @inheritParams meta_string
 #' @param digits How many digits to round to when displaying the number.
-#' If `NULL`, all digits will be shown.
-#' @param locale Should the variable be displayed using its local?
+#' If not specified, a value will be inferred. If -1, all digits will be shown.
+#' @param locale Should the variable be displayed using its locale?
 #' For example, 1234.56 in US would be displayed as 1,234.56.
+#' @param log Should the variable's distribution be shown on the log scale?
+#' If not specified, an inference will be made based on its values.
 #' @family {metadata types}
 #' @export
 meta_number <- function(
@@ -35,14 +37,16 @@ meta_number <- function(
   label = NULL,
   tags = NULL,
   digits = NULL,
-  locale = TRUE
+  locale = TRUE,
+  log = NULL
 ) {
   NumberMeta$new(
     varname = varname,
     label = label,
     tags = tags,
     digits = digits,
-    locale = locale
+    locale = locale,
+    log = log
   ) |>
   add_meta_class()
 }
@@ -50,19 +54,26 @@ meta_number <- function(
 #' Specify a "currency" metadata variable
 #' @inheritParams meta_string
 #' @param code Currency code. See [currencies] for a list of possibilities.
+#' @param digits How many digits to round to when displaying the number.
+#' If `NULL`, all digits will be shown. Default is 2.
+#' @param log Should the variable's distribution be shown on the log scale?
+#' If not specified, an inference will be made based on its values.
 #' @family {metadata types}
 #' @export
 meta_currency <- function(
   varname,
   label = NULL,
   tags = NULL,
-  code = "USD"
+  code = "USD",
+  digits = 2,
+  log = NULL
 ) {
   CurrencyMeta$new(
     varname = varname,
     label = label,
     tags = tags,
-    code = code
+    code = code,
+    log = log
   ) |>
   add_meta_class()
 }
@@ -125,6 +136,8 @@ meta_datetime <- function(
 
 #' Specify a "geo" metadata variable
 #' @inheritParams meta_string
+#' @param varname Name of the new variable that will act as geographical
+#' coordinates (cannot exist in dataset).
 #' @param latvar Name of variable that contains the latitude.
 #' @param longvar Name of variable that contains the longitude.
 #' @family {metadata types}
@@ -148,8 +161,14 @@ meta_geo <- function(
 
 #' Specify a "graph" metadata variable
 #' @inheritParams meta_string
-#' @param idvarname Name of the variable in the data that the link items
-#' specified in `varname` refer to.
+#' @param varname Name of the new variable that will act as a graph
+#' (cannot exist in dataset).
+#' @param idvarname Name of the variable in the data that identifies the
+#' node that each entity belongs to.
+#' @param linkidvarname Name of the variable in the data that contains the
+#' identifier of the node that each entity links to
+#' @param labelvarname Name of the variable in the data that is used to
+#' label the nodes in the graph.
 #' @param direction Direction of the links specifed in `varname`. One of
 #' "none", "to", or "from". Determines whether and how arrows are shown
 #' in the network graph in the app.
@@ -160,6 +179,8 @@ meta_graph <- function(
   label = NULL,
   tags = NULL,
   idvarname,
+  linkidvarname,
+  labelvarname = idvarname,
   direction = c("none", "to", "from")
 ) {
   direction <- match.arg(direction)
@@ -168,6 +189,8 @@ meta_graph <- function(
     label = label,
     tags = tags,
     idvarname = idvarname,
+    linkidvarname = linkidvarname,
+    labelvarname = labelvarname,
     direction = direction
   ) |>
   add_meta_class()

@@ -17,12 +17,15 @@ export interface IMeta {
 }
 
 export interface INumberMeta extends IMeta {
-  digits: number | null; // should be integer
+  digits: number; // should be integer (less than 0 means show all digits)
+  log: boolean;
   locale: boolean;
 }
 
 export interface ICurrencyMeta extends IMeta {
   code: CurrencyCode;
+  digits: number; // should be integer (less than 0 means show all digits)
+  log: boolean;
 }
 
 export interface IStringMeta extends IMeta {
@@ -45,10 +48,15 @@ export interface IHrefMeta extends IMeta {
 }
 
 export interface IGeoMeta extends IMeta {
+  latvar: string;
+  longvar: string;
 }
 
 export interface IGraphMeta extends IMeta {
   idvarname: string;
+  linkidvarname: string;
+  labelvarname: string;
+  params: object;
   direction: GraphDirection;
 }
 
@@ -127,9 +135,7 @@ export interface IState {
 }
 
 export interface ILayoutState extends IState {
-  nrow: number;
   ncol: number;
-  arrange: LayoutArrangeType;
   page: number;
 }
 
@@ -140,11 +146,13 @@ export interface ILabelState extends IState {
 export interface ISortState extends IState {
   varname: string;
   dir: SortDirType;
+  metatype: MetaType;
 }
 
 export interface IFilterState extends IState {
   varname: string;
   filtertype: FilterType;
+  metatype: MetaType;
 }
 
 export interface ICategoryFilterState extends IFilterState {
@@ -182,7 +190,26 @@ export interface IView {
 
 export type PanelFormat = 'apng' | 'avif' | 'gif' | 'jpg' | 'jpeg' | 'jfif' | 'pjpeg' | 'pjp' | 'png' | 'svg' | 'webp';
 
-export type PanelType = 'img' | 'iframe' | 'REST';
+export type PanelType = 'img' | 'iframe';
+
+export type PanelSourceType = 'file' | 'REST' | 'localWebSocket';
+
+export interface IPanelSource {
+  type: PanelSourceType;
+}
+
+export interface IFilePanelSource extends IPanelSource {
+}
+
+export interface IRESTPanelSource extends IPanelSource {
+  url: string;
+  apiKey: string | undefined;
+  headers: string | undefined;
+}
+
+export interface ILocalWebSocketPanelSource extends IPanelSource {
+  port: number;
+}
 
 export interface IDisplay {
   name: string;
@@ -197,6 +224,7 @@ export interface IDisplay {
   paneltype: PanelType;
   panelformat?: PanelFormat;
   panelaspect: number,
+  panelsource: IPanelSource,
   thumbnailurl: string;
 }
 

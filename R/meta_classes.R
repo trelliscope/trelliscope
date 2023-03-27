@@ -54,10 +54,13 @@ Meta <- R6::R6Class("Meta",
       private[[name]] <- val
     },
     check_with_data = function(df) {
-      self$check_varname(df)
+      if (!private$type %in% c("geo", "graph"))
+        self$check_varname(df)
       if (!is.null(self$check_variable))
         self$check_variable(df)
+      return(TRUE)
     },
+    infer_from_data = function(df) {},
     cast_variable = identity
   ),
   private = list(
@@ -75,7 +78,8 @@ NumberMeta <- R6::R6Class("NumberMeta",
   public = list(
     initialize = function(varname, label = NULL, tags = NULL,
       digits = NULL,
-      locale = TRUE
+      locale = TRUE,
+      log = NULL
     ) {
       super$initialize(
         type = "number",
@@ -95,14 +99,34 @@ NumberMeta <- R6::R6Class("NumberMeta",
         check_logical(locale, "locale", self$error_msg)
         private$locale <- locale
       }
+      if (!is.null(log)) {
+        check_scalar(log, "log", self$error_msg)
+        check_logical(log, "log", self$error_msg)
+        private$log <- log
+      }
     },
     check_variable = function(df) {
       check_numeric(df[[private$varname]], private$varname, self$data_error_msg)
+      if (!is.null(private$log) && private$log == TRUE)
+        check_pos_numeric(df[[private$varname]], private$varname,
+          self$data_error_msg)
+    },
+    infer_from_data = function(df) {
+      if (is.null(private$log)) {
+        private$log <- needs_log(df[[private$varname]])
+        if (private$log)
+          msg("Inferred that variable '{private$varname}' should \
+            be shown on log scale.")
+      }
+      if (is.null(private$digits)) {
+        private$digits <- compute_digits(df[[private$varname]])
+      }
     }
   ),
   private = list(
     digits = NULL,
-    locale = TRUE
+    locale = TRUE,
+    log = NULL
   )
 )
 
@@ -110,7 +134,9 @@ CurrencyMeta <- R6::R6Class("CurrencyMeta",
   inherit = Meta,
   public = list(
     initialize = function(varname, label = NULL, tags = NULL,
-      code = "USD"
+      code = "USD",
+      log = NULL,
+      digits = 2
     ) {
       super$initialize(
         type = "currency",
@@ -125,13 +151,34 @@ CurrencyMeta <- R6::R6Class("CurrencyMeta",
         check_enum(code, unique(currencies$code_alpha), "code", self$error_msg)
         private$code <- code
       }
+      if (!is.null(log)) {
+        check_scalar(log, "log", self$error_msg)
+        check_logical(log, "log", self$error_msg)
+        private$log <- log
+      }
+      check_scalar(digits, "digits", self$error_msg)
+      check_numeric(digits, "digits", self$error_msg)
+      private$digits <- round(abs(digits))
     },
     check_variable = function(df) {
       check_numeric(df[[private$varname]], private$varname, self$data_error_msg)
+      if (!is.null(private$log) && private$log == TRUE)
+        check_pos_numeric(df[[private$varname]], private$varname,
+          self$data_error_msg)
+    },
+    infer_from_data = function(df) {
+      if (is.null(private$log)) {
+        private$log <- needs_log(df[[private$varname]])
+        if (private$log)
+          msg("Inferred that variable '{private$varname}' should \
+            be shown on log scale.")
+      }
     }
   ),
   private = list(
-    code = NULL
+    code = NULL,
+    log = NULL,
+    digits = 2
   )
 )
 
@@ -188,6 +235,8 @@ FactorMeta <- R6::R6Class("FactorMeta",
           private$levels <- as.character(sort(unique(df[[private$varname]])))
         }
       }
+      if (any(is.na(df[[private$varname]])))
+        private$levels <- c(private$levels, NA)
       check_atomic_vector(
         df[[private$varname]], private$varname, self$data_error_msg)
       check_exhaustive_levels(
@@ -195,7 +244,8 @@ FactorMeta <- R6::R6Class("FactorMeta",
           self$data_error_msg)
     },
     cast_variable = function(df) {
-      df[[private$varname]] <- as.character(df[[private$varname]])
+      if (!is.factor(df[[private$varname]]))
+        df[[private$varname]] <- factor(df[[private$varname]])
       df
     }
   ),
@@ -262,7 +312,9 @@ GraphMeta <- R6::R6Class("GraphMeta",
   inherit = Meta,
   public = list(
     initialize = function(varname, label = NULL, tags = NULL,
-      idvarname = NULL,
+      idvarname,
+      linkidvarname,
+      labelvarname = idvarname,
       direction = "none"
     ) {
       super$initialize(
@@ -278,16 +330,30 @@ GraphMeta <- R6::R6Class("GraphMeta",
       private$direction <- as.character(direction)
       check_scalar(idvarname, "idvarname", self$error_msg)
       check_character(idvarname, "idvarname", self$error_msg)
+      check_scalar(linkidvarname, "linkidvarname", self$error_msg)
+      check_character(linkidvarname, "linkidvarname", self$error_msg)
+      check_scalar(labelvarname, "labelvarname", self$error_msg)
+      check_character(labelvarname, "labelvarname", self$error_msg)
       private$idvarname <- idvarname
+      private$linkidvarname <- linkidvarname
+      private$labelvarname <- labelvarname
+      private$params <- empty_object()
     },
     check_variable = function(df) {
       check_has_var(df, private$idvarname, self$data_error_msg)
-      check_graphvar(df[[private$varname]], private$varname,
-        df[[private$idvarname]], private$idvarname, self$data_error_msg)
+      check_has_var(df, private$linkidvarname, self$data_error_msg)
+      check_has_var(df, private$labelvarname, self$data_error_msg)
+      # TODO: clean check_graphvar up
+      # check_graphvar(df[[private$varname]], private$varname,
+      #   df[[private$idvarname]], private$idvarname, self$data_error_msg)
+      check_not_has_var(df, private$varname, self$data_error_msg)
     }
   ),
   private = list(
     idvarname = NULL,
+    linkidvarname = NULL,
+    labelvarname = NULL,
+    params = NULL,
     direction = NULL
   )
 )
@@ -298,9 +364,6 @@ GraphMeta <- R6::R6Class("GraphMeta",
 GeoMeta <- R6::R6Class("GeoMeta",
   inherit = Meta,
   public = list(
-    # store these in public because we won't serialize them
-    latvar = NULL,
-    longvar = NULL,
     initialize = function(varname, label = NULL, tags = NULL,
       latvar, longvar
       # TODO: parameters to specify how map is rendered
@@ -310,34 +373,40 @@ GeoMeta <- R6::R6Class("GeoMeta",
         varname = varname,
         label = label,
         tags = tags,
-        filterable = TRUE,
+        filterable = FALSE, # TODO: change when filters are supported
         sortable = FALSE
       )
       check_scalar(latvar, "latvar", self$error_msg)
       check_character(latvar, "latvar", self$error_msg)
       check_scalar(longvar, "longvar", self$error_msg)
       check_character(longvar, "longvar", self$error_msg)
-      self$latvar <- latvar
-      self$longvar <- longvar
+      private$latvar <- latvar
+      private$longvar <- longvar
     },
     check_variable = function(df) {
-      check_has_var(df, self$latvar, self$data_error_msg)
-      check_has_var(df, self$longvar, self$data_error_msg)
-      check_latvar(df[[self$latvar]], self$latvar, self$data_error_msg)
-      check_longvar(df[[self$longvar]], self$longvar, self$data_error_msg)
+      check_has_var(df, private$latvar, self$data_error_msg)
+      check_has_var(df, private$longvar, self$data_error_msg)
+      check_not_has_var(df, private$varname, self$data_error_msg)
+      check_latvar(df[[private$latvar]], private$latvar, self$data_error_msg)
+      check_longvar(df[[private$longvar]], private$longvar, self$data_error_msg)
     },
-    cast_variable = function(df) {
-      # join into one variable and remove latvar and longvar
-      df[[private$varname]] <- apply(df[, c(self$latvar, self$longvar)], 1,
-        function(x) as.list(unname(x)))
-      df[[self$latvar]] <- NULL
-      df[[self$longvar]] <- NULL
-      df
-    },
+    # we'll not create a new variable but just reference the latvar and longvar
+    cast_variable = identity,
+    # cast_variable = function(df) {
+    #   # join into one variable and remove latvar and longvar
+    #   df[[private$varname]] <- apply(
+    #     df[, c(private$latvar, private$longvar)], 1,
+    #     function(x) as.list(unname(x)))
+    #   df[[private$latvar]] <- NULL
+    #   df[[private$longvar]] <- NULL
+    #   df
+    # },
     # override check_varname for this because it won't exist yet
     check_varname = function(df) TRUE
   ),
   private = list(
+    latvar = NULL,
+    longvar = NULL
   )
 )
 

@@ -1,13 +1,13 @@
 # TODO: move all this testing to the class tests and just make sure
 # the wrappers run without error (all error handling is in classes)
 test_that2("state_layout", {
-  obj <- state_layout(nrow = 2, ncol = 3, arrange = "cols", page = 1)
+  obj <- state_layout(ncol = 3, page = 1)
 
   expect_s3_class(obj, "trelliscope_state_def")
   expect_equal(obj$get("type"), "layout")
 
   expect_error(
-    state_layout(nrow = "a"),
+    state_layout(ncol = "a"),
     regexp = "must be an integer"
   )
 })

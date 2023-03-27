@@ -1,5 +1,6 @@
 #' Write panels
-#' @param disp A trelliscope display object created with [`trelliscope()`].
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+#' or a data frame which will be cast as such.
 #' @param width Width in pixels of each panel.
 #' @param height Height in pixels of each panel.
 #' @param format The format of the image if it is not an htmlwidget. Can be
@@ -16,25 +17,26 @@
 #' @importFrom rlang hash
 #' @export
 write_panels <- function(
-  disp, width = 500, height = 500, format = "png", force = FALSE
+  trdf, width = 500, height = 500, format = "png", force = FALSE
 ) {
-  check_display_object(disp)
+  trdf <- check_trelliscope_df(trdf)
   check_scalar(width, "width")
   check_pos_numeric(width, "width")
   check_scalar(height, "height")
   check_pos_numeric(height, "height")
 
-  disp2 <- disp$clone()
-  app_path <- disp2$path
-  df <- disp2$df
-  if (inherits(df, "facet_trelliscope"))
-    df <- build_panels(df)
+  trobj <- attr(trdf, "trelliscope")$clone()
+  app_path <- trobj$path
+  # TODO: look at this
+  # df <- trdf
+  # if (inherits(df, "facet_panels"))
+  #   df <- nest_panels(df)
 
-  panel_col <- check_and_get_panel_col(df)
+  panel_col <- check_and_get_panel_col(trdf)
 
-  panel_keys <- get_panel_paths_from_keys(disp2, format)
+  panel_keys <- get_panel_paths_from_keys(trdf, format)
 
-  panel_path <- file.path(disp2$get_display_path(), "panels")
+  panel_path <- file.path(trobj$get_display_path(), "panels")
 
   if (!dir.exists(panel_path)) {
     res <- dir.create(panel_path, recursive = TRUE)
@@ -43,29 +45,34 @@ write_panels <- function(
   }
 
   html_head <- NULL
-  if (inherits(df[[panel_col]][[1]], "htmlwidget")) {
+  if (inherits(trdf[[panel_col]][[1]], "htmlwidget")) {
     dir.create(file.path(app_path, "libs"), showWarnings = FALSE)
     html_head <- write_htmlwidget_deps(
-      df[[panel_col]][[1]], app_path, panel_path)
+      trdf[[panel_col]][[1]], app_path, panel_path)
     format <- "html"
   }
 
-  cur_hash <- rlang::hash(c(height, width, format, df[[panel_col]]))
+  cur_hash <- rlang::hash(c(height, width, format, trdf[[panel_col]]))
 
-  disp2$df[["__PANEL_KEY__"]] <- panel_keys
-  if (is.null(disp2$get("keysig")))
-    disp2$set("keysig", rlang::hash(sort(panel_keys)))
+  trdf[["__PANEL_KEY__"]] <- panel_keys
+  if (is.null(trobj$get("keysig")))
+    trobj$set("keysig", rlang::hash(sort(panel_keys)))
 
-  disp2$set("panelformat", format)
+  trobj$set("panelformat", format)
 
   if (!force && file.exists(file.path(panel_path, "hash"))) {
     prev_hash <- readLines(file.path(panel_path, "hash"), warn = FALSE)[1]
-    if (prev_hash == cur_hash) {
+    # need to grab aspect ratio from previous
+    ff <- list.files(trobj$get_display_path(),
+      pattern = "displayInfo\\.json", full.names = TRUE)
+    if (prev_hash == cur_hash && length(ff) > 0) {
       msg("Current panel content matches panels that have already been \\
         written. Skipping panel writing. To override this, use \\
         write_panels(..., force = TRUE).")
-      disp2$panels_written <- TRUE
-      return(disp2)
+      trobj$panels_written <- TRUE
+      trobj$set("panelaspect", read_json_p(ff)$panelaspect)
+      attr(trdf, "trelliscope") <- trobj
+      return(trdf)
     }
   }
 
@@ -74,7 +81,7 @@ write_panels <- function(
   for (ii in seq_along(panel_keys)) {
     cli::cli_progress_update()
     write_panel(
-      x = df[[panel_col]][[ii]],
+      x = trdf[[panel_col]][[ii]],
       key = panel_keys[ii],
       base_path = app_path,
       panel_path = panel_path,
@@ -88,15 +95,17 @@ write_panels <- function(
 
   cat(cur_hash, file = file.path(panel_path, "hash"))
 
-  disp2$panels_written <- TRUE
-  disp2$set("panelaspect", width / height)
+  trobj$panels_written <- TRUE
+  trobj$set("panelaspect", width / height)
 
-  disp2
+  attr(trdf, "trelliscope") <- trobj
+  trdf
 }
 
-get_panel_paths_from_keys <- function(disp, format) {
-  keycols <- disp$get("keycols")
-  apply(disp$df[, keycols], 1,
+get_panel_paths_from_keys <- function(trdf, format) {
+  trobj <- attr(trdf, "trelliscope")
+  keycols <- trobj$get("keycols")
+  apply(trdf[, keycols], 1,
     function(df) sanitize(paste(df, collapse = "_")))
   # TODO: make sure that when sanitized, keys are still unique
 }

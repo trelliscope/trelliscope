@@ -95,6 +95,9 @@ State <- R6::R6Class("State",
     },
     get = function(name) {
       private[[name]]
+    },
+    set = function(name, val) {
+      private[[name]] <- val
     }
     # check_with_data = function(df) {
     #   return(TRUE)
@@ -108,19 +111,13 @@ State <- R6::R6Class("State",
 LayoutState <- R6::R6Class("LayoutState",
   inherit = State,
   public = list(
-    initialize = function(nrow = 1, ncol = 1, arrange = "rows", page = 1) {
+    initialize = function(ncol = 1, page = 1) {
       super$initialize(type = "layout")
-      check_atomic_vector(nrow, "nrow", self$error_msg)
-      check_integer(nrow, "nrow", self$error_msg)
       check_atomic_vector(ncol, "ncol", self$error_msg)
       check_integer(ncol, "ncol", self$error_msg)
-      check_atomic_vector(arrange, "arrange", self$error_msg)
-      check_enum(arrange, c("rows", "cols"), "arrange", self$error_msg)
       check_atomic_vector(page, "page", self$error_msg)
       check_integer(page, "page", self$error_msg)
-      private$nrow <- nrow
       private$ncol <- ncol
-      private$arrange <- arrange
       private$page <- page
     },
     check_with_data = function(df) {
@@ -130,9 +127,7 @@ LayoutState <- R6::R6Class("LayoutState",
     }
   ),
   private = list(
-    nrow = NULL,
     ncol = NULL,
-    arrange = NULL,
     page = 1
   )
 )
@@ -185,7 +180,8 @@ SortState <- R6::R6Class("SortState",
   ),
   private = list(
     varname = NULL,
-    dir = NULL
+    dir = NULL,
+    metatype = NULL
   )
 )
 
@@ -210,6 +206,7 @@ FilterState <- R6::R6Class("FilterState",
         self$extra_check(df)
       return(TRUE)
     },
+    get = function(x) private[[x]],
     check_with_meta = function(meta) {
       # # don't need this because we are in control of applying meta to filter
       # assert(private$varname == meta$get("varname"),
@@ -225,7 +222,8 @@ FilterState <- R6::R6Class("FilterState",
   ),
   private = list(
     varname = NULL,
-    filtertype = NULL
+    filtertype = NULL,
+    metatype = NULL
   )
 )
 
@@ -294,6 +292,7 @@ NumberRangeFilterState <- R6::R6Class("NumberRangeFilterState",
         check_numeric(min, "min", self$error_msg)
       if (!is.null(max))
         check_numeric(max, "max", self$error_msg)
+      private$metatype <- "number"
     }
   )
 )
@@ -308,6 +307,7 @@ DateRangeFilterState <- R6::R6Class("DateRangeFilterState",
         check_date(min, "min", self$error_msg)
       if (!is.null(max))
         check_date(max, "max", self$error_msg)
+      private$metatype <- "date"
     }
   )
 )
@@ -322,6 +322,7 @@ DatetimeRangeFilterState <- R6::R6Class("DatetimeRangeFilterState",
         check_datetime(min, "min", self$error_msg)
       if (!is.null(max))
         check_datetime(max, "max", self$error_msg)
+      private$metatype <- "datetime"
     }
   )
 )

@@ -1,6 +1,7 @@
 dat <- iris
 sq <- seq_len(nrow(dat))
 dat$id <- as.character(sq)
+dat$toid <- as.character(c(sq[-1], sq[1]))
 dat$letters <- rep(letters, 10)[1:150]
 dat$date <- Sys.Date() + 1:150
 dat$date2 <- as.character(dat$date)
@@ -15,7 +16,9 @@ dat$long <- runif(150, 0, 180)
 dat$href <- "https://google.com"
 
 test_that2("NumberMeta", {
-  obj <- NumberMeta$new("Sepal.Length", tags = "stuff")
+  obj <- NumberMeta$new(
+    "Sepal.Length", tags = "stuff", log = FALSE
+  )
   expect_true(
     obj$check_with_data(dat)
   )
@@ -24,7 +27,7 @@ test_that2("NumberMeta", {
 
   expect_equal(
     as.character(obj$as_json(pretty = FALSE)),
-    '{"locale":true,"digits":null,"sortable":true,"filterable":true,"tags":["stuff"],"label":"Sepal.Length","type":"number","varname":"Sepal.Length"}'
+    '{"log":false,"locale":true,"digits":null,"sortable":true,"filterable":true,"tags":["stuff"],"label":"Sepal.Length","type":"number","varname":"Sepal.Length"}'
   )
 
   expect_true(
@@ -34,7 +37,7 @@ test_that2("NumberMeta", {
   obj <- NumberMeta$new("Sepal.Length",
     label = "Sepal length of the iris")
 
-  obj <- NumberMeta$new("whatever", digits = 2, local = FALSE)
+  obj <- NumberMeta$new("whatever", digits = 2, locale = FALSE)
   expect_error(
     obj$check_with_data(dat),
     regexp = "Could not find variable"
@@ -58,7 +61,7 @@ test_that2("NumberMeta", {
 })
 
 test_that2("CurrencyMeta", {
-  obj <- CurrencyMeta$new("Sepal.Length", tags = "stuff")
+  obj <- CurrencyMeta$new("Sepal.Length", tags = "stuff", log = FALSE)
   expect_true(
     obj$check_with_data(dat)
   )
@@ -67,7 +70,7 @@ test_that2("CurrencyMeta", {
 
   expect_equal(
     as.character(obj$as_json(pretty = FALSE)),
-    '{"code":"USD","sortable":true,"filterable":true,"tags":["stuff"],"label":"Sepal.Length","type":"currency","varname":"Sepal.Length"}'
+    '{"digits":2,"log":false,"code":"USD","sortable":true,"filterable":true,"tags":["stuff"],"label":"Sepal.Length","type":"currency","varname":"Sepal.Length"}'
   )
 
   expect_true(
@@ -193,28 +196,36 @@ test_that2("GeoMeta", {
 
   tmp <- obj$cast_variable(dat)
   expect_true(
-    !any(c("lat", "long") %in% names(tmp))
+    all(c("lat", "long") %in% names(tmp))
   )
-  expect_true(
-    "coords" %in% names(tmp)
-  )
-  expect_true(
-    tmp$coords[[1]][[1]] == dat$lat[1]
-  )
+  # expect_true(
+  #   "coords" %in% names(tmp)
+  # )
+  # expect_true(
+  #   tmp$coords[[1]][[1]] == dat$lat[1]
+  # )
 })
 
 test_that2("GraphMeta", {
-  obj <- GraphMeta$new("lst", idvarname = "id", direction = "to")
+  obj <- GraphMeta$new("my_graph", idvarname = "id",
+    linkidvarname = "toid", direction = "to")
   expect_true(
     obj$check_with_data(dat)
   )
 
+  obj2 <- GraphMeta$new("id", idvarname = "id",
+    linkidvarname = "toid", direction = "to")
   expect_error(
-    obj <- GraphMeta$new("lst", idvarname = "id", direction = "stuff"),
+    obj2$check_with_data(dat),
+    regexp = "already exists"
+  )
+
+  expect_error(
+    obj <- GraphMeta$new("my_graph", idvarname = "id", direction = "stuff"),
     regexp = "must be one of"
   )
 
-  obj2 <- GraphMeta$new("lst", idvarname = "stuff")
+  obj2 <- GraphMeta$new("my_graph", idvarname = "stuff", linkidvarname = "stuff")
   expect_error(
     obj2$check_with_data(dat),
     regexp = "not find variable"
