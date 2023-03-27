@@ -145,7 +145,7 @@ LabelState <- R6::R6Class("LabelState",
     check_with_data = function(df) {
       trobj <- attr(df, "trelliscope")
       inputs <- NULL
-      if (!is.null(trobj$get("inputs")))
+      if (!is.null(trobj) && !is.null(trobj$get("inputs")))
         inputs <- names(trobj$get("inputs")$get("inputs"))
       dff <- setdiff(private$varnames, c(names(df), inputs))
       assert(length(dff) == 0,
