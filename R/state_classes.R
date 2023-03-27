@@ -143,7 +143,11 @@ LabelState <- R6::R6Class("LabelState",
       private$varnames <- I(varnames) # to make it a json array
     },
     check_with_data = function(df) {
-      dff <- setdiff(private$varnames, names(df))
+      trobj <- attr(df, "trelliscope")
+      inputs <- NULL
+      if (!is.null(trobj$get("inputs")))
+        inputs <- names(trobj$get("inputs")$get("inputs"))
+      dff <- setdiff(private$varnames, c(names(df), inputs))
       assert(length(dff) == 0,
         msg = self$data_error_msg(paste0("Label variables not found in data: ",
           paste0(dff, collapse = ", "))))
