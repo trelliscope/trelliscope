@@ -57,7 +57,7 @@ infer_state <- function(state, df, keycols, metas, view = NULL) {
       if (length(flt[[nm]]$get("values")) > 0)
         flt[[nm]]$set(
           "values",
-          which(metas[[nm]]$get("levels") %in% flt[[nm]]$get("values"))
+          I(which(metas[[nm]]$get("levels") %in% flt[[nm]]$get("values")))
         )
     }
   }
