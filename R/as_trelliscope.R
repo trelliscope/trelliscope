@@ -43,6 +43,15 @@ as_trelliscope_df <- function(
   if (is.null(key_cols))
     key_cols <- get_keycols(df)
 
+  if (is.null(name)) {
+    name <- attr(df, "trelliscope")$name
+    if (is.null(name)) {
+      wrn("A name for the display was not specified. Provide a {.field name} \
+        when calling {.fn as_trelliscope_df}")
+      name <- "Trelliscope"
+    }
+  }
+
   obj <- Display$new(name = name, description = description,
     keycols = key_cols, path = path, force_plot = force_plot,
     panel_col = panel_col, tags = tags, keysig = key_sig, server = server)
