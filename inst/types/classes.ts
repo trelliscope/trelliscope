@@ -510,18 +510,26 @@ export class TextInput extends Input implements ITextInput {
 }
 
 export class NumberInput extends Input implements INumberInput {
+  min: number | null;
+  max: number | null;
   constructor(
     {
       name,
       label,
       active,
+      min,
+      max,
     } : {
       name: string,
       label?: string | undefined,
       active?: boolean | undefined,
+      min?: number | undefined,
+      max?: number | undefined,
     }
   ) {
     super('number', name, label, active);
+    this.min = min === undefined ? null : min;
+    this.max = max === undefined ? null : max;
   };
 }
 

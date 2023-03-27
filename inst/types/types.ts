@@ -112,6 +112,8 @@ export interface ITextInput extends IInput {
 }
 
 export interface INumberInput extends IInput {
+  min: number | null;
+  max: number | null;
 }
 
 /* ------------------------------------------------------ */
