@@ -7,12 +7,16 @@ add_input_class <- function(x) {
 #' @param name Name of the input.
 #' @param label Description of the input.
 #' @param active Should the input be active by default?
+#' @param min Optional minimum value to allow in the input.
+#' @param max Optional maximum value to allow in the input.
 #' @family {input types}
 #' @export
 input_number <- function(
-  name, label = name, active = TRUE
+  name, label = name, active = TRUE, min = NULL, max = NULL
 ) {
-  NumberInput$new(name = name, label = label, active = active) |>
+  NumberInput$new(
+    name = name, label = label, active = active, min = min, max = max
+  ) |>
     add_input_class()
 }
 
