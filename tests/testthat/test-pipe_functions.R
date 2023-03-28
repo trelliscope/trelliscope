@@ -334,7 +334,9 @@ test_that2("input pipe functions", {
         label = "Is it good?", options = c("no", "yes")),
       input_text(name = "opinion", label = "What do you think?",
         width = 100, height = 6),
-      input_number(name = "rank", label = "Rank this panel")
+      input_number(name = "rank", label = "Rank this panel"),
+      email = "a@b.com",
+      vars = "class"
     )
   bo <- get_trobj(b)
 
@@ -345,7 +347,11 @@ test_that2("input pipe functions", {
 
   expect_message(
     b |>
-      add_inputs(input_radio(name = "good_radio", options = 1:5)),
+      add_inputs(
+        input_radio(name = "good_radio", options = 1:5),
+        email = "a@b.com",
+        vars = "class"
+      ),
     regexp = "Overwriting input 'good_radio'"
   )
 })

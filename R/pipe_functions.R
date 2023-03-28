@@ -198,60 +198,30 @@ add_view <- function(trdf, name, ...) {
 #' @param ... Any number of input specifications. These can be specified with
 #' any of [`input_number()`], [`input_radio()`], [`input_checkbox()`],
 #' [`input_select()`], [`input_multiselect()`], [`input_text()`]
+#' @param email An email address.
+#' @param vars A vector of meta variable names found in the display. These
+#'   will be made available as columns in the csv download of user inputs.
 #' @export
-add_inputs <- function(trdf, ...) {
+add_inputs <- function(trdf, ..., email, vars = NULL) {
   trdf <- check_trelliscope_df(trdf)
   trobj <- attr(trdf, "trelliscope")$clone()
-  for (inpt in list(...)) {
+  inputs <- list(...)
+  for (inpt in inputs) {
     assert(inherits(inpt, "trelliscope_input_def"),
       msg = "Can only add input definitions to add_inputs()")
     trobj$set_input(inpt)
   }
-  attr(trdf, "trelliscope") <- trobj
-  trdf
-}
 
-#' Specify an email address to which input feedback can be sent
-#' @param email An email address.
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
-#' or a data frame which will be cast as such.
-#' @export
-add_input_email <- function(trdf, email) {
-  trdf <- check_trelliscope_df(trdf)
-  trobj <- attr(trdf, "trelliscope")$clone()
-  if (length(trobj$get("inputs")) == 0) {
-    wrn("There are no inputs for this display. Ignoring `add_input_email()`")
-  } else {
-    inputs2 <- trobj$get("inputs")$clone()
-    itfc <- inputs2$get("feedbackInterface")$clone()
-    itfc$set("feedbackEmail", email)
-    inputs2$set("feedbackInterface", itfc)
-    trobj$set("inputs", inputs2)
-  }
-  attr(trdf, "trelliscope") <- trobj
-  trdf
-}
+  itfc <- trobj$get("inputs")$get("feedbackInterface")
+  itfc$set("feedbackEmail", email)
 
-#' Specify meta variables whose values should be provided in input feedback
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
-#' or a data frame which will be cast as such.
-#' @param vars A vector of meta variable names found in the display.
-#' @export
-add_input_vars <- function(trdf, vars) {
-  trdf <- check_trelliscope_df(trdf)
-  trobj <- attr(trdf, "trelliscope")$clone()
-  if (length(trobj$get("inputs")) == 0) {
-    wrn("There are no inputs for this display. Ignoring `add_input_vars()`")
-  } else {
+  if (!is.null(vars)) {
     nms <- trobj$get_meta_names(trdf)
     assert(all(vars %in% nms), msg = "In `add_input_vars()`, 'vars' can only
       be valid meta variables that are found in the data.")
-    inputs2 <- trobj$get("inputs")$clone()
-    itfc <- inputs2$get("feedbackInterface")$clone()
     itfc$set("includeMetaVars", vars)
-    inputs2$set("feedbackInterface", itfc)
-    trobj$set("inputs", inputs2)
   }
+
   attr(trdf, "trelliscope") <- trobj
   trdf
 }
