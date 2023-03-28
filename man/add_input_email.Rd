@@ -15,3 +15,26 @@ or a data frame which will be cast as such.}
 \description{
 Specify an email address to which input feedback can be sent
 }
+\examples{
+\dontrun{
+library(ggplot2)
+library(dplyr)
+
+panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
+  geom_point() +
+  facet_panels()) |>
+  nest_panels()
+  
+trell <- panel_dat |>
+as_trelliscope_df() |>
+write_panels() |>
+add_inputs(
+  input_radio(name = "Radio Input", 
+               label = "A space to add custom ranking for sorting",
+               options = c("yes", "no"))) |>
+add_input_email("johndoe@email.com") |>
+write_trelliscope() |>
+view_trelliscope()
+}
+
+}

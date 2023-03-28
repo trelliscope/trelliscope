@@ -31,3 +31,20 @@ The size of panels will vary when shown in the viewer, but here the
 specification of height and width help determine the plot aspect ratio
 as well as the initial resolution to render plot text, etc. with.
 }
+\examples{
+\dontrun{
+library(ggplot2)
+
+panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
+  geom_point() +
+  facet_panels(~country + continent)) |>
+  nest_panels()
+  
+disp <- panel_dat |>
+  as_trelliscope_df(name = "life_expectancy", path = tempfile()) |>
+  write_panels(width = 800, height = 500, format = "svg") |>
+  write_trelliscope() |>
+  view_trelliscope()
+  }
+
+}

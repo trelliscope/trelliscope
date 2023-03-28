@@ -15,6 +15,22 @@
 #'   as well as the initial resolution to render plot text, etc. with.
 #' @importFrom cli cli_progress_bar cli_progress_update cli_progress_done
 #' @importFrom rlang hash
+#' @examples
+#' \dontrun{
+#' library(ggplot2)
+#' 
+#' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
+#'   geom_point() +
+#'   facet_panels(~country + continent)) |>
+#'   nest_panels()
+#'   
+#' disp <- panel_dat |>
+#'   as_trelliscope_df(name = "life_expectancy", path = tempfile()) |>
+#'   write_panels(width = 800, height = 500, format = "svg") |>
+#'   write_trelliscope() |>
+#'   view_trelliscope()
+#'   }
+#' 
 #' @export
 write_panels <- function(
   trdf, width = 500, height = 500, format = "png", force = FALSE

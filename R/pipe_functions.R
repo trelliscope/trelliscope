@@ -215,6 +215,28 @@ add_inputs <- function(trdf, ...) {
 #' @param email An email address.
 #' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
 #' or a data frame which will be cast as such.
+#' @examples
+#' \dontrun{
+#' library(ggplot2)
+#' library(dplyr)
+#' 
+#' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
+#'   geom_point() +
+#'   facet_panels()) |>
+#'   nest_panels()
+#'   
+#' trell <- panel_dat |>
+#' as_trelliscope_df() |>
+#' write_panels() |>
+#' add_inputs(
+#'   input_radio(name = "Radio Input", 
+#'                label = "A space to add custom ranking for sorting",
+#'                options = c("yes", "no"))) |>
+#' add_input_email("johndoe@email.com") |>
+#' write_trelliscope() |>
+#' view_trelliscope()
+#' }
+#' 
 #' @export
 add_input_email <- function(trdf, email) {
   trdf <- check_trelliscope_df(trdf)
@@ -236,6 +258,30 @@ add_input_email <- function(trdf, email) {
 #' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
 #' or a data frame which will be cast as such.
 #' @param vars A vector of meta variable names found in the display.
+#' @examples
+#' \dontrun{
+#' library(ggplot2)
+#' library(dplyr)
+#' 
+#' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
+#'   geom_point() +
+#'   facet_panels()) |>
+#'   nest_panels()
+#'   
+#' trell <- panel_dat |>
+#' as_trelliscope_df() |>
+#' write_panels() |>
+#' add_inputs(
+#'   input_radio(name = "Radio Input", 
+#'                label = "A space to add custom ranking for sorting",
+#'                options = c("yes", "no"))) |>
+#' add_input_vars(c("continent", "country")) |>
+#' add_input_email("johndoe@email.com") |>
+#' write_trelliscope() |>
+#' view_trelliscope()
+#' }
+#' 
+#' 
 #' @export
 add_input_vars <- function(trdf, vars) {
   trdf <- check_trelliscope_df(trdf)
@@ -274,6 +320,26 @@ add_charm <- function(trdf, ...) {
 #' or a data frame which will be cast as such.
 #' @param pretty Adds indentation whitespace to JSON output. Can be TRUE/FALSE
 #' or a number specifying the number of spaces to indent.
+#' @examples 
+#' \dontrun{
+#' library(ggplot2)
+#' library(dplyr)
+#' 
+#' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
+#'                 geom_point() +
+#'                 facet_panels(~country + continent)) |>
+#'   nest_panels()
+#' 
+#' trell <- panel_dat |>
+#'   as_trelliscope_df(name = "life expectancy", path = "gapminder") |>
+#'   set_default_layout(nrow = 2, ncol = 4) |>
+#'   write_panels() |>
+#'   write_trelliscope()
+#'   
+#' as_json(trell)
+#'   
+#' }
+#' 
 #' @export
 as_json <- function(trdf, pretty = TRUE) {
   obj <- attr(trdf, "trelliscope")$clone()

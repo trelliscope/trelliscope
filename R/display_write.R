@@ -6,6 +6,23 @@
 #' @param jsonp If true, app files are written as "jsonp" format, otherwise
 #'   "json" format. The "jsonp" format makes it possible to browse a
 #'   trelliscope app without the need for a web server.
+#' @examples
+#' \dontrun{
+#' library(ggplot2)
+#' 
+#' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
+#'   geom_point() +
+#'   facet_panels(~country + continent)) |>
+#'   nest_panels()
+#'   
+#' disp <- panel_dat |>
+#'   as_trelliscope_df(name = "life_expectancy", path = tempfile()) |>
+#'   write_panels() |>
+#'   write_trelliscope() |>
+#'   view_trelliscope()
+#' }
+#' 
+#'   
 #' @export
 write_trelliscope <- function(trdf, force_write = FALSE, jsonp = TRUE) {
   trdf <- check_trelliscope_df(trdf)

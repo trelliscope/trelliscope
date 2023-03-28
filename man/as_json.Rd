@@ -16,3 +16,24 @@ or a number specifying the number of spaces to indent.}
 \description{
 Convert any trelliscope R6 object to JSON
 }
+\examples{
+\dontrun{
+library(ggplot2)
+library(dplyr)
+
+panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
+                geom_point() +
+                facet_panels(~country + continent)) |>
+  nest_panels()
+
+trell <- panel_dat |>
+  as_trelliscope_df(name = "life expectancy", path = "gapminder") |>
+  set_default_layout(nrow = 2, ncol = 4) |>
+  write_panels() |>
+  write_trelliscope()
+  
+as_json(trell)
+  
+}
+
+}

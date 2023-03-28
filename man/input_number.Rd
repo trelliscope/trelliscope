@@ -16,6 +16,29 @@ input_number(name, label = name, active = TRUE)
 \description{
 Specify a "numeric" input box
 }
+\examples{
+\dontrun{
+library(ggplot2)
+library(dplyr)
+
+panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
+  geom_point() +
+  facet_panels()) |>
+  nest_panels()
+  
+trell <- panel_dat |>
+as_trelliscope_df() |>
+write_panels() |>
+add_inputs(
+  input_number(name = "Numeric Input", 
+               label = "A space to add custom ranking for sorting",
+               min = 0, max = 10)) |>
+add_input_email("johndoe@email.com") |>
+write_trelliscope() |>
+view_trelliscope()
+}
+ 
+}
 \seealso{
 Other {input types}: 
 \code{\link{input_checkbox}()},

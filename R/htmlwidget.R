@@ -1,6 +1,38 @@
 #' View a trelliscope display
 #' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
 #' or a data frame which will be cast as such.
+#' @examples
+#' \dontrun{
+#' library(ggplot2)
+#' 
+#' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
+#'   geom_point() +
+#'   facet_panels(~country + continent)) |>
+#'   nest_panels()
+#'   
+#' disp <- panel_dat |>
+#'   as_trelliscope_df(name = "life_expectancy", path = tempfile()) |>
+#'   write_panels() |>
+#'   write_trelliscope() |>
+#'   view_trelliscope()
+#'   
+#' # Alternatively you can build your trelliscope and call `view_trelliscope()`
+#' # separately. This allows for fine tuning of the trelliscope without having
+#' # to reopen it every time you make an edit.
+#' trell <- (ggplot(gapminder, aes(year, lifeExp)) +
+#'   geom_point() +
+#'   facet_panels(~country + continent)) |>
+#'   nest_panels() |>
+#'   as_trelliscope_df(name = "life_expectancy", path = tempfile()) |>
+#'   write_panels() |>
+#'   write_trelliscope()
+#'   
+#' view_trelliscope(trell)
+#'   
+#' 
+#'   }
+#' 
+#' 
 #' @export
 view_trelliscope <- function(trdf = NULL) {
   if (is.null(trdf)) {

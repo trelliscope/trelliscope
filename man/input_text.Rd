@@ -20,6 +20,28 @@ input_text(name, label = name, active = TRUE, width = 80, height = 3)
 \description{
 Specify a "text box" input
 }
+\examples{
+\dontrun{
+library(ggplot2)
+library(dplyr)
+
+panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
+  geom_point() +
+  facet_panels()) |>
+  nest_panels()
+  
+trell <- panel_dat |>
+as_trelliscope_df() |>
+write_panels() |>
+add_inputs(
+  input_text(name = "Text Input", 
+               label = "A space to add custom text input")) |>
+add_input_email("johndoe@email.com") |>
+write_trelliscope() |>
+view_trelliscope()
+}
+
+}
 \seealso{
 Other {input types}: 
 \code{\link{input_checkbox}()},

@@ -20,3 +20,21 @@ trelliscope app without the need for a web server.}
 \description{
 Write the contents of a display
 }
+\examples{
+\dontrun{
+library(ggplot2)
+
+panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
+  geom_point() +
+  facet_panels(~country + continent)) |>
+  nest_panels()
+  
+disp <- panel_dat |>
+  as_trelliscope_df(name = "life_expectancy", path = tempfile()) |>
+  write_panels() |>
+  write_trelliscope() |>
+  view_trelliscope()
+}
+
+  
+}

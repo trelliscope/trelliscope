@@ -18,6 +18,29 @@ input_select(name, label = name, active = TRUE, options)
 \description{
 Specify a "select" input
 }
+\examples{
+\dontrun{
+library(ggplot2)
+library(dplyr)
+
+panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
+  geom_point() +
+  facet_panels()) |>
+  nest_panels()
+  
+trell <- panel_dat |>
+as_trelliscope_df() |>
+write_panels() |>
+add_inputs(
+  input_select(name = "Select Input", 
+               label = "A space to add custom dropdown inputs",
+               options =c("yes", "no"))) |>
+add_input_email("johndoe@email.com") |>
+write_trelliscope() |>
+view_trelliscope()
+}
+
+}
 \seealso{
 Other {input types}: 
 \code{\link{input_checkbox}()},

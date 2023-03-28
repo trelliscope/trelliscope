@@ -7,6 +7,53 @@ add_meta_class <- function(x) {
 #' @param varname Name of the variable.
 #' @param label Description of the variable.
 #' @param tags Vector of tag names that help classify this variable.
+#' @examples
+#' \dontrun{
+#' library(ggplot2)
+#' library(dplyr)
+#'
+#' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
+#'                 geom_point() +
+#'                 facet_panels(~country + continent)) |>
+#'   nest_panels() 
+#'
+#'
+#' meta_dat <- gapminder|>
+#'   group_by(country, continent) |>
+#'   summarise(
+#'     mean_lifeexp = mean(lifeExp),
+#'     min_lifeexp = min(lifeExp),
+#'     max_lifeexp = max(lifeExp),
+#'     mean_gdp = mean(gdpPercap),
+#'     first_year = min(year),
+#'     latitude = first(latitude),
+#'     longitude = first(longitude),
+#'     .groups = "drop"
+#'   ) |>
+#'   ungroup() |>
+#'   mutate(
+#'     first_date = as.Date(paste0(first_year, "-01-01")),
+#'     first_datetime = as.POSIXct.Date(first_date),
+#'     continent = as.factor(continent),
+#'     wiki_link = paste0("https://en.wikipedia.org/wiki/", country)
+#'   )
+#'
+#' joined_dat <- left_join(panel_dat, meta_dat, 
+#'                         by = join_by(country, continent))
+#'
+#' trell <- joined_dat |>
+#'   as_trelliscope_df() |>
+#'   write_panels() |>
+#'   add_meta_defs(
+#'     meta_string("country",
+#'                 label = "Name of the Country",
+#'                 tags = "More Info")
+#' ) |>
+#' write_trelliscope() |>
+#' view_trelliscope()
+#' }
+#' 
+#' 
 #' @family {metadata types}
 #' @export
 meta_string <- function(
@@ -30,6 +77,53 @@ meta_string <- function(
 #' For example, 1234.56 in US would be displayed as 1,234.56.
 #' @param log Should the variable's distribution be shown on the log scale?
 #' If not specified, an inference will be made based on its values.
+#' @examples
+#' \dontrun{
+#' library(ggplot2)
+#' library(dplyr)
+#'
+#' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
+#'                 geom_point() +
+#'                 facet_panels(~country + continent)) |>
+#'   nest_panels() 
+#'
+#'
+#' meta_dat <- gapminder|>
+#'   group_by(country, continent) |>
+#'   summarise(
+#'     mean_lifeexp = mean(lifeExp),
+#'     min_lifeexp = min(lifeExp),
+#'     max_lifeexp = max(lifeExp),
+#'     mean_gdp = mean(gdpPercap),
+#'     first_year = min(year),
+#'     latitude = first(latitude),
+#'     longitude = first(longitude),
+#'     .groups = "drop"
+#'   ) |>
+#'   ungroup() |>
+#'   mutate(
+#'     first_date = as.Date(paste0(first_year, "-01-01")),
+#'     first_datetime = as.POSIXct.Date(first_date),
+#'     continent = as.factor(continent),
+#'     wiki_link = paste0("https://en.wikipedia.org/wiki/", country)
+#'   )
+#'
+#' joined_dat <- left_join(panel_dat, meta_dat, 
+#'                         by = join_by(country, continent))
+#'
+#' trell <- joined_dat |>
+#'   as_trelliscope_df() |>
+#'   write_panels() |>
+#'   add_meta_defs(
+#'     meta_number("mean_lifeexp",
+#'                 label = "Average life expectancy across all measured years",
+#'                 tags = "More Info",
+#'                 digits = 2)) |>
+#' write_trelliscope() |>
+#' view_trelliscope()
+#' }
+#' 
+#' 
 #' @family {metadata types}
 #' @export
 meta_number <- function(
@@ -58,6 +152,51 @@ meta_number <- function(
 #' If `NULL`, all digits will be shown. Default is 2.
 #' @param log Should the variable's distribution be shown on the log scale?
 #' If not specified, an inference will be made based on its values.
+#' @examples
+#' \dontrun{
+#' library(ggplot2)
+#' library(dplyr)
+#'
+#' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
+#'                 geom_point() +
+#'                 facet_panels(~country + continent)) |>
+#'   nest_panels() 
+#'
+#'
+#' meta_dat <- gapminder|>
+#'   group_by(country, continent) |>
+#'   summarise(
+#'     mean_lifeexp = mean(lifeExp),
+#'     min_lifeexp = min(lifeExp),
+#'     max_lifeexp = max(lifeExp),
+#'     mean_gdp = mean(gdpPercap),
+#'     first_year = min(year),
+#'     latitude = first(latitude),
+#'     longitude = first(longitude),
+#'     .groups = "drop"
+#'   ) |>
+#'   ungroup() |>
+#'   mutate(
+#'     first_date = as.Date(paste0(first_year, "-01-01")),
+#'     first_datetime = as.POSIXct.Date(first_date),
+#'     continent = as.factor(continent),
+#'     wiki_link = paste0("https://en.wikipedia.org/wiki/", country)
+#'   )
+#'
+#' joined_dat <- left_join(panel_dat, meta_dat, 
+#'                         by = join_by(country, continent))
+#'
+#' trell <- joined_dat |>
+#'   as_trelliscope_df() |>
+#'   write_panels() |>
+#'   add_meta_defs(
+#'     meta_currency("mean_gdp", label = "Average GDP per capita",
+#'                   tags = "GDP")) |>
+#' write_trelliscope() |>
+#' view_trelliscope()
+#' }
+#' 
+#' 
 #' @family {metadata types}
 #' @export
 meta_currency <- function(
@@ -83,6 +222,51 @@ meta_currency <- function(
 #' @param levels A vector of factor levels the correspond to the variable.
 #' The order of levels will be respected when sorted, etc. If NULL,
 #' levels will be inferred from the data based on the order they appear.
+#' @examples
+#' \dontrun{
+#' library(ggplot2)
+#' library(dplyr)
+#'
+#' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
+#'                 geom_point() +
+#'                 facet_panels(~country + continent)) |>
+#'   nest_panels() 
+#'
+#'
+#' meta_dat <- gapminder|>
+#'   group_by(country, continent) |>
+#'   summarise(
+#'     mean_lifeexp = mean(lifeExp),
+#'     min_lifeexp = min(lifeExp),
+#'     max_lifeexp = max(lifeExp),
+#'     mean_gdp = mean(gdpPercap),
+#'     first_year = min(year),
+#'     latitude = first(latitude),
+#'     longitude = first(longitude),
+#'     .groups = "drop"
+#'   ) |>
+#'   ungroup() |>
+#'   mutate(
+#'     first_date = as.Date(paste0(first_year, "-01-01")),
+#'     first_datetime = as.POSIXct.Date(first_date),
+#'     continent = as.factor(continent),
+#'     wiki_link = paste0("https://en.wikipedia.org/wiki/", country)
+#'   )
+#'
+#' joined_dat <- left_join(panel_dat, meta_dat, 
+#'                         by = join_by(country, continent))
+#'
+#' trell <- joined_dat |>
+#'   as_trelliscope_df() |>
+#'   write_panels() |>
+#'   meta_factor("continent",
+#'               label = "Continent the country belongs in",
+#'               tags = "Location")) |>
+#' write_trelliscope() |>
+#' view_trelliscope()
+#' }
+#' 
+#' 
 #' @family {metadata types}
 #' @export
 meta_factor <- function(
@@ -102,6 +286,51 @@ meta_factor <- function(
 
 #' Specify a "date" metadata variable
 #' @inheritParams meta_string
+#' @examples
+#' \dontrun{
+#' library(ggplot2)
+#' library(dplyr)
+#'
+#' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
+#'                 geom_point() +
+#'                 facet_panels(~country + continent)) |>
+#'   nest_panels() 
+#'
+#'
+#' meta_dat <- gapminder|>
+#'   group_by(country, continent) |>
+#'   summarise(
+#'     mean_lifeexp = mean(lifeExp),
+#'     min_lifeexp = min(lifeExp),
+#'     max_lifeexp = max(lifeExp),
+#'     mean_gdp = mean(gdpPercap),
+#'     first_year = min(year),
+#'     latitude = first(latitude),
+#'     longitude = first(longitude),
+#'     .groups = "drop"
+#'   ) |>
+#'   ungroup() |>
+#'   mutate(
+#'     first_date = as.Date(paste0(first_year, "-01-01")),
+#'     first_datetime = as.POSIXct.Date(first_date),
+#'     continent = as.factor(continent),
+#'     wiki_link = paste0("https://en.wikipedia.org/wiki/", country)
+#'   )
+#'
+#' joined_dat <- left_join(panel_dat, meta_dat, 
+#'                         by = join_by(country, continent))
+#'
+#' trell <- joined_dat |>
+#'   as_trelliscope_df() |>
+#'   write_panels() |>
+#'   meta_date("first_date", 
+#'             label = "January 1st of the first year data was recorded",
+#'             tags = "Time")) |>
+#' write_trelliscope() |>
+#' view_trelliscope()
+#' }
+#' 
+#' 
 #' @family {metadata types}
 #' @export
 meta_date <- function(
@@ -119,6 +348,51 @@ meta_date <- function(
 
 #' Specify a "datetime" metadata variable
 #' @inheritParams meta_string
+#' @examples
+#' \dontrun{
+#' library(ggplot2)
+#' library(dplyr)
+#'
+#' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
+#'                 geom_point() +
+#'                 facet_panels(~country + continent)) |>
+#'   nest_panels() 
+#'
+#'
+#' meta_dat <- gapminder|>
+#'   group_by(country, continent) |>
+#'   summarise(
+#'     mean_lifeexp = mean(lifeExp),
+#'     min_lifeexp = min(lifeExp),
+#'     max_lifeexp = max(lifeExp),
+#'     mean_gdp = mean(gdpPercap),
+#'     first_year = min(year),
+#'     latitude = first(latitude),
+#'     longitude = first(longitude),
+#'     .groups = "drop"
+#'   ) |>
+#'   ungroup() |>
+#'   mutate(
+#'     first_date = as.Date(paste0(first_year, "-01-01")),
+#'     first_datetime = as.POSIXct.Date(first_date),
+#'     continent = as.factor(continent),
+#'     wiki_link = paste0("https://en.wikipedia.org/wiki/", country)
+#'   )
+#'
+#' joined_dat <- left_join(panel_dat, meta_dat, 
+#'                         by = join_by(country, continent))
+#'
+#' trell <- joined_dat |>
+#'   as_trelliscope_df() |>
+#'   write_panels() |>
+#'   meta_datetime("first_datetime",
+#'                 label = "January 1st at 017:00 of the first year",
+#'                 tags = "Time")) |>
+#' write_trelliscope() |>
+#' view_trelliscope()
+#' }
+#' 
+#' 
 #' @family {metadata types}
 #' @export
 meta_datetime <- function(
@@ -140,6 +414,53 @@ meta_datetime <- function(
 #' coordinates (cannot exist in dataset).
 #' @param latvar Name of variable that contains the latitude.
 #' @param longvar Name of variable that contains the longitude.
+#' @examples
+#' \dontrun{
+#' library(ggplot2)
+#' library(dplyr)
+#'
+#' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
+#'                 geom_point() +
+#'                 facet_panels(~country + continent)) |>
+#'   nest_panels() 
+#'
+#'
+#' meta_dat <- gapminder|>
+#'   group_by(country, continent) |>
+#'   summarise(
+#'     mean_lifeexp = mean(lifeExp),
+#'     min_lifeexp = min(lifeExp),
+#'     max_lifeexp = max(lifeExp),
+#'     mean_gdp = mean(gdpPercap),
+#'     first_year = min(year),
+#'     latitude = first(latitude),
+#'     longitude = first(longitude),
+#'     .groups = "drop"
+#'   ) |>
+#'   ungroup() |>
+#'   mutate(
+#'     first_date = as.Date(paste0(first_year, "-01-01")),
+#'     first_datetime = as.POSIXct.Date(first_date),
+#'     continent = as.factor(continent),
+#'     wiki_link = paste0("https://en.wikipedia.org/wiki/", country)
+#'   )
+#'
+#' joined_dat <- left_join(panel_dat, meta_dat, 
+#'                         by = join_by(country, continent))
+#'
+#' trell <- joined_dat |>
+#'   as_trelliscope_df() |>
+#'   write_panels() |>
+#'   meta_geo("coordinates",
+#'            label = "Lat and Long of the country's capital",
+#'            tags = "Location",
+#'            latvar = "latitude",
+#'            longvar = "longitude")) |>
+#' write_trelliscope() |>
+#' view_trelliscope()
+#' }
+#' 
+#' 
 #' @family {metadata types}
 #' @export
 meta_geo <- function(
@@ -172,6 +493,8 @@ meta_geo <- function(
 #' @param direction Direction of the links specifed in `varname`. One of
 #' "none", "to", or "from". Determines whether and how arrows are shown
 #' in the network graph in the app.
+#' 
+#' 
 #' @family {metadata types}
 #' @export
 meta_graph <- function(
@@ -198,6 +521,51 @@ meta_graph <- function(
 
 #' Specify a "href" metadata variable
 #' @inheritParams meta_string
+#' @examples
+#' \dontrun{
+#' library(ggplot2)
+#' library(dplyr)
+#'
+#' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
+#'                 geom_point() +
+#'                 facet_panels(~country + continent)) |>
+#'   nest_panels() 
+#'
+#'
+#' meta_dat <- gapminder|>
+#'   group_by(country, continent) |>
+#'   summarise(
+#'     mean_lifeexp = mean(lifeExp),
+#'     min_lifeexp = min(lifeExp),
+#'     max_lifeexp = max(lifeExp),
+#'     mean_gdp = mean(gdpPercap),
+#'     first_year = min(year),
+#'     latitude = first(latitude),
+#'     longitude = first(longitude),
+#'     .groups = "drop"
+#'   ) |>
+#'   ungroup() |>
+#'   mutate(
+#'     first_date = as.Date(paste0(first_year, "-01-01")),
+#'     first_datetime = as.POSIXct.Date(first_date),
+#'     continent = as.factor(continent),
+#'     wiki_link = paste0("https://en.wikipedia.org/wiki/", country)
+#'   )
+#'
+#' joined_dat <- left_join(panel_dat, meta_dat, 
+#'                         by = join_by(country, continent))
+#'
+#' trell <- joined_dat |>
+#'   as_trelliscope_df() |>
+#'   write_panels() |>
+#'   meta_href("wiki_link",
+#'             label = "Wikipedia article on the country",
+#'             tags = "More Info")) |>
+#' write_trelliscope() |>
+#' view_trelliscope()
+#' }
+#' 
+#' 
 #' @family {metadata types}
 #' @export
 meta_href <- function(

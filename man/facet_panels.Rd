@@ -28,3 +28,37 @@ plotted, e.g. correlation coefficient if plot is a scatterplot.}
 \description{
 Add a trelliscope facet to a ggplot
 }
+\examples{
+# You can run facet_panels() just like how you would run facet_wrap()
+\dontrun{
+library(ggplot2)
+
+ggplot(gapminder, aes(year, lifeExp)) +
+  geom_point() +
+  facet_panels(~country + continent)
+  }
+  
+# facet_panels can also be a jumping off point into setting up a more 
+# developed trelliscope by passing into `nest_panels()` to create a nested
+# trelliscope data frame for additional editing.
+\dontrun{
+library(ggplot2)
+library(dplyr)
+
+panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
+                geom_point() +
+                facet_panels(~country + continent)) |>
+  nest_panels()
+
+trell_df <- panel_dat |>
+  as_trelliscope_df(name = "life expectancy", path = "gapminder") |>
+  set_default_layout(nrow = 2, ncol = 4) |>
+  write_panels() |>
+  write_trelliscope()
+  
+view_trelliscope(trell_df)
+  
+}
+
+
+}
