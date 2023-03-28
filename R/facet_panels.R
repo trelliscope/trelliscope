@@ -7,18 +7,31 @@
 #' @param add_plot_metrics Should metrics about each panel be automatically
 #'   calculated? These metrics are based on the context of what is being
 #'   plotted, e.g. correlation coefficient if plot is a scatterplot.
-#' @param data data used for faceting. Defaults to the first layer data
+#' @param data data used for faceting. Defaults to the main data argument
+#'   to [`ggplot2::ggplot()`].
+#' @param unfacet Specifies whether to "unfacet" the data such that all of the
+#'   data appears in the background of the plot. Options are "none" (default),
+#'   "line" or "point". The latter two options will add either a line or point
+#'   layer, grouped by the faceting variables, underneath each panel. This is
+#'   useful for time series plots for viewing each panel in relation to others.
+#' @param unfacet_col The color to use for the "unfacet" lines or points.
+#' @param unfacet_alpha The alpha to use for the "unfacet" lines or points.
 #' @importFrom ggplot2 facet_wrap waiver
 #' @importFrom tidyr nest
 #' @export
 facet_panels <- function(facets,
   scales = "same", add_plot_metrics = FALSE,
+  unfacet = c("none", "line", "point"),
+  unfacet_col = "gray", unfacet_alpha = 0.4,
   data = ggplot2::waiver()
 ) {
   ret <- list(
     facets = facets,
     facet_cols = ggplot2::facet_wrap(facets)$params$facets,
     scales = scales,
+    unfacet = match.arg(unfacet),
+    unfacet_col = unfacet_col,
+    unfacet_alpha = unfacet_alpha,
     add_plot_metrics = add_plot_metrics,
     data = data
   )
@@ -29,7 +42,8 @@ facet_panels <- function(facets,
 
 ggplot_add.facet_panels <- function(object, plot, object_name) {
   attr(plot, "trelliscope") <- object[
-    c("facets", "facet_cols", "scales", "add_plot_metrics", "data")]
+    c("facets", "facet_cols", "scales", "add_plot_metrics", "data",
+      "unfacet", "unfacet_col", "unfacet_alpha")]
   class(plot) <- c("facet_panels", class(plot))
   return(plot)
 }
@@ -83,11 +97,10 @@ nest_panels <- function(
   # pp <- ggplot2::ggplot_build(x)
 
   if (inherits(attrs$data, "waiver")) {
-    # message("using data from the first layer")
-    data <- x$layers[[1]]$data # first layer data
+    data <- x$data
     if (inherits(data, "waiver")) {
-      # retrieve plot data
-      data <- x$data
+    # message("using data from the first layer")
+      data <- x$layers[[1]]$data # first layer data
     }
   } else {
     # user-supplied
@@ -95,13 +108,18 @@ nest_panels <- function(
   }
 
   assert(!is.null(data),
-    "Non-NULL data must be provided either in the first plot layer \
-    or in the 'data' parameter")
+    "Non-NULL data must be provided either in {.fn ggplot} \
+    or in the {.field data} parameter of {.fn facet_panels}")
 
   # character vector of facet columns
   # TODO need to work with facet_panels(~ disp < 5)
   facet_cols <- unlist(lapply(attrs$facet_cols, rlang::as_name))
   facet_cols <- setdiff(facet_cols, "~")
+
+  data_unfacet <- NULL
+  if (attrs$unfacet %in% c("line", "point"))
+    data_unfacet <- data
+
   assert(all(facet_cols %in% names(data)),
     "All facet_panels facet columns must be found in the data being \
     used.")
@@ -146,12 +164,22 @@ nest_panels <- function(
     nms <- setdiff(names(dt), data_col)
     for (nm in nms) tmp[[nm]] <- dt[[nm]]
     q$data <- tmp[, c(nms, setdiff(names(tmp), nms))]
+    if (attrs$unfacet %in% c("line", "point")) {
+      q$layers <- c(geom_unfacet(
+        type = attrs$unfacet,
+        data = data_unfacet,
+        facet_vars = facet_cols,
+        color = attrs$unfacet_col,
+        alpha = attrs$unfacet_alpha
+      ), q$layers)
+    }
     q <- add_trelliscope_scales(q, scales_info, show_warnings = (pos == 1))
     if (isTRUE(as_plotly)) {
       q <- do.call(plotly::ggplotly, c(list(p = q), plotly_args))
       if (!is.null(plotly_cfg))
         q <- do.call(plotly::config, c(list(p = q), plotly_cfg))
     }
+
     q
   }
 
@@ -380,7 +408,6 @@ add_trelliscope_scale <- function(
     return(p)
   }
   if (scale_type != "free") {
-
     if (scale_info$data_type == "continuous") {
       # scale_fn <- switch(axis_name,
       #   "x" = scale_x_continuous,
@@ -458,4 +485,30 @@ add_trelliscope_scale <- function(
   }
 
   p
+}
+
+# Experimental ggplot2 "unfacet" layer
+geom_unfacet <- function(type = c("line", "point"), data, facet_vars,
+  color = "gray", alpha = 0.5,
+  mapping = NULL, stat = "identity", position = "identity",
+  na.rm = FALSE, show.legend = NA, inherit.aes = TRUE, ...
+) {
+  type <- match.arg(type)
+  data$UNFACET <- apply(data[, facet_vars], 1, paste0, collapse = "_")
+  data[facet_vars] <- NULL
+  mapping <- ggplot2::aes(group = .data$UNFACET)
+  params <- list(na.rm = na.rm, ...)
+  params$color <- color
+  params$alpha <- alpha
+  gm <- if (type == "line") {
+    ggplot2::GeomLine
+  } else {
+    ggplot2::GeomPoint
+  }
+  ggplot2::layer(
+    geom = gm, mapping = mapping,
+    data = data, stat = stat, position = position,
+    show.legend = show.legend, inherit.aes = inherit.aes,
+    params = params
+  )
 }

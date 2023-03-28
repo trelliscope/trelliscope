@@ -8,6 +8,9 @@ facet_panels(
   facets,
   scales = "same",
   add_plot_metrics = FALSE,
+  unfacet = c("none", "line", "point"),
+  unfacet_col = "gray",
+  unfacet_alpha = 0.4,
   data = ggplot2::waiver()
 )
 }
@@ -23,7 +26,18 @@ two strings, one for the X and Y axis respectively.}
 calculated? These metrics are based on the context of what is being
 plotted, e.g. correlation coefficient if plot is a scatterplot.}
 
-\item{data}{data used for faceting. Defaults to the first layer data}
+\item{unfacet}{Specifies whether to "unfacet" the data such that all of the
+data appears in the background of the plot. Options are "none" (default),
+"line" or "point". The latter two options will add either a line or point
+layer, grouped by the faceting variables, underneath each panel. This is
+useful for time series plots for viewing each panel in relation to others.}
+
+\item{unfacet_col}{The color to use for the "unfacet" lines or points.}
+
+\item{unfacet_alpha}{The alpha to use for the "unfacet" lines or points.}
+
+\item{data}{data used for faceting. Defaults to the main data argument
+to \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}}.}
 }
 \description{
 Add a trelliscope facet to a ggplot
