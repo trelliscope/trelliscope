@@ -25,7 +25,7 @@ InputEmailFeedback <- R6::R6Class("InputEmailFeedback",
     },
     as_list = function() {
       vars <- private$includeMetaVars
-      if (is.null(vars) || length(vars == 0 || !is.character(vars)))
+      if (is.null(vars) || length(vars) == 0 || !is.character(vars))
         vars <- list()
       if (length(vars) == 1)
         vars <- I(vars)
