@@ -25,7 +25,7 @@ InputEmailFeedback <- R6::R6Class("InputEmailFeedback",
     },
     as_list = function() {
       vars <- private$includeMetaVars
-      if (is.null(vars) || length(vars == 0 || !is.character(vars)))
+      if (is.null(vars) || length(vars) == 0 || !is.character(vars))
         vars <- list()
       if (length(vars) == 1)
         vars <- I(vars)
@@ -208,10 +208,27 @@ TextInput <- R6::R6Class("TextInput",
 NumberInput <- R6::R6Class("NumberInput",
   inherit = Input,
   public = list(
-    initialize = function(name, label = name, active = TRUE) {
+    initialize = function(name, label = name, active = TRUE,
+    min = NULL, max = NULL
+  ) {
       super$initialize(name, label, active, type = "number")
+      if (!is.null(min)) {
+        check_scalar(min, "min", self$error_msg)
+        check_numeric(min, "min", self$error_msg)
+      }
+      if (!is.null(max)) {
+        check_scalar(max, "max", self$error_msg)
+        check_numeric(max, "max", self$error_msg)
+      }
+      if (!is.null(min) && !is.null(max)) {
+        assert(min < max, msg = "{.field min} must be less than {.field max}")
+      }
+      private$min <- min
+      private$max <- max
     }
   ),
-  #? should we allow a min and max here?
-  private = list()
+  private = list(
+    min = NULL,
+    max = NULL
+  )
 )

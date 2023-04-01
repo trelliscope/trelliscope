@@ -510,18 +510,26 @@ export class TextInput extends Input implements ITextInput {
 }
 
 export class NumberInput extends Input implements INumberInput {
+  min: number | null;
+  max: number | null;
   constructor(
     {
       name,
       label,
       active,
+      min,
+      max,
     } : {
       name: string,
       label?: string | undefined,
       active?: boolean | undefined,
+      min?: number | undefined,
+      max?: number | undefined,
     }
   ) {
     super('number', name, label, active);
+    this.min = min === undefined ? null : min;
+    this.max = max === undefined ? null : max;
   };
 }
 
@@ -564,28 +572,20 @@ export class State implements IState {
 }
 
 export class LayoutState extends State implements ILayoutState {
-  nrow: number;
   ncol: number;
-  arrange: LayoutArrangeType;
   page: number;
   constructor(
     {
-      nrow,
       ncol,
-      arrange,
       page,
     } : {
-      nrow?: number | undefined,
       ncol?: number | undefined,
-      arrange?: LayoutArrangeType | undefined,
       page?: number | undefined,
     }
   ) {
     super('layout');
-    this.nrow = nrow === undefined ? 1 : nrow;
     this.ncol = ncol === undefined ? 1 : ncol;
     this.page = page === undefined ? 1 : page;
-    this.arrange = arrange === undefined ? 'rows' : arrange;
   };
 }
 
@@ -606,36 +606,44 @@ export class LabelState extends State implements ILabelState {
 export class SortState extends State implements ISortState {
   varname: string;
   dir: SortDirType;
+  metatype: MetaType;
   constructor(
     {
       varname,
       dir,
+      metatype,
     } : {
       varname: string,
       dir?: SortDirType | undefined,
+      metatype: MetaType,
     }
   ) {
     super('sort');
     this.varname = varname;
     this.dir = dir === undefined ? 'asc' : dir;
+    this.metatype = metatype;
   };
 }
 
 export class FilterState extends State implements IFilterState {
   varname: string;
   filtertype: FilterType;
+  metatype: MetaType;
   constructor(
     {
       varname,
       filtertype,
+      metatype,
     } : {
       varname: string,
       filtertype: FilterType,
+      metatype: MetaType,
     }
   ) {
     super('filter');
     this.varname = varname;
     this.filtertype = filtertype;
+    this.metatype = metatype;
   };
 }
 
@@ -647,13 +655,15 @@ export class CategoryFilterState extends FilterState implements ICategoryFilterS
       varname,
       regexp,
       values,
+      metatype,
     } : {
       varname: string,
       regexp?: string | undefined,
       values?: string[] | undefined,
+      metatype: MetaType,
     }
   ) {
-    super({ varname, filtertype: 'category' });
+    super({ varname, filtertype: 'category', metatype });
     this.regexp = regexp === undefined ? null : regexp;
     this.values = values === undefined ? [] : values;
   };
@@ -667,13 +677,19 @@ export class NumberRangeFilterState extends FilterState implements INumberRangeF
       varname,
       min,
       max,
+      metatype,
     } : {
       varname: string,
       min?: number | undefined,
       max?: number | undefined,
+      metatype?: MetaType,
     }
   ) {
-    super({ varname, filtertype: 'numberrange' });
+    super({
+      varname,
+      filtertype: 'numberrange',
+      metatype: metatype === undefined ? 'number' : metatype,
+    });
     this.min = min === undefined ? null : min;
     this.max = max === undefined ? null : max;
   };
@@ -687,13 +703,19 @@ export class DateRangeFilterState extends FilterState implements IDateRangeFilte
       varname,
       min,
       max,
+      metatype,
     } : {
       varname: string,
       min?: Date | undefined,
       max?: Date | undefined,
+      metatype?: MetaType,
     }
   ) {
-    super({ varname, filtertype: 'daterange' });
+    super({
+      varname,
+      filtertype: 'daterange',
+      metatype: metatype === undefined ? 'date' : metatype,
+    });
     this.min = min === undefined ? null : min;
     this.max = max === undefined ? null : max;
   };
@@ -707,13 +729,19 @@ export class DatetimeRangeFilterState extends FilterState implements IDatetimeRa
       varname,
       min,
       max,
+      metatype,
     } : {
       varname: string,
       min?: Date | undefined,
       max?: Date | undefined,
+      metatype?: MetaType,
     }
   ) {
-    super({ varname, filtertype: 'datetimerange' });
+    super({
+      varname,
+      filtertype: 'datetimerange',
+      metatype: metatype === undefined ? 'datetime' : metatype,
+    });
     this.min = min === undefined ? null : min;
     this.max = max === undefined ? null : max;
   };

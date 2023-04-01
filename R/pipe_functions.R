@@ -91,9 +91,9 @@ add_meta_tags <- function(trdf, ...) {
 #' or a data frame which will be cast as such.
 #' @inheritParams state_layout
 #' @export
-set_default_layout <- function(trdf, nrow = 1, ncol = 1, arrange = "rows", page = 1) {
+set_default_layout <- function(trdf, ncol = 1, page = 1) {
   trdf <- check_trelliscope_df(trdf)
-  obj <- state_layout(nrow = nrow, ncol = ncol, arrange = arrange, page = page)
+  obj <- state_layout(ncol = ncol, page = page)
   obj$check_with_data(trdf)
   trobj <- attr(trdf, "trelliscope")$clone()
   state <- trobj$get("state")
@@ -198,106 +198,30 @@ add_view <- function(trdf, name, ...) {
 #' @param ... Any number of input specifications. These can be specified with
 #' any of [`input_number()`], [`input_radio()`], [`input_checkbox()`],
 #' [`input_select()`], [`input_multiselect()`], [`input_text()`]
+#' @param email An email address.
+#' @param vars A vector of meta variable names found in the display. These
+#'   will be made available as columns in the csv download of user inputs.
 #' @export
-add_inputs <- function(trdf, ...) {
+add_inputs <- function(trdf, ..., email, vars = NULL) {
   trdf <- check_trelliscope_df(trdf)
   trobj <- attr(trdf, "trelliscope")$clone()
-  for (inpt in list(...)) {
+  inputs <- list(...)
+  for (inpt in inputs) {
     assert(inherits(inpt, "trelliscope_input_def"),
       msg = "Can only add input definitions to add_inputs()")
     trobj$set_input(inpt)
   }
-  attr(trdf, "trelliscope") <- trobj
-  trdf
-}
 
-#' Specify an email address to which input feedback can be sent
-#' @param email An email address.
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
-#' or a data frame which will be cast as such.
-#' @examples
-#' \dontrun{
-#' library(ggplot2)
-#' library(dplyr)
-#' 
-#' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
-#'   geom_point() +
-#'   facet_panels()) |>
-#'   nest_panels()
-#'   
-#' trell <- panel_dat |>
-#' as_trelliscope_df() |>
-#' write_panels() |>
-#' add_inputs(
-#'   input_radio(name = "Radio Input", 
-#'                label = "A space to add custom ranking for sorting",
-#'                options = c("yes", "no"))) |>
-#' add_input_email("johndoe@email.com") |>
-#' write_trelliscope() |>
-#' view_trelliscope()
-#' }
-#' 
-#' @export
-add_input_email <- function(trdf, email) {
-  trdf <- check_trelliscope_df(trdf)
-  trobj <- attr(trdf, "trelliscope")$clone()
-  if (length(trobj$get("inputs")) == 0) {
-    wrn("There are no inputs for this display. Ignoring `add_input_email()`")
-  } else {
-    inputs2 <- trobj$get("inputs")$clone()
-    itfc <- inputs2$get("feedbackInterface")$clone()
-    itfc$set("feedbackEmail", email)
-    inputs2$set("feedbackInterface", itfc)
-    trobj$set("inputs", inputs2)
-  }
-  attr(trdf, "trelliscope") <- trobj
-  trdf
-}
+  itfc <- trobj$get("inputs")$get("feedbackInterface")
+  itfc$set("feedbackEmail", email)
 
-#' Specify meta variables whose values should be provided in input feedback
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
-#' or a data frame which will be cast as such.
-#' @param vars A vector of meta variable names found in the display.
-#' @examples
-#' \dontrun{
-#' library(ggplot2)
-#' library(dplyr)
-#' 
-#' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
-#'   geom_point() +
-#'   facet_panels()) |>
-#'   nest_panels()
-#'   
-#' trell <- panel_dat |>
-#' as_trelliscope_df() |>
-#' write_panels() |>
-#' add_inputs(
-#'   input_radio(name = "Radio Input", 
-#'                label = "A space to add custom ranking for sorting",
-#'                options = c("yes", "no"))) |>
-#' add_input_vars(c("continent", "country")) |>
-#' add_input_email("johndoe@email.com") |>
-#' write_trelliscope() |>
-#' view_trelliscope()
-#' }
-#' 
-#' 
-#' @export
-add_input_vars <- function(trdf, vars) {
-  trdf <- check_trelliscope_df(trdf)
-  trobj <- attr(trdf, "trelliscope")$clone()
-  if (length(trobj$get("inputs")) == 0) {
-    wrn("There are no inputs for this display. Ignoring `add_input_vars()`")
-  } else {
+  if (!is.null(vars)) {
     nms <- trobj$get_meta_names(trdf)
     assert(all(vars %in% nms), msg = "In `add_input_vars()`, 'vars' can only
       be valid meta variables that are found in the data.")
-    inputs2 <- trobj$get("inputs")$clone()
-    itfc <- inputs2$get("feedbackInterface")$clone()
     itfc$set("includeMetaVars", vars)
-    inputs2$set("feedbackInterface", itfc)
-    trobj$set("inputs", inputs2)
   }
+
   attr(trdf, "trelliscope") <- trobj
   trdf
 }
@@ -320,26 +244,6 @@ add_charm <- function(trdf, ...) {
 #' or a data frame which will be cast as such.
 #' @param pretty Adds indentation whitespace to JSON output. Can be TRUE/FALSE
 #' or a number specifying the number of spaces to indent.
-#' @examples 
-#' \dontrun{
-#' library(ggplot2)
-#' library(dplyr)
-#' 
-#' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
-#'                 geom_point() +
-#'                 facet_panels(~country + continent)) |>
-#'   nest_panels()
-#' 
-#' trell <- panel_dat |>
-#'   as_trelliscope_df(name = "life expectancy", path = "gapminder") |>
-#'   set_default_layout(nrow = 2, ncol = 4) |>
-#'   write_panels() |>
-#'   write_trelliscope()
-#'   
-#' as_json(trell)
-#'   
-#' }
-#' 
 #' @export
 as_json <- function(trdf, pretty = TRUE) {
   obj <- attr(trdf, "trelliscope")$clone()

@@ -12,18 +12,22 @@ test_that("adding inputs", {
       input_text(name = "comments", label = "Comments about this panel",
         width = 100, height = 6),
       input_radio(name = "looks_correct",
-        label = "Does the data look correct?", options = c("no", "yes"))
+        label = "Does the data look correct?", options = c("no", "yes")),
+      email = "johndoe123@fakemail.com",
+      vars = "class"
     )
 
-  x2 <- x %>%
-    add_input_email("johndoe123@fakemail.com")
-
-  expect_error(get_trobj(x)$as_json(), "provide a feedback email")
-
-  expect_equal(get_trobj(x2)$as_list()$inputs$feedbackInterface$feedbackEmail,
+  expect_equal(get_trobj(x)$as_list()$inputs$feedbackInterface$feedbackEmail,
     "johndoe123@fakemail.com")
+  expect_equal(get_trobj(x)$as_list()$inputs$feedbackInterface$includeMetaVars,
+    I("class"))
 
-  expect_error(add_input_vars(x, "asdf"), "can only be valid meta variables")
-
-  expect_no_error(add_input_vars(x, "class"))
+  expect_error(as_trelliscope_df(dat, name = "test", key_cols = c("manufacturer", "class")) |>
+    add_inputs(
+      input_text(name = "comments", label = "Comments about this panel",
+        width = 100, height = 6),
+      email = "johndoe123@fakemail.com",
+      vars = "asdf"
+    ),
+    "can only be valid meta variables")
 })

@@ -9,6 +9,8 @@
 #'   one of "png" , "svg", or "html".
 #' @param force Should server force panels to be written? If `FALSE`, if the
 #'   panel has already been generated, that is what will be made available.
+#' @importFrom httpuv startServer randomPort
+#' @export
 local_websocket_server <- function(
   d, plot_fn, width = 500, height = 500, format = "png", force = FALSE
 ) {
@@ -23,6 +25,7 @@ local_websocket_server <- function(
   )
 }
 
+#' @importFrom dplyr .data
 get_plot <- function(
   row, d, ds, plot_fn, key_cols, base_path, panel_path, rel_path, width, height,
   format, force

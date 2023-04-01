@@ -4,7 +4,7 @@
 \alias{input_number}
 \title{Specify a "numeric" input box}
 \usage{
-input_number(name, label = name, active = TRUE)
+input_number(name, label = name, active = TRUE, min = NULL, max = NULL)
 }
 \arguments{
 \item{name}{Name of the input.}
@@ -12,6 +12,10 @@ input_number(name, label = name, active = TRUE)
 \item{label}{Description of the input.}
 
 \item{active}{Should the input be active by default?}
+
+\item{min}{Optional minimum value to allow in the input.}
+
+\item{max}{Optional maximum value to allow in the input.}
 }
 \description{
 Specify a "numeric" input box

@@ -244,7 +244,8 @@ FactorMeta <- R6::R6Class("FactorMeta",
           self$data_error_msg)
     },
     cast_variable = function(df) {
-      df[[private$varname]] <- as.character(df[[private$varname]])
+      if (!is.factor(df[[private$varname]]))
+        df[[private$varname]] <- factor(df[[private$varname]])
       df
     }
   ),

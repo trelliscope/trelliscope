@@ -4,7 +4,7 @@
 \alias{add_inputs}
 \title{Add inputs to a trelliscope display}
 \usage{
-add_inputs(trdf, ...)
+add_inputs(trdf, ..., email, vars = NULL)
 }
 \arguments{
 \item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope_df]{as_trelliscope_df()}}
@@ -13,6 +13,11 @@ or a data frame which will be cast as such.}
 \item{...}{Any number of input specifications. These can be specified with
 any of \code{\link[=input_number]{input_number()}}, \code{\link[=input_radio]{input_radio()}}, \code{\link[=input_checkbox]{input_checkbox()}},
 \code{\link[=input_select]{input_select()}}, \code{\link[=input_multiselect]{input_multiselect()}}, \code{\link[=input_text]{input_text()}}}
+
+\item{email}{An email address.}
+
+\item{vars}{A vector of meta variable names found in the display. These
+will be made available as columns in the csv download of user inputs.}
 }
 \description{
 Add inputs to a trelliscope display

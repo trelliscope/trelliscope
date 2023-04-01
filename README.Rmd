@@ -23,11 +23,11 @@ knitr::opts_chunk$set(
 
 <!-- badges: end -->
 
-This repository contains an rewrite of the trelliscopejs R package, now simply called trelliscope.
+This repository contains a rewrite of the trelliscopejs R package, now simply called trelliscope.
 
 ## Installation
 
-You can install the development version of trelliscope from [GitHub](https://github.com/) with:
+You can install the package from [GitHub](https://github.com/) with:
 
 ``` r
 devtools::install_github("trelliscope/trelliscope")
@@ -47,7 +47,7 @@ This package provides utilities to help build these data frames and then explore
 
 ### Example
 
-As a simple example, let's consider the `gapminder` dataset that originally comes with the `gapminder` package. We have included a modified version of the dataset with the Trelliscope package.
+As a simple example, let's consider the `gapminder` dataset that originally comes with the [`gapminder`](https://cran.r-project.org/web/packages/gapminder/index.html) package. For convenience, we have included a modified version of the dataset with the Trelliscope package.
 
 ```{r}
 library(trelliscope)
@@ -68,21 +68,22 @@ suppressPackageStartupMessages(
 ggplot(gapminder, aes(year, lifeExp)) +
   geom_point() +
   facet_panels(~ country + continent)
-                   
 ```
 
-This creates a quick Trelliscope grouped by country and continent but it lacks customization in the naming and layout as well as any additional metadata for sorting and filtering. We can fix this by expanding on the `facet_panels()` function.
+This creates a quick Trelliscope grouped by country and continent but it lacks customization in the naming and layout as well as any additional metadata for sorting and filtering. We will show how you can expand on this code for more customization in the sections below.
 
 If you are plotting with ggplot2, there are several benefits to using `facet_panels()`. First, it fits more naturally into the ggplot2 paradigm, where you can build a Trelliscope visualization exactly as you would with building a ggplot2 visualization. Second, you can make use of the `scales` argument in `facet_panels()` (which behaves similarly to the same argument in `facet_wrap()`) to ensure that the x and y axis ranges of your plots behave the way you want. The default is for all plots to have the same `"fixed"` axis ranges. This is an important consideration in visualizing small multiples because if you are making visual comparisons you often want to be comparing things on the same scale.
 
 ### Creating a nested data frame for further customization
 
-A large part of the power for trelliscope lies in it's ability to customize the interface using metadata that corresponds with the plots. In order to include this, we expand upon our example from earlier using `facet_panels()`. We can take the plots generated for each facet and store them, along with the original data used to create them, in a nested data frame using `nest_panels()`.
+A large part of the power for trelliscope lies in its ability to customize the interface using metadata that corresponds with the plots. In order to have control over metadata, we expand upon our example from earlier using `facet_panels()`. We can take the plots generated for each facet and store them, along with the original data used to create them, in a nested data frame using `nest_panels()`.
 
 ```{r}
-panel_df <- (ggplot(gapminder, aes(year, lifeExp)) +
-               geom_point() +
-               facet_panels(~ country + continent)) |>
+panel_df <- (
+  ggplot(gapminder, aes(year, lifeExp)) +
+    geom_point() +
+    facet_panels(~ country + continent)
+) |>
   nest_panels()
 ```
 
@@ -150,9 +151,11 @@ With our meta data frame created we can now join it to the original nested data 
 We insert the code into our block from earlier to join into a complete data set and finish constructing the Trelliscope.
 
 ```{r}
-panel_df <- (ggplot(gapminder, aes(year, lifeExp)) +
-               geom_point() +
-               facet_panels(~ country + continent)) |>
+panel_df <- (
+  ggplot(gapminder, aes(year, lifeExp)) +
+    geom_point() +
+    facet_panels(~ country + continent)
+) |>
   nest_panels()
 
 meta_df <- gapminder |>

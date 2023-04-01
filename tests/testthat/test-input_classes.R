@@ -94,7 +94,7 @@ test_that2("NumberInput", {
 
   expect_equal(
     obj$as_list(),
-    list(type = "number", active = TRUE,
+    list(max = NULL, min = NULL, type = "number", active = TRUE,
       label = "What would you rank on a scale of 1 to 10?", name = "rank")
   )
 })

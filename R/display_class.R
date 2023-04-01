@@ -21,6 +21,7 @@ Display <- R6::R6Class(
       if (!is.null(name)) {
         check_scalar(name, "name")
         check_character(name, "name")
+        assert(nchar(name) > 0, msg = "Name cannot be empty string")
       }
       if (!is.null(description)) {
         check_scalar(description, "description")
@@ -106,6 +107,7 @@ Display <- R6::R6Class(
         paneltype = private$paneltype,
         panelformat = private$panelformat,
         panelaspect = private$panelaspect,
+        panelsource = private$panelsource$as_list(),
         thumbnailurl = private$thumbnailurl
       )
     },
@@ -137,6 +139,8 @@ Display <- R6::R6Class(
     panelformat = NULL,
     panelaspect = NULL,
     panelsource = NULL,
-    thumbnailurl = NULL
+    thumbnailurl = NULL,
+    customInfoPage = FALSE,
+    showInfoOnFirstLoad = FALSE
   )
 )

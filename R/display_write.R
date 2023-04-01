@@ -38,13 +38,26 @@ write_trelliscope <- function(trdf, force_write = FALSE, jsonp = TRUE) {
     message("Using jsonp=", jsonp)
   }
 
-  writable <- !inherits(trdf[[trobj$panel_col]], c("img_panel", "iframe_panel"))
-  if (writable && (!trobj$panels_written || force_write))
-    trdf <- write_panels(trdf)
+  is_server <- !is.null(trobj$server)
+  if (is_server) {
+    srvobj <- LocalWebSocketPanelSource$new(port = httpuv::randomPort())
+    trobj$set("panelsource", srvobj)
+    srv <- trobj$server
+    trobj$set("panelformat", srv$format)
+    trobj$set("panelaspect", srv$width / srv$height)
+    attr(trdf, "trelliscope") <- trobj
+  } else {
+    writable <- !inherits(trdf[[trobj$panel_col]],
+      c("img_panel", "iframe_panel"))
+    if (writable && (!trobj$panels_written || force_write))
+      trdf <- write_panels(trdf)
+  }
 
   trdf <- infer(trdf)
-  check_panels(trdf)
-  get_thumbnail_url(trdf)
+  if (!is_server) {
+    check_panels(trdf)
+    get_thumbnail_url(trdf)
+  }
 
   trobj <- attr(trdf, "trelliscope")
   write_trelliscope_info(trdf, jsonp, cfg$id)
@@ -82,7 +95,7 @@ write_meta_data <- function(df, jsonp, id) {
   df <- dplyr::select(df, !dplyr::all_of(x$df_cols_ignore))
 
   txt <- get_jsonp_text(jsonp, paste0("__loadMetaData__", id))
-  cat(paste0(txt$st, as.character(to_json(df)), txt$nd),
+  cat(paste0(txt$st, as.character(to_json(df, factor = "integer")), txt$nd),
     file = file.path(x$get_display_path(),
       paste0("metaData.", ifelse(jsonp, "jsonp", "json"))))
 }

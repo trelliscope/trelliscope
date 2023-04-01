@@ -13,19 +13,19 @@
 #'   have already been plotted and have not changed since the previous plotting?
 #' @param key_sig A string "signature" that represents the panels for this
 #'   display. This should not be specified unless you know what you are doing.
-#'   
+#'
 #' @examples
 #' # Use `as_trelliscope_df()` to convert panel metadata to a special
 #' # trelliscope data frame
 #' /dontrun{
 #' library(ggplot2)
 #' library(dplyr)
-#' 
+#'
 #' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
 #'   geom_point() +
 #'   facet_panels(~country + continent)) |>
 #'   nest_panels()
-#'   
+#'
 #' meta_dat <- gapminder |>
 #'   group_by(country, continent) |>
 #'   summarise(
@@ -35,23 +35,23 @@
 #'     mean_gdp = mean(gdpPercap),
 #'     .groups = "drop"
 #'   )
-#'   
+#'
 #' joined_dat <- left_join(panel_dat, meta_dat) |>
 #'   as_trelliscope_df(name = "life_expectancy", path = tempfile())
-#'   
+#'
 #' disp <- joined_dat |>
 #'   write_panels() |>
 #'   write_trelliscope() |>
 #'   view_trelliscope()
 #' }
-#'   
+#'
 #' # You can also use `as_trelliscope_df()` on datasets that have links to
 #' # images instead of conventional ggplot objects
 #' /dontrun{
-#' 
-#' 
 #' }
-#'  
+#' @param server An experimental feature that allows your local R session to
+#'   act as a server so that panels do not need to be pre-rendered. See
+#'   [`local_websocket_server()`].
 #' @export
 #' @importFrom utils head
 #' @importFrom dplyr group_cols
@@ -78,6 +78,15 @@ as_trelliscope_df <- function(
   }
   if (is.null(key_cols))
     key_cols <- get_keycols(df)
+
+  if (is.null(name)) {
+    name <- attr(df, "trelliscope")$name
+    if (is.null(name)) {
+      wrn("A name for the display was not specified. Provide a {.field name} \
+        when calling {.fn as_trelliscope_df}")
+      name <- "Trelliscope"
+    }
+  }
 
   obj <- Display$new(name = name, description = description,
     keycols = key_cols, path = path, force_plot = force_plot,
@@ -114,7 +123,8 @@ infer_panel_type <- function(trdf) {
   trobj <- attr(trdf, "trelliscope")$clone()
   pnls <- trdf[[trobj$panel_col]]
   if (trobj$panel_col == "__server__") {
-    trobj$set("paneltype", "server")
+    trobj$set("paneltype",
+      ifelse(tolower(trobj$server$format) == "html", "iframe", "img"))
   } else if (inherits(pnls, "nested_panels")) {
     panel1 <- pnls[[1]]
     if (inherits(panel1, "htmlwidget")) {

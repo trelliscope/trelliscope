@@ -4,12 +4,13 @@ infer <- function(trdf) {
   trdf <- infer_meta(trdf)
   trobj <- attr(trdf, "trelliscope")$clone()
   st <- trobj$get("state")
-  newst <- infer_state(st, trdf, trobj$get("keycols"))
+  newst <- infer_state(st, trdf, trobj$get("keycols"), trobj$get("metas"))
   trobj$set_state(newst)
   for (view in trobj$get("views")) {
     view2 <- view$clone()
     st <- view2$get("state")
-    newst <- infer_state(st, trdf, trobj$get("keycols"), view2$get("name"))
+    newst <- infer_state(
+      st, trdf, trobj$get("keycols"), trobj$get("metas"), view2$get("name"))
     view2$set_state(newst)
     trobj$set_view(view2, verbose = FALSE)
   }
@@ -18,7 +19,7 @@ infer <- function(trdf) {
   trdf
 }
 
-infer_state <- function(state, df, keycols, view = NULL) {
+infer_state <- function(state, df, keycols, metas, view = NULL) {
   view_str <- ""
   if (!is.null(view))
     view_str <- paste0(" for view '", view, "'")
@@ -27,9 +28,9 @@ infer_state <- function(state, df, keycols, view = NULL) {
   lyt <- state2$get("layout")
   if (is.null(lyt)) {
     msg("No default {.val layout} state supplied{view_str}. \\
-      {.emph Using nrow=2, ncol=3.}")
+      {.emph Using ncol=3.}")
     # TODO: maybe use nrow(df) and panel dimensions for a better initial state
-    state2$set(state_layout(nrow = 2, ncol = 3))
+    state2$set(state_layout(ncol = 3))
   }
 
   lbls <- state2$get("labels")
@@ -37,6 +38,28 @@ infer_state <- function(state, df, keycols, view = NULL) {
     msg("No default {.val labels} state supplied{view_str}. \\
       {.emph Using {paste0(keycols, collapse = ', ')}.}")
     state2$set(state_labels(keycols))
+  }
+
+  # need to add in metatype for sorts and filters
+  flt <- state2$get("filter")
+  for (nm in names(flt))
+    flt[[nm]]$set("metatype", metas[[nm]]$get("type"))
+  srt <- state2$get("sort")
+  for (nm in names(srt))
+    srt[[nm]]$set("metatype", metas[[nm]]$get("type"))
+
+  # if there is a default filter that is factor, need to translate
+  for (nm in names(flt)) {
+    if (
+      flt[[nm]]$get("filtertype") == "category" &&
+      metas[[nm]]$get("type") == "factor"
+    ) {
+      if (length(flt[[nm]]$get("values")) > 0)
+        flt[[nm]]$set(
+          "values",
+          I(which(metas[[nm]]$get("levels") %in% flt[[nm]]$get("values")))
+        )
+    }
   }
 
   state2

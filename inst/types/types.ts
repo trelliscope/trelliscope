@@ -112,6 +112,8 @@ export interface ITextInput extends IInput {
 }
 
 export interface INumberInput extends IInput {
+  min: number | null;
+  max: number | null;
 }
 
 /* ------------------------------------------------------ */
@@ -135,9 +137,7 @@ export interface IState {
 }
 
 export interface ILayoutState extends IState {
-  nrow: number;
   ncol: number;
-  arrange: LayoutArrangeType;
   page: number;
 }
 
@@ -148,11 +148,13 @@ export interface ILabelState extends IState {
 export interface ISortState extends IState {
   varname: string;
   dir: SortDirType;
+  metatype: MetaType;
 }
 
 export interface IFilterState extends IState {
   varname: string;
   filtertype: FilterType;
+  metatype: MetaType;
 }
 
 export interface ICategoryFilterState extends IFilterState {

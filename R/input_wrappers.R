@@ -7,35 +7,42 @@ add_input_class <- function(x) {
 #' @param name Name of the input.
 #' @param label Description of the input.
 #' @param active Should the input be active by default?
-#' 
+#' @param min Optional minimum value to allow in the input.
+#' @param max Optional maximum value to allow in the input.
 #' @examples
 #' \dontrun{
 #' library(ggplot2)
 #' library(dplyr)
-#' 
-#' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
-#'   geom_point() +
-#'   facet_panels()) |>
+#'
+#' panel_dat <- (
+#'   ggplot(gapminder, aes(year, lifeExp)) +
+#'     geom_point() +
+#'     facet_panels()
+#'   ) |>
 #'   nest_panels()
-#'   
+#'
 #' trell <- panel_dat |>
 #' as_trelliscope_df() |>
 #' write_panels() |>
 #' add_inputs(
-#'   input_number(name = "Numeric Input", 
-#'                label = "A space to add custom ranking for sorting",
-#'                min = 0, max = 10)) |>
-#' add_input_email("johndoe@email.com") |>
+#'   input_number(
+#'     name = "Numeric Input",
+#'     label = "A space to add custom ranking for sorting",
+#'     min = 0, max = 10
+#'   ),
+#'   email = "johndoe@email.com"
+#' ) |>
 #' write_trelliscope() |>
 #' view_trelliscope()
 #' }
-#'  
 #' @family {input types}
 #' @export
 input_number <- function(
-  name, label = name, active = TRUE
+  name, label = name, active = TRUE, min = NULL, max = NULL
 ) {
-  NumberInput$new(name = name, label = label, active = active) |>
+  NumberInput$new(
+    name = name, label = label, active = active, min = min, max = max
+  ) |>
     add_input_class()
 }
 
@@ -46,20 +53,25 @@ input_number <- function(
 #' \dontrun{
 #' library(ggplot2)
 #' library(dplyr)
-#' 
-#' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
-#'   geom_point() +
-#'   facet_panels()) |>
+#'
+#' panel_dat <- (
+#'   ggplot(gapminder, aes(year, lifeExp)) +
+#'     geom_point() +
+#'     facet_panels()
+#'   ) |>
 #'   nest_panels()
-#'   
+#'
 #' trell <- panel_dat |>
 #' as_trelliscope_df() |>
 #' write_panels() |>
 #' add_inputs(
-#'   input_radio(name = "Radio Input", 
-#'                label = "A space to add custom ranking for sorting",
-#'                options = c("yes", "no"))) |>
-#' add_input_email("johndoe@email.com") |>
+#'   input_radio(
+#'     name = "Radio Input",
+#'     label = "A space to add custom ranking for sorting",
+#'     options = c("yes", "no")
+#'   ),
+#'   email = "johndoe@email.com"
+#' ) |>
 #' write_trelliscope() |>
 #' view_trelliscope()
 #' }
@@ -81,24 +93,28 @@ input_radio <- function(
 #' \dontrun{
 #' library(ggplot2)
 #' library(dplyr)
-#' 
-#' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
-#'   geom_point() +
-#'   facet_panels()) |>
+#'
+#' panel_dat <- (
+#'   ggplot(gapminder, aes(year, lifeExp)) +
+#'     geom_point() +
+#'     facet_panels()
+#'   ) |>
 #'   nest_panels()
-#'   
+#'
 #' trell <- panel_dat |>
 #' as_trelliscope_df() |>
 #' write_panels() |>
 #' add_inputs(
-#'   input_checkbox(name = "Checkbox Input", 
-#'                label = "A space to add custom button inputs",
-#'                options =c("yes", "no"))) |>
+#'   input_checkbox(
+#'     name = "Checkbox Input",
+#'     label = "A space to add custom button inputs",
+#'     options = c("yes", "no")
+#'   )
+#' ) |>
 #' add_input_email("johndoe@email.com") |>
 #' write_trelliscope() |>
 #' view_trelliscope()
 #' }
-#' 
 #' @family {input types}
 #' @export
 input_checkbox <- function(
@@ -117,24 +133,28 @@ input_checkbox <- function(
 #' \dontrun{
 #' library(ggplot2)
 #' library(dplyr)
-#' 
-#' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
-#'   geom_point() +
-#'   facet_panels()) |>
+#'
+#' panel_dat <- (
+#'   ggplot(gapminder, aes(year, lifeExp)) +
+#'     geom_point() +
+#'     facet_panels()
+#'   ) |>
 #'   nest_panels()
-#'   
+#'
 #' trell <- panel_dat |>
 #' as_trelliscope_df() |>
 #' write_panels() |>
 #' add_inputs(
-#'   input_select(name = "Select Input", 
-#'                label = "A space to add custom dropdown inputs",
-#'                options =c("yes", "no"))) |>
-#' add_input_email("johndoe@email.com") |>
+#'   input_select(
+#'     name = "Select Input",
+#'     label = "A space to add custom dropdown inputs",
+#'     options =c("yes", "no")
+#'   ),
+#'   email = "johndoe@email.com"
+#' ) |>
 #' write_trelliscope() |>
 #' view_trelliscope()
 #' }
-#' 
 #' @family {input types}
 #' @export
 input_select <- function(
@@ -149,25 +169,30 @@ input_select <- function(
 #' Specify a "multiselect" input
 #' @inheritParams input_number
 #' @param options A vector of options for the multiselect dropdown.
-#' 
+#'
 #' @examples
 #' \dontrun{
 #' library(ggplot2)
 #' library(dplyr)
-#' 
-#' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
-#'   geom_point() +
-#'   facet_panels()) |>
+#'
+#' panel_dat <- (
+#'   ggplot(gapminder, aes(year, lifeExp)) +
+#'     geom_point() +
+#'     facet_panels()
+#'   ) |>
 #'   nest_panels()
-#'   
+#'
 #' trell <- panel_dat |>
 #' as_trelliscope_df() |>
 #' write_panels() |>
 #' add_inputs(
-#'   input_multiselect(name = "Multiselect Input", 
-#'                label = "A space to add custom dropdown inputs",
-#'                options =c("yes", "no"))) |>
-#' add_input_email("johndoe@email.com") |>
+#'   input_multiselect(
+#'     name = "Multiselect Input",
+#'     label = "A space to add custom dropdown inputs",
+#'     options =c("yes", "no")
+#'   ),
+#'   email = "johndoe@email.com"
+#' ) |>
 #' write_trelliscope() |>
 #' view_trelliscope()
 #' }
@@ -190,23 +215,27 @@ input_multiselect <- function(
 #' \dontrun{
 #' library(ggplot2)
 #' library(dplyr)
-#' 
-#' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
-#'   geom_point() +
-#'   facet_panels()) |>
+#'
+#' panel_dat <- (
+#'   ggplot(gapminder, aes(year, lifeExp)) +
+#'     geom_point() +
+#'     facet_panels()
+#'   ) |>
 #'   nest_panels()
-#'   
+#'
 #' trell <- panel_dat |>
 #' as_trelliscope_df() |>
 #' write_panels() |>
 #' add_inputs(
-#'   input_text(name = "Text Input", 
-#'                label = "A space to add custom text input")) |>
-#' add_input_email("johndoe@email.com") |>
+#'   input_text(
+#'     name = "Text Input",
+#'     label = "A space to add custom text input")
+#'   ),
+#'   email = "johndoe@email.com"
+#' ) |>
 #' write_trelliscope() |>
 #' view_trelliscope()
 #' }
-#' 
 #' @family {input types}
 #' @export
 input_text <- function(
