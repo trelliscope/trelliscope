@@ -7,3 +7,6 @@
 ^data-raw$
 ^inst/htmlwidgets/lib/trelliscope_widget/css/.*\.map$
 ^inst/htmlwidgets/lib/trelliscope_widget/js/.*\.map$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

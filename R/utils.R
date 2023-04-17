@@ -175,6 +175,30 @@ compute_digits <- function(x) {
   }
   digits
 }
+
+valid_img_exts <- c("apng", "avif", "gif", "jpg", "jpeg", "jfif", "pjpeg",
+  "pjp", "png", "svg", "webp")
+
+find_img_col <- function(df) {
+  res <- character(0)
+  chr_cols <- lapply(df, is.character) |>
+    unlist() |>
+    which() |>
+    names()
+  for (nm in chr_cols) {
+    cur_ext <- tolower(tools::file_ext(df[[nm]][1]))
+    if (cur_ext %in% valid_img_exts) {
+      all_exts <- tools::file_ext(df[[nm]])
+      if (length(unique(all_exts)) == 1) {
+        res <- nm
+        msg("Using {.field {nm}} as image column")
+        break
+      }
+    }
+  }
+  res
+}
+
 # set.seed(1234)
 # aa <- rnorm(100)
 # compute_digits(aa)
@@ -210,6 +234,11 @@ needs_log <- function(x) {
 
   p22 > (p11 + 0.2)
 }
+
+# could use rlang::hash but it is more persnickety
+#' @importFrom digest digest
+hash <- function(x)
+  digest::digest(x)
 
 # sapply(1:100, function(a) {
 #   x <- abs(rcauchy(1000))

@@ -4,35 +4,35 @@
 #' @examples
 #' \dontrun{
 #' library(ggplot2)
-#' 
-#' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
-#'   geom_point() +
-#'   facet_panels(~country + continent)) |>
+#'
+#' panel_dat <- (
+#'   ggplot(gapminder, aes(year, lifeExp)) +
+#'     geom_point() +
+#'     facet_panels(~country + continent)
+#' ) |>
 #'   nest_panels()
-#'   
+#'
 #' disp <- panel_dat |>
-#'   as_trelliscope_df(name = "life_expectancy", path = tempfile()) |>
+#'   as_trelliscope_df(name = "life_expectancy") |>
 #'   write_panels() |>
 #'   write_trelliscope() |>
 #'   view_trelliscope()
-#'   
+#'
 #' # Alternatively you can build your trelliscope and call `view_trelliscope()`
 #' # separately. This allows for fine tuning of the trelliscope without having
 #' # to reopen it every time you make an edit.
-#' trell <- (ggplot(gapminder, aes(year, lifeExp)) +
-#'   geom_point() +
-#'   facet_panels(~country + continent)) |>
+#' trell <- (
+#'   ggplot(gapminder, aes(year, lifeExp)) +
+#'     geom_point() +
+#'     facet_panels(~country + continent)
+#' ) |>
 #'   nest_panels() |>
-#'   as_trelliscope_df(name = "life_expectancy", path = tempfile()) |>
+#'   as_trelliscope_df(name = "life_expectancy") |>
 #'   write_panels() |>
 #'   write_trelliscope()
-#'   
+#'
 #' view_trelliscope(trell)
-#'   
-#' 
-#'   }
-#' 
-#' 
+#' }
 #' @export
 view_trelliscope <- function(trdf = NULL) {
   if (is.null(trdf)) {
@@ -44,6 +44,12 @@ view_trelliscope <- function(trdf = NULL) {
   } else {
     trdf <- check_trelliscope_df(trdf)
     trobj <- attr(trdf, "trelliscope")
+    pth <- file.path(trobj$get_display_path(),
+      paste0("displayInfo.", c("json", "jsonp")))
+    if (!any(file.exists(pth))) {
+      msg("Display has not been written... writing...")
+      write_trelliscope(trdf)
+    }
     url <- file.path(trobj$path, "index.html")
   }
 

@@ -1,0 +1,440 @@
+---
+title: "Introduction to Trelliscope"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to Trelliscope}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Trelliscope provides a simple mechanism to make a collection of visualizations and display them as interactive [small multiples](https://en.wikipedia.org/wiki/Small_multiple). This is a useful general visualization technique for many scenarios, particularly when looking at a somewhat large dataset comprised of many natural subsets. However, where Trelliscope differentiates itself from traditional faceting is in layout and interactivity. Traditionally, facets appear in one large plot that becomes overwhelming with too many groups. Trelliscope on the other hand allows you to generate a large number of plots in an interactive window where the plots can be filtered and sorted based on metadata and paged through with a limited number of plots at a time.
+
+The Trelliscope R package provides utilities to create the visualizations, specify metadata about the visualizations that can be used to interactively navigate them, and specify other aspects of how the visualization viewer should behave. These specifications are given to a Trelliscope viewer written in JavaScript.
+
+## Data frames of visualizations
+
+The basic principle behind the design of the R package is that you specify a collection of visualizations as a data frame, with one column representing the plot (either as a plot object such as ggplot or as a reference to an image such as a png, svg, or even html file), and the other columns representing metadata about each visualization.
+
+This package provides utilities to help build these data frames and then explore them in an interactive viewer.
+
+### Pre-generated images
+
+The simplest way to illustrate what we mean by a data frame of visualizations is to start with an example where the images have already been generated.
+
+An example dataset that comes with the package contains images captured by the Mars rover Curiosity.
+
+```{r}
+library(trelliscope)
+
+mars_rover
+```
+
+This data frame has a column that references images on the web. The other columns contain metadata about these images. We can create a Trelliscope data frame with this data frame with the following:
+
+```{r}
+d <- as_trelliscope_df(mars_rover, name = "mars rover", path = "mars")
+
+d
+```
+
+This is simply the same data frame but with additional information for how to render the Trelliscope viewer app. At a minimum we provide a name for the resulting display and a path to where we want the output to be written, but we can also specify additional information such as a descriptions and tags. You can also specify the `key_cols` which are the columns that combined, uniquely identify each row of the data. This is inferred if not provided but sometimes might not be what you would like it to be, as there often are many possibilities.
+
+To see more information about trelliscope-specific settings, you can use `show_info()`:
+
+```{r}
+show_info(d)
+```
+
+Now to view this in the Trelliscope viewer app:
+
+```{r}
+view_trelliscope(d)
+```
+
+You can use this viewer to interactively explore the images.
+
+There are many customization options that will be covered throughout this document.
+
+### R-generated visualizations
+
+A likely more common use case when visualizing data during an analysis will be that the images do not yet exist and we will be creating them from subsets of the data we are analyzing. Trelliscope has utilities to make this convenient for packages like ggplot2.
+
+As a simple example, let's consider the `gapminder` dataset that originally comes with the [`gapminder`](https://cran.r-project.org/web/packages/gapminder/index.html) package. For convenience, we have included a modified version of the dataset with the Trelliscope package.
+
+```{r}
+gapminder
+```
+
+This data provides statistics such as life expectancy annually for 123 countries.
+
+Suppose we want to visualize life expectancy vs. year for each country. With ggplot2, you would do something like this:
+
+```{r echo=FALSE}
+library(trelliscope)
+suppressPackageStartupMessages(
+  library(tidyverse, warn.conflicts = FALSE)
+)
+```
+
+```r
+library(trelliscope)
+library(tidyverse)
+
+ggplot(gapminder, aes(year, lifeExp)) +
+  geom_point() +
+  facet_wrap(vars(country, continent))
+```
+
+There are too many panels to view on one page, making this a good candidate for Trelliscope.
+
+Trelliscope provides a function `facet_panels()` that is the first step in turning a ggplot object into a Trelliscope data frame. You can swap out `facet_wrap()` for this function.
+
+```{r}
+p <- ggplot(gapminder, aes(year, lifeExp)) +
+  geom_point() +
+  facet_panels(vars(country, continent))
+
+class(p)
+```
+
+As you can see, `facet_panels()` simply modifies your ggplot object. If you print the resulting object `p`, a Trelliscope display will be written and displayed. To take this and turn it into a data frame of visualizations with one row for each country/continent, we can apply the function `nest_panels()`. 
+
+```{r}
+p_nested <- nest_panels(p)
+
+p_nested
+```
+
+Here, just as in the Mars rover example, we have a data frame of visualizations. However, in this case, the visualizations are ggplot objects instead of image references.
+
+Note that `nest_panels()` has options such as `as_plotly = TRUE` that will convert the ggplot objects to plotly objects.
+
+You can view the plot for any one row by calling the panel column and the index number of the row you want to look at. For example, if you wanted to see the generated plot for the second row, Albania, you would run the following code.
+
+```{r}
+p_nested$panel[[2]]
+```
+
+Note that this nested data frame of visualizations can be a useful object to work with outside of using it with Trelliscope.
+
+Just as in the Mars rover example, we can view this data frame of visualizations and cast it as a Trelliscope data frame with `as_trelliscoe_df()` and view it with `view_trelliscope()`.
+
+```{r}
+trell_df <- as_trelliscope_df(p_nested,
+  name = "gapminder life expectancy", path = "lifeexp")
+
+view_trelliscope(trell_df)
+```
+
+The remainder of this tutorial will cover customizations that you can apply to Trelliscope data frames to provide more powerful interactions when viewing them in the app.
+
+Note that there are several benefits to using `facet_panels()` and `nest_panels()`. First, it fits more naturally into the ggplot2 paradigm, where you can build a Trelliscope visualization exactly as you would with building a ggplot2 visualization. Second, you can make use of the `scales` argument in `facet_panels()` (which behaves similarly to the same argument in `facet_wrap()`) to ensure that the x and y axis ranges of your plots behave the way you want. The default is for all plots to have the same `"fixed"` axis ranges. This is an important consideration in visualizing small multiples because if you are making visual comparisons you often want to be comparing things on the same scale.
+
+## Customizing your Trelliscope app
+
+So far we have seen a few ways to get to a Trelliscope data frame that we can use to create a Trelliscope interactive visualization app. As we've seen, you can simply pass a Trelliscope data frame to `view_trelliscope()` to get to an immediate output. However, there are many other operations you can perform on a Trelliscope data frame that customize how the app behaves.
+
+### Pipe functions
+
+A Trelliscope data frame is simply a data frame with attributes about the Trelliscope display that we can modify with [pipe functions](https://r4ds.had.co.nz/pipes.html) (functions that take a Trelliscope data frame as its primary argument and return a modified Trelliscope data frame).
+
+The following pipe functions are available for modifying a Trelliscope data frame.
+
+- Setting the default viewing state of the app
+  - `set_default_filters()`
+  - `set_default_labels()`
+  - `set_default_layout()`
+  - `set_default_sort()`
+- Fine-tune how metadata is handled in the app
+  - `add_meta_defs()`
+  <!-- : specify metadata variable definitions (e.g. plain text variable descriptions, types, tags) -->
+  <!-- - `add_meta_def()` -->
+  - `add_meta_labels()`
+  <!-- : an alternative to fully specifying metadata variable definitions, this is a convenience function to only supply labels for all of the variables -->
+  - `add_meta_tags()`
+- Miscellaneous
+  - `add_inputs()`
+  - `add_view()`
+  <!-- : add a pre-defined "view" that navigates the user to specified states of the display -->
+  - `add_charm()`
+  <!-- : simple password protection for the generated app -->
+- Writing and viewing
+  - `write_panels()`
+  <!-- : finer control over how panels are written (e.g. plot dimensions, file format, etc.) -->
+  - `write_trelliscope()`
+  - `view_trelliscope()`
+
+A Trelliscope data frame can be refined by piping it through any of these functions. First we will focus on the "writing and viewing" functions.
+
+### Writing panels and viewing the display
+
+Let's revisit the gapminder example. Here we put together all the individual pieces we described earlier to get from the raw gapminder data to a Trelliscope data frame in one code block.
+
+```r
+trell_df <- (
+  ggplot(gapminder, aes(year, lifeExp)) +
+    geom_point() +
+    facet_panels(vars(country, continent))
+  ) |>
+  nest_panels() |>
+  as_trelliscope_df(name = "gapminder life expectancy", path = "lifeexp")
+```
+
+The Trelliscope viewer app displays pre-rendered panels, so they must be written before you can view a display. This can be done with the `write_panels()` function. This function provides arguments that allow you to specify how you want the panels to be written (e.g. image format, aspect ratio, etc.).
+
+We can specify that we want our gapminder panels to render as svg files with a 2:1 aspect ratio (specifed with e.g. `width = 600` and `height = 300`).
+
+```{r}
+trell_df <- write_panels(trell_df, format = "svg", width = 600, height = 300)
+```
+
+Note that we do not need to explicity call `write_panels()` if we are happy with the defaults (500x500px png). If Trelliscope notices that panels have not been written or that panel contents have updated since the last time they were written, it will write the panels automatically with the defaults. To force writing panels you can add `force = TRUE` to `write_panels()`.
+
+<!-- #### `write_panels()`
+
+The optional chain function `write_panels()` can be used to have finer control over how panels get written to disk. It also can give the advantage of making panel writing a separate step so that it does not need to be repeated every time a display might be modified.
+
+The main arguments are `width`, `height`, and `format`. The `width` and `height` are specified in pixels, and are mainly to provide information about the plot's aspect ratio and size of text and glyphs. The actual dimensions of the plot as shown in the viewer will vary (the aspect ratio remains fixed) depending on how many plots are shown at once.
+
+The file format can be either `png` or `svg`. This is ignored if the plot column of the data frame is an htmlwidget such as a ggplotly plot.
+
+disp <- disp |>
+  write_panels(width = 800, height = 500, format = "svg")
+
+Once the panels are written, a note is made in the `disp` object so that it knows it doesn't have to be done with writing out the display. -->
+
+### Adding metadata to a Trelliscope data frame
+
+Before getting into the other pipe functions, we will address one of Trelliscope's most useful features; the ability to sort and filter your visualizations on associated metadata. Most of the other pipe functions help specify how this metadata is presented in the app.
+
+Metadata can be any value related to a panel in the display. In the case of our gapminder example, it could be computed metrics such as the mean life expectancy, or it could be any other attribute about a country such as the country's capital city or even a link to its government webpage.
+
+Any column of atomic values in a Trelliscope data frame is automatically considered as metadata. Therefore, to add new metadata variables to the data, we can simply join or create any additional columns to our data frame.
+
+We will add on to our example from earlier by joining metadata to our nested data frame from earlier that we can then use for sorting and filtering in the Trelliscope viewing app.
+
+Let's remind ourselves of what is already in this data frame.
+
+```{r}
+trell_df
+```
+
+Here, the only metadata variables are `country` and `continent` (`data` is not because it is not scalar). Suppose we want to add more variables such as some summary statistics about life expectancy and GDP. One way to do this would be to operate on the `data` column of `trell_df`, computing the summaries from each nested data frame. A more natural way to do this is to create a separate data frame of summaries computed directly on the `gapminder` dataset and join them with our Trelliscope data frame.
+
+Here, we use `dplyr` to compute the summaries. If you have experience with Tidyverse packages such as dplyr and tidyr, the examples below will be straightforward. If not, a great resource for this can be found in ["R for Data Science"](https://r4ds.had.co.nz/index.html), particularly [this chapter](https://r4ds.had.co.nz/many-models.html) which mimics many of the ideas here of nesting and list columns with the same data set. Of course, you can use any other approach to computing the summaries as well.
+
+<!-- Note that although the tidyverse provides many helpful functions, it does not matter what package or approach you use as long as you can get your data into the form of a data frame with one row per visualization and a visualization column. It's worth noting that the visualization column does not have to be a ggplot. It can be static images, plotly visualizations, or any other html based visualization. -->
+
+Since each row of `trell_df` corresponds to a single country/continent, we need our summaries to be computed for each country/continent. Here we create a data frame of metadata with some summary statistics and construct a Wikipedia link for each country.
+
+```{r}
+meta_df <- gapminder |>
+  group_by(country, continent) |>
+  summarise(
+    mean_lifeExp = mean(lifeExp),
+    min_lifeExp = min(lifeExp),
+    mean_gdp = mean(gdpPercap),
+    .groups = "drop"
+  ) |>
+  mutate(
+    wiki_link = paste0("https://en.wikipedia.org/wiki/", country)
+  )
+
+meta_df
+```
+
+With our metadata frame created we can now join it to the original nested data frame with our panels stored in it to create a complete data frame.
+
+```{r}
+trell_df <- left_join(trell_df, meta_df, by = c("country", "continent"))
+
+trell_df
+```
+
+If you view this display with `view_trelliscope()`, you will see that these new variables are available for sorting and filtering. There are different metadata variable types that we will discuss below. If not explicitly specified, Trelliscope will try to infer these. For example, you may notice in the Trelliscope app that the `wiki_link` metadata variable is auto-detected to be a URL and is available as such when shown as a panel label.
+
+### Defining metadata variables
+
+Each metadata variable can have additional attributes specified about it that enhance the user's experience when viewing the display. The main attribute is the metadata variable label. Without supplying a label, variables will appear in the viewer by their variable names (e.g. "mean_gdp" vs. a label you might prefer to provide for more clarity to the user, such as "Mean of yearly GDP per capita (US$, inflation-adjusted)").
+
+Additionally, we can specify the variable type, specify tags (e.g. "demographics", "geography", etc.) that can make variables easier to navigate in the viewer when there are many of them, and other type-specific parameters.
+
+Each metadata variable can be specified by using a helper function that specifies its type. Each of these has the arguments `varname`, `label`, and `tags` (denoted below with `...`) and any additional arguments which are either self-explanatory or can be further studied by looking at the function help files.
+
+-   `meta_string(...)`: indicates the variable is a string
+-   `meta_factor(..., levels)`: indicates the variable is a factor - the difference between this and a string is that the provided `levels` are used to determine the sorting order, etc. as opposed to alphabetically with strings
+-   `meta_number(..., digits, locale)`: indicates a numeric variable
+-   `meta_currency(..., code)`: indicates a currency variable - essentially the same as a number but will be displayed differently in the app
+-   `meta_date(...)`: indicates a date variable
+-   `meta_datetime(...)`: indicates a datetime variable
+-   `meta_href(...)`: indicates a variable that contains a hyperlink to another web source - it will be rendered as a hyperlink
+-   `meta_geo(..., latvar, longvar)`: indicates geographic coordinates (currently not supported)
+-   `meta_graph(..., idvarname, direction)`: indicates network graph relationships between variables (currently not supported)
+
+We can provide metadata variable specifications by calling `add_meta_defs()` on our trelliscope data frame. This function takes as arguments any number of `meta_*()` function calls. For example, let's build up our object to include some of these metadata variable specifications:
+
+```{r}
+trell_df <- trell_df |>
+  add_meta_defs(
+    meta_number("mean_gdp",
+      label = "Mean of annual GDP per capita (US$, inflation-adjusted)",
+      digits = 2),
+    meta_href("wiki_link", label = "Wikipedia country page")
+  )
+
+show_info(trell_df)
+```
+
+If metadata variable definitions are not provided (such as here where we don't provide explicit definitions for `country`, `continent`, `min_lifeExp`, and `mean_lifeExp`), they are inferred at the time the display is written. The inference usually works pretty well but it cannot infer labels and is not able to detect things like currencies.
+
+#### `add_meta_labels()`
+
+Often the metadata inference works well enough that we might just want to provide labels for our metadata variables and skip the more formal metadata variable definition. We can do this with `add_meta_labels()`. This function simply takes a named set of parameters as input, with the names indicating the variable name and the values indicating the labels. For example:
+
+```{r}
+trell_df <- trell_df |>
+  add_meta_labels(
+    mean_lifeExp = "Mean of annual life expectancies",
+    min_lifeExp = "Lowest observed annual life expectancy"
+  )
+
+show_info(trell_df)
+```
+
+We still haven't specified labels for `country` and `continent`. If labels are not provided, they will be set to the variable name. In the case of these two variables, the variable name is clear enough to not need to specify the labels.
+
+### Setting the default state of the app
+
+Trelliscope apps by default display all panels in the order as they appear in the data frame. Often it makes sense to start the user off at a specific point in the app, such as pre-defining a sorting or filtering state, or defining which panel labels you want the user to see initially.
+
+#### `set_default_labels()`
+
+By default, the "key columns" will be shown as labels. If we'd like to change what labels are shown when the display is opened, we can use `set_default_labels()`, e.g.:
+
+```{r}
+trell_df <- trell_df |>
+  set_default_labels(c("country", "continent", "wiki_link"))
+```
+
+#### `set_default_layout()`
+
+We can also set the default panel layout, for example that we wish to see 5 columns of panels on the initial view of the app (number of rows is computed based on the size of the user's browser window and the aspect ratio of the panels).
+
+```{r}
+trell_df <- trell_df |>
+  set_default_layout(ncol = 5)
+```
+
+#### `set_default_sort()`
+
+We can set the default sort order with `set_default_sort()`. For this, we provide a vector of variable names and a vector of "asc" or "desc" values inidicatingm an ascending or descending sort order.
+
+```{r}
+trell_df <- trell_df |>
+  set_default_sort(c("continent", "mean_lifeExp"), dir = c("asc", "desc"))
+```
+
+#### `set_default_filters()`
+
+We can set the default filter state with `set_default_filters()`. Currently there are two different kinds of filters:
+
+-   `filter_range(varname, min = ..., max = ...)`: works with numeric, date, or datetime variables
+-   `filter_string(varname, values = ...)`: works with factor or string variables
+
+```{r}
+trell_df <- trell_df |>
+  set_default_filters(
+    filter_string("continent", values = "Africa"),
+    filter_range("mean_lifeExp", max = 50)
+  )
+```
+
+More types of filters are planned.
+
+### Defining "views"
+
+Views are predefined sets of state that are made available in the viewer to help the user conveniently get to regions of the display that are interesting in different ways. You can add a view chaining the display through the `add_view()` function.
+
+`add_view()` takes a `name` as its first argument, and then any number of state specifications. The functions available to set the state are the following:
+
+-   `state_layout()`
+-   `state_labels()`
+-   `state_sort()`
+-   `filter_string()`
+-   `filter_range()`
+
+The `state_*()` functions have the same parameters as and behave similarly to their `set_*()` counterparts except that unlike those, these do not receive a Trelliscope data frame and return a Trelliscope data frame, but instead just specify a state. The `filter_*()` functions we have seen already.
+
+For example, suppose we wish to add a view that only shows countries with minimum life expectancy greater than or equal to 60, sorted from highest to lowest minimum life expectancy:
+
+```{r}
+trell_df <- trell_df |>
+  add_view(
+    name = "Countries with high life expectancy (min >= 60)",
+    filter_range("min_lifeExp", min = 60),
+    state_sort("min_lifeExp", dir = "desc")
+  )
+```
+
+You can add as many views as you would like by chaining more calls to `add_view()`.
+
+### Specifying user inputs
+
+You can add user inputs that are attached to each panel of the display using the `add_inputs()` function. This function takes any number of arguments created by any of the following functions:
+
+-   `input_radio(name, label, options)`
+-   `input_text(name, label, width, height)`
+
+The following additional input types exist but are not yet supported in the app.
+
+-   `input_checkbox(name, label, options)`
+-   `input_select(name, label, options)`
+-   `input_multiselect(name, label, options)`
+-   `input_number(name, label)`
+
+These specify different input types.
+
+For example, if we want a free text input for comments as well as yes/no question asking if the data looks correct for the panel, we can do the following.
+
+```{r}
+trell_df <- trell_df |>
+  add_inputs(
+    input_text(name = "comments", label = "Comments about this panel",
+      width = 100, height = 6),
+    input_radio(name = "looks_correct",
+      label = "Does the data look correct?", options = c("no", "yes")),
+    email = "johndoe123@fakemail.net"
+  )
+```
+
+The final argument, `email`, is currently required and will provide the user with a way to send their inputs back to you. Since the Trelliscope app is not backed by a server, persistent storage of user inputs is currently not supported, and you will need to capture these inputs from the user directly.
+
+Let's see how all of these operations are reflected in our Trelliscope data frame:
+
+```{r}
+show_info(trell_df)
+```
+
+#### Output
+
+Now that we have built up our Trelliscope data frame, we can write it out as specified before with `write_trelliscope()`.
+
+```{r}
+trell_df <- write_trelliscope(trell_df)
+```
+
+This writes the panels if they haven't been written yet and then writes out a JSON representation of all of the other specifications we have made for the app to consume.
+
+
+Here is the final output.
+
+```{r}
+view_trelliscope(trell_df)
+```

@@ -10,7 +10,7 @@ as_trelliscope_df(
   description = name,
   key_cols = NULL,
   tags = NULL,
-  path = tempfile(),
+  path = NULL,
   force_plot = FALSE,
   key_sig = NULL,
   server = NULL
@@ -49,15 +49,17 @@ Instantiate a trelliscope data frame
 \examples{
 # Use `as_trelliscope_df()` to convert panel metadata to a special
 # trelliscope data frame
-/dontrun{
+\dontrun{
 library(ggplot2)
 library(dplyr)
 
-panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
-  geom_point() +
-  facet_panels(~country + continent)) |>
-  nest_panels()
-  
+panel_dat <- (
+  ggplot(gapminder, aes(year, lifeExp)) +
+    geom_point() +
+    facet_panels(~country + continent)
+  ) |>
+    nest_panels()
+
 meta_dat <- gapminder |>
   group_by(country, continent) |>
   summarise(
@@ -67,21 +69,18 @@ meta_dat <- gapminder |>
     mean_gdp = mean(gdpPercap),
     .groups = "drop"
   )
-  
+
 joined_dat <- left_join(panel_dat, meta_dat) |>
   as_trelliscope_df(name = "life_expectancy", path = tempfile())
-  
+
 disp <- joined_dat |>
   write_panels() |>
   write_trelliscope() |>
   view_trelliscope()
 }
-  
+
 # You can also use `as_trelliscope_df()` on datasets that have links to
 # images instead of conventional ggplot objects
-/dontrun{
-
-
+\dontrun{
 }
- 
 }

@@ -9,20 +9,20 @@
 #' @examples
 #' \dontrun{
 #' library(ggplot2)
-#' 
-#' panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
-#'   geom_point() +
-#'   facet_panels(~country + continent)) |>
+#'
+#' panel_dat <- (
+#'   ggplot(gapminder, aes(year, lifeExp)) +
+#'     geom_point() +
+#'     facet_panels(~country + continent)
+#'   ) |>
 #'   nest_panels()
-#'   
+#'
 #' disp <- panel_dat |>
 #'   as_trelliscope_df(name = "life_expectancy", path = tempfile()) |>
 #'   write_panels() |>
 #'   write_trelliscope() |>
 #'   view_trelliscope()
 #' }
-#' 
-#'   
 #' @export
 write_trelliscope <- function(trdf, force_write = FALSE, jsonp = TRUE) {
   trdf <- check_trelliscope_df(trdf)
@@ -152,7 +152,6 @@ read_json_p <- function(f) {
   res
 }
 
-#' @importFrom rlang hash
 check_app_config <- function(app_path, jsonp) {
   f <- list.files(app_path, pattern = "^config\\.json", full.names = TRUE)
 
@@ -162,7 +161,7 @@ check_app_config <- function(app_path, jsonp) {
     cfg <- list(
       name = "Trelliscope App",
       datatype = ifelse(jsonp, "jsonp", "json"),
-      id = substr(rlang::hash(Sys.time()), 1, 8)
+      id = substr(hash(Sys.time()), 1, 8)
     )
     txt <- get_jsonp_text(jsonp, paste0("__loadAppConfig__", cfg$id))
     cat(paste0(txt$st, as.character(to_json(cfg, pretty = TRUE)), txt$nd),

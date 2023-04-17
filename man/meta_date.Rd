@@ -21,11 +21,12 @@ Specify a "date" metadata variable
 library(ggplot2)
 library(dplyr)
 
-panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
-                geom_point() +
-                facet_panels(~country + continent)) |>
-  nest_panels() 
-
+panel_dat <- (
+  ggplot(gapminder, aes(year, lifeExp)) +
+    geom_point() +
+    facet_panels(~country + continent)
+  ) |>
+  nest_panels()
 
 meta_dat <- gapminder|>
   group_by(country, continent) |>
@@ -47,20 +48,20 @@ meta_dat <- gapminder|>
     wiki_link = paste0("https://en.wikipedia.org/wiki/", country)
   )
 
-joined_dat <- left_join(panel_dat, meta_dat, 
-                        by = join_by(country, continent))
+joined_dat <- left_join(panel_dat, meta_dat,
+  by = join_by(country, continent))
 
 trell <- joined_dat |>
   as_trelliscope_df() |>
   write_panels() |>
-  meta_date("first_date", 
-            label = "January 1st of the first year data was recorded",
-            tags = "Time")) |>
-write_trelliscope() |>
-view_trelliscope()
+  add_meta_defs(
+    meta_date(
+      "first_date",
+      label = "January 1st of the first year data was recorded",
+      tags = "Time"
+    )
+  )
 }
-
-
 }
 \seealso{
 Other {metadata types}: 

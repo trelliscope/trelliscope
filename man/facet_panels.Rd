@@ -50,8 +50,8 @@ library(ggplot2)
 ggplot(gapminder, aes(year, lifeExp)) +
   geom_point() +
   facet_panels(~country + continent)
-  }
-  
+}
+
 # facet_panels can also be a jumping off point into setting up a more 
 # developed trelliscope by passing into `nest_panels()` to create a nested
 # trelliscope data frame for additional editing.
@@ -59,9 +59,11 @@ ggplot(gapminder, aes(year, lifeExp)) +
 library(ggplot2)
 library(dplyr)
 
-panel_dat <- (ggplot(gapminder, aes(year, lifeExp)) +
-                geom_point() +
-                facet_panels(~country + continent)) |>
+panel_dat <- (
+  ggplot(gapminder, aes(year, lifeExp)) +
+  geom_point() +
+  facet_panels(~country + continent)
+) |>
   nest_panels()
 
 trell_df <- panel_dat |>
@@ -69,10 +71,7 @@ trell_df <- panel_dat |>
   set_default_layout(nrow = 2, ncol = 4) |>
   write_panels() |>
   write_trelliscope()
-  
+
 view_trelliscope(trell_df)
-  
 }
-
-
 }
