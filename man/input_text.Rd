@@ -33,17 +33,15 @@ panel_dat <- (
   nest_panels()
 
 trell <- panel_dat |>
-as_trelliscope_df() |>
-write_panels() |>
-add_inputs(
-  input_text(
-    name = "Text Input",
-    label = "A space to add custom text input")
-  ),
-  email = "johndoe@email.com"
-) |>
-write_trelliscope() |>
-view_trelliscope()
+  as_trelliscope_df() |>
+  write_panels() |>
+  add_inputs(
+    input_text(
+      name = "Text Input",
+      label = "A space to add custom text input")
+    ),
+    email = "johndoe@email.com"
+)
 }
 }
 \seealso{

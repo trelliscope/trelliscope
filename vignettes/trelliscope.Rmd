@@ -79,13 +79,13 @@ Suppose we want to visualize life expectancy vs. year for each country. With ggp
 ```{r echo=FALSE}
 library(trelliscope)
 suppressPackageStartupMessages(
-  library(tidyverse, warn.conflicts = FALSE)
+  library(ggplot2, warn.conflicts = FALSE)
 )
 ```
 
 ```r
 library(trelliscope)
-library(tidyverse)
+library(ggplot2)
 
 ggplot(gapminder, aes(year, lifeExp)) +
   geom_point() +
@@ -234,7 +234,16 @@ Here, we use `dplyr` to compute the summaries. If you have experience with Tidyv
 
 Since each row of `trell_df` corresponds to a single country/continent, we need our summaries to be computed for each country/continent. Here we create a data frame of metadata with some summary statistics and construct a Wikipedia link for each country.
 
+```{r echo=FALSE}
+library(trelliscope)
+suppressPackageStartupMessages(
+  library(dplyr, warn.conflicts = FALSE)
+)
+```
+
 ```{r}
+library(dplyr)
+
 meta_df <- gapminder |>
   group_by(country, continent) |>
   summarise(
