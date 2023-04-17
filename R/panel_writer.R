@@ -9,15 +9,15 @@
 # @param width width in pixels of each panel
 # @param height height in pixels of each panel
 write_panel <- function(x, key, base_path, panel_path,
-  width, height, format = "png", html_head = NULL) {
+  width, height, format = "png", html_head = NULL, ...) {
   if (inherits(x, "htmlwidget")) {
     write_htmlwidget(x, key, panel_path, html_head)
   } else {
     file <- file.path(panel_path, paste0(key, ".", format))
     if (format == "png") {
-      make_png(p = x, file = file, width = width, height = height)
+      make_png(p = x, file = file, width = width, height = height, ...)
     } else if (format == "svg") {
-      make_svg(p = x, file, width, height)
+      make_svg(p = x, file, width, height, ...)
     }
   }
 }
@@ -63,8 +63,11 @@ unit_to_px <- function(x, res) {
   ret
 }
 
-get_png_units <- function(width, height, orig_width = width, res = 72,
-  base_point_size = 12, pixelratio = 2) {
+get_png_pars <- function(width, height, orig_width = width, ...) {
+  dots <- list(...)
+  if (is.null(dots$res)) dots$res <- 72
+  if (is.null(dots$base_point_size)) dots$base_point_size <- 12
+  if (is.null(dots$pixelratio)) dots$pixelratio <- 2
 
   width <- as.numeric(gsub("px", "", width))
   height <- as.numeric(gsub("px", "", height))
@@ -74,40 +77,34 @@ get_png_units <- function(width, height, orig_width = width, res = 72,
   # need to have 'fac' factor if coming from unit
   width_is_unit <- height_is_unit <- FALSE
   if (inherits(width, "unit")) {
-    width <- unit_to_px(width, res)
+    width <- unit_to_px(width, dots$res)
     orig_width <- width
     width_is_unit <- TRUE
   }
   if (inherits(height, "unit")) {
-    height <- unit_to_px(height, res)
+    height <- unit_to_px(height, dots$res)
     height_is_unit <- TRUE
   }
 
   fac <- max(min(width / orig_width, 1), 0.65) * 1.5
 
   list(
-    res = res * pixelratio * fac,
-    width = width * pixelratio * ifelse(width_is_unit, fac, 1),
-    height = height * pixelratio * ifelse(height_is_unit, fac, 1),
-    pointsize = base_point_size * fac
+    res = dots$res * dots$pixelratio * fac,
+    width = width * dots$pixelratio * ifelse(width_is_unit, fac, 1),
+    height = height * dots$pixelratio * ifelse(height_is_unit, fac, 1),
+    pointsize = dots$base_point_size * fac
   )
 }
 
 #' @importFrom grDevices png dev.cur dev.off
 #' @importFrom grid grid.draw
-make_png <- function(p, file, width, height, orig_width = width, res = 72,
-  base_point_size = 12, pixelratio = 2) {
+make_png <- function(p, file, width, height, orig_width = width, ...) {
 
   pngfun <- grDevices::png
 
-  units <- get_png_units(width, height, orig_width, res,
-    base_point_size, pixelratio)
-
-  pngfun(filename = file,
-    res = units$res,
-    width = units$width,
-    height = units$height,
-    pointsize = units$pointsize)
+  pars <- get_png_pars(width, height, orig_width, ...)
+  pars$filename <- file
+  do.call(pngfun, pars)
 
   dv <- grDevices::dev.cur()
   tryCatch({
@@ -134,9 +131,13 @@ make_png <- function(p, file, width, height, orig_width = width, res = 72,
 }
 
 #' @importFrom svglite svglite
-make_svg <- function(p, file, width, height) {
-  svglite::svglite(filename = file,
-    width = width / 72, height = height / 72, scaling = 2)
+make_svg <- function(p, file, width, height, ...) {
+  dots <- list(...)
+  if (is.null(dots$scaling)) dots$scaling <- 2
+  dots$width <- width / 72
+  dots$height <- height / 72
+  dots$filename <- file
+  do.call(svglite::svglite, dots)
   print(p)
   dev.off()
 }

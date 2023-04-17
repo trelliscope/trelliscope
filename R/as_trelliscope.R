@@ -13,6 +13,44 @@
 #'   have already been plotted and have not changed since the previous plotting?
 #' @param key_sig A string "signature" that represents the panels for this
 #'   display. This should not be specified unless you know what you are doing.
+#'
+#' @examples
+#' # Use `as_trelliscope_df()` to convert panel metadata to a special
+#' # trelliscope data frame
+#' \dontrun{
+#' library(ggplot2)
+#' library(dplyr)
+#'
+#' panel_dat <- (
+#'   ggplot(gapminder, aes(year, lifeExp)) +
+#'     geom_point() +
+#'     facet_panels(~country + continent)
+#'   ) |>
+#'     nest_panels()
+#'
+#' meta_dat <- gapminder |>
+#'   group_by(country, continent) |>
+#'   summarise(
+#'     mean_lifeExp = mean(lifeExp),
+#'     min_lifeExp = min(lifeExp),
+#'     max_lifeexp = max(lifeExp),
+#'     mean_gdp = mean(gdpPercap),
+#'     .groups = "drop"
+#'   )
+#'
+#' joined_dat <- left_join(panel_dat, meta_dat) |>
+#'   as_trelliscope_df(name = "life_expectancy", path = tempfile())
+#'
+#' disp <- joined_dat |>
+#'   write_panels() |>
+#'   write_trelliscope() |>
+#'   view_trelliscope()
+#' }
+#'
+#' # You can also use `as_trelliscope_df()` on datasets that have links to
+#' # images instead of conventional ggplot objects
+#' \dontrun{
+#' }
 #' @param server An experimental feature that allows your local R session to
 #'   act as a server so that panels do not need to be pre-rendered. See
 #'   [`local_websocket_server()`].
@@ -21,7 +59,7 @@
 #' @importFrom dplyr group_cols
 as_trelliscope_df <- function(
   df, name = NULL, description = name, key_cols = NULL, tags = NULL,
-  path = tempfile(), force_plot = FALSE, key_sig = NULL, server = NULL
+  path = NULL, force_plot = FALSE, key_sig = NULL, server = NULL
 ) {
   if (inherits(df, "facet_panels")) {
     # msg("
@@ -34,7 +72,22 @@ as_trelliscope_df <- function(
   }
 
   if (is.null(server)) {
+    # TODO: need to auto-detect img panel here...
     panel_col <- check_and_get_panel_col(df)
+    if (length(panel_col) == 0) {
+      panel_col <- find_img_col(df)
+      if (length(panel_col) == 1) {
+        is_remote <- all(grepl("^http", df[[panel_col]]))
+        if (is_remote) {
+          df[[panel_col]] <- img_panel(df[[panel_col]])
+        } else {
+          df[[panel_col]] <- img_panel_local(df[[panel_col]])
+        }
+      }
+    }
+    assert(length(panel_col) == 1,
+      msg = paste0("Couldn't find a column in the trelliscope input ",
+        "data frame that references a plot or image."))
   } else {
     df[["__server__"]] <- as.integer(NA)
     panel_col <- "__server__"
@@ -50,6 +103,22 @@ as_trelliscope_df <- function(
         when calling {.fn as_trelliscope_df}")
       name <- "Trelliscope"
     }
+  }
+
+  if (in_rmarkdown()) {
+    if (is.null(path)) {
+      path <- paste0("trelliscope/", knitr::opts_current$get()$label)
+      dir.create(path, recursive = TRUE)
+    } else {
+      assert(dirname(path) == ".",
+        msg = "When using Trelliscope in RMarkdown, \
+          output path must be relative")
+    }
+    if (knitr::opts_knit$get("self.contained"))
+      wrn("Trelliscope shoud only be rendered in RMarkdown when \
+        self_contained is false. Trelliscope always produces auxiliary files")
+  } else if (is.null(path)) {
+    path <- tempfile()
   }
 
   obj <- Display$new(name = name, description = description,
@@ -77,9 +146,6 @@ check_and_get_panel_col <- function(df) {
       one found: '{names(panel_col_idx)[1]}")
     panel_col_idx <- panel_col_idx[1]
   }
-  assert(length(panel_col_idx) == 1,
-    msg = paste0("Couldn't find a column in the trelliscope input data frame ",
-      "that references a plot or image."))
   names(panel_col_idx)
 }
 

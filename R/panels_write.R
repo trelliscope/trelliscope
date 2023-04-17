@@ -10,14 +10,30 @@
 #'   `format` parameters will be used to determine if the panel content matches
 #'   panels that have already been written, in which case writing the panels
 #'    will be skipped.
+#' @param ... Other arguments passed to the plotting functions (either
+#'   svglite::svglite or grDevices::png).
 #' @note The size of panels will vary when shown in the viewer, but here the
 #'   specification of height and width help determine the plot aspect ratio
 #'   as well as the initial resolution to render plot text, etc. with.
 #' @importFrom cli cli_progress_bar cli_progress_update cli_progress_done
-#' @importFrom rlang hash
+#' @examples
+#' \dontrun{
+#' library(ggplot2)
+#'
+#' panel_dat <- (
+#'   ggplot(gapminder, aes(year, lifeExp)) +
+#'     geom_point() +
+#'     facet_panels(~country + continent)
+#'   ) |>
+#'   nest_panels()
+#'
+#' disp <- panel_dat |>
+#'   as_trelliscope_df(name = "life_expectancy", path = tempfile()) |>
+#'   write_panels(width = 800, height = 500, format = "svg")
+#' }
 #' @export
 write_panels <- function(
-  trdf, width = 500, height = 500, format = "png", force = FALSE
+  trdf, width = 500, height = 500, format = "png", force = FALSE, ...
 ) {
   trdf <- check_trelliscope_df(trdf)
   check_scalar(width, "width")
@@ -52,11 +68,11 @@ write_panels <- function(
     format <- "html"
   }
 
-  cur_hash <- rlang::hash(c(height, width, format, trdf[[panel_col]]))
+  cur_hash <- hash(c(height, width, format, trdf[[panel_col]]))
 
   trdf[["__PANEL_KEY__"]] <- panel_keys
   if (is.null(trobj$get("keysig")))
-    trobj$set("keysig", rlang::hash(sort(panel_keys)))
+    trobj$set("keysig", hash(sort(panel_keys)))
 
   trobj$set("panelformat", format)
 
@@ -88,7 +104,8 @@ write_panels <- function(
       width = width,
       height = height,
       format = format,
-      html_head = html_head
+      html_head = html_head,
+      ...
     )
   }
   cli::cli_progress_done()

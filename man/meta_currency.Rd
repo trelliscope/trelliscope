@@ -31,6 +31,53 @@ If not specified, an inference will be made based on its values.}
 \description{
 Specify a "currency" metadata variable
 }
+\examples{
+\dontrun{
+library(ggplot2)
+library(dplyr)
+
+panel_dat <- (
+  ggplot(gapminder, aes(year, lifeExp)) +
+    geom_point() +
+    facet_panels(~country + continent)
+  ) |>
+  nest_panels()
+
+meta_dat <- gapminder|>
+  group_by(country, continent) |>
+  summarise(
+    mean_lifeexp = mean(lifeExp),
+    min_lifeexp = min(lifeExp),
+    max_lifeexp = max(lifeExp),
+    mean_gdp = mean(gdpPercap),
+    first_year = min(year),
+    latitude = first(latitude),
+    longitude = first(longitude),
+    .groups = "drop"
+  ) |>
+  ungroup() |>
+  mutate(
+    first_date = as.Date(paste0(first_year, "-01-01")),
+    first_datetime = as.POSIXct.Date(first_date),
+    continent = as.factor(continent),
+    wiki_link = paste0("https://en.wikipedia.org/wiki/", country)
+  )
+
+joined_dat <- left_join(panel_dat, meta_dat,
+  by = join_by(country, continent))
+
+trell <- joined_dat |>
+  as_trelliscope_df() |>
+  write_panels() |>
+  add_meta_defs(
+    meta_currency(
+      "mean_gdp",
+      label = "Average GDP per capita",
+      tags = "GDP"
+    )
+  )
+}
+}
 \seealso{
 Other {metadata types}: 
 \code{\link{meta_datetime}()},

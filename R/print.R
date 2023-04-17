@@ -21,6 +21,25 @@ print.trelliscope <- function(
 #' View trelliscope info of a trelliscope data frame
 #' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
 #' or a data frame which will be cast as such.
+#' @examples
+#' \dontrun{
+#' library(ggplot2)
+#' library(dplyr)
+#'
+#' panel_dat <- (
+#'   ggplot(gapminder, aes(year, lifeExp)) +
+#'     geom_point() +
+#'     facet_panels(~country + continent)
+#'   ) |>
+#'   nest_panels()
+#'
+#' trell <- panel_dat |>
+#'   as_trelliscope_df(name = "life expectancy", path = "gapminder") |>
+#'   set_default_layout(nrow = 2, ncol = 4)
+#'
+#' show_info(trell)
+#' }
+#'
 #' @export
 show_info <- function(trdf) {
   trobj <- attr(trdf, "trelliscope")

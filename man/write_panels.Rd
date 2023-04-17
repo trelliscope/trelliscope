@@ -4,7 +4,14 @@
 \alias{write_panels}
 \title{Write panels}
 \usage{
-write_panels(trdf, width = 500, height = 500, format = "png", force = FALSE)
+write_panels(
+  trdf,
+  width = 500,
+  height = 500,
+  format = "png",
+  force = FALSE,
+  ...
+)
 }
 \arguments{
 \item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope_df]{as_trelliscope_df()}}
@@ -22,6 +29,9 @@ content of the panel column along with the \code{width}, \code{height}, and
 \code{format} parameters will be used to determine if the panel content matches
 panels that have already been written, in which case writing the panels
 will be skipped.}
+
+\item{...}{Other arguments passed to the plotting functions (either
+svglite::svglite or grDevices::png).}
 }
 \description{
 Write panels
@@ -30,4 +40,20 @@ Write panels
 The size of panels will vary when shown in the viewer, but here the
 specification of height and width help determine the plot aspect ratio
 as well as the initial resolution to render plot text, etc. with.
+}
+\examples{
+\dontrun{
+library(ggplot2)
+
+panel_dat <- (
+  ggplot(gapminder, aes(year, lifeExp)) +
+    geom_point() +
+    facet_panels(~country + continent)
+  ) |>
+  nest_panels()
+
+disp <- panel_dat |>
+  as_trelliscope_df(name = "life_expectancy", path = tempfile()) |>
+  write_panels(width = 800, height = 500, format = "svg")
+}
 }
