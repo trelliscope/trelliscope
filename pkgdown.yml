@@ -3,7 +3,7 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   trelliscope: trelliscope.html
-last_built: 2023-04-17T07:21Z
+last_built: 2023-04-17T07:25Z
 urls:
   reference: https://trelliscope.github.io/trelliscope/reference
   article: https://trelliscope.github.io/trelliscope/articles

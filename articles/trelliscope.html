@@ -304,19 +304,15 @@ visualizations and cast it as a Trelliscope data frame with
 <span></span>
 <span><span class="fu"><a href="../reference/view_trelliscope.html">view_trelliscope</a></span><span class="op">(</span><span class="va">trell_df</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Display has not been written... writing...</span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■                             </span>   7% | ETA: 15s</span></span>
+<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■                             </span>   7% | ETA: 13s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■                           </span>  15% | ETA: 15s</span></span>
+<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■                        </span>  23% | ETA: 11s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■                      </span>  30% | ETA: 13s</span></span>
+<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■                   </span>  41% | ETA:  9s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■                 </span>  46% | ETA: 10s</span></span>
+<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■             </span>  61% | ETA:  6s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■             </span>  61% | ETA:  7s</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■        </span>  77% | ETA:  4s</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   </span>  93% | ETA:  1s</span></span>
+<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■       </span>  81% | ETA:  3s</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -435,11 +431,9 @@ files with a 2:1 aspect ratio (specifed with
 e.g. <code>width = 600</code> and <code>height = 300</code>).</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trell_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_panels.html">write_panels</a></span><span class="op">(</span><span class="va">trell_df</span>, format <span class="op">=</span> <span class="st">"svg"</span>, width <span class="op">=</span> <span class="fl">600</span>, height <span class="op">=</span> <span class="fl">300</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■                             </span>   8% | ETA: 12s</span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■                        </span>  23% | ETA: 11s</span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■                  </span>  43% | ETA:  8s</span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■            </span>  63% | ETA:  6s</span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■       </span>  81% | ETA:  3s</span></span>
+<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■                         </span>  20% | ETA:  8s</span></span>
+<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■                 </span>  48% | ETA:  6s</span></span>
+<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■         </span>  72% | ETA:  3s</span></span>
 <span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span></code></pre></div>
 <p>Note that we do not need to explicity call
 <code><a href="../reference/write_panels.html">write_panels()</a></code> if we are happy with the defaults (500x500px
