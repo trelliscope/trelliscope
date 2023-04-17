@@ -67,7 +67,7 @@ view_trelliscope(d)
 
 [](https://user-images.githubusercontent.com/1275592/229949930-59a84582-a09f-4aa5-99fd-cbfb9f0eea8f.png)
 
-This scratches the surface of the functions found in the package. By beginning with [this tutorial](index.html), you can dive deeper into topics including:
+This scratches the surface of the functions found in the package. By beginning with [this tutorial](https://trelliscope.org/trelliscope/index.html), you can dive deeper into topics including:
 
 - Creating and viewing data frames of visualizations created in R (e.g. ggplot2, htmlwidgets)
 - Fine control over metadata
@@ -76,7 +76,7 @@ This scratches the surface of the functions found in the package. By beginning w
 - Specifying user inputs that can be collected for labeling and capturing insights and domain knowledge
 - Embedding the interactive visualizations in common output formats 
 
-[**Get started with the tutorial**](index.html)
+[**Get started with the tutorial**](https://trelliscope.org/trelliscope/index.html)
 
 ## Acknowledgements
 
