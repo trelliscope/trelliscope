@@ -128,7 +128,8 @@ LayoutState <- R6::R6Class("LayoutState",
   ),
   private = list(
     ncol = NULL,
-    page = 1
+    page = 1,
+    viewtype = "grid"
   )
 )
 
