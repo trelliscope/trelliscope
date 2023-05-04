@@ -140,7 +140,7 @@ check_and_get_panel_col <- function(df) {
   # - img_panel (which includes img_panel_local)
   # - nested_panels
   panel_col_idx <- which(unlist(lapply(df, function(a)
-    inherits(a, c("img_panel", "nested_panels")))))
+    inherits(a, c("img_panel", "iframe_panel", "nested_panels")))))
   if (length(panel_col_idx) > 1) {
     msg("Found multiple columns that indicate a panel, using the first \\
       one found: '{names(panel_col_idx)[1]}")
