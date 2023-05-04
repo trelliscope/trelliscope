@@ -17,7 +17,7 @@ remotes::install_github("trelliscope/trelliscope")
 
 Trelliscope provides utilities for you to create and visualize data frames of visualizations. The visualizations can be anything you can produce in R, but can also simply be links to images that have already been created.
 
-As a simple example, the package comes with an example data frame of links to Mars [Curiousity Rover](https://mars.nasa.gov/msl/home/) images.
+As a simple example, the package comes with an example data frame of links to Mars [Curiosity Rover](https://mars.nasa.gov/msl/home/) images.
 
 ``` r
 library(trelliscope)
