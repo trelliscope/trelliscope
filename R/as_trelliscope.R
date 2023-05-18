@@ -107,16 +107,33 @@ as_trelliscope_df <- function(
 
   if (in_rmarkdown()) {
     if (is.null(path)) {
-      path <- paste0("trelliscope/", knitr::opts_current$get()$label)
-      dir.create(path, recursive = TRUE)
+      path <- file.path(knitr::opts_chunk$get("fig.path"),
+        knitr::opts_current$get("label"))
+      dir.create(path, recursive = TRUE, showWarnings = FALSE)
     } else {
       assert(dirname(path) == ".",
         msg = "When using Trelliscope in RMarkdown, \
           output path must be relative")
     }
-    if (knitr::opts_knit$get("self.contained"))
-      wrn("Trelliscope shoud only be rendered in RMarkdown when \
-        self_contained is false. Trelliscope always produces auxiliary files")
+    # if (!can_print_rmarkdown())
+    #   wrn("Trelliscope shoud only be rendered in RMarkdown when \
+    #     self_contained is false. Trelliscope always produces auxiliary files")
+  } else if (!is.null(shiny::getCurrentOutputInfo()$name)) {
+    has_rsrc_path <- FALSE
+    if (!is.null(path))
+      has_rsrc_path <- normalizePath(dirname(path)) %in% shiny::resourcePaths()
+    if (!is.null(path)) {
+      if (!has_rsrc_path) {
+        browser()
+        msg("Overwriting path for trelliscope display because it is being \
+          built from within a Shiny app and the specified path is not found \
+          in shiny::resourcePaths().")
+        path <- file.path("www/trelliscope", shiny::getCurrentOutputInfo()$name)
+      }
+    } else {
+      path <- file.path("www/trelliscope", shiny::getCurrentOutputInfo()$name)
+    }
+    dir.create(path, recursive = TRUE, showWarnings = FALSE)
   } else if (is.null(path)) {
     path <- tempfile()
   }
@@ -140,7 +157,7 @@ check_and_get_panel_col <- function(df) {
   # - img_panel (which includes img_panel_local)
   # - nested_panels
   panel_col_idx <- which(unlist(lapply(df, function(a)
-    inherits(a, c("img_panel", "nested_panels")))))
+    inherits(a, c("img_panel", "iframe_panel", "nested_panels")))))
   if (length(panel_col_idx) > 1) {
     msg("Found multiple columns that indicate a panel, using the first \\
       one found: '{names(panel_col_idx)[1]}")

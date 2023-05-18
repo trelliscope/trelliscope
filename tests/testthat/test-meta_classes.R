@@ -27,7 +27,7 @@ test_that2("NumberMeta", {
 
   expect_equal(
     as.character(obj$as_json(pretty = FALSE)),
-    '{"log":false,"locale":true,"digits":null,"sortable":true,"filterable":true,"tags":["stuff"],"label":"Sepal.Length","type":"number","varname":"Sepal.Length"}'
+    '{"log":false,"locale":true,"digits":null,"maxnchar":0,"sortable":true,"filterable":true,"tags":["stuff"],"label":"Sepal.Length","type":"number","varname":"Sepal.Length"}'
   )
 
   expect_true(
@@ -70,7 +70,7 @@ test_that2("CurrencyMeta", {
 
   expect_equal(
     as.character(obj$as_json(pretty = FALSE)),
-    '{"digits":2,"log":false,"code":"USD","sortable":true,"filterable":true,"tags":["stuff"],"label":"Sepal.Length","type":"currency","varname":"Sepal.Length"}'
+    '{"digits":2,"log":false,"code":"USD","maxnchar":0,"sortable":true,"filterable":true,"tags":["stuff"],"label":"Sepal.Length","type":"currency","varname":"Sepal.Length"}'
   )
 
   expect_true(

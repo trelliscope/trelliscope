@@ -10,7 +10,7 @@ test_that("adding inputs", {
   x <- as_trelliscope_df(dat, name = "test", key_cols = c("manufacturer", "class")) |>
     add_inputs(
       input_text(name = "comments", label = "Comments about this panel",
-        width = 100, height = 6),
+        height = 6),
       input_radio(name = "looks_correct",
         label = "Does the data look correct?", options = c("no", "yes")),
       email = "johndoe123@fakemail.com",
@@ -25,7 +25,7 @@ test_that("adding inputs", {
   expect_error(as_trelliscope_df(dat, name = "test", key_cols = c("manufacturer", "class")) |>
     add_inputs(
       input_text(name = "comments", label = "Comments about this panel",
-        width = 100, height = 6),
+        height = 6),
       email = "johndoe123@fakemail.com",
       vars = "asdf"
     ),

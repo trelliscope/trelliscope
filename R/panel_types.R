@@ -52,7 +52,7 @@ check_img_ext <- function(x, fn) {
 #' @export
 iframe_panel <- function(x, aspect_ratio = 1.5) {
   check_atomic(x, "iframe_panel")
-  check_html_ext(x, "iframe_panel")
+  # check_html_ext(x, "iframe_panel")
   check_scalar(aspect_ratio, "aspect_ratio")
   check_pos_numeric(aspect_ratio, "aspect_ratio")
   class(x) <- c(class(x), "iframe_panel")

@@ -14,6 +14,7 @@ export interface IMeta {
   tags: string[];
   filterable: boolean;
   sortable: boolean;
+  maxnchar: number;
 }
 
 export interface INumberMeta extends IMeta {
@@ -107,7 +108,6 @@ export interface IMultiselectInput extends IInput {
 }
 
 export interface ITextInput extends IInput {
-  width: number;
   height: number;
 }
 
@@ -136,9 +136,12 @@ export interface IState {
   type: StateType;
 }
 
+export type ViewType = 'grid' | 'table';
+
 export interface ILayoutState extends IState {
   ncol: number;
   page: number;
+  viewtype: ViewType;
 }
 
 export interface ILabelState extends IState {

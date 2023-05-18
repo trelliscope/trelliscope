@@ -14,6 +14,10 @@ infer <- function(trdf) {
     view2$set_state(newst)
     trobj$set_view(view2, verbose = FALSE)
   }
+  metas <- trobj$get("metas")
+  for (nm in names(metas))
+    set_meta_nchar(metas[[nm]], trdf[[nm]])
+
   attr(trdf, "trelliscope") <- trobj
   # trdf <- infer_panel_type(trdf)
   trdf
@@ -142,4 +146,17 @@ infer_meta_variable <- function(x, nm) {
     }
   }
   res
+}
+
+set_meta_nchar <- function(meta, x) {
+  type <- meta$get("type")
+  if (type %in% c("string", "factor", "date", "datetime")) {
+    meta$set("maxnchar", max(nchar(as.character(x))))
+  } else if (type %in% c("number", "currency")) {
+    digits <- meta$get("digits")
+    meta$set("maxnchar", max(nchar(format(x, nsmall = digits))))
+  } else if (type == "href") {
+    meta$set("maxnchar", 2)
+  }
+  # otherwise default of zero
 }

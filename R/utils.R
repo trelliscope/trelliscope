@@ -170,9 +170,11 @@ compute_digits <- function(x) {
   for (ii in 0:5) {
     if (length(unique(round(x, ii))) / nu > 0.75) {
       digits <- ii
-      break;
+      break
     }
   }
+  if (digits < 0)
+    digits <- 0
   digits
 }
 

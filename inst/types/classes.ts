@@ -28,6 +28,7 @@ import {
   // state
   IDisplayState,
   IState,
+  ViewType,
   ILayoutState,
   ILabelState,
   ISortState,
@@ -69,13 +70,15 @@ export class Meta implements IMeta {
   tags: string[];
   filterable: boolean;
   sortable: boolean;
+  maxnchar: number;
   constructor(
     type: MetaType,
     varname: string,
     tags: string[] = [],
     label: string | undefined = undefined,
     filterable: boolean = true,
-    sortable: boolean = true
+    sortable: boolean = true,
+    maxnchar: number
   ) {
     this.type = type;
     this.varname = varname;
@@ -83,6 +86,7 @@ export class Meta implements IMeta {
     this.filterable = filterable;
     this.sortable = sortable;
     this.label = label === undefined ? varname : label;
+    this.maxnchar = maxnchar;
   }
 }
 
@@ -107,7 +111,7 @@ export class NumberMeta extends Meta implements INumberMeta {
       log?: boolean,
     }
   ) {
-    super('number', varname, tags, label, true, true);
+    super('number', varname, tags, label, true, true, 0);
     this.digits = digits === undefined ? 2 : digits;
     this.locale = locale === undefined ? true : locale;
     this.log = log === undefined ? false : log;
@@ -135,7 +139,7 @@ export class CurrencyMeta extends Meta implements ICurrencyMeta {
       log?: boolean,
     }
   ) {
-    super('number', varname, tags, label, true, true);
+    super('number', varname, tags, label, true, true, 0);
     this.code = code === undefined ? 'USD' : code;
     this.digits = digits === undefined ? 2 : digits;
     this.log = log === undefined ? false : log;
@@ -160,7 +164,8 @@ export class StringMeta extends Meta implements IStringMeta {
       tags,
       label,
       true,
-      true
+      true,
+      0
     );
   };
 }
@@ -186,7 +191,8 @@ export class FactorMeta extends Meta implements IFactorMeta {
       tags,
       label,
       true,
-      true
+      true,
+      0
     );
     this.levels = levels;
   };
@@ -210,7 +216,8 @@ export class DateMeta extends Meta implements IDateMeta {
       tags,
       label,
       true,
-      true
+      true,
+      0
     );
   };
 }
@@ -234,7 +241,8 @@ export class DatetimeMeta extends Meta implements IDatetimeMeta {
       tags,
       label,
       true,
-      true
+      true,
+      0
     );
     this.timezone = 'UTC';
   };
@@ -264,7 +272,8 @@ export class GeoMeta extends Meta implements IGeoMeta {
       tags,
       label,
       false, // TODO: change to TRUE when implemented in app
-      false
+      false,
+      0
     );
     this.latvar = latvar;
     this.longvar = longvar;
@@ -289,7 +298,8 @@ export class HrefMeta extends Meta implements IHrefMeta {
       tags,
       label,
       false,
-      false
+      false,
+      0
     );
   };
 }
@@ -327,7 +337,8 @@ export class GraphMeta extends Meta implements IGraphMeta {
       tags,
       label,
       true,
-      false
+      false,
+      0
     );
     this.idvarname = idvarname;
     this.linkidvarname = linkidvarname;
@@ -486,25 +497,21 @@ export class MultiselectInput extends Input implements IMultiselectInput {
 }
 
 export class TextInput extends Input implements ITextInput {
-  width: number;
   height: number
   constructor(
     {
       name,
       label,
       active,
-      width,
       height,
     } : {
       name: string,
       label?: string | undefined,
       active?: boolean | undefined,
-      width?: number | undefined,
       height?: number | undefined,
     }
   ) {
     super('text', name, label, active);
-    this.width = width === undefined ? 80 : width;
     this.height = height === undefined ? 3 : height;
   };
 }
@@ -574,6 +581,7 @@ export class State implements IState {
 export class LayoutState extends State implements ILayoutState {
   ncol: number;
   page: number;
+  viewtype: ViewType;
   constructor(
     {
       ncol,
@@ -586,6 +594,7 @@ export class LayoutState extends State implements ILayoutState {
     super('layout');
     this.ncol = ncol === undefined ? 1 : ncol;
     this.page = page === undefined ? 1 : page;
+    this.viewtype = 'grid';
   };
 }
 

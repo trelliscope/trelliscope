@@ -6,7 +6,8 @@ Meta <- R6::R6Class("Meta",
       label = NULL,
       tags = NULL,
       filterable,
-      sortable
+      sortable,
+      maxnchar
     ) {
       private$varname <- varname
       private$label <- label
@@ -69,7 +70,8 @@ Meta <- R6::R6Class("Meta",
     label = NULL,
     tags = NULL,
     filterable = TRUE,
-    sortable = TRUE
+    sortable = TRUE,
+    maxnchar = 0
   )
 )
 

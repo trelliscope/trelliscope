@@ -4,7 +4,7 @@
 \alias{input_text}
 \title{Specify a "text box" input}
 \usage{
-input_text(name, label = name, active = TRUE, width = 80, height = 3)
+input_text(name, label = name, active = TRUE, height = 3)
 }
 \arguments{
 \item{name}{Name of the input.}
@@ -12,8 +12,6 @@ input_text(name, label = name, active = TRUE, width = 80, height = 3)
 \item{label}{Description of the input.}
 
 \item{active}{Should the input be active by default?}
-
-\item{width}{Width (in characters) of the text box input.}
 
 \item{height}{Height (in lines of text) of the text box input.}
 }
