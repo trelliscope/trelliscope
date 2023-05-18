@@ -191,16 +191,12 @@ TextInput <- R6::R6Class("TextInput",
       width = 80, height = 3
     ) {
       super$initialize(name, label, active, type = "text")
-      check_scalar(width, "width", self$error_msg)
-      check_integer(width, "width", self$error_msg)
       check_scalar(height, "height", self$error_msg)
       check_integer(height, "height", self$error_msg)
-      private$width <- width
       private$height <- height
     }
   ),
   private = list(
-    width = NULL,
     height = NULL
   )
 )

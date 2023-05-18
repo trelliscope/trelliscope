@@ -5,7 +5,7 @@
 \alias{mars_rover}
 \title{Mars rover data}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 1245 rows and 5 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 1245 rows and 11 columns.
 }
 \source{
 \url{https://github.com/corincerami/mars-photo-api}

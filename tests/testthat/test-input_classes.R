@@ -75,7 +75,7 @@ test_that2("MultiselectInput", {
 
 test_that2("TextInput", {
   expect_error(
-    TextInput$new("opinion", "What do you think?", width = "a"),
+    TextInput$new("opinion", "What do you think?", height = "a"),
     regexp = "must be an integer"
   )
 
@@ -84,7 +84,7 @@ test_that2("TextInput", {
 
   expect_equal(
     obj$as_list(),
-    list(height = 10, width = 100, type = "text", active = TRUE,
+    list(height = 10, type = "text", active = TRUE,
       label = "What do you think?", name = "opinion")
   )
 })

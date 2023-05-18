@@ -31,7 +31,8 @@ Imports:
     httpuv,
     knitr,
     digest,
-    glue
+    glue,
+    shiny
 Depends: 
     R (>= 2.10)
 LazyData: true

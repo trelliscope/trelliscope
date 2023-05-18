@@ -108,7 +108,6 @@ export interface IMultiselectInput extends IInput {
 }
 
 export interface ITextInput extends IInput {
-  width: number;
   height: number;
 }
 

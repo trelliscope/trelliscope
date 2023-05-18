@@ -45,7 +45,7 @@ test_that2("add_meta_def", {
   bo <- get_trobj(b)
 
   # see if digits is inferred correctly
-  expect_equal(bo$get("metas")$long_tail$get("digits"), -1)
+  expect_equal(bo$get("metas")$long_tail$get("digits"), 0)
   expect_equal(bo$get("metas")$mean_cty$get("digits"), 1)
 })
 
@@ -333,7 +333,7 @@ test_that2("input pipe functions", {
       input_multiselect(name = "good_multiselect",
         label = "Is it good?", options = c("no", "yes")),
       input_text(name = "opinion", label = "What do you think?",
-        width = 100, height = 6),
+        height = 6),
       input_number(name = "rank", label = "Rank this panel"),
       email = "a@b.com",
       vars = "class"

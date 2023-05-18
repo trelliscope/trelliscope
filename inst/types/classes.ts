@@ -497,25 +497,21 @@ export class MultiselectInput extends Input implements IMultiselectInput {
 }
 
 export class TextInput extends Input implements ITextInput {
-  width: number;
   height: number
   constructor(
     {
       name,
       label,
       active,
-      width,
       height,
     } : {
       name: string,
       label?: string | undefined,
       active?: boolean | undefined,
-      width?: number | undefined,
       height?: number | undefined,
     }
   ) {
     super('text', name, label, active);
-    this.width = width === undefined ? 80 : width;
     this.height = height === undefined ? 3 : height;
   };
 }

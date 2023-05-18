@@ -2,5 +2,5 @@ dependencies:
   - name: trelliscope_widget
     version:  0.6.0
     src: htmlwidgets/lib/trelliscope_widget
-    script: [      js/main.cf6c2a0b.js, ]
+    script: [      js/main.350fc768.js, ]
     stylesheet: [      css/main.a2969609.css, ]

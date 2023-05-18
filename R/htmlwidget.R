@@ -35,6 +35,41 @@
 #' }
 #' @export
 view_trelliscope <- function(trdf = NULL) {
+  if (in_rmarkdown()) {
+    if (!can_print_rmarkdown()) {
+      wrn("Trelliscope should only be rendered in RMarkdown when the output \
+        format is 'html_document' and self_contained is false. Trelliscope \
+        always produces auxiliary files. Consider publishing and embedding the \
+        published display in an iframe instead.")
+      return(invisible(NULL))
+    }
+    trobj <- attr(trdf, "trelliscope")
+    pth <- file.path(trobj$get_display_path(),
+      paste0("displayInfo.", c("json", "jsonp")))
+    if (!any(file.exists(pth))) {
+      msg("Display has not been written... writing...")
+      write_trelliscope(trdf)
+    }
+    cur_opts <- knitr::opts_current$get()
+    url <- paste0(trobj$path, "/index.html")
+    # TODO: enforce minimum width
+    width <- cur_opts$out.width.px
+    height <- cur_opts$out.height.px
+    title <- trobj$get("name")
+    iframe <- glue::glue("
+      <iframe
+        src=\"{url}\"
+        title=\"{title}\"
+        width=\"{width}px\"
+        height=\"{height}px\"
+        allowfullscreen
+        style=\"margin: 0; padding: 0; border: 1px solid #efefef;\"
+      >
+      </iframe>
+    ")
+    return(knitr::asis_output(iframe))
+  }
+
   if (is.null(trdf)) {
     url <- getOption("trelliscope_latest_display_url")
     if (is.null(url)) {
@@ -139,38 +174,3 @@ get_viewer <- function() {
 #   }
 #   viewerFunc
 # }
-
-# nolint start
-
-#' Shiny bindings for trelliscope
-#'
-#' Output and render functions for using trelliscope within Shiny
-#' applications and interactive Rmd documents.
-#'
-#' @param output_id output variable to read from
-#' @param width,height Must be a valid CSS unit (like \code{'100\%'},
-#'   \code{'400px'}, \code{'auto'}) or a number, which will be coerced to a
-#'   string and have \code{'px'} appended.
-#' @param expr An expression that generates a trelliscope
-#' @param env The environment in which to evaluate \code{expr}.
-#' @param quoted Is \code{expr} a quoted expression (with \code{quote()})? This
-#'   is useful if you want to save an expression in a variable.
-#'
-#' @name trelliscope-shiny
-#'
-#' @export
-trelliscopeOutput <- function(output_id, width = "100%", height = "400px") {
-  htmlwidgets::shinyWidgetOutput(output_id, "trelliscope", width, height,
-    package = "trelliscope")
-}
-
-#' @rdname trelliscope-shiny
-#' @export
-renderTrelliscope <- function(expr, env = parent.frame(), quoted = FALSE) {
-  if (!quoted) {
-    expr <- substitute(expr)
-  }
-  htmlwidgets::shinyRenderWidget(expr, trelliscopeOutput, env, quoted = TRUE)
-}
-
-# nolint end

@@ -47,15 +47,18 @@ x <- readr::read_delim("_ignore/mars/msl-images/test-calibrated-shuffled.txt",
 d <- readr::read_rds("_ignore/mars/all.rds") %>%
   mutate(substr = gsub(".*/(.*)_.*", "\\1", img_src))
 
-d2 <- 
+d2 <- readr::read_rds("_ignore/mars/stats.rds")
 
 res <- right_join(d, x, by = "substr")
+res <- left_join(res, d2, by = "img_src")
 
 mars_rover <- res %>%
   filter(!is.na(id)) %>%
   rename(camera = "camera_full_name") %>%
   mutate(earth_date = as.Date(earth_date))
 
-mars_rover <- mars_rover[, c("id", "camera", "sol", "earth_date", "class", "img_src")]
+mars_rover <- mars_rover[, c("id", "camera", "sol", "earth_date", "class",
+  "width", "height", "filesize", "hex", "hue", "img_src")]
 
 use_data(mars_rover, overwrite = TRUE)
+remotes::install_github("trelliscope/trelliscope@new-ui")

@@ -209,7 +209,6 @@ input_multiselect <- function(
 
 #' Specify a "text box" input
 #' @inheritParams input_number
-#' @param width Width (in characters) of the text box input.
 #' @param height Height (in lines of text) of the text box input.
 #' @examples
 #' \dontrun{
@@ -237,10 +236,10 @@ input_multiselect <- function(
 #' @family {input types}
 #' @export
 input_text <- function(
-  name, label = name, active = TRUE, width = 80, height = 3
+  name, label = name, active = TRUE, height = 3
 ) {
   TextInput$new(
-    name = name, label = label, active = active, width = width, height = height
+    name = name, label = label, active = active, height = height
   ) |>
     add_input_class()
 }
