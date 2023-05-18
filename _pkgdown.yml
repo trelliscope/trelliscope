@@ -87,8 +87,12 @@ reference:
   - '`as_json`'
   - '`infer_meta`'
   - '`update_display_list`'
-  - '`trelliscope-shiny`'
   - '`currencies`'
+
+- title: Embedding
+  contents:
+  - '`trelliscope-shiny`'
+  - '`add_trelliscope_resource_path`'
 
 - title: Example datasets
   contents:
