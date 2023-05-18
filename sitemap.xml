@@ -13,6 +13,12 @@
     <loc>https://trelliscope.github.io/trelliscope/articles/index.html</loc>
   </url>
   <url>
+    <loc>https://trelliscope.github.io/trelliscope/articles/lifeexp/index.html</loc>
+  </url>
+  <url>
+    <loc>https://trelliscope.github.io/trelliscope/articles/mars/index.html</loc>
+  </url>
+  <url>
     <loc>https://trelliscope.github.io/trelliscope/articles/trelliscope.html</loc>
   </url>
   <url>
@@ -38,6 +44,9 @@
   </url>
   <url>
     <loc>https://trelliscope.github.io/trelliscope/reference/add_meta_tags.html</loc>
+  </url>
+  <url>
+    <loc>https://trelliscope.github.io/trelliscope/reference/add_trelliscope_resource_path.html</loc>
   </url>
   <url>
     <loc>https://trelliscope.github.io/trelliscope/reference/add_view.html</loc>

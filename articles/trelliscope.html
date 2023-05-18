@@ -119,19 +119,19 @@ captured by the Mars rover Curiosity.</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://trelliscope.org/trelliscope" class="external-link">trelliscope</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">mars_rover</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1,245 × 5</span></span></span>
-<span><span class="co">#&gt;    camera                  sol earth_date class   img_src                       </span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Mars Hand Lens Imager   565 2014-03-09 horizon http://mars.jpl.nasa.gov/msl-…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Mars Hand Lens Imager   565 2014-03-09 horizon http://mars.jpl.nasa.gov/msl-…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Mars Hand Lens Imager   568 2014-03-12 wheel   http://mars.jpl.nasa.gov/msl-…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Mars Hand Lens Imager   568 2014-03-12 wheel   http://mars.jpl.nasa.gov/msl-…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Mars Hand Lens Imager   568 2014-03-12 wheel   http://mars.jpl.nasa.gov/msl-…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Mars Hand Lens Imager   568 2014-03-12 wheel   http://mars.jpl.nasa.gov/msl-…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Mars Hand Lens Imager   568 2014-03-12 wheel   http://mars.jpl.nasa.gov/msl-…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Mars Hand Lens Imager   568 2014-03-12 wheel   http://mars.jpl.nasa.gov/msl-…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Mars Hand Lens Imager   568 2014-03-12 wheel   http://mars.jpl.nasa.gov/msl-…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Mars Hand Lens Imager   568 2014-03-12 wheel   http://mars.jpl.nasa.gov/msl-…</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1,245 × 11</span></span></span>
+<span><span class="co">#&gt;       id camera   sol earth_date class width height filesize hex     hue img_src</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">3</span>560 Mars …   565 2014-03-09 hori…   192    144     <span style="text-decoration: underline;">5</span>656 #7C6…  31.4 http:/…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> <span style="text-decoration: underline;">74</span>689 Mars …   565 2014-03-09 hori…  <span style="text-decoration: underline;">1</span>632   <span style="text-decoration: underline;">1</span>200   <span style="text-decoration: underline;">592</span>880 #7B6…  32.9 http:/…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">3</span>558 Mars …   568 2014-03-12 wheel   192    144     <span style="text-decoration: underline;">9</span>123 #3C3…  33.9 http:/…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> <span style="text-decoration: underline;">74</span>630 Mars …   568 2014-03-12 wheel  <span style="text-decoration: underline;">1</span>632   <span style="text-decoration: underline;">1</span>200   <span style="text-decoration: underline;">567</span>528 #4F4…  31.1 http:/…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> <span style="text-decoration: underline;">74</span>631 Mars …   568 2014-03-12 wheel  <span style="text-decoration: underline;">1</span>632   <span style="text-decoration: underline;">1</span>200   <span style="text-decoration: underline;">556</span>007 #4B4…  32.5 http:/…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> <span style="text-decoration: underline;">74</span>632 Mars …   568 2014-03-12 wheel  <span style="text-decoration: underline;">1</span>632   <span style="text-decoration: underline;">1</span>200   <span style="text-decoration: underline;">721</span>995 #564…  33.1 http:/…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> <span style="text-decoration: underline;">74</span>633 Mars …   568 2014-03-12 wheel  <span style="text-decoration: underline;">1</span>632   <span style="text-decoration: underline;">1</span>200   <span style="text-decoration: underline;">511</span>984 #433…  32.3 http:/…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> <span style="text-decoration: underline;">74</span>634 Mars …   568 2014-03-12 wheel  <span style="text-decoration: underline;">1</span>632   <span style="text-decoration: underline;">1</span>200   <span style="text-decoration: underline;">523</span>267 #3C3…  32.3 http:/…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> <span style="text-decoration: underline;">74</span>635 Mars …   568 2014-03-12 wheel  <span style="text-decoration: underline;">1</span>632   <span style="text-decoration: underline;">1</span>200   <span style="text-decoration: underline;">580</span>228 #3D3…  32.5 http:/…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> <span style="text-decoration: underline;">74</span>637 Mars …   568 2014-03-12 wheel   192    144    <span style="text-decoration: underline;">10</span>522 #4E4…  32.3 http:/…</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1,235 more rows</span></span></span></code></pre></div>
 <p>This data frame has a column that references images on the web. The
 other columns contain metadata about these images. We can create a
@@ -139,27 +139,26 @@ Trelliscope data frame with this data frame with the following:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_trelliscope_df.html">as_trelliscope_df</a></span><span class="op">(</span><span class="va">mars_rover</span>, name <span class="op">=</span> <span class="st">"mars rover"</span>, path <span class="op">=</span> <span class="st">"mars"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using <span style="color: #00BB00;">img_src</span> as image column</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using the variables <span style="color: #0000BB;">"camera"</span>, <span style="color: #0000BB;">"earth_date"</span>, <span style="color: #0000BB;">"class"</span>, and <span style="color: #0000BB;">"img_src"</span> to</span></span>
-<span><span class="co">#&gt;   uniquely identify each row of the data.</span></span>
-<span><span class="co">#&gt; Warning: <span style="color: #BBBB00;">!</span> Trelliscope shoud only be rendered in RMarkdown when self_contained is false.</span></span>
-<span><span class="co">#&gt;   Trelliscope always produces auxiliary files</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using the variables <span style="color: #0000BB;">"camera"</span>, <span style="color: #0000BB;">"class"</span>, <span style="color: #0000BB;">"hex"</span>, <span style="color: #0000BB;">"img_src"</span>, and <span style="color: #0000BB;">"id"</span> to uniquely</span></span>
+<span><span class="co">#&gt;   identify each row of the data.</span></span>
 <span></span>
 <span><span class="va">d</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Trelliscope data frame. Call show_info() for more information</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1,245 × 5</span></span></span>
-<span><span class="co">#&gt;    camera                  sol earth_date class   `__PANEL_KEY__`               </span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;charactr&gt;</span>                    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Mars Hand Lens Imager   565 2014-03-09 horizon http://mars.jpl.nasa.gov/msl-…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Mars Hand Lens Imager   565 2014-03-09 horizon http://mars.jpl.nasa.gov/msl-…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Mars Hand Lens Imager   568 2014-03-12 wheel   http://mars.jpl.nasa.gov/msl-…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Mars Hand Lens Imager   568 2014-03-12 wheel   http://mars.jpl.nasa.gov/msl-…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Mars Hand Lens Imager   568 2014-03-12 wheel   http://mars.jpl.nasa.gov/msl-…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Mars Hand Lens Imager   568 2014-03-12 wheel   http://mars.jpl.nasa.gov/msl-…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Mars Hand Lens Imager   568 2014-03-12 wheel   http://mars.jpl.nasa.gov/msl-…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Mars Hand Lens Imager   568 2014-03-12 wheel   http://mars.jpl.nasa.gov/msl-…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Mars Hand Lens Imager   568 2014-03-12 wheel   http://mars.jpl.nasa.gov/msl-…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Mars Hand Lens Imager   568 2014-03-12 wheel   http://mars.jpl.nasa.gov/msl-…</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1,235 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1,245 × 11</span></span></span>
+<span><span class="co">#&gt;       id camera           sol earth_date class width height filesize hex     hue</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">3</span>560 Mars Hand Len…   565 2014-03-09 hori…   192    144     <span style="text-decoration: underline;">5</span>656 #7C6…  31.4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> <span style="text-decoration: underline;">74</span>689 Mars Hand Len…   565 2014-03-09 hori…  <span style="text-decoration: underline;">1</span>632   <span style="text-decoration: underline;">1</span>200   <span style="text-decoration: underline;">592</span>880 #7B6…  32.9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">3</span>558 Mars Hand Len…   568 2014-03-12 wheel   192    144     <span style="text-decoration: underline;">9</span>123 #3C3…  33.9</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> <span style="text-decoration: underline;">74</span>630 Mars Hand Len…   568 2014-03-12 wheel  <span style="text-decoration: underline;">1</span>632   <span style="text-decoration: underline;">1</span>200   <span style="text-decoration: underline;">567</span>528 #4F4…  31.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> <span style="text-decoration: underline;">74</span>631 Mars Hand Len…   568 2014-03-12 wheel  <span style="text-decoration: underline;">1</span>632   <span style="text-decoration: underline;">1</span>200   <span style="text-decoration: underline;">556</span>007 #4B4…  32.5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> <span style="text-decoration: underline;">74</span>632 Mars Hand Len…   568 2014-03-12 wheel  <span style="text-decoration: underline;">1</span>632   <span style="text-decoration: underline;">1</span>200   <span style="text-decoration: underline;">721</span>995 #564…  33.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> <span style="text-decoration: underline;">74</span>633 Mars Hand Len…   568 2014-03-12 wheel  <span style="text-decoration: underline;">1</span>632   <span style="text-decoration: underline;">1</span>200   <span style="text-decoration: underline;">511</span>984 #433…  32.3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> <span style="text-decoration: underline;">74</span>634 Mars Hand Len…   568 2014-03-12 wheel  <span style="text-decoration: underline;">1</span>632   <span style="text-decoration: underline;">1</span>200   <span style="text-decoration: underline;">523</span>267 #3C3…  32.3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> <span style="text-decoration: underline;">74</span>635 Mars Hand Len…   568 2014-03-12 wheel  <span style="text-decoration: underline;">1</span>632   <span style="text-decoration: underline;">1</span>200   <span style="text-decoration: underline;">580</span>228 #3D3…  32.5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> <span style="text-decoration: underline;">74</span>637 Mars Hand Len…   568 2014-03-12 wheel   192    144    <span style="text-decoration: underline;">10</span>522 #4E4…  32.3</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1,235 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: `__PANEL_KEY__` &lt;charactr&gt;</span></span></span></code></pre></div>
 <p>This is simply the same data frame but with additional information
 for how to render the Trelliscope viewer app. At a minimum we provide a
 name for the resulting display and a path to where we want the output to
@@ -176,7 +175,7 @@ use <code><a href="../reference/show_info.html">show_info()</a></code>:</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Name</span>: <span style="color: #0000BB;">"mars rover"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Description</span>: <span style="color: #0000BB;">"mars rover"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Tags</span>: <span style="font-style: italic;">none</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Key columns</span>: <span style="color: #0000BB;">"camera"</span>, <span style="color: #0000BB;">"earth_date"</span>, <span style="color: #0000BB;">"class"</span>, and <span style="color: #0000BB;">"img_src"</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Key columns</span>: <span style="color: #0000BB;">"camera"</span>, <span style="color: #0000BB;">"class"</span>, <span style="color: #0000BB;">"hex"</span>, <span style="color: #0000BB;">"img_src"</span>, and <span style="color: #0000BB;">"id"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Path</span>: <span style="color: #9E9E9E;">"mars"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Number of panels</span>: <span style="color: #0000BB;">1245</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Panels written</span>: <span style="font-style: italic;">NA</span></span></span>
@@ -184,21 +183,27 @@ use <code><a href="../reference/show_info.html">show_info()</a></code>:</p>
 <span><span class="co">#&gt; <span style="color: #9E9E9E;">    ─────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #9E9E9E;">    name       `inferred type` label </span></span></span>
 <span><span class="co">#&gt; <span style="color: #9E9E9E;">    ─────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; <span style="color: #9E9E9E;">    </span><span style="color: #BCBCBC;">1</span><span style="color: #9E9E9E;"> camera     string          [none]</span></span></span>
-<span><span class="co">#&gt; <span style="color: #9E9E9E;">    </span><span style="color: #BCBCBC;">2</span><span style="color: #9E9E9E;"> sol        number          [none]</span></span></span>
-<span><span class="co">#&gt; <span style="color: #9E9E9E;">    </span><span style="color: #BCBCBC;">3</span><span style="color: #9E9E9E;"> earth_date string          [none]</span></span></span>
-<span><span class="co">#&gt; <span style="color: #9E9E9E;">    </span><span style="color: #BCBCBC;">4</span><span style="color: #9E9E9E;"> class      string          [none]</span></span></span>
-<span><span class="co">#&gt; <span style="color: #9E9E9E;">    ─────────────────────────────────</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #9E9E9E;">    </span><span style="color: #BCBCBC;">1</span><span style="color: #9E9E9E;"> id         number          [none]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #9E9E9E;">    </span><span style="color: #BCBCBC;">2</span><span style="color: #9E9E9E;"> camera     string          [none]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #9E9E9E;">    </span><span style="color: #BCBCBC;">3</span><span style="color: #9E9E9E;"> sol        number          [none]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #9E9E9E;">    </span><span style="color: #BCBCBC;">4</span><span style="color: #9E9E9E;"> earth_date date            [none]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #9E9E9E;">    </span><span style="color: #BCBCBC;">5</span><span style="color: #9E9E9E;"> class      string          [none]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #9E9E9E;">    </span><span style="color: #BCBCBC;">6</span><span style="color: #9E9E9E;"> width      number          [none]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #9E9E9E;">    </span><span style="color: #BCBCBC;">7</span><span style="color: #9E9E9E;"> height     number          [none]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #9E9E9E;">    </span><span style="color: #BCBCBC;">8</span><span style="color: #9E9E9E;"> filesize   number          [none]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #9E9E9E;">    </span><span style="color: #949494;"># ℹ 2 more rows</span></span></span></code></pre></div>
 <p>Now to view this in the Trelliscope viewer app:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/view_trelliscope.html">view_trelliscope</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Display has not been written... writing...</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Meta definitions inferred for variables <span style="color: #0000BB;">"camera"</span>, <span style="color: #0000BB;">"sol"</span>, <span style="color: #0000BB;">"earth_date"</span>, and</span></span>
-<span><span class="co">#&gt;   <span style="color: #0000BB;">"class"</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Inferred that variable 'filesize' should be shown on log scale.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Meta definitions inferred for variables <span style="color: #0000BB;">"id"</span>, <span style="color: #0000BB;">"camera"</span>, <span style="color: #0000BB;">"sol"</span>, <span style="color: #0000BB;">"earth_date"</span>,</span></span>
+<span><span class="co">#&gt;   <span style="color: #0000BB;">"class"</span>, <span style="color: #0000BB;">"width"</span>, <span style="color: #0000BB;">"height"</span>, <span style="color: #0000BB;">"filesize"</span>, <span style="color: #0000BB;">"hex"</span>, and <span style="color: #0000BB;">"hue"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No default <span style="color: #0000BB;">"layout"</span> state supplied. <span style="font-style: italic;">Using ncol=3.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No default <span style="color: #0000BB;">"labels"</span> state supplied. <span style="font-style: italic;">Using camera, earth_date, class, img_src.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No default <span style="color: #0000BB;">"labels"</span> state supplied. <span style="font-style: italic;">Using camera, class, hex, img_src, id.</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Trelliscope written to mars/index.html Open this file or call</span></span>
 <span><span class="co">#&gt;   view_trelliscope() to view.</span></span></code></pre></div>
+<p><iframe src="mars/index.html" title="mars rover" width="700px" height="432.632880098888px" allowfullscreen style="margin: 0; padding: 0; border: 1px solid #efefef;"> </iframe></p>
 <p>You can use this viewer to interactively explore the images.</p>
 <p>There are many customization options that will be covered throughout
 this document.</p>
@@ -299,20 +304,20 @@ visualizations and cast it as a Trelliscope data frame with
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trell_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_trelliscope_df.html">as_trelliscope_df</a></span><span class="op">(</span><span class="va">p_nested</span>,</span>
 <span>  name <span class="op">=</span> <span class="st">"gapminder life expectancy"</span>, path <span class="op">=</span> <span class="st">"lifeexp"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: <span style="color: #BBBB00;">!</span> Trelliscope shoud only be rendered in RMarkdown when self_contained is false.</span></span>
-<span><span class="co">#&gt;   Trelliscope always produces auxiliary files</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/view_trelliscope.html">view_trelliscope</a></span><span class="op">(</span><span class="va">trell_df</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Display has not been written... writing...</span></span>
 <span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■                             </span>   7% | ETA: 13s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■                        </span>  23% | ETA: 11s</span></span>
+<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■                        </span>  22% | ETA: 12s</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■                   </span>  41% | ETA:  9s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■             </span>  61% | ETA:  6s</span></span>
+<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■             </span>  59% | ETA:  6s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■       </span>  81% | ETA:  3s</span></span>
+<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■        </span>  78% | ETA:  3s</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  </span>  98% | ETA:  0s</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -321,6 +326,7 @@ visualizations and cast it as a Trelliscope data frame with
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No default <span style="color: #0000BB;">"labels"</span> state supplied. <span style="font-style: italic;">Using country, continent.</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Trelliscope written to lifeexp/index.html Open this file or call</span></span>
 <span><span class="co">#&gt;   view_trelliscope() to view.</span></span></code></pre></div>
+<p><iframe src="lifeexp/index.html" title="gapminder life expectancy" width="700px" height="432.632880098888px" allowfullscreen style="margin: 0; padding: 0; border: 1px solid #efefef;"> </iframe></p>
 <p>The remainder of this tutorial will cover customizations that you can
 apply to Trelliscope data frames to provide more powerful interactions
 when viewing them in the app.</p>
@@ -431,9 +437,10 @@ files with a 2:1 aspect ratio (specifed with
 e.g. <code>width = 600</code> and <code>height = 300</code>).</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trell_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_panels.html">write_panels</a></span><span class="op">(</span><span class="va">trell_df</span>, format <span class="op">=</span> <span class="st">"svg"</span>, width <span class="op">=</span> <span class="fl">600</span>, height <span class="op">=</span> <span class="fl">300</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■                         </span>  20% | ETA:  8s</span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■                 </span>  48% | ETA:  6s</span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■         </span>  72% | ETA:  3s</span></span>
+<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■                           </span>  15% | ETA: 10s</span></span>
+<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■                   </span>  40% | ETA:  7s</span></span>
+<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■            </span>  63% | ETA:  5s</span></span>
+<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■     </span>  86% | ETA:  2s</span></span>
 <span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span></code></pre></div>
 <p>Note that we do not need to explicity call
 <code><a href="../reference/write_panels.html">write_panels()</a></code> if we are happy with the defaults (500x500px
@@ -853,7 +860,7 @@ do the following.</p>
 <code class="sourceCode R"><span><span class="va">trell_df</span> <span class="op">&lt;-</span> <span class="va">trell_df</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/add_inputs.html">add_inputs</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="../reference/input_text.html">input_text</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"comments"</span>, label <span class="op">=</span> <span class="st">"Comments about this panel"</span>,</span>
-<span>      width <span class="op">=</span> <span class="fl">100</span>, height <span class="op">=</span> <span class="fl">6</span><span class="op">)</span>,</span>
+<span>      height <span class="op">=</span> <span class="fl">6</span><span class="op">)</span>,</span>
 <span>    <span class="fu"><a href="../reference/input_radio.html">input_radio</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"looks_correct"</span>,</span>
 <span>      label <span class="op">=</span> <span class="st">"Does the data look correct?"</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no"</span>, <span class="st">"yes"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    email <span class="op">=</span> <span class="st">"johndoe123@fakemail.net"</span></span>
@@ -913,6 +920,7 @@ have made for the app to consume.</p>
 <p>Here is the final output.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/view_trelliscope.html">view_trelliscope</a></span><span class="op">(</span><span class="va">trell_df</span><span class="op">)</span></span></code></pre></div>
+<p><iframe src="lifeexp/index.html" title="gapminder life expectancy" width="700px" height="432.632880098888px" allowfullscreen style="margin: 0; padding: 0; border: 1px solid #efefef;"> </iframe></p>
 </div>
 </div>
 </div>
