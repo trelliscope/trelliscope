@@ -56,16 +56,39 @@ view_trelliscope <- function(trdf = NULL) {
     width <- cur_opts$out.width.px
     height <- cur_opts$out.height.px
     title <- trobj$get("name")
+    
+
+    cur_opts <- knitr::opts_current$get()
+    url <- paste0(trobj$path, "/index.html")
+    scale <- 1
+    if (!is.null(cur_opts$scale))
+      scale <- as.numeric(cur_opts$scale)
+    trueWidth <- cur_opts$out.width.px
+    width <- scale_w_suffix(trueWidth, scale)
+    trueHeight <- cur_opts$out.height.px
+    height <- scale_w_suffix(trueHeight, scale)
+    title <- trobj$get("name")
+
+    # NOTE: iframe tag has to be on same line as div tag or it doesn't work
     iframe <- glue::glue("
-      <iframe
-        src=\"{url}\"
-        title=\"{title}\"
-        width=\"{width}px\"
-        height=\"{height}px\"
-        allowfullscreen
-        style=\"margin: 0; padding: 0; border: 1px solid #efefef;\"
-      >
-      </iframe>
+      <div style=\"width: {trueWidth}; height: {trueHeight}; padding-bottom: 5px;\"><iframe
+          style=\"
+            transform: scale({scale});
+            width: {width};
+            height: {height};
+            margin: 0;
+            padding: 0;
+            border: 1px solid #efefef;
+            transform-origin: top left;
+          \"
+          src=\"{url}\"
+          title=\"{title}\"
+          width=\"{width}px\"
+          height=\"{height}px\"
+          allowfullscreen
+          style=\"margin: 0; padding: 0; border: 1px solid #efefef;\"
+        >
+        </iframe></div>
     ")
     return(knitr::asis_output(iframe))
   }
@@ -92,6 +115,17 @@ view_trelliscope <- function(trdf = NULL) {
 
   get_viewer()(url)
 }
+
+scale_w_suffix <- function(val, scale) {
+  # regex to get all non-numeric characters at end of string
+  suffix <- gsub("[0-9]+", "", val)
+  # remove suffix from val
+  num <- suppressWarnings(as.numeric(gsub(suffix, "", val)))
+  if (is.na(num))
+    return(val)
+  return(paste0(num / scale, suffix))
+}
+
 
 # spa = TRUE, width = NULL, height = NULL
 write_widget <- function(trobj) {
