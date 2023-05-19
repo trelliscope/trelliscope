@@ -41,8 +41,8 @@ mars_rover
 
 This data frame has a column that references images on the web. The other columns contain metadata about these images. We can create a Trelliscope data frame with this data frame with the following:
 
-```{r}
-d <- as_trelliscope_df(mars_rover, name = "mars rover", path = "mars")
+```{r mars0}
+d <- as_trelliscope_df(mars_rover, name = "mars rover")
 
 d
 ```
@@ -57,7 +57,7 @@ show_info(d)
 
 Now to view this in the Trelliscope viewer app:
 
-```{r}
+```{r mars, out.width="100%", out.height="700px", scale=0.7}
 view_trelliscope(d)
 ```
 
@@ -129,11 +129,17 @@ Note that this nested data frame of visualizations can be a useful object to wor
 
 Just as in the Mars rover example, we can view this data frame of visualizations and cast it as a Trelliscope data frame with `as_trelliscoe_df()` and view it with `view_trelliscope()`.
 
-```{r}
+```{r gap0, out.width="100%", out.height="700px", scale=0.7}
 trell_df <- as_trelliscope_df(p_nested,
-  name = "gapminder life expectancy", path = "lifeexp")
+  name = "gapminder life expectancy")
 
 view_trelliscope(trell_df)
+```
+
+```{r gap1, echo=FALSE, message=FALSE}
+# make a new copy so it gets a new ID, resulting in a separate display
+trell_df <- as_trelliscope_df(p_nested,
+  name = "gapminder life expectancy")
 ```
 
 The remainder of this tutorial will cover customizations that you can apply to Trelliscope data frames to provide more powerful interactions when viewing them in the app.
@@ -341,7 +347,7 @@ We can also set the default panel layout, for example that we wish to see 5 colu
 
 ```{r}
 trell_df <- trell_df |>
-  set_default_layout(ncol = 5)
+  set_default_layout(ncol = 4)
 ```
 
 #### `set_default_sort()`
@@ -447,6 +453,6 @@ This writes the panels if they haven't been written yet and then writes out a JS
 
 Here is the final output.
 
-```{r}
+```{r gap, out.width="100%", out.height="700px", scale=0.6}
 view_trelliscope(trell_df)
 ```

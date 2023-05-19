@@ -2,6 +2,7 @@ url: https://trelliscope.github.io/trelliscope/
 # url: https://trelliscope.org
 template:
   bootstrap: 5
+  # bootswatch: flatly
 
 home:
   title: Interactively Explore Data Frames of Visualizations
