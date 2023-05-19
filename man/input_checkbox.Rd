@@ -26,7 +26,7 @@ library(dplyr)
 panel_dat <- (
   ggplot(gapminder, aes(year, lifeExp)) +
     geom_point() +
-    facet_panels()
+    facet_panels(~ country + continent)
   ) |>
   nest_panels()
 
