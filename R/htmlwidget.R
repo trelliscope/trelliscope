@@ -56,10 +56,12 @@ view_trelliscope <- function(trdf = NULL) {
     width <- cur_opts$out.width.px
     height <- cur_opts$out.height.px
     title <- trobj$get("name")
-    
 
     cur_opts <- knitr::opts_current$get()
     url <- paste0(trobj$path, "/index.html")
+    # fix for pkgdown github action:
+    if (grepl("/home/runner/work/.*/docs/articles/", url))
+      url <- gsub("/home/runner/work/.*/docs/articles/(.*)", "\\1", url)
     scale <- 1
     if (!is.null(cur_opts$scale))
       scale <- as.numeric(cur_opts$scale)
