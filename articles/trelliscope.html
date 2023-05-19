@@ -137,10 +137,9 @@ captured by the Mars rover Curiosity.</p>
 other columns contain metadata about these images. We can create a
 Trelliscope data frame with this data frame with the following:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_trelliscope_df.html">as_trelliscope_df</a></span><span class="op">(</span><span class="va">mars_rover</span>, name <span class="op">=</span> <span class="st">"mars rover"</span>, path <span class="op">=</span> <span class="st">"mars"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_trelliscope_df.html">as_trelliscope_df</a></span><span class="op">(</span><span class="va">mars_rover</span>, name <span class="op">=</span> <span class="st">"mars rover"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using <span style="color: #00BB00;">img_src</span> as image column</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using the variables <span style="color: #0000BB;">"camera"</span>, <span style="color: #0000BB;">"class"</span>, <span style="color: #0000BB;">"hex"</span>, <span style="color: #0000BB;">"img_src"</span>, and <span style="color: #0000BB;">"id"</span> to uniquely</span></span>
-<span><span class="co">#&gt;   identify each row of the data.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using the variable <span style="color: #0000BB;">"id"</span> to uniquely identify each row of the data.</span></span>
 <span></span>
 <span><span class="va">d</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Trelliscope data frame. Call show_info() for more information</span></span>
@@ -175,8 +174,9 @@ use <code><a href="../reference/show_info.html">show_info()</a></code>:</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Name</span>: <span style="color: #0000BB;">"mars rover"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Description</span>: <span style="color: #0000BB;">"mars rover"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Tags</span>: <span style="font-style: italic;">none</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Key columns</span>: <span style="color: #0000BB;">"camera"</span>, <span style="color: #0000BB;">"class"</span>, <span style="color: #0000BB;">"hex"</span>, <span style="color: #0000BB;">"img_src"</span>, and <span style="color: #0000BB;">"id"</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Path</span>: <span style="color: #9E9E9E;">"mars"</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Key columns</span>: <span style="color: #0000BB;">"id"</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Path</span>:</span></span>
+<span><span class="co">#&gt;   <span style="color: #9E9E9E;">"/home/runner/work/trelliscope/trelliscope/docs/articles/trelliscope_files/figure-html//mars0"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Number of panels</span>: <span style="color: #0000BB;">1245</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Panels written</span>: <span style="font-style: italic;">NA</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Metadata variables that will be inferred:</span></span>
@@ -200,10 +200,22 @@ use <code><a href="../reference/show_info.html">show_info()</a></code>:</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Meta definitions inferred for variables <span style="color: #0000BB;">"id"</span>, <span style="color: #0000BB;">"camera"</span>, <span style="color: #0000BB;">"sol"</span>, <span style="color: #0000BB;">"earth_date"</span>,</span></span>
 <span><span class="co">#&gt;   <span style="color: #0000BB;">"class"</span>, <span style="color: #0000BB;">"width"</span>, <span style="color: #0000BB;">"height"</span>, <span style="color: #0000BB;">"filesize"</span>, <span style="color: #0000BB;">"hex"</span>, and <span style="color: #0000BB;">"hue"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No default <span style="color: #0000BB;">"layout"</span> state supplied. <span style="font-style: italic;">Using ncol=3.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No default <span style="color: #0000BB;">"labels"</span> state supplied. <span style="font-style: italic;">Using camera, class, hex, img_src, id.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Trelliscope written to mars/index.html Open this file or call</span></span>
-<span><span class="co">#&gt;   view_trelliscope() to view.</span></span></code></pre></div>
-<p><iframe src="mars/index.html" title="mars rover" width="700px" height="432.632880098888px" allowfullscreen style="margin: 0; padding: 0; border: 1px solid #efefef;"> </iframe></p>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No default <span style="color: #0000BB;">"labels"</span> state supplied. <span style="font-style: italic;">Using id.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Trelliscope written to</span></span>
+<span><span class="co">#&gt;   /home/runner/work/trelliscope/trelliscope/docs/articles/trelliscope_files/figure-html//mars0/index.html</span></span>
+<span><span class="co">#&gt;   Open this file or call view_trelliscope() to view.</span></span></code></pre></div>
+<div style="width: 100%; height: 700px; padding-bottom: 5px;">
+<iframe style="
+        transform: scale(0.7);
+        width: 142.857142857143%;
+        height: 1000px;
+        margin: 0;
+        padding: 0;
+        border: 1px solid #efefef;
+        transform-origin: top left;
+      " src="/home/runner/work/trelliscope/trelliscope/docs/articles/trelliscope_files/figure-html//mars0/index.html" title="mars rover" width="142.857142857143%px" height="1000pxpx" allowfullscreen>
+</iframe>
+</div>
 <p>You can use this viewer to interactively explore the images.</p>
 <p>There are many customization options that will be covered throughout
 this document.</p>
@@ -294,7 +306,7 @@ wanted to see the generated plot for the second row, Albania, you would
 run the following code.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_nested</span><span class="op">$</span><span class="va">panel</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
-<p><img src="trelliscope_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
+<p><img src="trelliscope_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 <p>Note that this nested data frame of visualizations can be a useful
 object to work with outside of using it with Trelliscope.</p>
 <p>Just as in the Mars rover example, we can view this data frame of
@@ -303,30 +315,40 @@ visualizations and cast it as a Trelliscope data frame with
 <code><a href="../reference/view_trelliscope.html">view_trelliscope()</a></code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trell_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_trelliscope_df.html">as_trelliscope_df</a></span><span class="op">(</span><span class="va">p_nested</span>,</span>
-<span>  name <span class="op">=</span> <span class="st">"gapminder life expectancy"</span>, path <span class="op">=</span> <span class="st">"lifeexp"</span><span class="op">)</span></span>
+<span>  name <span class="op">=</span> <span class="st">"gapminder life expectancy"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/view_trelliscope.html">view_trelliscope</a></span><span class="op">(</span><span class="va">trell_df</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Display has not been written... writing...</span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■                             </span>   7% | ETA: 13s</span></span>
+<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■                             </span>   8% | ETA: 12s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■                        </span>  22% | ETA: 12s</span></span>
+<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■                      </span>  29% | ETA: 10s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■                   </span>  41% | ETA:  9s</span></span>
+<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■                </span>  50% | ETA:  7s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■             </span>  59% | ETA:  6s</span></span>
+<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■          </span>  71% | ETA:  4s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■        </span>  78% | ETA:  3s</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  </span>  98% | ETA:  0s</span></span>
+<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   </span>  93% | ETA:  1s</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Meta definitions inferred for variables <span style="color: #0000BB;">"country"</span> and <span style="color: #0000BB;">"continent"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No default <span style="color: #0000BB;">"layout"</span> state supplied. <span style="font-style: italic;">Using ncol=3.</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No default <span style="color: #0000BB;">"labels"</span> state supplied. <span style="font-style: italic;">Using country, continent.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Trelliscope written to lifeexp/index.html Open this file or call</span></span>
-<span><span class="co">#&gt;   view_trelliscope() to view.</span></span></code></pre></div>
-<p><iframe src="lifeexp/index.html" title="gapminder life expectancy" width="700px" height="432.632880098888px" allowfullscreen style="margin: 0; padding: 0; border: 1px solid #efefef;"> </iframe></p>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Trelliscope written to</span></span>
+<span><span class="co">#&gt;   /home/runner/work/trelliscope/trelliscope/docs/articles/trelliscope_files/figure-html//gap0/index.html</span></span>
+<span><span class="co">#&gt;   Open this file or call view_trelliscope() to view.</span></span></code></pre></div>
+<div style="width: 100%; height: 700px; padding-bottom: 5px;">
+<iframe style="
+        transform: scale(0.7);
+        width: 142.857142857143%;
+        height: 1000px;
+        margin: 0;
+        padding: 0;
+        border: 1px solid #efefef;
+        transform-origin: top left;
+      " src="/home/runner/work/trelliscope/trelliscope/docs/articles/trelliscope_files/figure-html//gap0/index.html" title="gapminder life expectancy" width="142.857142857143%px" height="1000pxpx" allowfullscreen>
+</iframe>
+</div>
 <p>The remainder of this tutorial will cover customizations that you can
 apply to Trelliscope data frames to provide more powerful interactions
 when viewing them in the app.</p>
@@ -437,10 +459,10 @@ files with a 2:1 aspect ratio (specifed with
 e.g. <code>width = 600</code> and <code>height = 300</code>).</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trell_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_panels.html">write_panels</a></span><span class="op">(</span><span class="va">trell_df</span>, format <span class="op">=</span> <span class="st">"svg"</span>, width <span class="op">=</span> <span class="fl">600</span>, height <span class="op">=</span> <span class="fl">300</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■                           </span>  15% | ETA: 10s</span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■                   </span>  40% | ETA:  7s</span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■            </span>  63% | ETA:  5s</span></span>
-<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■     </span>  86% | ETA:  2s</span></span>
+<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■                            </span>  11% | ETA:  8s</span></span>
+<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■                   </span>  41% | ETA:  6s</span></span>
+<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■           </span>  68% | ETA:  3s</span></span>
+<span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  </span>  95% | ETA:  1s</span></span>
 <span><span class="co">#&gt; Writing panels <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span></code></pre></div>
 <p>Note that we do not need to explicity call
 <code><a href="../reference/write_panels.html">write_panels()</a></code> if we are happy with the defaults (500x500px
@@ -656,7 +678,8 @@ metadata variable specifications:</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Description</span>: <span style="color: #0000BB;">"gapminder life expectancy"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Tags</span>: <span style="font-style: italic;">none</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Key columns</span>: <span style="color: #0000BB;">"country"</span> and <span style="color: #0000BB;">"continent"</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Path</span>: <span style="color: #9E9E9E;">"lifeexp"</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Path</span>:</span></span>
+<span><span class="co">#&gt;   <span style="color: #9E9E9E;">"/home/runner/work/trelliscope/trelliscope/docs/articles/trelliscope_files/figure-html//gap1"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Number of panels</span>: <span style="color: #0000BB;">123</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Panels written</span>: <span style="font-style: italic;">yes</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Defined metadata variables:</span></span>
@@ -705,7 +728,8 @@ the values indicating the labels. For example:</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Description</span>: <span style="color: #0000BB;">"gapminder life expectancy"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Tags</span>: <span style="font-style: italic;">none</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Key columns</span>: <span style="color: #0000BB;">"country"</span> and <span style="color: #0000BB;">"continent"</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Path</span>: <span style="color: #9E9E9E;">"lifeexp"</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Path</span>:</span></span>
+<span><span class="co">#&gt;   <span style="color: #9E9E9E;">"/home/runner/work/trelliscope/trelliscope/docs/articles/trelliscope_files/figure-html//gap1"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Number of panels</span>: <span style="color: #0000BB;">123</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Panels written</span>: <span style="font-style: italic;">yes</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Defined metadata variables:</span></span>
@@ -760,7 +784,7 @@ is computed based on the size of the user’s browser window and the
 aspect ratio of the panels).</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trell_df</span> <span class="op">&lt;-</span> <span class="va">trell_df</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/set_default_layout.html">set_default_layout</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="../reference/set_default_layout.html">set_default_layout</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="set_default_sort">
@@ -879,7 +903,8 @@ Trelliscope data frame:</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Description</span>: <span style="color: #0000BB;">"gapminder life expectancy"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Tags</span>: <span style="font-style: italic;">none</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Key columns</span>: <span style="color: #0000BB;">"country"</span> and <span style="color: #0000BB;">"continent"</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Path</span>: <span style="color: #9E9E9E;">"lifeexp"</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Path</span>:</span></span>
+<span><span class="co">#&gt;   <span style="color: #9E9E9E;">"/home/runner/work/trelliscope/trelliscope/docs/articles/trelliscope_files/figure-html//gap1"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Number of panels</span>: <span style="color: #0000BB;">123</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Panels written</span>: <span style="font-style: italic;">yes</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Defined metadata variables:</span></span>
@@ -912,15 +937,27 @@ out as specified before with <code><a href="../reference/write_trelliscope.html"
 <span><span class="co">#&gt;   expectancy (min &gt;= 60)'. <span style="font-style: italic;">Using ncol=3.</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No default <span style="color: #0000BB;">"labels"</span> state supplied for view 'Countries with high life</span></span>
 <span><span class="co">#&gt;   expectancy (min &gt;= 60)'. <span style="font-style: italic;">Using country, continent.</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Trelliscope written to lifeexp/index.html Open this file or call</span></span>
-<span><span class="co">#&gt;   view_trelliscope() to view.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Trelliscope written to</span></span>
+<span><span class="co">#&gt;   /home/runner/work/trelliscope/trelliscope/docs/articles/trelliscope_files/figure-html//gap1/index.html</span></span>
+<span><span class="co">#&gt;   Open this file or call view_trelliscope() to view.</span></span></code></pre></div>
 <p>This writes the panels if they haven’t been written yet and then
 writes out a JSON representation of all of the other specifications we
 have made for the app to consume.</p>
 <p>Here is the final output.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/view_trelliscope.html">view_trelliscope</a></span><span class="op">(</span><span class="va">trell_df</span><span class="op">)</span></span></code></pre></div>
-<p><iframe src="lifeexp/index.html" title="gapminder life expectancy" width="700px" height="432.632880098888px" allowfullscreen style="margin: 0; padding: 0; border: 1px solid #efefef;"> </iframe></p>
+<div style="width: 100%; height: 700px; padding-bottom: 5px;">
+<iframe style="
+        transform: scale(0.6);
+        width: 166.666666666667%;
+        height: 1166.66666666667px;
+        margin: 0;
+        padding: 0;
+        border: 1px solid #efefef;
+        transform-origin: top left;
+      " src="/home/runner/work/trelliscope/trelliscope/docs/articles/trelliscope_files/figure-html//gap1/index.html" title="gapminder life expectancy" width="166.666666666667%px" height="1166.66666666667pxpx" allowfullscreen>
+</iframe>
+</div>
 </div>
 </div>
 </div>

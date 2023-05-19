@@ -1,0 +1,140 @@
+__loadDisplayInfo__6d58b2ce({
+  "name": "mars rover",
+  "description": "mars rover",
+  "tags": [],
+  "keycols": ["id"],
+  "keysig": null,
+  "metas": [
+    {
+      "log": false,
+      "locale": true,
+      "digits": 0,
+      "maxnchar": 6,
+      "sortable": true,
+      "filterable": true,
+      "tags": [],
+      "label": "id",
+      "type": "number",
+      "varname": "id"
+    },
+    {
+      "maxnchar": 21,
+      "sortable": true,
+      "filterable": true,
+      "tags": [],
+      "label": "camera",
+      "type": "string",
+      "varname": "camera"
+    },
+    {
+      "log": false,
+      "locale": true,
+      "digits": 0,
+      "maxnchar": 4,
+      "sortable": true,
+      "filterable": true,
+      "tags": [],
+      "label": "sol",
+      "type": "number",
+      "varname": "sol"
+    },
+    {
+      "maxnchar": 10,
+      "sortable": true,
+      "filterable": true,
+      "tags": [],
+      "label": "earth_date",
+      "type": "date",
+      "varname": "earth_date"
+    },
+    {
+      "maxnchar": 20,
+      "sortable": true,
+      "filterable": true,
+      "tags": [],
+      "label": "class",
+      "type": "string",
+      "varname": "class"
+    },
+    {
+      "log": false,
+      "locale": true,
+      "digits": 0,
+      "maxnchar": 4,
+      "sortable": true,
+      "filterable": true,
+      "tags": [],
+      "label": "width",
+      "type": "number",
+      "varname": "width"
+    },
+    {
+      "log": false,
+      "locale": true,
+      "digits": 0,
+      "maxnchar": 4,
+      "sortable": true,
+      "filterable": true,
+      "tags": [],
+      "label": "height",
+      "type": "number",
+      "varname": "height"
+    },
+    {
+      "log": true,
+      "locale": true,
+      "digits": 0,
+      "maxnchar": 7,
+      "sortable": true,
+      "filterable": true,
+      "tags": [],
+      "label": "filesize",
+      "type": "number",
+      "varname": "filesize"
+    },
+    {
+      "maxnchar": 7,
+      "sortable": true,
+      "filterable": true,
+      "tags": [],
+      "label": "hex",
+      "type": "string",
+      "varname": "hex"
+    },
+    {
+      "log": false,
+      "locale": true,
+      "digits": 2,
+      "maxnchar": 9,
+      "sortable": true,
+      "filterable": true,
+      "tags": [],
+      "label": "hue",
+      "type": "number",
+      "varname": "hue"
+    }
+  ],
+  "state": {
+    "layout": {
+      "viewtype": "grid",
+      "page": 1,
+      "ncol": 3,
+      "type": "layout"
+    },
+    "labels": {
+      "varnames": ["id"],
+      "type": "labels"
+    },
+    "sort": [],
+    "filter": []
+  },
+  "views": [],
+  "inputs": null,
+  "paneltype": "img",
+  "panelformat": null,
+  "panelaspect": 1.5,
+  "panelsource": {
+    "type": "file"
+  },
+  "thumbnailurl": "http://mars.jpl.nasa.gov/msl-raw-images/msss/00565/mhli/0565MH0003250050201853I01_DXXX.jpg"
+})

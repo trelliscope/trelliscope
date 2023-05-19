@@ -13,13 +13,16 @@
     <loc>https://trelliscope.github.io/trelliscope/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/lifeexp/index.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/mars/index.html</loc>
-  </url>
-  <url>
     <loc>https://trelliscope.github.io/trelliscope/articles/trelliscope.html</loc>
+  </url>
+  <url>
+    <loc>https://trelliscope.github.io/trelliscope/articles/trelliscope_files/figure-html/gap0/index.html</loc>
+  </url>
+  <url>
+    <loc>https://trelliscope.github.io/trelliscope/articles/trelliscope_files/figure-html/gap1/index.html</loc>
+  </url>
+  <url>
+    <loc>https://trelliscope.github.io/trelliscope/articles/trelliscope_files/figure-html/mars0/index.html</loc>
   </url>
   <url>
     <loc>https://trelliscope.github.io/trelliscope/authors.html</loc>
