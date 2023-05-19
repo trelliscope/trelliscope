@@ -17,7 +17,7 @@ add_input_class <- function(x) {
 #' panel_dat <- (
 #'   ggplot(gapminder, aes(year, lifeExp)) +
 #'     geom_point() +
-#'     facet_panels()
+#'     facet_panels(~ country + continent)
 #'   ) |>
 #'   nest_panels()
 #'
@@ -57,7 +57,7 @@ input_number <- function(
 #' panel_dat <- (
 #'   ggplot(gapminder, aes(year, lifeExp)) +
 #'     geom_point() +
-#'     facet_panels()
+#'     facet_panels(~ country + continent)
 #'   ) |>
 #'   nest_panels()
 #'
@@ -97,7 +97,7 @@ input_radio <- function(
 #' panel_dat <- (
 #'   ggplot(gapminder, aes(year, lifeExp)) +
 #'     geom_point() +
-#'     facet_panels()
+#'     facet_panels(~ country + continent)
 #'   ) |>
 #'   nest_panels()
 #'
@@ -137,7 +137,7 @@ input_checkbox <- function(
 #' panel_dat <- (
 #'   ggplot(gapminder, aes(year, lifeExp)) +
 #'     geom_point() +
-#'     facet_panels()
+#'     facet_panels(~ country + continent)
 #'   ) |>
 #'   nest_panels()
 #'
@@ -178,7 +178,7 @@ input_select <- function(
 #' panel_dat <- (
 #'   ggplot(gapminder, aes(year, lifeExp)) +
 #'     geom_point() +
-#'     facet_panels()
+#'     facet_panels(~ country + continent)
 #'   ) |>
 #'   nest_panels()
 #'
@@ -218,7 +218,7 @@ input_multiselect <- function(
 #' panel_dat <- (
 #'   ggplot(gapminder, aes(year, lifeExp)) +
 #'     geom_point() +
-#'     facet_panels()
+#'     facet_panels(~ country + continent)
 #'   ) |>
 #'   nest_panels()
 #'
@@ -230,7 +230,7 @@ input_multiselect <- function(
 #'       name = "Text Input",
 #'       label = "A space to add custom text input")
 #'     ),
-#'     email = "johndoe@@email.com"
+#'     email = "johndoe@email.com"
 #' )
 #' }
 #' @family {input types}
