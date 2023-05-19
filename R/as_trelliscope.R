@@ -72,7 +72,6 @@ as_trelliscope_df <- function(
   }
 
   if (is.null(server)) {
-    # TODO: need to auto-detect img panel here...
     panel_col <- check_and_get_panel_col(df)
     if (length(panel_col) == 0) {
       panel_col <- find_img_col(df)
@@ -212,12 +211,14 @@ get_keycols <- function(df) {
     nms <- names(df)
     # use character columns first to find unique, then numeric
     char_cols <- which(unname(unlist(lapply(df, function(x)
-      inherits(x, c("character", "factor"))))))
+      inherits(x, c("character", "factor", "integer", "Date", "POSIXct")) &&
+      !inherits(x, "img_panel")))))
     num_cols <- which(unname(unlist(lapply(df, function(x)
       is.numeric(x)))))
+    num_cols <- setdiff(num_cols, char_cols)
     keycols <- character(0)
     all_cols <- c(char_cols, num_cols)
-    for (ii in all_cols) {
+    for (ii in seq_along(all_cols)) {
       if (nrow(dplyr::distinct(df[utils::head(all_cols, ii)])) == n) {
         keycols <- nms[utils::head(all_cols, ii)]
         break
