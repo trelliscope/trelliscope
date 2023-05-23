@@ -1,31 +1,43 @@
-#' Set up a local websocket server
-#' @param d A data frame from which subsets will be extracted and plots will
-#'  be made. Should be a superset of the summary dataset being cast as a
-#'  trelliscope data frame.
-#' @param plot_fn A function that produces a panel from a given subset of `d`
+#' Add a plot column to a dataset
+#' @param plot_fn A function that produces a panel from a given subset of `data`
+#' @param data A data frame from which subsets will be extracted and plots will
+#'   be made. Should be a superset of the summary dataset to which this plot
+#'   column is being added.
+#' @param by A list of variables found in both `data` and in the summary
+#'   dataset to which this plot column is being added. This is used to specify
+#'   which subset of `data` to apply for a given plot.
 #' @param width Width in pixels of each panel.
 #' @param height Height in pixels of each panel.
 #' @param format The format of the panels the server will provide. Can be
 #'   one of "png" , "svg", or "html".
 #' @param force Should server force panels to be written? If `FALSE`, if the
 #'   panel has already been generated, that is what will be made available.
-#' @importFrom httpuv startServer randomPort
+#' @param prerender If "TRUE", the plots must be rendered prior to viewing the
+#'   display. If "FALSE", a local R websockets server will be created and plots
+#'   will be rendered on the fly when requested by the app. The latter is only
+#'   available when using Trelliscope locally.
 #' @export
-local_websocket_server <- function(
-  d, plot_fn, width = 500, height = 500, format = "png", force = FALSE
+plot_column <- function(
+  plot_fn, data, by, width = 500, height = 500, format = "png",
+  force = FALSE, prerender = TRUE
 ) {
-  list(
-    d = d,
-    plot_fn = plot_fn,
-    width = width,
-    height = height,
-    format = "png",
-    force = force,
-    type = "local_websocket"
+  structure(
+    "[not generated]",
+      plot_column = list(
+      d = data,
+      plot_fn = plot_fn,
+      width = width,
+      height = height,
+      format = "png",
+      force = force,
+      prerender = prerender
+    ),
+    class = "plot_column"
   )
 }
 
 #' @importFrom dplyr .data
+#' @importFrom httpuv startServer randomPort
 get_plot <- function(
   row, d, ds, plot_fn, key_cols, base_path, panel_path, rel_path, width, height,
   format, force

@@ -25,12 +25,15 @@ nest_panels(
 to not be nested in the data. If specified, cannot vary within the
 each combination of the specified facet variables.}
 
-\item{as_plotly}{should the panels be written as plotly objects?}
+\item{as_plotly}{Should the panels be written as plotly objects?}
 
-\item{plotly_args}{optional named list of arguments to send to \code{ggplotly}}
+\item{plotly_args}{Optional named list of arguments to send to \code{ggplotly}}
 
-\item{plotly_cfg}{optional named list of arguments to send to plotly's
+\item{plotly_cfg}{Optional named list of arguments to send to plotly's
 `config`` method.}
+
+\item{trelliscope}{Should the resulting data frame be made ready for use
+in a trelliscope display? Defalt is \code{TRUE}.}
 }
 \description{
 Render the panels of a trelliscope display

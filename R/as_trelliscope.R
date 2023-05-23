@@ -51,15 +51,12 @@
 #' # images instead of conventional ggplot objects
 #' \dontrun{
 #' }
-#' @param server An experimental feature that allows your local R session to
-#'   act as a server so that panels do not need to be pre-rendered. See
-#'   [`local_websocket_server()`].
 #' @export
 #' @importFrom utils head
 #' @importFrom dplyr group_cols
 as_trelliscope_df <- function(
   df, name = NULL, description = name, key_cols = NULL, tags = NULL,
-  path = NULL, force_plot = FALSE, key_sig = NULL, server = NULL
+  path = NULL, force_plot = FALSE, key_sig = NULL
 ) {
   if (inherits(df, "facet_panels")) {
     # msg("
@@ -71,27 +68,6 @@ as_trelliscope_df <- function(
     df <- nest_panels(df)
   }
 
-  if (is.null(server)) {
-    panel_col <- check_and_get_panel_col(df)
-    if (length(panel_col) == 0) {
-      panel_col <- find_img_col(df)
-      if (length(panel_col) == 1) {
-        is_remote <- all(grepl("^http", df[[panel_col]]))
-        if (is_remote) {
-          df[[panel_col]] <- img_panel(df[[panel_col]])
-        } else {
-          df[[panel_col]] <- img_panel_local(df[[panel_col]])
-        }
-      }
-    }
-    assert(length(panel_col) == 1,
-      msg = paste0("Couldn't find a column in the trelliscope input ",
-        "data frame that references a plot or image."))
-  } else {
-    df[["__server__"]] <- as.integer(NA)
-    panel_col <- "__server__"
-    # TODO: check server object
-  }
   if (is.null(key_cols))
     key_cols <- get_keycols(df)
 
@@ -139,62 +115,16 @@ as_trelliscope_df <- function(
 
   obj <- Display$new(name = name, description = description,
     keycols = key_cols, path = path, force_plot = force_plot,
-    panel_col = panel_col, tags = tags, keysig = key_sig, server = server)
+    tags = tags, keysig = key_sig)
   class(obj) <- c("R6", "trelliscope_object")
 
   attr(df, "trelliscope") <- obj
   if (!inherits(df, "trelliscope"))
     class(df) <- c("trelliscope", class(df))
 
-  df <- infer_panel_type(df)
+  df <- infer_panel_meta(df)
 
   df
-}
-
-check_and_get_panel_col <- function(df) {
-  # look for a column with one of the following classes:
-  # - img_panel (which includes img_panel_local)
-  # - nested_panels
-  panel_col_idx <- which(unlist(lapply(df, function(a)
-    inherits(a, c("img_panel", "iframe_panel", "nested_panels")))))
-  if (length(panel_col_idx) > 1) {
-    msg("Found multiple columns that indicate a panel, using the first \\
-      one found: '{names(panel_col_idx)[1]}")
-    panel_col_idx <- panel_col_idx[1]
-  }
-  names(panel_col_idx)
-}
-
-infer_panel_type <- function(trdf) {
-  trobj <- attr(trdf, "trelliscope")$clone()
-  pnls <- trdf[[trobj$panel_col]]
-  if (trobj$panel_col == "__server__") {
-    trobj$set("paneltype",
-      ifelse(tolower(trobj$server$format) == "html", "iframe", "img"))
-  } else if (inherits(pnls, "nested_panels")) {
-    panel1 <- pnls[[1]]
-    if (inherits(panel1, "htmlwidget")) {
-      trobj$set("paneltype", "iframe")
-    } else  {
-      trobj$set("paneltype", "img")
-    }
-  } else if (inherits(pnls, "img_panel")) {
-      trobj$set("paneltype", "img")
-      trobj$set("panelaspect", attr(pnls, "aspect_ratio"))
-      trobj$panels_written <- NA
-      trdf <- dplyr::rename(trdf, "__PANEL_KEY__" := trobj$panel_col)
-      trobj$panel_col <- "__PANEL_KEY__"
-  } else if (inherits(pnls, "iframe_panel")) {
-      trobj$set("paneltype", "iframe")
-      trobj$set("panelaspect", attr(pnls, "aspect_ratio"))
-      trobj$panels_written <- NA
-      trdf <- dplyr::rename(trdf, "__PANEL_KEY__" := trobj$panel_col)
-      trobj$panel_col <- "__PANEL_KEY__"
-  } else {
-    assert(FALSE, "Could not infer panel type")
-  }
-  attr(trdf, "trelliscope") <- trobj
-  trdf
 }
 
 get_keycols <- function(df) {

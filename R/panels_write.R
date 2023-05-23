@@ -48,75 +48,77 @@ write_panels <- function(
   # if (inherits(df, "facet_panels"))
   #   df <- nest_panels(df)
 
-  panel_col <- check_and_get_panel_col(trdf)
+  # TODO: revamp all of this!
 
-  panel_keys <- get_panel_paths_from_keys(trdf, format)
+  # panel_col <- check_and_get_panel_col(trdf)
 
-  panel_path <- file.path(trobj$get_display_path(), "panels")
+  # panel_keys <- get_panel_paths_from_keys(trdf, format)
 
-  if (!dir.exists(panel_path)) {
-    res <- dir.create(panel_path, recursive = TRUE)
-    assert(res == TRUE,
-      "Could not create directory for panels: {panel_path}")
-  }
+  # panel_path <- file.path(trobj$get_display_path(), "panels")
 
-  html_head <- NULL
-  if (inherits(trdf[[panel_col]][[1]], "htmlwidget")) {
-    dir.create(file.path(app_path, "libs"), showWarnings = FALSE)
-    html_head <- write_htmlwidget_deps(
-      trdf[[panel_col]][[1]], app_path, panel_path)
-    format <- "html"
-  }
+  # if (!dir.exists(panel_path)) {
+  #   res <- dir.create(panel_path, recursive = TRUE)
+  #   assert(res == TRUE,
+  #     "Could not create directory for panels: {panel_path}")
+  # }
 
-  cur_hash <- hash(c(height, width, format, trdf[[panel_col]]))
+  # html_head <- NULL
+  # if (inherits(trdf[[panel_col]][[1]], "htmlwidget")) {
+  #   dir.create(file.path(app_path, "libs"), showWarnings = FALSE)
+  #   html_head <- write_htmlwidget_deps(
+  #     trdf[[panel_col]][[1]], app_path, panel_path)
+  #   format <- "html"
+  # }
 
-  trdf[["__PANEL_KEY__"]] <- panel_keys
-  if (is.null(trobj$get("keysig")))
-    trobj$set("keysig", hash(sort(panel_keys)))
+  # cur_hash <- hash(c(height, width, format, trdf[[panel_col]]))
 
-  trobj$set("panelformat", format)
+  # trdf[["__PANEL_KEY__"]] <- panel_keys
+  # if (is.null(trobj$get("keysig")))
+  #   trobj$set("keysig", hash(sort(panel_keys)))
 
-  if (!force && file.exists(file.path(panel_path, "hash"))) {
-    prev_hash <- readLines(file.path(panel_path, "hash"), warn = FALSE)[1]
-    # need to grab aspect ratio from previous
-    ff <- list.files(trobj$get_display_path(),
-      pattern = "displayInfo\\.json", full.names = TRUE)
-    if (prev_hash == cur_hash && length(ff) > 0) {
-      msg("Current panel content matches panels that have already been \\
-        written. Skipping panel writing. To override this, use \\
-        write_panels(..., force = TRUE).")
-      trobj$panels_written <- TRUE
-      trobj$set("panelaspect", read_json_p(ff)$panelaspect)
-      attr(trdf, "trelliscope") <- trobj
-      return(trdf)
-    }
-  }
+  # trobj$set("panelformat", format)
 
-  cli::cli_progress_bar("Writing panels", total = length(panel_keys))
+  # if (!force && file.exists(file.path(panel_path, "hash"))) {
+  #   prev_hash <- readLines(file.path(panel_path, "hash"), warn = FALSE)[1]
+  #   # need to grab aspect ratio from previous
+  #   ff <- list.files(trobj$get_display_path(),
+  #     pattern = "displayInfo\\.json", full.names = TRUE)
+  #   if (prev_hash == cur_hash && length(ff) > 0) {
+  #     msg("Current panel content matches panels that have already been \\
+  #       written. Skipping panel writing. To override this, use \\
+  #       write_panels(..., force = TRUE).")
+  #     trobj$panels_written <- TRUE
+  #     trobj$set("panelaspect", read_json_p(ff)$panelaspect)
+  #     attr(trdf, "trelliscope") <- trobj
+  #     return(trdf)
+  #   }
+  # }
 
-  for (ii in seq_along(panel_keys)) {
-    cli::cli_progress_update()
-    write_panel(
-      x = trdf[[panel_col]][[ii]],
-      key = panel_keys[ii],
-      base_path = app_path,
-      panel_path = panel_path,
-      width = width,
-      height = height,
-      format = format,
-      html_head = html_head,
-      ...
-    )
-  }
-  cli::cli_progress_done()
+  # cli::cli_progress_bar("Writing panels", total = length(panel_keys))
 
-  cat(cur_hash, file = file.path(panel_path, "hash"))
+  # for (ii in seq_along(panel_keys)) {
+  #   cli::cli_progress_update()
+  #   write_panel(
+  #     x = trdf[[panel_col]][[ii]],
+  #     key = panel_keys[ii],
+  #     base_path = app_path,
+  #     panel_path = panel_path,
+  #     width = width,
+  #     height = height,
+  #     format = format,
+  #     html_head = html_head,
+  #     ...
+  #   )
+  # }
+  # cli::cli_progress_done()
 
-  trobj$panels_written <- TRUE
-  trobj$set("panelaspect", width / height)
+  # cat(cur_hash, file = file.path(panel_path, "hash"))
 
-  attr(trdf, "trelliscope") <- trobj
-  trdf
+  # trobj$panels_written <- TRUE
+  # trobj$set("panelaspect", width / height)
+
+  # attr(trdf, "trelliscope") <- trobj
+  # trdf
 }
 
 get_panel_paths_from_keys <- function(trdf, format) {

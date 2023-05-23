@@ -49,6 +49,7 @@ import {
   InputClientSideStorage,
   InputEmailFeedback,
   PanelSource,
+  PanelMeta,
 } from './classes';
 
 // const prefix = 'inst/types/json'
@@ -216,9 +217,16 @@ const inputs = new Inputs({
 });
 const panelsource = new PanelSource('file');
 
+const panelvar = new PanelMeta({
+  varname: 'panel',
+  paneltype: 'img',
+  format: 'svg',
+  source: panelsource,
+  aspect: 1
+});
+
 const displ = new Display({
   name: 'test display',
-  paneltype: 'img',
   keycols: ['a', 'b'],
   keysig: 'asdf',
   metas: [
@@ -228,9 +236,6 @@ const displ = new Display({
   inputs,
   state: displst,
   views: [view, view2],
-  panelformat: 'svg',
   thumbnailurl: 'asdf.svg',
-  panelaspect: 1,
-  panelsource
+  primaryPanel: 'panel'
 });
-writeCase(displ, 'displ');

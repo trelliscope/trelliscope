@@ -3,6 +3,7 @@ add_meta_class <- function(x) {
   x
 }
 
+
 #' Specify a "string" metadata variable
 #' @param varname Name of the variable.
 #' @param label Description of the variable.
@@ -64,6 +65,42 @@ meta_string <- function(
     varname = varname,
     label = label,
     tags = tags
+  ) |>
+  add_meta_class()
+}
+
+#' Specify a "string" metadata variable
+#' @inheritParams meta_string
+#' @param type The type of panel. One of "img" or "iframe".
+#' @param aspect The aspect ratio at which the panel should be displayed.
+#'   Must be a positive number indicating width / height.
+#' @param source The source for the panel. Must be one of "file", "websocket",
+#'   or "REST".
+#' @export
+meta_panel <- function(
+  varname,
+  label = NULL,
+  tags = NULL,
+  type = NULL,
+  aspect =  NULL,
+  source = "file"
+) {
+  psource <- NULL
+  if (source == "file") {
+    psource <- FilePanelSource$new()
+  } else if (source == "websocket") {
+    psource <- LocalWebSocketPanelSource$new()
+  } else if (source == "REST") {
+    psource <- RESTPanelSource$new()
+  }
+
+  PanelMeta$new(
+    varname = varname,
+    label = label,
+    tags = tags,
+    paneltype = type,
+    aspect = aspect,
+    source = psource
   ) |>
   add_meta_class()
 }

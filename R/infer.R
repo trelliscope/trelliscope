@@ -148,6 +148,118 @@ infer_meta_variable <- function(x, nm) {
   res
 }
 
+infer_panel_meta <- function(trdf) {
+  trobj <- attr(trdf, "trelliscope") # $clone()
+  metas <- trobj$get("metas")
+
+  # if there are any list-columns with ggplot objects or htmlwidgets then
+  # we need to need to add a new plot_column for them if it doesn't exist
+  nms <- names(trdf)
+  unlist(lapply(names(trdf), function(nm) {
+    x <- trdf[[nm]]
+    if (
+      inherits(x, "nested_panels") ||
+      (is.list(x) && any(sapply(x, inherits, c("gg", "htmlwidget"))))
+    ) {
+      new_nm <- paste0(nm, "_img")
+      if (!new_nm %in% nms) {
+        trdf[[new_nm]] <- plot_column(plot_fn = NULL, data = nm,
+          by = trobj$get("keycols"), width = 600, height = 400,
+          format = "png", force = FALSE)
+      }
+    }
+  }))
+
+  nms <- setdiff(names(trdf), names(metas))
+
+  for (nm in nms) {
+    x <- trdf[[nm]]
+    if (is.character(x)) {
+      http_pref <- all(grepl("^http", x))
+      exts <- tolower(unique(tools::file_ext(x)))
+      if (all(exts %in% valid_img_exts)) {
+        ff <- x
+        # need to make sure files exist locally
+        if (!http_pref) {
+          ff <- file.path(trobj$path, "panels", x)
+          ffe <- file.exists(ff)
+          nfe <- length(which(!ffe))
+          if (nfe > 0)
+            msg("Cannot find {nfe} file{?s} for variable {.val {nm}}. \\
+              Please place them in '{trobj$path}/panels' and make this \\
+              variable a vector of relative paths from there.")
+          ff <- ff[ffe]
+        }
+        aspect <- infer_aspect_ratio(ff)
+        cur_meta <- meta_panel(nm,
+          type = "img", aspect = aspect, source = "file")
+        trdf <- add_meta_def(trdf, cur_meta)
+      } else if (all(exts == "html") || http_pref) {
+        cur_meta <- meta_panel(nm,
+          type = "iframe", aspect = 1.5, source = "file")
+        trdf <- add_meta_def(trdf, cur_meta)
+      }
+    } else if (inherits(x, "plot_column")) {
+      attrs <- attr(x, "plot_column")
+      cur_meta <- meta_panel(nm,
+        type = ifelse(attrs$format == "html", "iframe", "img"),
+        aspect = attrs$height / attrs$width,
+        source = ifelse(attrs$prerender, "file", "websocket"))
+      trdf <- add_meta_def(trdf, cur_meta)
+    }
+  }
+
+  trdf
+}
+
+infer_aspect_ratio <- function(ff) {
+  if (rlang::is_installed("magick")) {
+    # statistical mode of first 10 aspect ratios
+    res <- unlist(lapply(head(ff, 10), function(f) {
+      info <- try(magick::image_info(magick::image_read(f)), silent = TRUE)
+      if (inherits(info, "try-error"))
+        return(NULL)
+      info$width / info$height
+    }))
+    if (length(res) == 0)
+      return(NULL)
+    return(as.numeric(names(which.max(table(res)))))
+  }
+  return(NULL)
+}
+
+# infer_panel_type <- function(trdf) {
+#   trobj <- attr(trdf, "trelliscope")$clone()
+#   pnls <- trdf[[trobj$panel_col]]
+#   if (trobj$panel_col == "__server__") {
+#     trobj$set("paneltype",
+#       ifelse(tolower(trobj$server$format) == "html", "iframe", "img"))
+#   } else if (inherits(pnls, "nested_panels")) {
+#     panel1 <- pnls[[1]]
+#     if (inherits(panel1, "htmlwidget")) {
+#       trobj$set("paneltype", "iframe")
+#     } else  {
+#       trobj$set("paneltype", "img")
+#     }
+#   } else if (inherits(pnls, "img_panel")) {
+#       trobj$set("paneltype", "img")
+#       trobj$set("panelaspect", attr(pnls, "aspect_ratio"))
+#       trobj$panels_written <- NA
+#       trdf <- dplyr::rename(trdf, "__PANEL_KEY__" := trobj$panel_col)
+#       trobj$panel_col <- "__PANEL_KEY__"
+#   } else if (inherits(pnls, "iframe_panel")) {
+#       trobj$set("paneltype", "iframe")
+#       trobj$set("panelaspect", attr(pnls, "aspect_ratio"))
+#       trobj$panels_written <- NA
+#       trdf <- dplyr::rename(trdf, "__PANEL_KEY__" := trobj$panel_col)
+#       trobj$panel_col <- "__PANEL_KEY__"
+#   } else {
+#     assert(FALSE, "Could not infer panel type")
+#   }
+#   attr(trdf, "trelliscope") <- trobj
+#   trdf
+# }
+
 set_meta_nchar <- function(meta, x) {
   type <- meta$get("type")
   if (type %in% c("string", "factor", "date", "datetime")) {

@@ -4,7 +4,6 @@ Display <- R6::R6Class(
     df_cols_ignore = NULL, # these columns won't be written to JSON
     path = NULL,
     force_plot = NULL,
-    panel_col = NULL,
     panels_written = FALSE,
     # if the user specifies meta labels using add_meta_labels(), we keep track
     # of them here so that we can apply them just before writing out the object
@@ -13,10 +12,9 @@ Display <- R6::R6Class(
     # of them here so that we can apply them just before writing out the object
     meta_tags = list(),
     fidelius_pars = NULL,
-    server = NULL,
     initialize = function(
-      name, description, tags, keycols, path, force_plot, panel_col,
-      keysig = NULL, server = NULL
+      name, description, tags, keycols, path, force_plot,
+      keysig = NULL
     ) {
       if (!is.null(name)) {
         check_scalar(name, "name")
@@ -44,8 +42,6 @@ Display <- R6::R6Class(
       private$keysig <- keysig
       self$path <- path
       self$force_plot <- force_plot
-      self$panel_col <- panel_col
-      self$server <- server
       private$state <- DisplayState$new()
       private$panelsource <- FilePanelSource$new()
     },

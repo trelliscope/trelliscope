@@ -12,8 +12,7 @@ as_trelliscope_df(
   tags = NULL,
   path = NULL,
   force_plot = FALSE,
-  key_sig = NULL,
-  server = NULL
+  key_sig = NULL
 )
 }
 \arguments{
@@ -38,10 +37,6 @@ have already been plotted and have not changed since the previous plotting?}
 
 \item{key_sig}{A string "signature" that represents the panels for this
 display. This should not be specified unless you know what you are doing.}
-
-\item{server}{An experimental feature that allows your local R session to
-act as a server so that panels do not need to be pre-rendered. See
-\code{\link[=local_websocket_server]{local_websocket_server()}}.}
 }
 \description{
 Instantiate a trelliscope data frame

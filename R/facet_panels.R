@@ -88,17 +88,19 @@ ggplot_add.facet_panels <- function(object, plot, object_name) {
 #' @param unnest_cols An optional vector of extra variable names in `x`
 #'   to not be nested in the data. If specified, cannot vary within the
 #'   each combination of the specified facet variables.
-#' @param as_plotly should the panels be written as plotly objects?
-#' @param plotly_args optional named list of arguments to send to `ggplotly`
-#' @param plotly_cfg optional named list of arguments to send to plotly's
+#' @param as_plotly Should the panels be written as plotly objects?
+#' @param plotly_args Optional named list of arguments to send to `ggplotly`
+#' @param plotly_cfg Optional named list of arguments to send to plotly's
 #'   `config`` method.
+#' @param trelliscope Should the resulting data frame be made ready for use
+#'   in a trelliscope display? Defalt is `TRUE`.
 #' @export
 #' @importFrom rlang :=
 #' @importFrom dplyr count across
 #' @importFrom cli cli_progress_along
 nest_panels <- function(
   x, data_col = "data", panel_col = "panel", unnest_cols = NULL,
-  as_plotly = FALSE, plotly_args = NULL, plotly_cfg = NULL
+  as_plotly = FALSE, plotly_args = NULL, plotly_cfg = NULL, trelliscope = TRUE
 ) {
   assert(inherits(x, "facet_panels"),
     msg = "{.fun nest_panels} only works with ggplot objects that \\
@@ -228,11 +230,24 @@ nest_panels <- function(
     }
   )
   class(data[[panel_col]]) <- c("nested_panels", "list")
-  attr(data, "trelliscope") <- list(
-    facet_cols = facet_cols,
-    name = dnm,
-    description = dsc
-  )
+
+  if (trelliscope) {
+    new_panel_col <- paste0(panel_col, "_img")
+    if (!new_panel_col %in% names(data)) {
+      # TODO: make this get parameters from function
+      data[[new_panel_col]] <- plot_column(
+        plot_fn = NULL,
+        data = panel_col,
+        by = NULL, # TODO
+        width = 600, height = 400,
+        format = "png", force = FALSE)
+    }
+    attr(data, "trelliscope") <- list(
+      facet_cols = facet_cols,
+      name = dnm,
+      description = dsc
+    )
+  }
 
   data
 }

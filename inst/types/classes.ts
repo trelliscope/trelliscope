@@ -1,6 +1,7 @@
 import {
   // meta
   IMeta,
+  IPanelMeta,
   INumberMeta,
   ICurrencyMeta,
   IStringMeta,
@@ -60,6 +61,59 @@ import {
 } from "./types";
 
 /* ------------------------------------------------------ */
+/* panel                                                  */
+/* ------------------------------------------------------ */
+
+export class PanelSource implements IPanelSource {
+  type: PanelSourceType;
+  constructor(
+    type: PanelSourceType,
+  ) {
+    this.type = type;
+  }
+}
+
+export class FilePanelSource extends PanelSource implements IFilePanelSource {
+  constructor() { super('file') };
+}
+
+export class RESTPanelSource extends PanelSource implements IRESTPanelSource {
+  url: string;
+  apiKey: string | undefined;
+  headers: string | undefined;
+  constructor(
+    {
+      url,
+      apiKey,
+      headers,
+    } : {
+      url: string;
+      apiKey: string | undefined;
+      headers: string | undefined;    
+    }
+  ) {
+    super('REST');
+    this.url = url;
+    this.apiKey = apiKey;
+    this.headers = headers;
+  }
+}
+
+export class LocalWebSocketPanelSource extends PanelSource implements ILocalWebSocketPanelSource {
+  port: number;
+  constructor(
+    {
+      port
+    } : {
+      port: number;
+    }
+  ) {
+    super('REST');
+    this.port = port;
+  }
+}
+
+/* ------------------------------------------------------ */
 /* meta                                                   */
 /* ------------------------------------------------------ */
 
@@ -87,6 +141,40 @@ export class Meta implements IMeta {
     this.sortable = sortable;
     this.label = label === undefined ? varname : label;
     this.maxnchar = maxnchar;
+  }
+}
+
+export class PanelMeta extends Meta implements IPanelMeta {
+  paneltype: PanelType;
+  format?: PanelFormat;
+  aspect: number;
+  source: PanelSource;
+  constructor(
+    {
+      varname,
+      label,
+      tags,
+      paneltype,
+      format,
+      aspect,
+      source,
+    } : {
+      varname: string,
+      label?: string | undefined,
+      tags?: string[],
+      paneltype: PanelType,
+      format: PanelFormat | undefined,
+      aspect: number,
+      source: PanelSource,
+    }
+  ) {
+    super('panel', varname, tags, label, true, true, 0);
+    this.paneltype = paneltype;
+    if (format !== undefined) {
+      this.format = format;
+    }
+    this.aspect = aspect;
+    this.source = source;
   }
 }
 
@@ -781,55 +869,6 @@ export class View implements IView {
 /* display                                                */
 /* ------------------------------------------------------ */
 
-export class PanelSource implements IPanelSource {
-  type: PanelSourceType;
-  constructor(
-    type: PanelSourceType,
-  ) {
-    this.type = type;
-  }
-}
-
-export class FilePanelSource extends PanelSource implements IFilePanelSource {
-  constructor() { super('file') };
-}
-
-export class RESTPanelSource extends PanelSource implements IRESTPanelSource {
-  url: string;
-  apiKey: string | undefined;
-  headers: string | undefined;
-  constructor(
-    {
-      url,
-      apiKey,
-      headers,
-    } : {
-      url: string;
-      apiKey: string | undefined;
-      headers: string | undefined;    
-    }
-  ) {
-    super('REST');
-    this.url = url;
-    this.apiKey = apiKey;
-    this.headers = headers;
-  }
-}
-
-export class LocalWebSocketPanelSource extends PanelSource implements ILocalWebSocketPanelSource {
-  port: number;
-  constructor(
-    {
-      port
-    } : {
-      port: number;
-    }
-  ) {
-    super('REST');
-    this.port = port;
-  }
-}
-
 export class Display implements IDisplay {
   name: string;
   description: string;
@@ -840,11 +879,8 @@ export class Display implements IDisplay {
   inputs: IInputs | null;
   state: IDisplayState;
   views: IView[];
-  paneltype: PanelType;
-  panelformat?: PanelFormat;
+  primaryPanel: string;
   thumbnailurl: string;
-  panelaspect: number;
-  panelsource: PanelSource;
   constructor(
     {
       name,
@@ -856,11 +892,8 @@ export class Display implements IDisplay {
       inputs,
       state,
       views,
-      paneltype,
-      panelformat,
+      primaryPanel,
       thumbnailurl,
-      panelaspect,
-      panelsource,
     } : {
       name: string,
       description?: string,
@@ -871,11 +904,8 @@ export class Display implements IDisplay {
       inputs?: IInputs | null,
       state: IDisplayState,
       views?: IView[] | undefined,
-      paneltype: PanelType,
-      panelformat: PanelFormat | undefined,
+      primaryPanel: string,
       thumbnailurl: string,
-      panelaspect: number,
-      panelsource: PanelSource,
     }
   ) {
     this.name = name;
@@ -887,12 +917,7 @@ export class Display implements IDisplay {
     this.inputs = inputs === undefined ? null : inputs;
     this.state = state;
     this.views = views === undefined ? [] : views;
-    this.paneltype = paneltype;
-    if (panelformat !== undefined) {
-      this.panelformat = panelformat;
-    }
-    this.panelaspect = panelaspect;
-    this.panelsource = panelsource;
+    this.primaryPanel = primaryPanel;
     this.thumbnailurl = thumbnailurl;
   }
 }
@@ -905,27 +930,23 @@ export class DisplayListItem implements IDisplayListItem {
   name: string;
   description: string;
   tags: string[];
-  keysig: string;
   thumbnailurl: string;
   constructor(
     {
       name,
       description,
       tags,
-      keysig,
       thumbnailurl,
     } : {
       name: string,
       description?: string,
       tags?: string[],
-      keysig: string,
       thumbnailurl: string,
     }
   ) {
     this.name = name;
     this.description = description === undefined ? name : description;
     this.tags = tags === undefined ? [] : tags;
-    this.keysig = keysig;
     this.thumbnailurl = thumbnailurl;
   }
 }

@@ -38,20 +38,21 @@ write_trelliscope <- function(trdf, force_write = FALSE, jsonp = TRUE) {
     message("Using jsonp=", jsonp)
   }
 
-  is_server <- !is.null(trobj$server)
-  if (is_server) {
-    srvobj <- LocalWebSocketPanelSource$new(port = httpuv::randomPort())
-    trobj$set("panelsource", srvobj)
-    srv <- trobj$server
-    trobj$set("panelformat", srv$format)
-    trobj$set("panelaspect", srv$width / srv$height)
-    attr(trdf, "trelliscope") <- trobj
-  } else {
-    writable <- !inherits(trdf[[trobj$panel_col]],
-      c("img_panel", "iframe_panel"))
-    if (writable && (!trobj$panels_written || force_write))
-      trdf <- write_panels(trdf)
-  }
+  # TODO: rewrite this
+  # is_server <- !is.null(trobj$server)
+  # if (is_server) {
+  #   srvobj <- LocalWebSocketPanelSource$new(port = httpuv::randomPort())
+  #   trobj$set("panelsource", srvobj)
+  #   srv <- trobj$server
+  #   trobj$set("panelformat", srv$format)
+  #   trobj$set("panelaspect", srv$width / srv$height)
+  #   attr(trdf, "trelliscope") <- trobj
+  # } else {
+  #   writable <- !inherits(trdf[[trobj$panel_col]],
+  #     c("img_panel", "iframe_panel"))
+  #   if (writable && (!trobj$panels_written || force_write))
+  #     trdf <- write_panels(trdf)
+  # }
 
   trdf <- infer(trdf)
   if (!is_server) {
