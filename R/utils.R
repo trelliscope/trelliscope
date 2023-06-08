@@ -1,4 +1,4 @@
-to_json <- function(x, pretty = FALSE, factor = "string") {
+to_json <- function(x, pretty = FALSE, factor = "string", force = FALSE) {
   jsonlite::toJSON(
     x,
     pretty = pretty,
@@ -6,7 +6,8 @@ to_json <- function(x, pretty = FALSE, factor = "string") {
     digits = NA,
     null = "null",
     POSIXt = "ISO8601",
-    factor = factor
+    factor = factor,
+    force = force
   )
 }
 

@@ -94,12 +94,21 @@ PanelMeta <- R6::R6Class("PanelMeta",
       if (!is.null(aspect)) {
         check_scalar(aspect, "aspect", self$error_msg)
         check_pos_numeric(aspect, "aspect", self$error_msg)
+        private$aspect <- aspect
       }
       assert(inherits(source, "PanelSource"),
         msg = "source must be a PanelSource")
-      if (!is.null(paneltype))
+      private$source <- source
+      if (!is.null(paneltype)) {
         check_enum(paneltype, c("img", "iframe"), "paneltype",
           self$error_msg)
+        private$paneltype <- paneltype
+      }
+    },
+    as_list = function() {
+      res <- super$as_list()
+      res$source <- res$source$as_list()
+      res
     },
     check_variable = function(df) {
       # TODO: check that variable is a valid URL or object
@@ -110,6 +119,7 @@ PanelMeta <- R6::R6Class("PanelMeta",
         # private$aspect <- ... df[[private$varname]]
       }
       if (is.null(private$type)) {
+        # browser()
         # TODO
         # private$type <- ... df[[private$varname]]
       }

@@ -8,12 +8,12 @@
 # @param name name of the display that the panel belongs to
 # @param width width in pixels of each panel
 # @param height height in pixels of each panel
-write_panel <- function(x, key, base_path, panel_path,
+write_panel <- function(x, file, base_path, panel_path,
   width, height, format = "png", html_head = NULL, ...) {
   if (inherits(x, "htmlwidget")) {
-    write_htmlwidget(x, key, panel_path, html_head)
+    write_htmlwidget(x, file, html_head)
   } else {
-    file <- file.path(panel_path, paste0(key, ".", format))
+    # TODO: more than png and svg
     if (format == "png") {
       make_png(p = x, file = file, width = width, height = height, ...)
     } else if (format == "svg") {
@@ -43,7 +43,7 @@ write_htmlwidget_deps <- function(x, base_path, panel_path) {
 }
 
 #' @importFrom htmltools as.tags
-write_htmlwidget <- function(x, key, panel_path, html_head) {
+write_htmlwidget <- function(x, file, html_head) {
   x$sizingPolicy <- htmlwidgets::sizingPolicy(
     defaultWidth = "100vw", defaultHeight = "100vh", padding = 0)
   p <- htmltools::as.tags(x, standalone = TRUE)
@@ -53,7 +53,7 @@ write_htmlwidget <- function(x, key, panel_path, html_head) {
     as.character(p),
     paste("</body>\n</html>")
   )
-  cat(html, file = file.path(panel_path, paste0(key, ".html")))
+  cat(html, file = file)
 }
 
 unit_to_px <- function(x, res) {

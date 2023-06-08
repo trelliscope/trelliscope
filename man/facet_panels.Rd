@@ -53,7 +53,7 @@ ggplot(gapminder, aes(year, lifeExp)) +
 }
 
 # facet_panels can also be a jumping off point into setting up a more 
-# developed trelliscope by passing into `nest_panels()` to create a nested
+# developed trelliscope by passing into `as_panels_df()` to create a nested
 # trelliscope data frame for additional editing.
 \dontrun{
 library(ggplot2)
@@ -64,7 +64,7 @@ panel_dat <- (
   geom_point() +
   facet_panels(~country + continent)
 ) |>
-  nest_panels()
+  as_panels_df()
 
 trell_df <- panel_dat |>
   as_trelliscope_df(name = "life expectancy", path = "gapminder") |>

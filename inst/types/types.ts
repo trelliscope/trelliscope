@@ -236,7 +236,7 @@ export interface IDisplay {
   // panelformat?: PanelFormat;
   // panelaspect: number,
   // panelsource: IPanelSource,
-  primaryPanel: string;
+  primarypanel: string;
   thumbnailurl: string;
 }
 

@@ -43,7 +43,6 @@ Display <- R6::R6Class(
       self$path <- path
       self$force_plot <- force_plot
       private$state <- DisplayState$new()
-      private$panelsource <- FilePanelSource$new()
     },
     set = function(name, val) {
       private[[name]] <- val
@@ -83,8 +82,9 @@ Display <- R6::R6Class(
     get_display_path = function() {
       file.path(self$path, "displays", sanitize(private$name))
     },
-    get_panel_rel_path = function() {
-      file.path("displays", sanitize(private$name), "panels")
+    get_panel_rel_dir = function(panel_name) {
+      file.path("displays", sanitize(private$name), "panels",
+        sanitize(panel_name))
     },
     as_list = function() {
       inputs <- NULL
@@ -100,10 +100,7 @@ Display <- R6::R6Class(
         state = private$state$as_list(),
         views = unname(lapply(private$views, function(x) x$as_list())),
         inputs = inputs,
-        paneltype = private$paneltype,
-        panelformat = private$panelformat,
-        panelaspect = private$panelaspect,
-        panelsource = private$panelsource$as_list(),
+        primarypanel = private$primarypanel,
         thumbnailurl = private$thumbnailurl
       )
     },
@@ -131,10 +128,7 @@ Display <- R6::R6Class(
     inputs = NULL,
     state = NULL,
     views = list(),
-    paneltype = NULL,
-    panelformat = NULL,
-    panelaspect = NULL,
-    panelsource = NULL,
+    primarypanel = NULL,
     thumbnailurl = NULL,
     customInfoPage = FALSE,
     showInfoOnFirstLoad = FALSE

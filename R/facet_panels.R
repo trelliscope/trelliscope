@@ -19,7 +19,7 @@
 #' }
 #'
 #' # facet_panels can also be a jumping off point into setting up a more 
-#' # developed trelliscope by passing into `nest_panels()` to create a nested
+#' # developed trelliscope by passing into `as_panels_df()` to create a nested
 #' # trelliscope data frame for additional editing.
 #' \dontrun{
 #' library(ggplot2)
@@ -30,7 +30,7 @@
 #'   geom_point() +
 #'   facet_panels(~country + continent)
 #' ) |>
-#'   nest_panels()
+#'   as_panels_df()
 #'
 #' trell_df <- panel_dat |>
 #'   as_trelliscope_df(name = "life expectancy", path = "gapminder") |>
@@ -92,18 +92,16 @@ ggplot_add.facet_panels <- function(object, plot, object_name) {
 #' @param plotly_args Optional named list of arguments to send to `ggplotly`
 #' @param plotly_cfg Optional named list of arguments to send to plotly's
 #'   `config`` method.
-#' @param trelliscope Should the resulting data frame be made ready for use
-#'   in a trelliscope display? Defalt is `TRUE`.
 #' @export
 #' @importFrom rlang :=
 #' @importFrom dplyr count across
 #' @importFrom cli cli_progress_along
-nest_panels <- function(
+as_panels_df <- function(
   x, data_col = "data", panel_col = "panel", unnest_cols = NULL,
-  as_plotly = FALSE, plotly_args = NULL, plotly_cfg = NULL, trelliscope = TRUE
+  as_plotly = FALSE, plotly_args = NULL, plotly_cfg = NULL
 ) {
   assert(inherits(x, "facet_panels"),
-    msg = "{.fun nest_panels} only works with ggplot objects that \\
+    msg = "{.fun as_panels_df} only works with ggplot objects that \\
       use {.fun facet_panels}")
   check_scalar(panel_col, "panel_col")
   check_scalar(data_col, "data_col")
@@ -125,6 +123,10 @@ nest_panels <- function(
   x$labels$title <- NULL
 
   attrs <- attr(x, "trelliscope")
+
+  attrs$as_plotly <- as_plotly
+  attrs$plotly_args <- plotly_args
+  attrs$plotly_cfg <- plotly_cfg
 
   # remove special class
   class(x) <- setdiff(class(x), "facet_panels")
@@ -171,13 +173,16 @@ nest_panels <- function(
       exists in the data and is being overwritten")
 
   unnest_cols2 <- c(facet_cols, unnest_cols)
+
   # group by all the facets
   data <- data |>
     dplyr::ungroup() |>
-    # dplyr::mutate(.id = row_number()) |>
-    dplyr::mutate(.id = seq_len(nrow(data))) |>
-    tidyr::nest({{ data_col }} := !dplyr::all_of(unnest_cols2)) |>
-    dplyr::ungroup()
+    dplyr::select(dplyr::all_of(unnest_cols2)) |>
+    dplyr::distinct()
+    # # dplyr::mutate(.id = row_number()) |>
+    # dplyr::mutate(.id = seq_len(nrow(data))) |>
+    # tidyr::nest({{ data_col }} := !dplyr::all_of(unnest_cols2)) |>
+    # dplyr::ungroup()
 
   if (!is.null(unnest_cols)) {
     nn <- nrow(dplyr::distinct(data,
@@ -193,64 +198,123 @@ nest_panels <- function(
 
   # swaps out the data with a subset and removes the facet
   make_plot_obj <- function(dt, pos = -1) {
-    q <- x
-    tmp <- dt[[data_col]][[1]]
-    # add in unnested variables
-    nms <- setdiff(names(dt), data_col)
-    for (nm in nms) tmp[[nm]] <- dt[[nm]]
-    q$data <- tmp[, c(nms, setdiff(names(tmp), nms))]
+    if (inherits(attrs$data, "waiver")) {
+      data_unfacet <- x$data
+      if (inherits(data, "waiver")) {
+      # message("using data from the first layer")
+        data_unfacet <- x$layers[[1]]$data # first layer data
+      }
+    } else {
+      # user-supplied
+      data_unfacet <- attrs$data
+    }
+
+    data <- data_unfacet
+    for (i in seq_along(facet_cols)) {
+      data <- dplyr::filter(data, !!rlang::sym(facet_cols[[i]]) == dt[[i]])
+    }
+    x$data <- data
     if (attrs$unfacet %in% c("line", "point")) {
-      q$layers <- c(geom_unfacet(
+      x$layers <- c(geom_unfacet(
         type = attrs$unfacet,
         data = data_unfacet,
         facet_vars = facet_cols,
         color = attrs$unfacet_col,
         alpha = attrs$unfacet_alpha
-      ), q$layers)
+      ), x$layers)
     }
-    q <- add_trelliscope_scales(q, scales_info, show_warnings = (pos == 1))
+    x <- add_trelliscope_scales(x, scales_info, show_warnings = (pos == 1))
     if (isTRUE(as_plotly)) {
-      q <- do.call(plotly::ggplotly, c(list(p = q), plotly_args))
+      x <- do.call(plotly::ggplotly, c(list(p = x), plotly_args))
       if (!is.null(plotly_cfg))
-        q <- do.call(plotly::config, c(list(p = q), plotly_cfg))
+        x <- do.call(plotly::config, c(list(p = x), plotly_cfg))
     }
 
-    q
+    x
   }
 
-  # TODO: use furrr and progressr if nrow(data) > N
-  if (panel_col %in% names(data))
-    wrn("A variable with name matching panel_col='{panel_col}' \\
-      exists in the data and is being overwritten")
-  data[[panel_col]] <- lapply(
-    cli::cli_progress_along(data[[data_col]], "Building panels",
-      clear = FALSE),
-    function(i) {
-      make_plot_obj(data[i, ])
-    }
+  by_vals <- lapply(seq_len(nrow(data)), function(i) {
+    lapply(as.list(data[i, facet_cols]), function(a) {
+      if (is.factor(a))
+        a <- as.character(a)
+      a
+    })
+  })
+
+  data[[panel_col]] <- vctrs::new_rcrd(
+    fields = list(by = by_vals),
+    plot_fn = make_plot_obj,
+    by = by,
+    d = data,
+    as_plotly = as_plotly,
+    class = "ggpanel_vec"
   )
-  class(data[[panel_col]]) <- c("nested_panels", "list")
 
-  if (trelliscope) {
-    new_panel_col <- paste0(panel_col, "_img")
-    if (!new_panel_col %in% names(data)) {
-      # TODO: make this get parameters from function
-      data[[new_panel_col]] <- plot_column(
-        plot_fn = NULL,
-        data = panel_col,
-        by = NULL, # TODO
-        width = 600, height = 400,
-        format = "png", force = FALSE)
-    }
-    attr(data, "trelliscope") <- list(
-      facet_cols = facet_cols,
-      name = dnm,
-      description = dsc
-    )
-  }
+  # if (trelliscope) {
+  #   new_panel_col <- paste0(panel_col, "_img")
+  #   if (!new_panel_col %in% names(data)) {
+  #     # TODO: make this get parameters from function
+  #     data[[new_panel_col]] <- plot_column(
+  #       plot_fn = NULL,
+  #       data = panel_col,
+  #       by = NULL, # TODO
+  #       width = 600, height = 400,
+  #       format = "png", force = FALSE)
+  #   }
+  attr(data, "trelliscope") <- list(
+    facet_cols = facet_cols,
+    name = dnm,
+    description = dsc
+  )
+  # }
 
   data
 }
+
+# only meant to work if x is a single element
+#' @export
+get_panel.ggpanel_vec <- function(x) {
+  plot_fn <- attr(x, "plot_fn")
+  plot_fn(unclass(unlist(x)))
+}
+
+#' @export
+format.ggpanel_vec <- function(x, ...) {
+  # vctrs::field(x, "path")
+  if (length(x) == 1)
+    print(get_panel(x))
+  as_plotly <- attr(x, "as_plotly")
+  rep(paste0("<", ifelse(as_plotly, "ggplotly", "ggplot"), ">"), length(x))
+}
+
+#' @importFrom vctrs vec_ptype_abbr
+#' @export
+vec_ptype_abbr.ggpanel_vec <- function(x) {
+  "ggpanel"
+}
+
+#' @importFrom pillar pillar_shaft
+#' @export
+pillar_shaft.ggpanel_vec <- function(x, ...) {
+  as_plotly <- attr(x, "as_plotly")
+  out <- rep(paste0("<", ifelse(as_plotly, "ggplotly", "ggplot"), ">"), length(x))
+  pillar::new_pillar_shaft_simple(out, align = "left")
+}
+
+
+
+# # TODO: use furrr and progressr if nrow(data) > N
+# if (panel_col %in% names(data))
+#   wrn("A variable with name matching panel_col='{panel_col}' \\
+#     exists in the data and is being overwritten")
+# data[[panel_col]] <- lapply(
+#   cli::cli_progress_along(data[[data_col]], "Building panels",
+#     clear = FALSE),
+#   function(i) {
+#     make_plot_obj(data[i, ])
+#   }
+# )
+# class(data[[panel_col]]) <- c("nested_panels", "list")
 
 upgrade_scales_param <- function(scales, plot_facet) {
   assert(length(scales) <= 2,

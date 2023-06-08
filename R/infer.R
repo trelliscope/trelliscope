@@ -174,7 +174,19 @@ infer_panel_meta <- function(trdf) {
 
   for (nm in nms) {
     x <- trdf[[nm]]
-    if (is.character(x)) {
+    if (inherits(x, "plot_column")) {
+      attrs <- attr(x, "plot_column")
+      cur_meta <- meta_panel(nm,
+        type = ifelse(attrs$format == "html", "iframe", "img"),
+        aspect = attrs$height / attrs$width,
+        source = ifelse(attrs$prerender, "file", "websocket"))
+      # check to see if any of them are already there...
+      pnl_rel_dir <- trobj$get_panel_rel_dir(nm)
+      pths <- get_panel_rel_path(trdf, attrs$by, pnl_rel_dir, attrs$format)
+      # update but don't lose attributes
+      trdf[[nm]][seq_along(trdf[[nm]])] <- pths
+      trdf <- add_meta_def(trdf, cur_meta)
+    } else if (is.character(x)) {
       http_pref <- all(grepl("^http", x))
       exts <- tolower(unique(tools::file_ext(x)))
       if (all(exts %in% valid_img_exts)) {
@@ -199,13 +211,6 @@ infer_panel_meta <- function(trdf) {
           type = "iframe", aspect = 1.5, source = "file")
         trdf <- add_meta_def(trdf, cur_meta)
       }
-    } else if (inherits(x, "plot_column")) {
-      attrs <- attr(x, "plot_column")
-      cur_meta <- meta_panel(nm,
-        type = ifelse(attrs$format == "html", "iframe", "img"),
-        aspect = attrs$height / attrs$width,
-        source = ifelse(attrs$prerender, "file", "websocket"))
-      trdf <- add_meta_def(trdf, cur_meta)
     }
   }
 

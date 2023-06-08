@@ -89,7 +89,8 @@ meta_panel <- function(
   if (source == "file") {
     psource <- FilePanelSource$new()
   } else if (source == "websocket") {
-    psource <- LocalWebSocketPanelSource$new()
+    # we will fill in the port info right when plot is viewed
+    psource <- LocalWebSocketPanelSource$new(port = NULL)
   } else if (source == "REST") {
     psource <- RESTPanelSource$new()
   }

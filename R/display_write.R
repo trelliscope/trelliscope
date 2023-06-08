@@ -24,7 +24,10 @@
 #'   view_trelliscope()
 #' }
 #' @export
-write_trelliscope <- function(trdf, force_write = FALSE, jsonp = TRUE) {
+write_trelliscope <- function(
+  trdf, force_write = FALSE, jsonp = TRUE
+) {
+
   trdf <- check_trelliscope_df(trdf)
   trobj <- attr(trdf, "trelliscope")$clone()
 
@@ -37,6 +40,9 @@ write_trelliscope <- function(trdf, force_write = FALSE, jsonp = TRUE) {
     jsonp <- cfg_jsonp
     message("Using jsonp=", jsonp)
   }
+
+  # if (is.null(port))
+  port <- httpuv::randomPort()
 
   # TODO: rewrite this
   # is_server <- !is.null(trobj$server)
@@ -55,39 +61,46 @@ write_trelliscope <- function(trdf, force_write = FALSE, jsonp = TRUE) {
   # }
 
   trdf <- infer(trdf)
-  if (!is_server) {
-    check_panels(trdf)
-    get_thumbnail_url(trdf)
-  }
 
   trobj <- attr(trdf, "trelliscope")
+
+  primary_panel <- NULL
+
+  trobj <- attr(trdf, "trelliscope")$clone()
+
+  # fill in missing panel info
+  for (mt in trobj$get("metas")) {
+    if (mt$get("type") == "panel") {
+      if (is.null(primary_panel))
+        primary_panel <- mt$get("varname")
+
+      nm <- mt$get("varname")
+      src <- mt$get("source")
+      if (inherits(src, "FilePanelSource")) {
+        # if any panels are not generated, generate them
+        # check to see all panels exist
+        trdf <- write_panels(trdf, nm, force = force_write)
+      } else if (inherits(src, "LocalWebSocketPanelSource")) {
+        if (is.null(src$get_port()))
+          src$set_port(port)
+      }
+    }
+  }
+
+  if (is.null(trobj$get("primarypanel")))
+    trobj$set("primarypanel", primary_panel)
+  if (is.null(trobj$get("thumbnailurl")))
+    trobj$set("thumbnailurl", trdf[[primary_panel]][1])
+
+  attr(trdf, "trelliscope") <- trobj
+
   write_trelliscope_info(trdf, jsonp, cfg$id)
   write_meta_data(trdf, jsonp, cfg$id)
   update_display_list(trobj$path, jsonp, cfg$id)
 
   write_widget(trobj)
 
-  attr(trdf, "trelliscope") <- trobj
   invisible(trdf)
-}
-
-get_thumbnail_url <- function(trdf) {
-  x <- attr(trdf, "trelliscope")
-
-  # don't need to clone x because we are already working with a cloned object
-  # outside the user's session
-  format <- x$get("panelformat")
-  key <- utils::head(trdf[["__PANEL_KEY__"]], 1)
-
-  # these panels were created in R/trelliscope
-  if (!is.null(format)) {
-    nm <- sanitize(x$get("name"))
-    thurl <- paste0("displays/", nm, "/panels/", key, ".", format)
-  } else {
-    thurl <- key
-  }
-
-  x$set("thumbnailurl", thurl)
 }
 
 write_meta_data <- function(df, jsonp, id) {
@@ -96,37 +109,23 @@ write_meta_data <- function(df, jsonp, id) {
   df <- dplyr::select(df, !dplyr::all_of(x$df_cols_ignore))
 
   txt <- get_jsonp_text(jsonp, paste0("__loadMetaData__", id))
-  cat(paste0(txt$st, as.character(to_json(df, factor = "integer")), txt$nd),
-    file = file.path(x$get_display_path(),
-      paste0("metaData.", ifelse(jsonp, "jsonp", "json"))))
+  cat(paste0(
+    txt$st,
+    as.character(to_json(df, factor = "integer", force = TRUE)),
+    txt$nd
+  ), file = file.path(x$get_display_path(),
+    paste0("metaData.", ifelse(jsonp, "jsonp", "json"))))
 }
 
 write_trelliscope_info <- function(df, jsonp, id) {
   x <- attr(df, "trelliscope")
+
   display_info <- x$as_json(pretty = TRUE)
 
   txt <- get_jsonp_text(jsonp, paste0("__loadDisplayInfo__", id))
   cat(paste0(txt$st, as.character(display_info),
     txt$nd), file = file.path(x$get_display_path(),
       paste0("displayInfo.", ifelse(jsonp, "jsonp", "json"))))
-}
-
-check_panels <- function(trdf) {
-  x <- attr(trdf, "trelliscope")
-
-  pnls <- trdf[[x$panel_col]]
-  panel_path <- file.path(x$get_display_path(), "panels")
-  if (inherits(pnls, "nested_panels")) {
-    ff <- list.files(panel_path)
-    ff <- tools::file_path_sans_ext(ff)
-    keys <- apply(trdf[x$get("keycols")], 1,
-      function(x) sanitize(paste(x, collapse = "_")))
-    extra <- setdiff(keys, ff)
-    assert(length(extra) == 0,
-      msg = paste0("Found ", length(extra), " panel keys that do not have ",
-        " a corresponding panel file."))
-  }
-  TRUE
 }
 
 get_jsonp_text <- function(jsonp, fn_name) {

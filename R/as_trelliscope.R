@@ -99,7 +99,6 @@ as_trelliscope_df <- function(
       has_rsrc_path <- normalizePath(dirname(path)) %in% shiny::resourcePaths()
     if (!is.null(path)) {
       if (!has_rsrc_path) {
-        browser()
         msg("Overwriting path for trelliscope display because it is being \
           built from within a Shiny app and the specified path is not found \
           in shiny::resourcePaths().")

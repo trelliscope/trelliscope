@@ -44,14 +44,14 @@ view_trelliscope <- function(trdf = NULL) {
       return(invisible(NULL))
     }
     trobj <- attr(trdf, "trelliscope")
-    pth <- file.path(trobj$get_display_path(),
-      paste0("displayInfo.", c("json", "jsonp")))
-    if (!any(file.exists(pth))) {
-      msg("Display has not been written... writing...")
-      write_trelliscope(trdf)
-    }
-    cur_opts <- knitr::opts_current$get()
-    url <- paste0(trobj$path, "/index.html")
+    # pth <- file.path(trobj$get_display_path(),
+    #   paste0("displayInfo.", c("json", "jsonp")))
+    # if (!any(file.exists(pth))) {
+    #   msg("Display has not been written... writing...")
+    write_trelliscope(trdf)
+    # }
+  cur_opts <- knitr::opts_current$get()
+    # url <- paste0(trobj$path, "/index.html")
     # TODO: enforce minimum width
     width <- cur_opts$out.width.px
     height <- cur_opts$out.height.px
@@ -104,12 +104,12 @@ view_trelliscope <- function(trdf = NULL) {
   } else {
     trdf <- check_trelliscope_df(trdf)
     trobj <- attr(trdf, "trelliscope")
-    pth <- file.path(trobj$get_display_path(),
-      paste0("displayInfo.", c("json", "jsonp")))
-    if (!any(file.exists(pth))) {
-      msg("Display has not been written... writing...")
-      write_trelliscope(trdf)
-    }
+    # pth <- file.path(trobj$get_display_path(),
+    #   paste0("displayInfo.", c("json", "jsonp")))
+    # if (!any(file.exists(pth))) {
+    #   msg("Display has not been written... writing...")
+    write_trelliscope(trdf)
+    # }
     url <- file.path(trobj$path, "index.html")
   }
 

@@ -47,6 +47,12 @@ LocalWebSocketPanelSource <- R6::R6Class("LocalWebSocketPanelSource",
       super$initialize(type = "localWebSocket")
       # TODO: validation
       private$port <- port
+    },
+    get_port = function() {
+      private$port
+    },
+    set_port = function(port) {
+      private$port <- port
     }
   ),
   private = list(
