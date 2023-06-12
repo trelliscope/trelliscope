@@ -77,6 +77,7 @@ vec_ptype_abbr.number_vec <- function(
 #' @param locale Should the variable be displayed using its locale?
 #' @param log Should the variable's distribution be shown on the log scale?
 #' If not specified, an inference will be made based on its values.
+#' @export
 currency <- function(x = double(),
   code = "USD",
   digits = 2,

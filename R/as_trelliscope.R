@@ -172,7 +172,7 @@ find_panel_vars <- function(trdf, warn = TRUE) {
       idir <- tools::file_path_as_absolute(udir[1])
       if (idir != panel_path)
         wrn("Files for local panel {.val {nm}} are not in the correct \\
-          location. They are currently here: '{idir}' and will be moved \\
+          location. They are currently here: '{idir}' and will be copied \\
           here: '{panel_path}' when the display is written.")
     }
   }
