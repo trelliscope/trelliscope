@@ -14,13 +14,11 @@ Suggests:
     covr,
     plotly,
     fidelius,
-    rmarkdown,
-    magick
+    rmarkdown
 Config/testthat/edition: 3
 Imports:
     R6,
     jsonlite,
-    purrr,
     ggplot2 (>= 3.2.1),
     dplyr,
     rlang,
@@ -33,9 +31,13 @@ Imports:
     knitr,
     digest,
     glue,
-    shiny
+    magick,
+    shiny,
+    pillar,
+    vctrs,
+    tibble
 Depends: 
-    R (>= 2.10)
+    R (>= 4.1)
 LazyData: true
 URL: https://trelliscope.org/trelliscope, https://github.com/trelliscope/trelliscope
 BugReports: https://github.com/trelliscope/trelliscope/issues

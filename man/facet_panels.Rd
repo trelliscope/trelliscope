@@ -69,7 +69,6 @@ panel_dat <- (
 trell_df <- panel_dat |>
   as_trelliscope_df(name = "life expectancy", path = "gapminder") |>
   set_default_layout(nrow = 2, ncol = 4) |>
-  write_panels() |>
   write_trelliscope()
 
 view_trelliscope(trell_df)

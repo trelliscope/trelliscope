@@ -6,7 +6,6 @@
 \usage{
 as_panels_df(
   x,
-  data_col = "data",
   panel_col = "panel",
   unnest_cols = NULL,
   as_plotly = FALSE,
@@ -16,8 +15,6 @@ as_panels_df(
 }
 \arguments{
 \item{x}{A ggplot object created with \code{\link[=facet_panels]{facet_panels()}}.}
-
-\item{data_col}{The name of the column to store the nested data in.}
 
 \item{panel_col}{The name of the column to store the rendered panels in.}
 

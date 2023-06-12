@@ -27,6 +27,8 @@
 write_trelliscope <- function(
   trdf, force_write = FALSE, jsonp = TRUE
 ) {
+  # in case new panel-like variables were added
+  trdf <- find_panel_vars(trdf, warn = FALSE)
 
   trdf <- check_trelliscope_df(trdf)
   trobj <- attr(trdf, "trelliscope")$clone()
@@ -38,7 +40,7 @@ write_trelliscope <- function(
   cfg_jsonp <- cfg$datatype == "jsonp"
   if (cfg_jsonp != jsonp) {
     jsonp <- cfg_jsonp
-    message("Using jsonp=", jsonp)
+    msg("Using jsonp=", jsonp)
   }
 
   # if (is.null(port))
@@ -56,17 +58,20 @@ write_trelliscope <- function(
   # } else {
   #   writable <- !inherits(trdf[[trobj$panel_col]],
   #     c("img_panel", "iframe_panel"))
-  #   if (writable && (!trobj$panels_written || force_write))
-  #     trdf <- write_panels(trdf)
   # }
 
   trdf <- infer(trdf)
 
   trobj <- attr(trdf, "trelliscope")
 
-  primary_panel <- NULL
+  primary_panel <- trobj$get("primarypanel")
 
   trobj <- attr(trdf, "trelliscope")$clone()
+
+  trdf_out <- trdf
+  attr(trdf_out, "trelliscope") <- NULL
+
+  panel_opts <- trobj$panel_options
 
   # fill in missing panel info
   for (mt in trobj$get("metas")) {
@@ -79,23 +84,26 @@ write_trelliscope <- function(
       if (inherits(src, "FilePanelSource")) {
         # if any panels are not generated, generate them
         # check to see all panels exist
-        trdf <- write_panels(trdf, nm, force = force_write)
+        write_panels(trdf, nm, force = force_write)
       } else if (inherits(src, "LocalWebSocketPanelSource")) {
         if (is.null(src$get_port()))
           src$set_port(port)
       }
+      trdf_out[[nm]] <- get_panel_rel_path(trdf[[nm]], nm,
+        panel_opts[[nm]]$format)
     }
   }
 
-  if (is.null(trobj$get("primarypanel")))
+  if (is.null(primary_panel))
     trobj$set("primarypanel", primary_panel)
   if (is.null(trobj$get("thumbnailurl")))
-    trobj$set("thumbnailurl", trdf[[primary_panel]][1])
+    trobj$set("thumbnailurl", trdf_out[[primary_panel]][1])
 
   attr(trdf, "trelliscope") <- trobj
 
   write_trelliscope_info(trdf, jsonp, cfg$id)
-  write_meta_data(trdf, jsonp, cfg$id)
+  write_meta_data(trdf_out, trobj$df_cols_ignore, trobj$get_display_path(),
+    jsonp, cfg$id)
   update_display_list(trobj$path, jsonp, cfg$id)
 
   write_widget(trobj)
@@ -103,17 +111,16 @@ write_trelliscope <- function(
   invisible(trdf)
 }
 
-write_meta_data <- function(df, jsonp, id) {
-  x <- attr(df, "trelliscope")
-
-  df <- dplyr::select(df, !dplyr::all_of(x$df_cols_ignore))
+write_meta_data <- function(df, cols_ignore, disp_path, jsonp, id) {
+  trobj <- attr(df, "trelliscope")
+  df <- dplyr::select(df, !dplyr::all_of(cols_ignore))
 
   txt <- get_jsonp_text(jsonp, paste0("__loadMetaData__", id))
   cat(paste0(
     txt$st,
     as.character(to_json(df, factor = "integer", force = TRUE)),
     txt$nd
-  ), file = file.path(x$get_display_path(),
+  ), file = file.path(disp_path,
     paste0("metaData.", ifelse(jsonp, "jsonp", "json"))))
 }
 
@@ -188,7 +195,7 @@ update_display_list <- function(app_path, jsonp = TRUE, id) {
     dir.exists(f) && file.exists(file.path(f, dispfile)))))
   lst <- lapply(ff[idx], function(f) {
     cur <- read_json_p(file.path(f, dispfile))
-    cur[c("name", "description", "tags", "keysig", "thumbnailurl")]
+    cur[c("name", "description", "tags", "thumbnailurl")]
   })
   txt <- get_jsonp_text(jsonp, paste0("__loadDisplayList__", id))
   cat(paste0(txt$st, as.character(to_json(lst, pretty = TRUE)), txt$nd),

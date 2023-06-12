@@ -232,6 +232,9 @@ CurrencyMeta <- R6::R6Class("CurrencyMeta",
           msg("Inferred that variable '{private$varname}' should \
             be shown on log scale.")
       }
+      if (is.null(private$digits)) {
+        private$digits <- 2
+      }
     }
   ),
   private = list(

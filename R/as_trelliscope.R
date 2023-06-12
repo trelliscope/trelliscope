@@ -63,9 +63,9 @@ as_trelliscope_df <- function(
     #   An object from {.fn facet_panels} was passed to {.fn trelliscope}.
     #   {.emph Building panels...}")
     msg("{.emph Note:} For more control over building panels, you can \\
-      call {.fn nest_panels} explicitly before passing to {.fn trelliscope}.",
+      call {.fn as_panels_df} explicitly before passing to {.fn trelliscope}.",
       .frequency = "regularly", .frequency_id = "explicit_build_note")
-    df <- nest_panels(df)
+    df <- as_panels_df(df)
   }
 
   if (is.null(key_cols))
@@ -114,16 +114,70 @@ as_trelliscope_df <- function(
 
   obj <- Display$new(name = name, description = description,
     keycols = key_cols, path = path, force_plot = force_plot,
-    tags = tags, keysig = key_sig)
+    tags = tags)
   class(obj) <- c("R6", "trelliscope_object")
 
   attr(df, "trelliscope") <- obj
   if (!inherits(df, "trelliscope"))
     class(df) <- c("trelliscope", class(df))
 
-  df <- infer_panel_meta(df)
+  df <- find_panel_vars(df)
 
   df
+}
+
+excl_types <- c("ggpanel_vec", "panel_lazy_vec", "panel_local_vec",
+  "panel_url_vec", "href_vec")
+
+find_panel_vars <- function(trdf, warn = TRUE) {
+  not_panels <- unlist(lapply(trdf, function(x) !inherits(x, excl_types)))
+  nms <- names(trdf)[not_panels]
+
+  for (nm in nms) {
+    x <- trdf[[nm]]
+    if (is.character(x)) {
+      exts <- tolower(unique(tools::file_ext(x)))
+      http_pref <- all(grepl("^http:", x))
+      all_imgs <- all(exts %in% valid_img_exts)
+      all_html <- all(exts %in% c("html", "htm"))
+      # ?: should all URLs be coerced to be panels?
+      # (currently only coerce if there is an image extension)
+      if (http_pref && all_imgs) {
+        trdf[[nm]] <- panel_url(x)
+      } else if (!http_pref && (all_imgs || all_html)) {
+        trdf[[nm]] <- panel_local(x)
+      }
+    }
+  }
+
+  if (warn) {
+    # now warn if local panels are not in the right place for trelliscope
+    local_panels <- unlist(lapply(trdf, function(x)
+      inherits(x, "panel_local_vec")))
+    tr_path <- attr(trdf, "trelliscope")$get_display_path()
+
+    for (nm in names(trdf)[local_panels]) {
+      x <- trdf[[nm]]
+      panel_path <- file.path(tr_path, "panels", sanitize(nm))
+      if (!dir.exists(panel_path))
+        dir.create(panel_path, recursive = TRUE)
+      panel_path <- tools::file_path_as_absolute(panel_path)
+      x2 <- x[file.exists(x)]
+      if (length(x2) == 0) {
+        wrn("No files for local panel {.val {nm}} were found.")
+        next
+      }
+      udir <- unique(dirname(x2))
+      udir <- udir[dir.exists(udir)]
+      idir <- tools::file_path_as_absolute(udir[1])
+      if (idir != panel_path)
+        wrn("Files for local panel {.val {nm}} are not in the correct \\
+          location. They are currently here: '{idir}' and will be moved \\
+          here: '{panel_path}' when the display is written.")
+    }
+  }
+
+  trdf
 }
 
 get_keycols <- function(df) {

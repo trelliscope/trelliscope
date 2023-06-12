@@ -6,14 +6,22 @@
 \title{Data frame of currencies and their codes}
 \format{
 An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 278 rows and 5 columns.
+
+An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 278 rows and 5 columns.
 }
 \source{
+\url{https://www.six-group.com/en/products-services/financial-information/data-standards.html#scrollTo=maintenance-agency}
+
 \url{https://www.six-group.com/en/products-services/financial-information/data-standards.html#scrollTo=maintenance-agency}
 }
 \usage{
 currencies
+
+currencies
 }
 \description{
 Data frame of currencies and their codes
+
+Currencies data
 }
 \keyword{datasets}

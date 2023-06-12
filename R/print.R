@@ -58,10 +58,8 @@ show_info <- function(trdf) {
   cli::cli_end()
   cli::cli_bullets(
     c("*" = "{.strong Number of panels}: {.val {nrow(trdf)}}"))
-  wrt <- ifelse(trobj$panels_written, "yes", "no")
-  cli::cli_bullets(c("*" = "{.strong Panels written}: {.emph {wrt}}"))
-  print_meta_info_df(trobj$get("metas"), trdf,
-    trobj$meta_labels, trobj$meta_tags)
+  # print_meta_info_df(trobj$get("metas"), trdf,
+  #   trobj$meta_labels, trobj$meta_tags)
 }
 
 #' @importFrom cli cli_bullets cli_code cli_div cli_end
@@ -86,72 +84,73 @@ cli_print_tbl <- function(x) {
 }
 
 print_meta_info_df <- function(metas, df, meta_labels, meta_tags) {
-  def_metas <- names(metas)
-  needs_meta <- setdiff(names(df), c(def_metas, "__PANEL_KEY__"))
+  # TODO: revamp this
+  # def_metas <- names(metas)
+  # needs_meta <- setdiff(names(df), c(def_metas, "__PANEL_KEY__"))
 
-  if (length(metas) > 0) {
-    mt <- lapply(metas, function(x) {
-      nm <- x$get("varname")
-      # TODO: label value needs to match logic in infer.R
-      lbl <- x$get("label")
-      if (!is.null(meta_labels[[nm]]))
-        lbl <- meta_labels[[nm]]
-      nc <- nchar(lbl)
-      lbl <- substr(lbl, 1, 25)
-      if (nchar(lbl) != nc)
-        lbl <- paste0(lbl, "\u2026")
-      tags <- x$get("tags")
-      if (length(tags) == 0 && length(meta_tags[[nm]] > 0))
-        tags <- meta_tags[[nm]]
-      if (length(tags) == 0) {
-        tags <- "[]"
-      } else {
-        tags <- paste0(tags, collapse = ", ")
-      }
-      nc <- nchar(tags)
-      tags <- substr(tags, 1, 25)
-      if (nchar(tags) != nc)
-        tags <- paste0(tags, "\u2026")
-      dplyr::tibble(
-        name = nm,
-        type = x$get("type"),
-        label = lbl,
-        tags = tags
-      )
-    }) |>
-    dplyr::bind_rows()
+  # if (length(metas) > 0) {
+  #   mt <- lapply(metas, function(x) {
+  #     nm <- x$get("varname")
+  #     # TODO: label value needs to match logic in infer.R
+  #     lbl <- x$get("label")
+  #     if (!is.null(meta_labels[[nm]]))
+  #       lbl <- meta_labels[[nm]]
+  #     nc <- nchar(lbl)
+  #     lbl <- substr(lbl, 1, 25)
+  #     if (nchar(lbl) != nc)
+  #       lbl <- paste0(lbl, "\u2026")
+  #     tags <- x$get("tags")
+  #     if (length(tags) == 0 && length(meta_tags[[nm]] > 0))
+  #       tags <- meta_tags[[nm]]
+  #     if (length(tags) == 0) {
+  #       tags <- "[]"
+  #     } else {
+  #       tags <- paste0(tags, collapse = ", ")
+  #     }
+  #     nc <- nchar(tags)
+  #     tags <- substr(tags, 1, 25)
+  #     if (nchar(tags) != nc)
+  #       tags <- paste0(tags, "\u2026")
+  #     dplyr::tibble(
+  #       name = nm,
+  #       type = x$get("type"),
+  #       label = lbl,
+  #       tags = tags
+  #     )
+  #   }) |>
+  #   dplyr::bind_rows()
 
-    cli::cli_bullets(c("*" = "Defined metadata variables:"))
-    cli_print_tbl(mt)
-  }
+  #   cli::cli_bullets(c("*" = "Defined metadata variables:"))
+  #   cli_print_tbl(mt)
+  # }
 
-  needs_removed <- character(0)
-  nmt <- list()
-  for (nm in needs_meta) {
-    cur_meta <- infer_meta_variable(df[[nm]], nm)
-    if (is.null(cur_meta)) {
-      needs_removed <- c(needs_removed, nm)
-    } else {
-      lbl <- "[none]"
-      if (!is.null(meta_labels[[nm]]))
-        lbl <- meta_labels[[nm]]
-      nmt <- c(nmt, list(tibble(
-        name = nm,
-        "inferred type" = cur_meta$get("type"),
-        label = lbl
-      )))
-    }
-  }
+  # needs_removed <- character(0)
+  # nmt <- list()
+  # for (nm in needs_meta) {
+  #   cur_meta <- infer_meta_variable(df[[nm]], nm)
+  #   if (is.null(cur_meta)) {
+  #     needs_removed <- c(needs_removed, nm)
+  #   } else {
+  #     lbl <- "[none]"
+  #     if (!is.null(meta_labels[[nm]]))
+  #       lbl <- meta_labels[[nm]]
+  #     nmt <- c(nmt, list(tibble(
+  #       name = nm,
+  #       "inferred type" = cur_meta$get("type"),
+  #       label = lbl
+  #     )))
+  #   }
+  # }
 
-  if (length(nmt) > 0) {
-    nmt <- bind_rows(nmt)
-    cli::cli_bullets(c("*" = "Metadata variables that will be inferred:"))
-    cli_print_tbl(nmt)
-  }
+  # if (length(nmt) > 0) {
+  #   nmt <- bind_rows(nmt)
+  #   cli::cli_bullets(c("*" = "Metadata variables that will be inferred:"))
+  #   cli_print_tbl(nmt)
+  # }
 
-  if (length(needs_removed) > 0)
-    cli::cli_bullets(c("*" = "Variables that will be ignored as metadata:
-      {.val {needs_removed}}"))
+  # if (length(needs_removed) > 0)
+  #   cli::cli_bullets(c("*" = "Variables that will be ignored as metadata:
+  #     {.val {needs_removed}}"))
 }
 
   # cfm <- function(x, envir = parent.frame)

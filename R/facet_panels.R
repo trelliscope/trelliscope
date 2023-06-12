@@ -35,7 +35,6 @@
 #' trell_df <- panel_dat |>
 #'   as_trelliscope_df(name = "life expectancy", path = "gapminder") |>
 #'   set_default_layout(nrow = 2, ncol = 4) |>
-#'   write_panels() |>
 #'   write_trelliscope()
 #'
 #' view_trelliscope(trell_df)
@@ -83,7 +82,6 @@ ggplot_add.facet_panels <- function(object, plot, object_name) {
 
 #' Render the panels of a trelliscope display
 #' @param x A ggplot object created with [facet_panels()].
-#' @param data_col The name of the column to store the nested data in.
 #' @param panel_col The name of the column to store the rendered panels in.
 #' @param unnest_cols An optional vector of extra variable names in `x`
 #'   to not be nested in the data. If specified, cannot vary within the
@@ -97,16 +95,14 @@ ggplot_add.facet_panels <- function(object, plot, object_name) {
 #' @importFrom dplyr count across
 #' @importFrom cli cli_progress_along
 as_panels_df <- function(
-  x, data_col = "data", panel_col = "panel", unnest_cols = NULL,
+  x, panel_col = "panel", unnest_cols = NULL,
   as_plotly = FALSE, plotly_args = NULL, plotly_cfg = NULL
 ) {
   assert(inherits(x, "facet_panels"),
     msg = "{.fun as_panels_df} only works with ggplot objects that \\
       use {.fun facet_panels}")
   check_scalar(panel_col, "panel_col")
-  check_scalar(data_col, "data_col")
   check_character(panel_col, "panel_col")
-  check_character(data_col, "data_col")
   if (!is.null(unnest_cols))
     check_character(unnest_cols, "unnest_cols")
 
@@ -164,12 +160,9 @@ as_panels_df <- function(
   assert(!panel_col %in% facet_cols,
     "The variable panel_col='{panel_col}' matches one of the facet \
     columns. Try a different 'panel_col'.")
-  assert(!data_col %in% facet_cols,
-    "The variable data_col='{data_col}' matches one of the facet columns. \
-    Try a different 'data_col'.")
 
-  if (data_col %in% names(data))
-    wrn("A variable with name matching data_col='{data_col}' \\
+  if (panel_col %in% names(data))
+    wrn("A variable with name matching panel_col='{panel_col}' \\
       exists in the data and is being overwritten")
 
   unnest_cols2 <- c(facet_cols, unnest_cols)
@@ -271,6 +264,13 @@ as_panels_df <- function(
   data
 }
 
+#' @export
+get_panel_rel_path.ggpanel_vec <- function(x, name, fmt) {
+  tmp <- unlist(lapply(vec_data(x)$by, function(x)
+    paste(sanitize(x), collapse = "_")))
+  file.path("panels", sanitize(name), paste0(tmp, ".", fmt))
+}
+
 # only meant to work if x is a single element
 #' @export
 get_panel.ggpanel_vec <- function(x) {
@@ -289,7 +289,9 @@ format.ggpanel_vec <- function(x, ...) {
 
 #' @importFrom vctrs vec_ptype_abbr
 #' @export
-vec_ptype_abbr.ggpanel_vec <- function(x) {
+vec_ptype_abbr.ggpanel_vec <- function(
+  x, ..., prefix_named = FALSE, suffix_shape = TRUE
+) {
   "ggpanel"
 }
 
@@ -300,21 +302,6 @@ pillar_shaft.ggpanel_vec <- function(x, ...) {
   out <- rep(paste0("<", ifelse(as_plotly, "ggplotly", "ggplot"), ">"), length(x))
   pillar::new_pillar_shaft_simple(out, align = "left")
 }
-
-
-
-# # TODO: use furrr and progressr if nrow(data) > N
-# if (panel_col %in% names(data))
-#   wrn("A variable with name matching panel_col='{panel_col}' \\
-#     exists in the data and is being overwritten")
-# data[[panel_col]] <- lapply(
-#   cli::cli_progress_along(data[[data_col]], "Building panels",
-#     clear = FALSE),
-#   function(i) {
-#     make_plot_obj(data[i, ])
-#   }
-# )
-# class(data[[panel_col]]) <- c("nested_panels", "list")
 
 upgrade_scales_param <- function(scales, plot_facet) {
   assert(length(scales) <= 2,

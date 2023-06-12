@@ -9,3 +9,7 @@
 #' Mars rover data
 #' @source <https://github.com/corincerami/mars-photo-api>
 "mars_rover"
+
+#' Currencies data
+#' @source <https://www.six-group.com/en/products-services/financial-information/data-standards.html#scrollTo=maintenance-agency>
+"currencies"
