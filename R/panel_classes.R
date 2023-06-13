@@ -15,11 +15,14 @@ PanelSource <- R6::R6Class("PanelSource",
 FilePanelSource <- R6::R6Class("FilePanelSource",
   inherit = PanelSource,
   public = list(
-    initialize = function() {
+    initialize = function(local) {
       super$initialize(type = "file")
+      private$isLocal <- local
     }
   ),
-  private = list()
+  private = list(
+    isLocal = TRUE
+  )
 )
 
 RESTPanelSource <- R6::R6Class("RESTPanelSource",

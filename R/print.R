@@ -2,7 +2,7 @@
 print.trelliscope <- function(
   x, ..., n = getOption("trs_max_print", default = 10)
 ) {
-  msg("Trelliscope data frame. Call show_info() for more information")
+  print_panels(x)
   if (n > 0) {
     if (inherits(x, "tbl_df")) {
       NextMethod()
@@ -16,6 +16,47 @@ print.trelliscope <- function(
     }
   }
   invisible(x)
+}
+
+print_panels <- function(x) {
+  trobj <- attr(x, "trelliscope")
+  pnls <- names(x)[unlist(lapply(x, function(x)
+    inherits(x, panel_classes)))]
+  mnc <- max(nchar(pnls))
+  mnc2 <- max(nchar(panel_classes)) - 4 # _vec
+  msg("Trelliscope data frame: {.val {trobj$get('name')}} \\
+    located at {.val {trobj$path}} \\
+    with {.val {length(pnls)}} panel{?s}:")
+  cli::cli_ul()
+  for (nm in pnls) {
+    a <- x[[nm]]
+    type <- if (inherits(a, "ggpanel_vec")) {
+      "ggpanel"
+    } else if (inherits(a, "panel_lazy_vec")) {
+      "panel_lazy"
+    } else if (inherits(a, "panel_local_vec")) {
+      "panel_local"
+    } else if (inherits(a, "panel_url_vec")) {
+      "panel_url"
+    } else {
+      "unknown"
+    }
+    opts <- trobj$panel_options[[nm]]
+    optstr <- cli::col_grey("[no panel options specified]")
+    if (!is.null(opts)) {
+      if (inherits(a, panel_lazy_classes)) {
+        optstr <- "[{.field width={opts$width}}, \\
+          {.field height={opts$height}}, {.field format={opts$format}}]"
+      } else {
+        optstr <- "[{.field aspect={opts$aspect}}]"
+      }
+    }
+    spc <- paste(rep("\u00a0", mnc - nchar(nm)), collapse = "")
+    spc2 <- paste(rep("\u00a0", mnc2 - nchar(type)), collapse = "")
+    cli::cli_li(paste0("{.val {nm}}{spc}: <{type}> {spc2}", optstr))
+  }
+  cli::cli_end()
+
 }
 
 #' View trelliscope info of a trelliscope data frame

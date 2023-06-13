@@ -243,6 +243,15 @@ needs_log <- function(x) {
 hash <- function(x)
   digest::digest(x)
 
+read_jsonp <- function(file, ...) {
+  txt <- readLines(file, warn = FALSE)
+  txt <- paste0(txt, collapse = "")
+  txt <- gsub("^.*?\\(", "", txt)
+  txt <- gsub("\\);$", "", txt)
+  txt <- gsub("\\)$", "", txt)
+  jsonlite::fromJSON(txt, ...)
+}
+
 # sapply(1:100, function(a) {
 #   x <- abs(rcauchy(1000))
 #   needs_log(x)

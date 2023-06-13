@@ -60,6 +60,8 @@ write_panels <- function(trdf, nm, force = FALSE) {
     if (length(idxs) > 0) {
       sz_est <- mean(file.info(head(pnls[idxs], 5))$size) *
         length(idxs) / 1e6
+      udir <- dirname(pths[idxs[1]])
+      dir.create(udir, recursive = TRUE, showWarnings = FALSE)
       # TODO: if sz_est is greater than 100MB, ask user if they
       # want to continue
       file.copy(pnls[idxs], pths[idxs], overwrite = TRUE)

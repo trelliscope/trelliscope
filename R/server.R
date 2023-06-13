@@ -1,42 +1,100 @@
-# view_ws_trelliscope <- function(trdf, port = 8080) { # httpuv::randomPort()) {
-#   trs <- attr(trdf, "trelliscope")
+start_server <- function(trdf) {
+  trdf <- infer(trdf)
+  trobj <- attr(trdf, "trelliscope")
 
-#   panel_path <- file.path(trs$get_display_path(), "panels")
-#   if (!dir.exists(panel_path))
-#     dir.create(panel_path, recursive = TRUE)
+  idx <- which(unlist(lapply(trobj$get("metas"), function(x)
+    inherits(x, "PanelMeta") &&
+    inherits(x$get("source"), "LocalWebSocketPanelSource")
+  )))
+  if (length(idx) == 0)
+    return()
 
-#   ws_get_plot <- function(row) {
-#     get_plot(
-#       row = as.integer(row),
-#       d = trs$server$d,
-#       ds = trdf,
-#       plot_fn = trs$server$plot_fn,
-#       key_cols = trs$get("keycols"),
-#       base_path = trs$path,
-#       panel_path = panel_path,
-#       rel_path = trs$get_panel_rel_path(),
-#       width = trs$server$width,
-#       height = trs$server$height,
-#       format = trs$server$format,
-#       force = trs$server$force
-#     )
-#   }
+  panel_opts <- trobj$panel_options
 
-#   s <- httpuv::startServer("127.0.0.1", port,
-#     list(
-#       onWSOpen = function(ws) {
-#         # The ws object is a WebSocket object
-#         cat("Server connection opened.\n")
-#         ws$onMessage(function(binary, message) {
-#           ws$send(ws_get_plot(message))
-#         })
-#         ws$onClose(function() {
-#           cat("Server connection closed.\n")
-#         })
-#       },
-#       staticPaths = list("/" = trs$path)
-#     )
-#   )
-#   utils::browseURL(paste0("http://localhost:", port))
-#   s
-# }
+  path_list <- list()
+  html_head_list <- list()
+  port <- NULL
+  for (i in idx) {
+    mt <- trobj$get("metas")[[i]]
+    nm <- mt$get("varname")
+    src <- mt$get("source")
+    port <- src$get_port()
+
+    panel_path <- file.path(trobj$get_display_path(), "panels",
+      sanitize(nm))
+    if (!dir.exists(panel_path))
+      dir.create(panel_path, recursive = TRUE)
+
+    p <- get_panel(trdf[[nm]][[1]])
+    if (inherits(p, "htmlwidget")) {
+      dir.create(file.path(trobj$path, "displays", "libs"),
+        showWarnings = FALSE)
+      html_head_list[[nm]] <- write_htmlwidget_deps(p,
+        file.path(trobj$path, "displays"), panel_path)
+    }
+
+    path_list[[nm]] <- get_panel_rel_path(trdf[[nm]], nm,
+      panel_opts[[nm]]$format)
+  }
+
+  if (is.null(port)) {
+    tmp <- read_jsonp(file.path(trobj$get_display_path(), "displayInfo.jsonp"),
+      simplifyVector = FALSE)
+    for (i in seq_along(tmp$metas)) {
+      if (
+        tmp$metas[[i]]$type == "panel" &&
+        tmp$metas[[i]]$source$type == "localWebSocket"
+      ) {
+        port <- tmp$metas[[i]]$source$port
+        break
+      }
+    }
+  }
+
+  s <- httpuv::runServer("127.0.0.1", port,
+    list(
+      onWSOpen = function(ws) {
+        # msg("Server connection opened.")
+        ws$onMessage(function(binary, message) {
+          mesg <- jsonlite::fromJSON(message)
+          nm <- mesg$panelName
+          idx <- which(path_list[[nm]] == mesg$panelURL)
+
+          out_path <- file.path(trobj$get_display_path(),
+            path_list[[nm]][idx])
+
+          if (file.exists(out_path)) {
+            msg("Panel {mesg$panelURL} already exists...")
+            ws$send("{}")
+            return()
+          }
+
+          msg("Writing panel {mesg$panelURL}...")
+          p <- get_panel(trdf[[nm]][[idx]])
+          popts <- panel_opts[[nm]]
+
+          panel_path <- file.path(trobj$get_display_path(), "panels",
+            sanitize(nm))
+
+          write_panel(
+            p,
+            file = out_path,
+            base_path = trobj$path,
+            panel_path = panel_path,
+            width = popts$width,
+            height = popts$height,
+            format = popts$format,
+            html_head = html_head_list[[nm]]
+          )
+
+          ws$send("{}")
+        })
+        ws$onClose(function() {
+          # msg("Server connection closed.")
+        })
+      },
+      staticPaths = list("/" = trobj$path)
+    )
+  )
+  s
+}

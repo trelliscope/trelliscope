@@ -46,20 +46,6 @@ write_trelliscope <- function(
   # if (is.null(port))
   port <- httpuv::randomPort()
 
-  # TODO: rewrite this
-  # is_server <- !is.null(trobj$server)
-  # if (is_server) {
-  #   srvobj <- LocalWebSocketPanelSource$new(port = httpuv::randomPort())
-  #   trobj$set("panelsource", srvobj)
-  #   srv <- trobj$server
-  #   trobj$set("panelformat", srv$format)
-  #   trobj$set("panelaspect", srv$width / srv$height)
-  #   attr(trdf, "trelliscope") <- trobj
-  # } else {
-  #   writable <- !inherits(trdf[[trobj$panel_col]],
-  #     c("img_panel", "iframe_panel"))
-  # }
-
   trdf <- infer(trdf)
 
   trobj <- attr(trdf, "trelliscope")
@@ -94,7 +80,7 @@ write_trelliscope <- function(
     }
   }
 
-  if (is.null(primary_panel))
+  if (!is.null(primary_panel))
     trobj$set("primarypanel", primary_panel)
   if (is.null(trobj$get("thumbnailurl")))
     trobj$set("thumbnailurl", trdf_out[[primary_panel]][1])

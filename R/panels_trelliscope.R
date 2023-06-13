@@ -29,20 +29,21 @@ set_panel_options <- function(trdf, ...) {
         if (inherits(trdf[[nm]], "panel_lazy_vec")) {
           if (attr(trdf[[nm]], "type") == "htmlwidget") {
             objs[[nm]]$format <- "html"
-            objs[[nm]]$type <- "iframe"
           } else {
             objs[[nm]]$format <- "png"
-            objs[[nm]]$type <- "img"
           }
         } else {
           if (attr(trdf[[nm]], "as_plotly")) {
             objs[[nm]]$format <- "html"
-            objs[[nm]]$type <- "iframe"
           } else {
             objs[[nm]]$format <- "png"
-            objs[[nm]]$type <- "img"
           }
         }
+      }
+      if (objs[[nm]]$format == "html") {
+        objs[[nm]]$type <- "iframe"
+      } else {
+        objs[[nm]]$type <- "img"
       }
     } else {
       opts_type <- "panel_options"

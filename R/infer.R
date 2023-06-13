@@ -127,7 +127,11 @@ infer_meta_variable <- function(x, nm, panel_opts) {
       psource <- LocalWebSocketPanelSource$new(port = NULL)
       aspect <- panel_opts$width / panel_opts$height
     } else {
-      psource <- FilePanelSource$new()
+      if (inherits(x, "panel_url_vec")) {
+        psource <- FilePanelSource$new(local = FALSE)
+      } else {
+        psource <- FilePanelSource$new(local = TRUE)
+      }
       aspect <- panel_opts$aspect
       if (is.null(aspect))
         aspect <- infer_aspect_ratio(x)
