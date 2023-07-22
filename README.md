@@ -69,12 +69,12 @@ view_trelliscope(d)
 
 This scratches the surface of the functions found in the package. By beginning with [this tutorial](https://trelliscope.org/trelliscope/articles/trelliscope.html), you can dive deeper into topics including:
 
-- Creating and viewing data frames of visualizations created in R (e.g. ggplot2, htmlwidgets)
-- Adding interactivity with additional variables and metadata
-- Setting initial and pre-defined views
-- Specifying user inputs that can be collected for labeling and capturing insights and domain knowledge
-- Embedding the interactive visualizations in common output formats 
-- Visualizing very large datasets
+- Create and view data frames of visualizations created in R (e.g. ggplot2, htmlwidgets)
+- Add interactivity with additional variables and metadata
+- Set initial and pre-defined views
+- Specify user inputs that can be collected for labeling and capturing insights and domain knowledge
+- Embed the interactive visualizations in common output formats 
+- Visualize very large datasets
 
 [**Get started with the tutorial**](https://trelliscope.org/trelliscope/articles/trelliscope.html)
 
