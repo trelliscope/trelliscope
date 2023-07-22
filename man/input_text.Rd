@@ -19,27 +19,27 @@ input_text(name, label = name, active = TRUE, height = 3)
 Specify a "text box" input
 }
 \examples{
-\dontrun{
 library(ggplot2)
 library(dplyr)
 
 panel_dat <- (
   ggplot(gapminder, aes(year, lifeExp)) +
     geom_point() +
-    facet_panels(~ country + continent)
+    facet_panels(vars(country, continent))
   ) |>
-  nest_panels()
+  as_panels_df()
 
 trell <- panel_dat |>
   as_trelliscope_df() |>
-  write_panels() |>
   add_inputs(
     input_text(
       name = "Text Input",
-      label = "A space to add custom text input")
+      label = "A space to add custom text input"
     ),
     email = "johndoe@email.com"
 )
+\dontrun{
+view_trelliscope(trell)
 }
 }
 \seealso{

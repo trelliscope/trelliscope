@@ -7,24 +7,29 @@
 #'   "json" format. The "jsonp" format makes it possible to browse a
 #'   trelliscope app without the need for a web server.
 #' @examples
-#' \dontrun{
 #' library(ggplot2)
 #'
 #' panel_dat <- (
 #'   ggplot(gapminder, aes(year, lifeExp)) +
 #'     geom_point() +
-#'     facet_panels(~country + continent)
-#'   ) |>
-#'   nest_panels()
+#'     facet_panels(vars(country, continent))
+#' ) |>
+#'   as_panels_df()
 #'
 #' disp <- panel_dat |>
-#'   as_trelliscope_df(name = "life_expectancy", path = tempfile()) |>
-#'   write_panels() |>
-#'   write_trelliscope() |>
-#'   view_trelliscope()
+#'   as_trelliscope_df(name = "life_expectancy")
+#'
+#' \dontrun{
+#' disp <- write_trelliscope(disp)
+#' view_trelliscope(disp)
 #' }
 #' @export
-write_trelliscope <- function(trdf, force_write = FALSE, jsonp = TRUE) {
+write_trelliscope <- function(
+  trdf, force_write = FALSE, jsonp = TRUE
+) {
+  # in case new panel-like variables were added
+  trdf <- find_panel_vars(trdf, warn = FALSE)
+
   trdf <- check_trelliscope_df(trdf)
   trobj <- attr(trdf, "trelliscope")$clone()
 
@@ -35,97 +40,85 @@ write_trelliscope <- function(trdf, force_write = FALSE, jsonp = TRUE) {
   cfg_jsonp <- cfg$datatype == "jsonp"
   if (cfg_jsonp != jsonp) {
     jsonp <- cfg_jsonp
-    message("Using jsonp=", jsonp)
+    msg("Using jsonp=", jsonp)
   }
 
-  is_server <- !is.null(trobj$server)
-  if (is_server) {
-    srvobj <- LocalWebSocketPanelSource$new(port = httpuv::randomPort())
-    trobj$set("panelsource", srvobj)
-    srv <- trobj$server
-    trobj$set("panelformat", srv$format)
-    trobj$set("panelaspect", srv$width / srv$height)
-    attr(trdf, "trelliscope") <- trobj
-  } else {
-    writable <- !inherits(trdf[[trobj$panel_col]],
-      c("img_panel", "iframe_panel"))
-    if (writable && (!trobj$panels_written || force_write))
-      trdf <- write_panels(trdf)
-  }
+  # if (is.null(port))
+  port <- httpuv::randomPort()
 
   trdf <- infer(trdf)
-  if (!is_server) {
-    check_panels(trdf)
-    get_thumbnail_url(trdf)
-  }
 
   trobj <- attr(trdf, "trelliscope")
+
+  primary_panel <- trobj$get("primarypanel")
+
+  trobj <- attr(trdf, "trelliscope")$clone()
+
+  trdf_out <- trdf
+  attr(trdf_out, "trelliscope") <- NULL
+
+  panel_opts <- trobj$panel_options
+
+  # fill in missing panel info
+  for (mt in trobj$get("metas")) {
+    if (mt$get("type") == "panel") {
+      if (is.null(primary_panel))
+        primary_panel <- mt$get("varname")
+
+      nm <- mt$get("varname")
+      src <- mt$get("source")
+      if (inherits(src, "FilePanelSource")) {
+        # if any panels are not generated, generate them
+        # check to see all panels exist
+        write_panels(trdf, nm, force = force_write)
+      } else if (inherits(src, "LocalWebSocketPanelSource")) {
+        if (is.null(src$get_port()))
+          src$set_port(port)
+      }
+      trdf_out[[nm]] <- get_panel_rel_path(trdf[[nm]], nm,
+        panel_opts[[nm]]$format)
+    }
+  }
+
+  if (!is.null(primary_panel))
+    trobj$set("primarypanel", primary_panel)
+  if (is.null(trobj$get("thumbnailurl")))
+    trobj$set("thumbnailurl", trdf_out[[primary_panel]][1])
+
+  attr(trdf, "trelliscope") <- trobj
+
   write_trelliscope_info(trdf, jsonp, cfg$id)
-  write_meta_data(trdf, jsonp, cfg$id)
+  write_meta_data(trdf_out, trobj$df_cols_ignore, trobj$get_display_path(),
+    jsonp, cfg$id)
   update_display_list(trobj$path, jsonp, cfg$id)
 
   write_widget(trobj)
 
-  attr(trdf, "trelliscope") <- trobj
   invisible(trdf)
 }
 
-get_thumbnail_url <- function(trdf) {
-  x <- attr(trdf, "trelliscope")
-
-  # don't need to clone x because we are already working with a cloned object
-  # outside the user's session
-  format <- x$get("panelformat")
-  key <- utils::head(trdf[["__PANEL_KEY__"]], 1)
-
-  # these panels were created in R/trelliscope
-  if (!is.null(format)) {
-    nm <- sanitize(x$get("name"))
-    thurl <- paste0("displays/", nm, "/panels/", key, ".", format)
-  } else {
-    thurl <- key
-  }
-
-  x$set("thumbnailurl", thurl)
-}
-
-write_meta_data <- function(df, jsonp, id) {
-  x <- attr(df, "trelliscope")
-
-  df <- dplyr::select(df, !dplyr::all_of(x$df_cols_ignore))
+write_meta_data <- function(df, cols_ignore, disp_path, jsonp, id) {
+  trobj <- attr(df, "trelliscope")
+  df <- dplyr::select(df, !dplyr::all_of(cols_ignore))
 
   txt <- get_jsonp_text(jsonp, paste0("__loadMetaData__", id))
-  cat(paste0(txt$st, as.character(to_json(df, factor = "integer")), txt$nd),
-    file = file.path(x$get_display_path(),
-      paste0("metaData.", ifelse(jsonp, "jsonp", "json"))))
+  cat(paste0(
+    txt$st,
+    as.character(to_json(df, factor = "integer", force = TRUE)),
+    txt$nd
+  ), file = file.path(disp_path,
+    paste0("metaData.", ifelse(jsonp, "jsonp", "json"))))
 }
 
 write_trelliscope_info <- function(df, jsonp, id) {
   x <- attr(df, "trelliscope")
+
   display_info <- x$as_json(pretty = TRUE)
 
   txt <- get_jsonp_text(jsonp, paste0("__loadDisplayInfo__", id))
   cat(paste0(txt$st, as.character(display_info),
     txt$nd), file = file.path(x$get_display_path(),
       paste0("displayInfo.", ifelse(jsonp, "jsonp", "json"))))
-}
-
-check_panels <- function(trdf) {
-  x <- attr(trdf, "trelliscope")
-
-  pnls <- trdf[[x$panel_col]]
-  panel_path <- file.path(x$get_display_path(), "panels")
-  if (inherits(pnls, "nested_panels")) {
-    ff <- list.files(panel_path)
-    ff <- tools::file_path_sans_ext(ff)
-    keys <- apply(trdf[x$get("keycols")], 1,
-      function(x) sanitize(paste(x, collapse = "_")))
-    extra <- setdiff(keys, ff)
-    assert(length(extra) == 0,
-      msg = paste0("Found ", length(extra), " panel keys that do not have ",
-        " a corresponding panel file."))
-  }
-  TRUE
 }
 
 get_jsonp_text <- function(jsonp, fn_name) {
@@ -188,7 +181,7 @@ update_display_list <- function(app_path, jsonp = TRUE, id) {
     dir.exists(f) && file.exists(file.path(f, dispfile)))))
   lst <- lapply(ff[idx], function(f) {
     cur <- read_json_p(file.path(f, dispfile))
-    cur[c("name", "description", "tags", "keysig", "thumbnailurl")]
+    cur[c("name", "description", "tags", "thumbnailurl")]
   })
   txt <- get_jsonp_text(jsonp, paste0("__loadDisplayList__", id))
   cat(paste0(txt$st, as.character(to_json(lst, pretty = TRUE)), txt$nd),

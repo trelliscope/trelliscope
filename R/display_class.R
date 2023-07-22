@@ -4,19 +4,10 @@ Display <- R6::R6Class(
     df_cols_ignore = NULL, # these columns won't be written to JSON
     path = NULL,
     force_plot = NULL,
-    panel_col = NULL,
-    panels_written = FALSE,
-    # if the user specifies meta labels using add_meta_labels(), we keep track
-    # of them here so that we can apply them just before writing out the object
-    meta_labels = list(),
-    # if the user specifies meta tags using add_meta_tags(), we keep track
-    # of them here so that we can apply them just before writing out the object
-    meta_tags = list(),
+    panel_options = list(),
     fidelius_pars = NULL,
-    server = NULL,
     initialize = function(
-      name, description, tags, keycols, path, force_plot, panel_col,
-      keysig = NULL, server = NULL
+      name, description, tags, keycols, path, force_plot
     ) {
       if (!is.null(name)) {
         check_scalar(name, "name")
@@ -32,29 +23,19 @@ Display <- R6::R6Class(
       check_scalar(force_plot, "force_plot")
       check_logical(force_plot, "force_plot")
       check_character(keycols, "keycols")
-      if (!is.null(keysig)) {
-        check_scalar(keysig, "keysig")
-        check_character(keysig, "keysig")
-      }
       check_atomic(tags, "tags")
       private$name <- name
       private$description <- description
       private$tags <- I(as.character(tags))
       private$keycols <- keycols
-      private$keysig <- keysig
       self$path <- path
       self$force_plot <- force_plot
-      self$panel_col <- panel_col
-      self$server <- server
       private$state <- DisplayState$new()
-      private$panelsource <- FilePanelSource$new()
     },
     set = function(name, val) {
       private[[name]] <- val
     },
     set_meta = function(obj, trdf) {
-      assert(inherits(obj, "trelliscope_meta_def"),
-        msg = "Meta variable definition must come from a meta_*() function")
       obj$check_with_data(trdf)
       obj$infer_from_data(trdf)
       name <- obj$get("varname")
@@ -87,8 +68,9 @@ Display <- R6::R6Class(
     get_display_path = function() {
       file.path(self$path, "displays", sanitize(private$name))
     },
-    get_panel_rel_path = function() {
-      file.path("displays", sanitize(private$name), "panels")
+    get_panel_rel_dir = function(panel_name) {
+      file.path("displays", sanitize(private$name), "panels",
+        sanitize(panel_name))
     },
     as_list = function() {
       inputs <- NULL
@@ -99,15 +81,11 @@ Display <- R6::R6Class(
         description = private$description,
         tags = private$tags,
         keycols = I(private$keycols),
-        keysig = private$keysig,
         metas = unname(lapply(private$metas, function(x) x$as_list())),
         state = private$state$as_list(),
         views = unname(lapply(private$views, function(x) x$as_list())),
         inputs = inputs,
-        paneltype = private$paneltype,
-        panelformat = private$panelformat,
-        panelaspect = private$panelaspect,
-        panelsource = private$panelsource$as_list(),
+        primarypanel = private$primarypanel,
         thumbnailurl = private$thumbnailurl
       )
     },
@@ -115,12 +93,23 @@ Display <- R6::R6Class(
       to_json(self$as_list(), pretty = pretty)
     },
     get_meta_names = function(trdf) {
-      nms <- setdiff(names(trdf), "__PANEL_KEY__")
+      nms <- names(trdf)
       ignore <- c()
       for (nm in nms) {
-        cur_meta <- infer_meta_variable(trdf[[nm]], nm)
-        if (is.null(cur_meta))
+        x <- trdf[[nm]]
+        if (!(
+          inherits(x, panel_classes) ||
+          inherits(x, "href_vec") ||
+          inherits(x, "number_vec") ||
+          inherits(x, "currency_vec") ||
+          is.factor(x) ||
+          is.numeric(x) ||
+          inherits(x, "Date") ||
+          inherits(x, "POSIXct") ||
+          is.atomic(x)
+        )) {
           ignore <- c(ignore, nm)
+        }
       }
       setdiff(nms, ignore)
     }
@@ -130,15 +119,11 @@ Display <- R6::R6Class(
     description = NULL,
     tags = NULL,
     keycols = NULL,
-    keysig = NULL,
     metas = list(),
     inputs = NULL,
     state = NULL,
     views = list(),
-    paneltype = NULL,
-    panelformat = NULL,
-    panelaspect = NULL,
-    panelsource = NULL,
+    primarypanel = NULL,
     thumbnailurl = NULL,
     customInfoPage = FALSE,
     showInfoOnFirstLoad = FALSE

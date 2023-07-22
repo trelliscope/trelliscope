@@ -1,11 +1,9 @@
 test_that("adding inputs", {
-  dat <- ggplot2::mpg |>
-    tidyr::nest(data = !dplyr::one_of(c("manufacturer", "class"))) |>
-    dplyr::mutate(
-      panel = map_plot(data, ~
-        (ggplot2::ggplot(aes(hwy, cty), data = .x)) + geom_point()),
-      class2 = factor(class)
-    )
+  dat <- (ggplot(aes(hwy, cty), data = mpg) +
+    geom_point() +
+    facet_panels(~ class + manufacturer)) |>
+    as_panels_df(panel_col = "panel") %>%
+    mutate(class2 = factor(class))
 
   x <- as_trelliscope_df(dat, name = "test", key_cols = c("manufacturer", "class")) |>
     add_inputs(

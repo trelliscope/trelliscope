@@ -6,86 +6,6 @@ cast_var <- function(df, obj) {
   df
 }
 
-#' Add a meta variable definition to a trelliscope display
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
-#' or a data frame which will be cast as such.
-#' @param obj A meta variable definition created with a meta_*() function.
-#' @export
-add_meta_def <- function(trdf, obj) {
-  trdf <- check_trelliscope_df(trdf)
-  trobj <- attr(trdf, "trelliscope")$clone()
-  trobj$set_meta(obj, trdf)
-  trdf <- cast_var(trdf, obj)
-  attr(trdf, "trelliscope") <- trobj
-  trdf
-}
-
-#' Add multiple meta variable definitions to a trelliscope display
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
-#' or a data frame which will be cast as such.
-#' @param ... Any number of objects created with meta_*() functions.
-#' @export
-add_meta_defs <- function(trdf, ...) {
-  trdf <- check_trelliscope_df(trdf)
-  objs <- list(...)
-  trobj <- attr(trdf, "trelliscope")$clone()
-  trobj$set_metas(objs, trdf)
-  for (obj in objs)
-    trdf <- cast_var(trdf, obj)
-  attr(trdf, "trelliscope") <- trobj
-  trdf
-}
-
-#' Specify labels for meta variables
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
-#' or a data frame which will be cast as such.
-#' @param ... A named set of labels, where each name must correspond to one
-#' of the variables in the dataset
-#' @details This function can be useful if you don't want to go to the trouble
-#' of explicitly setting meta variable definitions but still want variable
-#' descriptions.
-#' @export
-add_meta_labels <- function(trdf, ...) {
-  trdf <- check_trelliscope_df(trdf)
-  args <- list(...)
-  assert(length(names(args)) == length(args),
-    msg = "Arguments must be named")
-  names_diff <- setdiff(names(args), names(trdf))
-  assert(length(names_diff) == 0,
-    msg = paste0("The following variables are not in the data: ",
-      paste(names_diff, collapse = ", ")))
-  trobj <- attr(trdf, "trelliscope")$clone()
-  for (nm in names(args))
-    trobj$meta_labels[[nm]] <- args[[nm]]
-  attr(trdf, "trelliscope") <- trobj
-  trdf
-}
-
-#' Specify tags for meta variables
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
-#' or a data frame which will be cast as such.
-#' @param ... A named set of vectors of tags, where each name must correspond to
-#' one of the variables in the dataset
-#' @details This function can be useful if you don't want to go to the trouble
-#' of explicitly setting meta variable definitions but still want variable
-#' tags.
-#' @export
-add_meta_tags <- function(trdf, ...) {
-  trdf <- check_trelliscope_df(trdf)
-  args <- list(...)
-  assert(length(names(args)) == length(args),
-    msg = "Arguments must be named")
-  names_diff <- setdiff(names(args), names(trdf))
-  assert(length(names_diff) == 0,
-    msg = paste0("The following variables are not in the data: ",
-      paste(names_diff, collapse = ", ")))
-  trobj <- attr(trdf, "trelliscope")$clone()
-  for (nm in names(args))
-    trobj$meta_tags[[nm]] <- args[[nm]]
-  attr(trdf, "trelliscope") <- trobj
-  trdf
-}
-
 #' Add a layout state specification to a trelliscope display
 #' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
 #' or a data frame which will be cast as such.
@@ -256,4 +176,22 @@ as_json <- function(trdf, pretty = TRUE) {
     obj <- attr(trdf, "trelliscope")
   }
   obj$as_json(pretty = pretty)
+}
+
+#' Set the primary panel of a trelliscope display
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+#' or a data frame which will be cast as such.
+#' @param name The name of the panel to set as the primary panel that will be
+#'   viewed when launching the app.
+#' @export
+set_primary_panel <- function(trdf, name) {
+  trdf <- check_trelliscope_df(trdf)
+  if (name %in% names(trdf) && inherits(trdf[[name]], panel_classes)) {
+    trobj <- attr(trdf, "trelliscope")$clone()
+    trobj$set("primarypanel", name)
+    attr(trdf, "trelliscope") <- trobj
+  } else {
+    wrn("Panel '{name}' not found in data. Ignoring.")
+  }
+  trdf
 }

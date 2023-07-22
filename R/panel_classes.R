@@ -15,11 +15,14 @@ PanelSource <- R6::R6Class("PanelSource",
 FilePanelSource <- R6::R6Class("FilePanelSource",
   inherit = PanelSource,
   public = list(
-    initialize = function() {
+    initialize = function(local) {
       super$initialize(type = "file")
+      private$isLocal <- local
     }
   ),
-  private = list()
+  private = list(
+    isLocal = TRUE
+  )
 )
 
 RESTPanelSource <- R6::R6Class("RESTPanelSource",
@@ -46,6 +49,12 @@ LocalWebSocketPanelSource <- R6::R6Class("LocalWebSocketPanelSource",
     initialize = function(url, port) {
       super$initialize(type = "localWebSocket")
       # TODO: validation
+      private$port <- port
+    },
+    get_port = function() {
+      private$port
+    },
+    set_port = function(port) {
       private$port <- port
     }
   ),

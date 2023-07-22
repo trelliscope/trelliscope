@@ -12,8 +12,7 @@ as_trelliscope_df(
   tags = NULL,
   path = NULL,
   force_plot = FALSE,
-  key_sig = NULL,
-  server = NULL
+  key_sig = NULL
 )
 }
 \arguments{
@@ -38,10 +37,6 @@ have already been plotted and have not changed since the previous plotting?}
 
 \item{key_sig}{A string "signature" that represents the panels for this
 display. This should not be specified unless you know what you are doing.}
-
-\item{server}{An experimental feature that allows your local R session to
-act as a server so that panels do not need to be pre-rendered. See
-\code{\link[=local_websocket_server]{local_websocket_server()}}.}
 }
 \description{
 Instantiate a trelliscope data frame
@@ -49,16 +44,15 @@ Instantiate a trelliscope data frame
 \examples{
 # Use `as_trelliscope_df()` to convert panel metadata to a special
 # trelliscope data frame
-\dontrun{
 library(ggplot2)
 library(dplyr)
 
 panel_dat <- (
   ggplot(gapminder, aes(year, lifeExp)) +
     geom_point() +
-    facet_panels(~country + continent)
+    facet_panels(vars(country, continent))
   ) |>
-    nest_panels()
+    as_panels_df()
 
 meta_dat <- gapminder |>
   group_by(country, continent) |>
@@ -73,10 +67,8 @@ meta_dat <- gapminder |>
 joined_dat <- left_join(panel_dat, meta_dat) |>
   as_trelliscope_df(name = "life_expectancy", path = tempfile())
 
-disp <- joined_dat |>
-  write_panels() |>
-  write_trelliscope() |>
-  view_trelliscope()
+\dontrun{
+view_trelliscope(joined_dat)
 }
 
 # You can also use `as_trelliscope_df()` on datasets that have links to

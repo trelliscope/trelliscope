@@ -75,6 +75,63 @@ Meta <- R6::R6Class("Meta",
   )
 )
 
+PanelMeta <- R6::R6Class("PanelMeta",
+  inherit = Meta,
+  public = list(
+    initialize = function(varname, label = NULL, tags = NULL,
+      paneltype,
+      aspect =  1,
+      source
+    ) {
+      super$initialize(
+        type = "panel",
+        varname = varname,
+        label = label,
+        tags = tags,
+        filterable = FALSE,
+        sortable = FALSE
+      )
+      if (!is.null(aspect)) {
+        check_scalar(aspect, "aspect", self$error_msg)
+        check_pos_numeric(aspect, "aspect", self$error_msg)
+        private$aspect <- aspect
+      }
+      assert(inherits(source, "PanelSource"),
+        msg = "source must be a PanelSource")
+      private$source <- source
+      if (!is.null(paneltype)) {
+        check_enum(paneltype, c("img", "iframe"), "paneltype",
+          self$error_msg)
+        private$paneltype <- paneltype
+      }
+    },
+    as_list = function() {
+      res <- super$as_list()
+      res$source <- res$source$as_list()
+      res
+    },
+    check_variable = function(df) {
+      # TODO: check that variable is a valid URL or object
+    },
+    infer_from_data = function(df) {
+      if (is.null(private$aspect)) {
+        # TODO
+        # private$aspect <- ... df[[private$varname]]
+      }
+      if (is.null(private$type)) {
+        # browser()
+        # TODO
+        # private$type <- ... df[[private$varname]]
+      }
+    }
+  ),
+  private = list(
+    paneltype = NULL,
+    aspect = 1,
+    source = NULL
+  )
+)
+
 NumberMeta <- R6::R6Class("NumberMeta",
   inherit = Meta,
   public = list(
@@ -174,6 +231,9 @@ CurrencyMeta <- R6::R6Class("CurrencyMeta",
         if (private$log)
           msg("Inferred that variable '{private$varname}' should \
             be shown on log scale.")
+      }
+      if (is.null(private$digits)) {
+        private$digits <- 2
       }
     }
   ),

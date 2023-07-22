@@ -1,4 +1,4 @@
-to_json <- function(x, pretty = FALSE, factor = "string") {
+to_json <- function(x, pretty = FALSE, factor = "string", force = FALSE) {
   jsonlite::toJSON(
     x,
     pretty = pretty,
@@ -6,7 +6,8 @@ to_json <- function(x, pretty = FALSE, factor = "string") {
     digits = NA,
     null = "null",
     POSIXt = "ISO8601",
-    factor = factor
+    factor = factor,
+    force = force
   )
 }
 
@@ -241,6 +242,15 @@ needs_log <- function(x) {
 #' @importFrom digest digest
 hash <- function(x)
   digest::digest(x)
+
+read_jsonp <- function(file, ...) {
+  txt <- readLines(file, warn = FALSE)
+  txt <- paste0(txt, collapse = "")
+  txt <- gsub("^.*?\\(", "", txt)
+  txt <- gsub("\\);$", "", txt)
+  txt <- gsub("\\)$", "", txt)
+  jsonlite::fromJSON(txt, ...)
+}
 
 # sapply(1:100, function(a) {
 #   x <- abs(rcauchy(1000))

@@ -1,124 +1,22 @@
-dat <- ggplot2::mpg |>
-  tidyr::nest(data = !dplyr::one_of(c("manufacturer", "class"))) |>
-  dplyr::mutate(
-    mean_cty = purrr::map_dbl(data, function(x) mean(x$cty)),
-    panel = map_plot(data, ~
-      (ggplot2::ggplot(aes(hwy, cty), data = .x)) + geom_point()),
+dat <- (ggplot(aes(hwy, cty), data = mpg) +
+  geom_point() +
+  facet_panels(~ class + manufacturer)) |>
+  as_panels_df(panel_col = "panel") |>
+  mutate(
     class2 = factor(class),
-    # to test needs_log
     long_tail = 10^seq_len(dplyr::n()) / 1e20
+  ) |>
+  left_join(
+    mpg |>
+      group_by(class, manufacturer) |>
+      summarise(mean_cty = mean(cty), .groups = "drop"),
+    by = c("class", "manufacturer")
   )
 
-x <- as_trelliscope_df(dat, name = "test", key_cols = c("manufacturer", "class"))
+
+x <- as_trelliscope_df(dat, name = "test",
+  key_cols = c("manufacturer", "class"))
 xo <- get_trobj(x)
-
-test_that2("add_meta_def", {
-  expect_error(
-    list() |> add_meta_def(meta_string("test")),
-    regexp = "Expecting a trelliscope data frame"
-  )
-
-  expect_error(
-    b <- x |>
-      add_meta_def(meta_string("manufacturr", "vehicle manufacturer")),
-    regexp = "not find variable"
-  )
-
-  b <- x |>
-    add_meta_def(meta_string("manufacturer", "vehicle manufacturer"))
-  bo <- get_trobj(b)
-  expect_true("manufacturer" %in% names(bo$get("metas")))
-
-  # make sure original object's underlying R6 class was cloned
-  expect_length(xo$get("metas"), 0)
-
-  expect_message(
-    b2 <- b |>
-      add_meta_def(meta_string("manufacturer", "vehicle manufacturer")),
-    regexp = "Replacing existing meta variable definition"
-  )
-
-  # see if log is inferred correctly
-  suppressMessages(b <- x |>
-    add_meta_def(meta_number("long_tail")) |>
-    add_meta_def(meta_number("mean_cty")))
-  bo <- get_trobj(b)
-
-  # see if digits is inferred correctly
-  expect_equal(bo$get("metas")$long_tail$get("digits"), 0)
-  expect_equal(bo$get("metas")$mean_cty$get("digits"), 1)
-})
-
-# if we don't specify factor levels, it will infer them
-test_that2("meta factor levels inference", {
-  b <- x |>
-    add_meta_def(meta_factor("manufacturer", "vehicle manufacturer"))
-  bo <- get_trobj(b)
-  expect_equal(
-    bo$get("metas")$manufacturer$get("levels"),
-    sort(unique(dat$manufacturer))
-  )
-
-  b <- x |>
-    add_meta_def(meta_factor("class2", "vehicle class (as factor)"))
-  bo <- get_trobj(b)
-  expect_equal(
-    bo$get("metas")$class2$get("levels"),
-    levels(dat$class2)
-  )
-})
-
-test_that2("add_meta_defs", {
-  expect_error(
-    list() |> add_meta_defs(),
-    regexp = "Expecting a trelliscope data frame"
-  )
-
-  b <- x |>
-    add_meta_defs(
-      meta_string("manufacturer", "vehicle manufacturer")
-    )
-  bo <- get_trobj(b)
-  expect_length(bo$get("metas"), 1)
-
-  b <- x |>
-    add_meta_defs(
-      meta_string("manufacturer", "vehicle manufacturer"),
-      meta_string("class", "vehicle class")
-    )
-  bo <- get_trobj(b)
-  expect_length(bo$get("metas"), 2)
-  expect_true(all(c("manufacturer", "class") %in% names(bo$get("metas"))))
-
-  expect_error(
-    b <- x |>
-      add_meta_defs(meta_string("manufacturr", "vehicle manufacturer")),
-    regexp = "not find variable"
-  )
-
-  # make sure original object's underlying R6 class was cloned
-  expect_length(xo$get("metas"), 0)
-
-  expect_message(
-    b2 <- b |>
-      add_meta_defs(meta_string("manufacturer", "vehicle manufacturer")),
-    regexp = "Replacing existing meta variable definition"
-  )
-})
-
-test_that2("add_meta_labels", {
-  expect_error(
-    list() |> add_meta_defs(),
-    regexp = "Expecting a trelliscope data frame"
-  )
-
-  b <- x |>
-    add_meta_labels(manufacturer = "test manufacturer")
-  bo <- get_trobj(b)
-
-  expect_equal(bo$meta_labels, list(manufacturer = "test manufacturer"))
-  expect_length(xo$meta_labels, 0)
-})
 
 test_that2("set_default_layout", {
   expect_error(
