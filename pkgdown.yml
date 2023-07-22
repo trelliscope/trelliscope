@@ -2,8 +2,11 @@ pandoc: 2.19.2
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
+  bigdata: bigdata.html
+  embed: embed.html
+  panels: panels.html
   trelliscope: trelliscope.html
-last_built: 2023-05-19T00:45Z
+last_built: 2023-07-22T19:41Z
 urls:
   reference: https://trelliscope.github.io/trelliscope/reference
   article: https://trelliscope.github.io/trelliscope/articles

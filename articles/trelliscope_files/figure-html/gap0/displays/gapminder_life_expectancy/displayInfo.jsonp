@@ -1,9 +1,8 @@
-__loadDisplayInfo__739c8e09({
+__loadDisplayInfo__0d29a419({
   "name": "gapminder life expectancy",
   "description": "gapminder life expectancy",
   "tags": [],
   "keycols": ["country", "continent"],
-  "keysig": "770cd75a0063d7b1e761189773ec3811",
   "metas": [
     {
       "maxnchar": 24,
@@ -23,6 +22,21 @@ __loadDisplayInfo__739c8e09({
       "label": "continent",
       "type": "factor",
       "varname": "continent"
+    },
+    {
+      "source": {
+        "isLocal": true,
+        "type": "file"
+      },
+      "aspect": 1,
+      "paneltype": "img",
+      "maxnchar": 0,
+      "sortable": false,
+      "filterable": false,
+      "tags": [],
+      "label": "panel",
+      "type": "panel",
+      "varname": "panel"
     }
   ],
   "state": {
@@ -41,11 +55,6 @@ __loadDisplayInfo__739c8e09({
   },
   "views": [],
   "inputs": null,
-  "paneltype": "img",
-  "panelformat": "png",
-  "panelaspect": 1,
-  "panelsource": {
-    "type": "file"
-  },
-  "thumbnailurl": "displays/gapminder_life_expectancy/panels/Afghanistan_Asia.png"
+  "primarypanel": "panel",
+  "thumbnailurl": "panels/panel/Afghanistan_Asia.png"
 })

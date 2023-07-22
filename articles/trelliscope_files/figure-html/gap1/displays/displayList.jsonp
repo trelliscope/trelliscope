@@ -1,9 +1,8 @@
-__loadDisplayList__3faa2ba5([
+__loadDisplayList__91588bbc([
   {
     "name": "gapminder life expectancy",
     "description": "gapminder life expectancy",
     "tags": [],
-    "keysig": "770cd75a0063d7b1e761189773ec3811",
-    "thumbnailurl": "displays/gapminder_life_expectancy/panels/Afghanistan_Asia.svg"
+    "thumbnailurl": "panels/lexp_time/Afghanistan_Asia_AF.svg"
   }
 ])

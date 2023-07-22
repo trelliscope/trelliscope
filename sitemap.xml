@@ -10,7 +10,16 @@
     <loc>https://trelliscope.github.io/trelliscope/LICENSE.html</loc>
   </url>
   <url>
+    <loc>https://trelliscope.github.io/trelliscope/articles/bigdata.html</loc>
+  </url>
+  <url>
+    <loc>https://trelliscope.github.io/trelliscope/articles/embed.html</loc>
+  </url>
+  <url>
     <loc>https://trelliscope.github.io/trelliscope/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://trelliscope.github.io/trelliscope/articles/panels.html</loc>
   </url>
   <url>
     <loc>https://trelliscope.github.io/trelliscope/articles/trelliscope.html</loc>
@@ -37,18 +46,6 @@
     <loc>https://trelliscope.github.io/trelliscope/reference/add_inputs.html</loc>
   </url>
   <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/add_meta_def.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/add_meta_defs.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/add_meta_labels.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/add_meta_tags.html</loc>
-  </url>
-  <url>
     <loc>https://trelliscope.github.io/trelliscope/reference/add_trelliscope_resource_path.html</loc>
   </url>
   <url>
@@ -58,10 +55,16 @@
     <loc>https://trelliscope.github.io/trelliscope/reference/as_json.html</loc>
   </url>
   <url>
+    <loc>https://trelliscope.github.io/trelliscope/reference/as_panels_df.html</loc>
+  </url>
+  <url>
     <loc>https://trelliscope.github.io/trelliscope/reference/as_trelliscope_df.html</loc>
   </url>
   <url>
     <loc>https://trelliscope.github.io/trelliscope/reference/currencies.html</loc>
+  </url>
+  <url>
+    <loc>https://trelliscope.github.io/trelliscope/reference/currency.html</loc>
   </url>
   <url>
     <loc>https://trelliscope.github.io/trelliscope/reference/facet_panels.html</loc>
@@ -76,22 +79,10 @@
     <loc>https://trelliscope.github.io/trelliscope/reference/gapminder.html</loc>
   </url>
   <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/iframe_panel.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/iframe_panel_local.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/img_panel.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/img_panel_local.html</loc>
+    <loc>https://trelliscope.github.io/trelliscope/reference/href.html</loc>
   </url>
   <url>
     <loc>https://trelliscope.github.io/trelliscope/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/infer_meta.html</loc>
   </url>
   <url>
     <loc>https://trelliscope.github.io/trelliscope/reference/input_checkbox.html</loc>
@@ -112,46 +103,22 @@
     <loc>https://trelliscope.github.io/trelliscope/reference/input_text.html</loc>
   </url>
   <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/local_websocket_server.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/map2_plot.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/map_plot.html</loc>
-  </url>
-  <url>
     <loc>https://trelliscope.github.io/trelliscope/reference/mars_rover.html</loc>
   </url>
   <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/meta_currency.html</loc>
+    <loc>https://trelliscope.github.io/trelliscope/reference/number.html</loc>
   </url>
   <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/meta_date.html</loc>
+    <loc>https://trelliscope.github.io/trelliscope/reference/panel_lazy.html</loc>
   </url>
   <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/meta_datetime.html</loc>
+    <loc>https://trelliscope.github.io/trelliscope/reference/panel_local.html</loc>
   </url>
   <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/meta_factor.html</loc>
+    <loc>https://trelliscope.github.io/trelliscope/reference/panel_options.html</loc>
   </url>
   <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/meta_geo.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/meta_graph.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/meta_href.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/meta_number.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/meta_string.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/nest_panels.html</loc>
+    <loc>https://trelliscope.github.io/trelliscope/reference/panel_url.html</loc>
   </url>
   <url>
     <loc>https://trelliscope.github.io/trelliscope/reference/set_default_filters.html</loc>
@@ -164,6 +131,18 @@
   </url>
   <url>
     <loc>https://trelliscope.github.io/trelliscope/reference/set_default_sort.html</loc>
+  </url>
+  <url>
+    <loc>https://trelliscope.github.io/trelliscope/reference/set_panel_options.html</loc>
+  </url>
+  <url>
+    <loc>https://trelliscope.github.io/trelliscope/reference/set_primary_panel.html</loc>
+  </url>
+  <url>
+    <loc>https://trelliscope.github.io/trelliscope/reference/set_tags.html</loc>
+  </url>
+  <url>
+    <loc>https://trelliscope.github.io/trelliscope/reference/set_var_labels.html</loc>
   </url>
   <url>
     <loc>https://trelliscope.github.io/trelliscope/reference/show_info.html</loc>
@@ -185,9 +164,6 @@
   </url>
   <url>
     <loc>https://trelliscope.github.io/trelliscope/reference/view_trelliscope.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/write_panels.html</loc>
   </url>
   <url>
     <loc>https://trelliscope.github.io/trelliscope/reference/write_trelliscope.html</loc>

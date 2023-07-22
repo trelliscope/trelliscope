@@ -1,9 +1,8 @@
-__loadDisplayInfo__694d9217({
+__loadDisplayInfo__e444c91f({
   "name": "mars rover",
   "description": "mars rover",
   "tags": [],
   "keycols": ["id"],
-  "keysig": null,
   "metas": [
     {
       "log": false,
@@ -112,6 +111,21 @@ __loadDisplayInfo__694d9217({
       "label": "hue",
       "type": "number",
       "varname": "hue"
+    },
+    {
+      "source": {
+        "isLocal": false,
+        "type": "file"
+      },
+      "aspect": 1,
+      "paneltype": "img",
+      "maxnchar": 0,
+      "sortable": false,
+      "filterable": false,
+      "tags": [],
+      "label": "img_src",
+      "type": "panel",
+      "varname": "img_src"
     }
   ],
   "state": {
@@ -130,11 +144,6 @@ __loadDisplayInfo__694d9217({
   },
   "views": [],
   "inputs": null,
-  "paneltype": "img",
-  "panelformat": null,
-  "panelaspect": 1.5,
-  "panelsource": {
-    "type": "file"
-  },
+  "primarypanel": "img_src",
   "thumbnailurl": "http://mars.jpl.nasa.gov/msl-raw-images/msss/00565/mhli/0565MH0003250050201853I01_DXXX.jpg"
 })

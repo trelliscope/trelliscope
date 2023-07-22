@@ -24,6 +24,14 @@
 <li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/panels.html">Creating Panel Columns</a>
+    <a class="dropdown-item" href="../articles/embed.html">Embedding Trelliscope</a>
+    <a class="dropdown-item" href="../articles/bigdata.html">Visualizing Large Datasets</a>
+  </div>
+</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -44,68 +52,6 @@
     </div>
 
     <div class="section level2">
-      <h2 id="panel-visualization-identification">Panel visualization identification<a class="anchor" aria-label="anchor" href="#panel-visualization-identification"></a></h2>
-      
-      <p class="section-desc"></p><p>Specify which column of a data frame is a reference to an image/html to be rendered</p>
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="iframe_panel.html">iframe_panel()</a></code> 
-        </dt>
-        <dd>Cast a vector of URLs pointing to html pages as an image panel source</dd>
-      </dl><dl><dt>
-          
-          <code><a href="iframe_panel_local.html">iframe_panel_local()</a></code> 
-        </dt>
-        <dd>Cast a vector of URLs pointing to html pages as an image panel source</dd>
-      </dl><dl><dt>
-          
-          <code><a href="img_panel.html">img_panel()</a></code> 
-        </dt>
-        <dd>Cast a vector of URLs pointing to images as an image panel source</dd>
-      </dl><dl><dt>
-          
-          <code><a href="img_panel_local.html">img_panel_local()</a></code> 
-        </dt>
-        <dd>Cast a vector of URLs pointing to local images as an image panel source</dd>
-      </dl></div><div class="section level2">
-      <h2 id="panel-visualization-creation">Panel visualization creation<a class="anchor" aria-label="anchor" href="#panel-visualization-creation"></a></h2>
-      
-      <p class="section-desc"></p><p>Utilities to create R visualizations to be used as panels</p>
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="facet_panels.html">facet_panels()</a></code> 
-        </dt>
-        <dd>Add a trelliscope facet to a ggplot</dd>
-      </dl><dl><dt>
-          
-          <code><a href="nest_panels.html">nest_panels()</a></code> 
-        </dt>
-        <dd>Render the panels of a trelliscope display</dd>
-      </dl><dl><dt>
-          
-          <code><a href="map2_plot.html">map2_plot()</a></code> <code><a href="map2_plot.html">pmap_plot()</a></code> 
-        </dt>
-        <dd>Map over multiple inputs simultaneously and return a vector of plots</dd>
-      </dl><dl><dt>
-          
-          <code><a href="map_plot.html">map_plot()</a></code> 
-        </dt>
-        <dd>Apply a function to each element of a vector and return a vector of plots</dd>
-      </dl></div><div class="section level2">
       <h2 id="create-a-trelliscope-data-frame">Create a Trelliscope data frame<a class="anchor" aria-label="anchor" href="#create-a-trelliscope-data-frame"></a></h2>
       
       
@@ -122,6 +68,73 @@
         </dt>
         <dd>Instantiate a trelliscope data frame</dd>
       </dl></div><div class="section level2">
+      <h2 id="panel-visualization-specification">Panel visualization specification<a class="anchor" aria-label="anchor" href="#panel-visualization-specification"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="panel_local.html">panel_local()</a></code> 
+        </dt>
+        <dd>Add a "panel_local" column to a dataset</dd>
+      </dl><dl><dt>
+          
+          <code><a href="panel_lazy.html">panel_lazy()</a></code> 
+        </dt>
+        <dd>Add a "calculated panel" column to a dataset</dd>
+      </dl><dl><dt>
+          
+          <code><a href="panel_url.html">panel_url()</a></code> 
+        </dt>
+        <dd>Add a "panel_url" column to a dataset</dd>
+      </dl><dl><dt>
+          
+          <code><a href="facet_panels.html">facet_panels()</a></code> 
+        </dt>
+        <dd>Add a trelliscope facet to a ggplot</dd>
+      </dl><dl><dt>
+          
+          <code><a href="as_panels_df.html">as_panels_df()</a></code> 
+        </dt>
+        <dd>Render the panels of a trelliscope display</dd>
+      </dl><dl><dt>
+          
+          <code><a href="panel_options.html">panel_options()</a></code> 
+        </dt>
+        <dd>Specify options for lazily-rendered panels in a Trelliscope display</dd>
+      </dl></div><div class="section level2">
+      <h2 id="meta-variables">Meta variables<a class="anchor" aria-label="anchor" href="#meta-variables"></a></h2>
+      
+      <p class="section-desc"></p><p>Special meta variable types beyond the basic R types</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="number.html">number()</a></code> 
+        </dt>
+        <dd>Create a number vector</dd>
+      </dl><dl><dt>
+          
+          <code><a href="currency.html">currency()</a></code> 
+        </dt>
+        <dd>Create a currency vector</dd>
+      </dl><dl><dt>
+          
+          <code><a href="href.html">href()</a></code> 
+        </dt>
+        <dd>Create a vector of links</dd>
+      </dl></div><div class="section level2">
       <h2 id="pipe-functions">Pipe functions<a class="anchor" aria-label="anchor" href="#pipe-functions"></a></h2>
       
       <p class="section-desc"></p><p>These functions receive and return a modified trelliscope data frame</p>
@@ -133,6 +146,26 @@
       
 
       <dl><dt>
+          
+          <code><a href="set_tags.html">set_tags()</a></code> 
+        </dt>
+        <dd>Set tags for variables in a data frame</dd>
+      </dl><dl><dt>
+          
+          <code><a href="set_var_labels.html">set_var_labels()</a></code> 
+        </dt>
+        <dd>Set labels for variables in a data frame</dd>
+      </dl><dl><dt>
+          
+          <code><a href="set_panel_options.html">set_panel_options()</a></code> 
+        </dt>
+        <dd>Set panel options for a Trelliscope display</dd>
+      </dl><dl><dt>
+          
+          <code><a href="set_primary_panel.html">set_primary_panel()</a></code> 
+        </dt>
+        <dd>Set the primary panel of a trelliscope display</dd>
+      </dl><dl><dt>
           
           <code><a href="set_default_filters.html">set_default_filters()</a></code> 
         </dt>
@@ -154,26 +187,6 @@
         <dd>Add a labels state specification to a trelliscope display</dd>
       </dl><dl><dt>
           
-          <code><a href="add_meta_defs.html">add_meta_defs()</a></code> 
-        </dt>
-        <dd>Add multiple meta variable definitions to a trelliscope display</dd>
-      </dl><dl><dt>
-          
-          <code><a href="add_meta_def.html">add_meta_def()</a></code> 
-        </dt>
-        <dd>Add a meta variable definition to a trelliscope display</dd>
-      </dl><dl><dt>
-          
-          <code><a href="add_meta_labels.html">add_meta_labels()</a></code> 
-        </dt>
-        <dd>Specify labels for meta variables</dd>
-      </dl><dl><dt>
-          
-          <code><a href="add_meta_tags.html">add_meta_tags()</a></code> 
-        </dt>
-        <dd>Specify tags for meta variables</dd>
-      </dl><dl><dt>
-          
           <code><a href="add_inputs.html">add_inputs()</a></code> 
         </dt>
         <dd>Add inputs to a trelliscope display</dd>
@@ -189,11 +202,6 @@
         <dd>Use fidelius to password protect a trelliscope display</dd>
       </dl><dl><dt>
           
-          <code><a href="write_panels.html">write_panels()</a></code> 
-        </dt>
-        <dd>Write panels</dd>
-      </dl><dl><dt>
-          
           <code><a href="write_trelliscope.html">write_trelliscope()</a></code> 
         </dt>
         <dd>Write the contents of a display</dd>
@@ -202,62 +210,6 @@
           <code><a href="view_trelliscope.html">view_trelliscope()</a></code> 
         </dt>
         <dd>View a trelliscope display</dd>
-      </dl></div><div class="section level2">
-      <h2 id="meta-variables">Meta variables<a class="anchor" aria-label="anchor" href="#meta-variables"></a></h2>
-      
-      <p class="section-desc"></p><p>Specify attributes of the meta variables by which the panels can be interactively explored</p>
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="meta_currency.html">meta_currency()</a></code> 
-        </dt>
-        <dd>Specify a "currency" metadata variable</dd>
-      </dl><dl><dt>
-          
-          <code><a href="meta_date.html">meta_date()</a></code> 
-        </dt>
-        <dd>Specify a "date" metadata variable</dd>
-      </dl><dl><dt>
-          
-          <code><a href="meta_datetime.html">meta_datetime()</a></code> 
-        </dt>
-        <dd>Specify a "datetime" metadata variable</dd>
-      </dl><dl><dt>
-          
-          <code><a href="meta_factor.html">meta_factor()</a></code> 
-        </dt>
-        <dd>Specify a "factor" metadata variable</dd>
-      </dl><dl><dt>
-          
-          <code><a href="meta_geo.html">meta_geo()</a></code> 
-        </dt>
-        <dd>Specify a "geo" metadata variable</dd>
-      </dl><dl><dt>
-          
-          <code><a href="meta_graph.html">meta_graph()</a></code> 
-        </dt>
-        <dd>Specify a "graph" metadata variable</dd>
-      </dl><dl><dt>
-          
-          <code><a href="meta_href.html">meta_href()</a></code> 
-        </dt>
-        <dd>Specify a "href" metadata variable</dd>
-      </dl><dl><dt>
-          
-          <code><a href="meta_number.html">meta_number()</a></code> 
-        </dt>
-        <dd>Specify a "number" metadata variable</dd>
-      </dl><dl><dt>
-          
-          <code><a href="meta_string.html">meta_string()</a></code> 
-        </dt>
-        <dd>Specify a "string" metadata variable</dd>
       </dl></div><div class="section level2">
       <h2 id="inputs">Inputs<a class="anchor" aria-label="anchor" href="#inputs"></a></h2>
       
@@ -360,17 +312,12 @@ variables)</dd>
         <dd>Convert any trelliscope R6 object to JSON</dd>
       </dl><dl><dt>
           
-          <code><a href="infer_meta.html">infer_meta()</a></code> 
-        </dt>
-        <dd>Infer meta variable definitions</dd>
-      </dl><dl><dt>
-          
           <code><a href="update_display_list.html">update_display_list()</a></code> 
         </dt>
         <dd>Update the list of all displays in an app directory</dd>
       </dl><dl><dt>
           
-          <code><a href="currencies.html">currencies</a></code> 
+          <code><a href="currencies.html">currencies</a></code> <code><a href="currencies.html">currencies</a></code> 
         </dt>
         <dd>Data frame of currencies and their codes</dd>
       </dl></div><div class="section level2">
@@ -415,22 +362,6 @@ variables)</dd>
           <code><a href="mars_rover.html">mars_rover</a></code> 
         </dt>
         <dd>Mars rover data</dd>
-      </dl></div><div class="section level2">
-      <h2 id="experimental">Experimental<a class="anchor" aria-label="anchor" href="#experimental"></a></h2>
-      
-      
-
-      
-    </div><div id="" class="section level2">
-      
-      
-      
-
-      <dl><dt>
-          
-          <code><a href="local_websocket_server.html">local_websocket_server()</a></code> 
-        </dt>
-        <dd>Set up a local websocket server</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

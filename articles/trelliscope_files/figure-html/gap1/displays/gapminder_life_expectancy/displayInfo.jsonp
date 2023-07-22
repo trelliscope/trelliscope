@@ -1,36 +1,14 @@
-__loadDisplayInfo__3faa2ba5({
+__loadDisplayInfo__91588bbc({
   "name": "gapminder life expectancy",
   "description": "gapminder life expectancy",
   "tags": [],
-  "keycols": ["country", "continent"],
-  "keysig": "770cd75a0063d7b1e761189773ec3811",
+  "keycols": ["country", "continent", "iso_alpha2"],
   "metas": [
-    {
-      "log": true,
-      "locale": true,
-      "digits": 2,
-      "maxnchar": 10,
-      "sortable": true,
-      "filterable": true,
-      "tags": [],
-      "label": "Mean of annual GDP per capita (US$, inflation-adjusted)",
-      "type": "number",
-      "varname": "mean_gdp"
-    },
-    {
-      "maxnchar": 2,
-      "sortable": false,
-      "filterable": false,
-      "tags": [],
-      "label": "Wikipedia country page",
-      "type": "href",
-      "varname": "wiki_link"
-    },
     {
       "maxnchar": 24,
       "sortable": true,
       "filterable": true,
-      "tags": [],
+      "tags": ["info"],
       "label": "country",
       "type": "string",
       "varname": "country"
@@ -40,34 +18,103 @@ __loadDisplayInfo__3faa2ba5({
       "maxnchar": 8,
       "sortable": true,
       "filterable": true,
-      "tags": [],
+      "tags": ["info"],
       "label": "continent",
       "type": "factor",
       "varname": "continent"
     },
     {
-      "log": false,
-      "locale": true,
-      "digits": 1,
-      "maxnchar": 8,
+      "maxnchar": "NA",
       "sortable": true,
       "filterable": true,
       "tags": [],
-      "label": "Mean of annual life expectancies",
-      "type": "number",
-      "varname": "mean_lifeExp"
+      "label": "iso_alpha2",
+      "type": "string",
+      "varname": "iso_alpha2"
+    },
+    {
+      "source": {
+        "isLocal": true,
+        "type": "file"
+      },
+      "aspect": 1.5,
+      "paneltype": "img",
+      "maxnchar": 0,
+      "sortable": false,
+      "filterable": false,
+      "tags": [],
+      "label": "lexp_time",
+      "type": "panel",
+      "varname": "lexp_time"
+    },
+    {
+      "source": {
+        "isLocal": false,
+        "type": "file"
+      },
+      "aspect": 1.66666666666667,
+      "paneltype": "img",
+      "maxnchar": 0,
+      "sortable": false,
+      "filterable": false,
+      "tags": [],
+      "label": "flag_url",
+      "type": "panel",
+      "varname": "flag_url"
     },
     {
       "log": false,
       "locale": true,
       "digits": 1,
-      "maxnchar": 6,
+      "maxnchar": 4,
+      "sortable": true,
+      "filterable": true,
+      "tags": ["stats"],
+      "label": "Mean life expectancy",
+      "type": "number",
+      "varname": "mean_lexp"
+    },
+    {
+      "digits": 2,
+      "log": true,
+      "code": "USD",
+      "maxnchar": 8,
+      "sortable": true,
+      "filterable": true,
+      "tags": ["stats"],
+      "label": "Mean GDP per capita",
+      "type": "currency",
+      "varname": "mean_gdp"
+    },
+    {
+      "log": true,
+      "locale": true,
+      "digits": 2,
+      "maxnchar": 9,
+      "sortable": true,
+      "filterable": true,
+      "tags": ["stats"],
+      "label": "Max % year-to-year change in life expectancy",
+      "type": "number",
+      "varname": "max_lexp_pct_chg"
+    },
+    {
+      "maxnchar": 10,
       "sortable": true,
       "filterable": true,
       "tags": [],
-      "label": "Lowest observed annual life expectancy",
-      "type": "number",
-      "varname": "min_lifeExp"
+      "label": "Date of max % year-to-year change in life expectancy",
+      "type": "date",
+      "varname": "dt_lexp_max_pct_chg"
+    },
+    {
+      "maxnchar": 2,
+      "sortable": false,
+      "filterable": false,
+      "tags": [],
+      "label": "Link to country Wikipedia entry",
+      "type": "href",
+      "varname": "wiki_link"
     }
   ],
   "state": {
@@ -91,13 +138,13 @@ __loadDisplayInfo__3faa2ba5({
       {
         "metatype": "number",
         "dir": "desc",
-        "varname": "mean_lifeExp",
+        "varname": "mean_lexp",
         "type": "sort"
       }
     ],
     "filter": [
       {
-        "values": [1],
+        "values": [],
         "regexp": null,
         "metatype": "factor",
         "filtertype": "category",
@@ -109,14 +156,14 @@ __loadDisplayInfo__3faa2ba5({
         "min": null,
         "metatype": "number",
         "filtertype": "numberrange",
-        "varname": "mean_lifeExp",
+        "varname": "mean_lexp",
         "type": "filter"
       }
     ]
   },
   "views": [
     {
-      "name": "Countries with high life expectancy (min >= 60)",
+      "name": "Countries with high life expectancy (mean >= 60)",
       "state": {
         "layout": {
           "viewtype": "grid",
@@ -125,14 +172,14 @@ __loadDisplayInfo__3faa2ba5({
           "type": "layout"
         },
         "labels": {
-          "varnames": ["country", "continent"],
+          "varnames": ["country", "continent", "iso_alpha2"],
           "type": "labels"
         },
         "sort": [
           {
             "metatype": "number",
             "dir": "desc",
-            "varname": "min_lifeExp",
+            "varname": "mean_lexp",
             "type": "sort"
           }
         ],
@@ -142,7 +189,7 @@ __loadDisplayInfo__3faa2ba5({
             "min": 60,
             "metatype": "number",
             "filtertype": "numberrange",
-            "varname": "min_lifeExp",
+            "varname": "mean_lexp",
             "type": "filter"
           }
         ]
@@ -174,11 +221,6 @@ __loadDisplayInfo__3faa2ba5({
       "includeMetaVars": []
     }
   },
-  "paneltype": "img",
-  "panelformat": "svg",
-  "panelaspect": 2,
-  "panelsource": {
-    "type": "file"
-  },
-  "thumbnailurl": "displays/gapminder_life_expectancy/panels/Afghanistan_Asia.svg"
+  "primarypanel": "lexp_time",
+  "thumbnailurl": "panels/lexp_time/Afghanistan_Asia_AF.svg"
 })
