@@ -123,12 +123,12 @@ test_that2("facet_trellisope errors/warnings", {
 
   expect_warning(
     as_panels_df(a, panel_col = "pnl",
-      unnest_cols = c("pnl", "xtra")),
+      keep_cols = c("pnl", "xtra")),
     "A variable with name matching panel_col"
   )
 
   expect_error(
-    as_panels_df(a, unnest_cols = c("xtra2")),
+    as_panels_df(a, keep_cols = c("xtra2")),
     "distinct within the values"
   )
 
@@ -180,23 +180,20 @@ test_that2("facet_trellisope errors/warnings", {
   # dd$xtra2 <- rnorm(nrow(dd))
 
   # b1 <- as_panels_df(a, panel_col = "pnl", data_col = "dat",
-  #   unnest_cols = c("pnl", "xtra"))
+  #   keep_cols = c("pnl", "xtra"))
 
   # b2 <- as_panels_df(a, as_plotly = TRUE) |>
   #   as_trelliscope_df(name = "mpg", path = "/tmp/test2") |>
-  #   write_panels()
   # b2$panels_written
   # list.files(file.path(b2$path, "displays", "mpg", "panels"))
 
   # b3 <- as_panels_df(a) |>
   #   as_trelliscope_df(name = "mpg", path = "/tmp/test3") |>
-  #   write_panels()
   # b3$panels_written
   # list.files(file.path(b3$path, "displays", "mpg", "panels"))
 
   # b4 <- as_panels_df(a) |>
   #   as_trelliscope_df(name = "mpg", path = "/tmp/test4") |>
-  #   write_panels(format = "svg")
   # b4$panels_written
   # list.files(file.path(b4$path, "displays", "mpg", "panels"))
 
@@ -204,7 +201,7 @@ test_that2("facet_trellisope errors/warnings", {
 
 
   # # should error
-  # b3 <- as_panels_df(a, unnest_cols = c("xtra2"))
+  # b3 <- as_panels_df(a, keep_cols = c("xtra2"))
 
   # b4 <- ggplot2::mpg |>
   #   tidyr::nest(data = !dplyr::one_of(c("manufacturer", "class"))) |>

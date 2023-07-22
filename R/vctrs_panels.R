@@ -111,7 +111,7 @@ format.panel_lazy_vec <- function(x, ...) {
 vec_ptype_abbr.panel_lazy_vec <- function(
   x, ..., prefix_named = FALSE, suffix_shape = TRUE
 ) {
-  "panel"
+  "lazy_panels"
 }
 
 #' @importFrom pillar pillar_shaft
@@ -174,7 +174,7 @@ format.panel_url_vec <- function(x, ...) {
 vec_ptype_abbr.panel_url_vec <- function(
   x, ..., prefix_named = FALSE, suffix_shape = TRUE
 ) {
-  "panel"
+  "url_panels"
 }
 
 #' @importFrom pillar pillar_shaft
@@ -241,7 +241,7 @@ format.panel_local_vec <- function(x, ...) {
 vec_ptype_abbr.panel_local_vec <- function(
   x, ..., prefix_named = FALSE, suffix_shape = TRUE
 ) {
-  "panel"
+  "local_panels"
 }
 
 #' @importFrom pillar pillar_shaft new_pillar_shaft_simple

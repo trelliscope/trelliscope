@@ -11,7 +11,7 @@ set_panel_options(trdf, ...)
 
 \item{...}{A named set panel options to set. The names should
 correspond to the names of the variables in the data frame. The values
-should come from \code{\link[=panel_options]{panel_options()}} or \code{\link[=panel_options_lazy]{panel_options_lazy()}}.}
+should come from \code{\link[=panel_options]{panel_options()}}.}
 }
 \description{
 Set panel options for a Trelliscope display
@@ -19,5 +19,5 @@ Set panel options for a Trelliscope display
 \examples{
 mars_rover |>
   as_trelliscope_df(name = "mars rover") |>
-  set_panel_options(img_src = panel_options(aspect = 0.5))
+  set_panel_options(img_src = panel_options(width = 2, height = 1))
 }

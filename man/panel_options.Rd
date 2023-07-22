@@ -4,11 +4,31 @@
 \alias{panel_options}
 \title{Specify options for lazily-rendered panels in a Trelliscope display}
 \usage{
-panel_options(aspect = 1)
+panel_options(
+  width = 500,
+  height = 500,
+  format = NULL,
+  force = FALSE,
+  prerender = TRUE
+)
 }
 \arguments{
-\item{aspect}{The aspect ratio of the panel. This is the height divided
-by the width and specifies the relative dimension of the image in viewer.}
+\item{width}{Width in pixels of each panel.}
+
+\item{height}{Height in pixels of each panel.}
+
+\item{format}{The format of the panels the server will provide. Can be
+one of "png" , "svg", or "html". Ignored if panel is not lazy.}
+
+\item{force}{Should server force panels to be written? If \code{FALSE}, if the
+panel has already been generated, that is what will be made available.
+Ignored if panel is not lazy.}
+
+\item{prerender}{If "TRUE", lazy panels will be rendered prior to viewing
+the display. If "FALSE", a local R websockets server will be created and
+plots will be rendered on the fly when requested by the app. The latter
+is only available when using Trelliscope locally.  Ignored if panel is not
+lazy.}
 }
 \description{
 Specify options for lazily-rendered panels in a Trelliscope display
@@ -16,5 +36,6 @@ Specify options for lazily-rendered panels in a Trelliscope display
 \examples{
 mars_rover |>
   as_trelliscope_df(name = "mars rover") |>
-  set_panel_options(img_src = panel_options(aspect = 0.5))
+  set_panel_options(img_src = panel_options(width = 2, height = 1))
+# TODO
 }

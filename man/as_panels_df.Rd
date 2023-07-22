@@ -7,7 +7,7 @@
 as_panels_df(
   x,
   panel_col = "panel",
-  unnest_cols = NULL,
+  keep_cols = NULL,
   as_plotly = FALSE,
   plotly_args = NULL,
   plotly_cfg = NULL
@@ -18,8 +18,8 @@ as_panels_df(
 
 \item{panel_col}{The name of the column to store the rendered panels in.}
 
-\item{unnest_cols}{An optional vector of extra variable names in \code{x}
-to not be nested in the data. If specified, cannot vary within the
+\item{keep_cols}{An optional vector of extra variable names in \code{x}
+to keep in the data. If specified, its values cannot vary within
 each combination of the specified facet variables.}
 
 \item{as_plotly}{Should the panels be written as plotly objects?}

@@ -14,35 +14,19 @@ or a data frame which will be cast as such.}
 View a trelliscope display
 }
 \examples{
-\dontrun{
 library(ggplot2)
 
 panel_dat <- (
   ggplot(gapminder, aes(year, lifeExp)) +
     geom_point() +
-    facet_panels(~country + continent)
+    facet_panels(vars(country, continent))
 ) |>
-  nest_panels()
+  as_panels_df()
 
 disp <- panel_dat |>
-  as_trelliscope_df(name = "life_expectancy") |>
-  write_panels() |>
-  write_trelliscope() |>
-  view_trelliscope()
+  as_trelliscope_df(name = "life_expectancy")
 
-# Alternatively you can build your trelliscope and call `view_trelliscope()`
-# separately. This allows for fine tuning of the trelliscope without having
-# to reopen it every time you make an edit.
-trell <- (
-  ggplot(gapminder, aes(year, lifeExp)) +
-    geom_point() +
-    facet_panels(~country + continent)
-) |>
-  nest_panels() |>
-  as_trelliscope_df(name = "life_expectancy") |>
-  write_panels() |>
-  write_trelliscope()
-
-view_trelliscope(trell)
+\dontrun{
+view_trelliscope(disp)
 }
 }

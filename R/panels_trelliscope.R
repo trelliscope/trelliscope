@@ -9,12 +9,12 @@ panel_static_classes <- c("panel_local_vec", "panel_url_vec")
 #' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
 #' @param ... A named set panel options to set. The names should
 #'  correspond to the names of the variables in the data frame. The values
-#'  should come from [`panel_options()`] or [`panel_options_lazy()`].
+#'  should come from [`panel_options()`].
 #' @export
 #' @examples
 #' mars_rover |>
 #'   as_trelliscope_df(name = "mars rover") |>
-#'   set_panel_options(img_src = panel_options(aspect = 0.5))
+#'   set_panel_options(img_src = panel_options(width = 2, height = 1))
 set_panel_options <- function(trdf, ...) {
   trobj <- attr(trdf, "trelliscope")$clone()
   objs <- rlang::dots_list(...)
@@ -23,8 +23,10 @@ set_panel_options <- function(trdf, ...) {
     assert(nm %in% nms,
       msg = "{.val {nm}} not found in the data frame - cannot set panel \\
         options")
+    assert(inherits(objs[[nm]], "panel_options"),
+      msg = "panel options for {.val {nm}} must be specified using {.fn \\
+        panel_options}")
     if (inherits(trdf[[nm]], panel_lazy_classes)) {
-      opts_type <- "panel_options_lazy"
       if (is.null(objs[[nm]]$format)) {
         if (inherits(trdf[[nm]], "panel_lazy_vec")) {
           if (attr(trdf[[nm]], "type") == "htmlwidget") {
@@ -46,17 +48,18 @@ set_panel_options <- function(trdf, ...) {
         objs[[nm]]$type <- "img"
       }
     } else {
-      opts_type <- "panel_options"
       exts <- tolower(unique(tools::file_ext(trdf[[nm]])))
       if (all(exts %in% valid_img_exts)) {
         objs[[nm]]$type <- "img"
       } else {
         objs[[nm]]$type <- "iframe"
       }
+      objs[[nm]]$aspect <- objs[[nm]]$width / objs[[nm]]$height
+      objs[[nm]]$width <- NULL
+      objs[[nm]]$height <- NULL
+      objs[[nm]]$force <- NULL
+      objs[[nm]]$prerender <- NULL
     }
-    assert(inherits(objs[[nm]], c("panel_options", "panel_options_lazy")),
-      msg = "panel options for {.val {nm}} must be specified using {.fn \\
-        {opts_type}()}")
 
     trobj$panel_options[[nm]] <- objs[[nm]]
   }
@@ -68,17 +71,22 @@ set_panel_options <- function(trdf, ...) {
 #' @param width Width in pixels of each panel.
 #' @param height Height in pixels of each panel.
 #' @param format The format of the panels the server will provide. Can be
-#'   one of "png" , "svg", or "html".
+#'   one of "png" , "svg", or "html". Ignored if panel is not lazy.
 #' @param force Should server force panels to be written? If `FALSE`, if the
 #'   panel has already been generated, that is what will be made available.
+#'   Ignored if panel is not lazy.
 #' @param prerender If "TRUE", lazy panels will be rendered prior to viewing
 #'   the display. If "FALSE", a local R websockets server will be created and
 #'   plots will be rendered on the fly when requested by the app. The latter
-#'   is only available when using Trelliscope locally.
+#'   is only available when using Trelliscope locally.  Ignored if panel is not
+#'   lazy.
 #' @export
 #' @examples
+#' mars_rover |>
+#'   as_trelliscope_df(name = "mars rover") |>
+#'   set_panel_options(img_src = panel_options(width = 2, height = 1))
 #' # TODO
-panel_options_lazy <- function(
+panel_options <- function(
   width = 500, height = 500, format = NULL, force = FALSE, prerender = TRUE
 ) {
   assert(is.numeric(width) && length(width) == 1 && width > 0,
@@ -98,20 +106,5 @@ panel_options_lazy <- function(
   }
 
   structure(list(width = width, height = height, prerender = prerender,
-    force = force, format = format), class = "panel_options_lazy")
-}
-
-#' Specify options for lazily-rendered panels in a Trelliscope display
-#' @param aspect The aspect ratio of the panel. This is the height divided
-#'  by the width and specifies the relative dimension of the image in viewer.
-#' @examples
-#' mars_rover |>
-#'   as_trelliscope_df(name = "mars rover") |>
-#'   set_panel_options(img_src = panel_options(aspect = 0.5))
-#' @export
-panel_options <- function(aspect = 1) {
-  assert(is.numeric(aspect) && length(aspect) == 1,
-    msg = "aspect must be a single numeric value")
-  assert(aspect > 0, msg = "aspect must be positive")
-  structure(list(aspect = aspect), class = "panel_options")
+    force = force, format = format), class = "panel_options")
 }

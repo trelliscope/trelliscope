@@ -10,33 +10,32 @@
 #' @param data data used for faceting. Defaults to the first layer data
 #' @examples
 #' # You can run facet_panels() just like how you would run facet_wrap()
-#' \dontrun{
 #' library(ggplot2)
 #'
+#' \dontrun{
 #' ggplot(gapminder, aes(year, lifeExp)) +
 #'   geom_point() +
-#'   facet_panels(~country + continent)
+#'   facet_panels(vars(country, continent))
 #' }
 #'
-#' # facet_panels can also be a jumping off point into setting up a more 
+#' # facet_panels can also be a jumping off point into setting up a more
 #' # developed trelliscope by passing into `as_panels_df()` to create a nested
 #' # trelliscope data frame for additional editing.
-#' \dontrun{
 #' library(ggplot2)
 #' library(dplyr)
 #'
 #' panel_dat <- (
 #'   ggplot(gapminder, aes(year, lifeExp)) +
 #'   geom_point() +
-#'   facet_panels(~country + continent)
+#'   facet_panels(vars(country, continent))
 #' ) |>
 #'   as_panels_df()
 #'
 #' trell_df <- panel_dat |>
 #'   as_trelliscope_df(name = "life expectancy", path = "gapminder") |>
-#'   set_default_layout(nrow = 2, ncol = 4) |>
-#'   write_trelliscope()
+#'   set_default_layout(ncol = 4)
 #'
+#' \dontrun{
 #' view_trelliscope(trell_df)
 #' }
 #' @param data data used for faceting. Defaults to the main data argument
@@ -83,8 +82,8 @@ ggplot_add.facet_panels <- function(object, plot, object_name) {
 #' Render the panels of a trelliscope display
 #' @param x A ggplot object created with [facet_panels()].
 #' @param panel_col The name of the column to store the rendered panels in.
-#' @param unnest_cols An optional vector of extra variable names in `x`
-#'   to not be nested in the data. If specified, cannot vary within the
+#' @param keep_cols An optional vector of extra variable names in `x`
+#'   to keep in the data. If specified, its values cannot vary within
 #'   each combination of the specified facet variables.
 #' @param as_plotly Should the panels be written as plotly objects?
 #' @param plotly_args Optional named list of arguments to send to `ggplotly`
@@ -95,7 +94,7 @@ ggplot_add.facet_panels <- function(object, plot, object_name) {
 #' @importFrom dplyr count across
 #' @importFrom cli cli_progress_along
 as_panels_df <- function(
-  x, panel_col = "panel", unnest_cols = NULL,
+  x, panel_col = "panel", keep_cols = NULL,
   as_plotly = FALSE, plotly_args = NULL, plotly_cfg = NULL
 ) {
   assert(inherits(x, "facet_panels"),
@@ -103,8 +102,8 @@ as_panels_df <- function(
       use {.fun facet_panels}")
   check_scalar(panel_col, "panel_col")
   check_character(panel_col, "panel_col")
-  if (!is.null(unnest_cols))
-    check_character(unnest_cols, "unnest_cols")
+  if (!is.null(keep_cols))
+    check_character(keep_cols, "keep_cols")
 
   if (as_plotly) {
     assert(requireNamespace("plotly", quietly = TRUE),
@@ -165,23 +164,23 @@ as_panels_df <- function(
     wrn("A variable with name matching panel_col='{panel_col}' \\
       exists in the data and is being overwritten")
 
-  unnest_cols2 <- c(facet_cols, unnest_cols)
+  keep_cols2 <- c(facet_cols, keep_cols)
 
   # group by all the facets
   data <- data |>
     dplyr::ungroup() |>
-    dplyr::select(dplyr::all_of(unnest_cols2)) |>
+    dplyr::select(dplyr::all_of(keep_cols2)) |>
     dplyr::distinct()
     # # dplyr::mutate(.id = row_number()) |>
     # dplyr::mutate(.id = seq_len(nrow(data))) |>
-    # tidyr::nest({{ data_col }} := !dplyr::all_of(unnest_cols2)) |>
+    # tidyr::nest({{ data_col }} := !dplyr::all_of(keep_cols2)) |>
     # dplyr::ungroup()
 
-  if (!is.null(unnest_cols)) {
+  if (!is.null(keep_cols)) {
     nn <- nrow(dplyr::distinct(data,
       dplyr::across(dplyr::all_of(facet_cols))))
     assert(nrow(data) == nn,
-      "The values of unnest_cols={unnest_cols} must be distinct within \
+      "The values of keep_cols={keep_cols} must be distinct within \
       the values of facet_cols.")
   }
 
@@ -292,7 +291,7 @@ format.ggpanel_vec <- function(x, ...) {
 vec_ptype_abbr.ggpanel_vec <- function(
   x, ..., prefix_named = FALSE, suffix_shape = TRUE
 ) {
-  "ggpanel"
+  "ggpanels"
 }
 
 #' @importFrom pillar pillar_shaft

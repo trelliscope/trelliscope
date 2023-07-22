@@ -44,16 +44,15 @@ Instantiate a trelliscope data frame
 \examples{
 # Use `as_trelliscope_df()` to convert panel metadata to a special
 # trelliscope data frame
-\dontrun{
 library(ggplot2)
 library(dplyr)
 
 panel_dat <- (
   ggplot(gapminder, aes(year, lifeExp)) +
     geom_point() +
-    facet_panels(~country + continent)
+    facet_panels(vars(country, continent))
   ) |>
-    nest_panels()
+    as_panels_df()
 
 meta_dat <- gapminder |>
   group_by(country, continent) |>
@@ -68,10 +67,8 @@ meta_dat <- gapminder |>
 joined_dat <- left_join(panel_dat, meta_dat) |>
   as_trelliscope_df(name = "life_expectancy", path = tempfile())
 
-disp <- joined_dat |>
-  write_panels() |>
-  write_trelliscope() |>
-  view_trelliscope()
+\dontrun{
+view_trelliscope(joined_dat)
 }
 
 # You can also use `as_trelliscope_df()` on datasets that have links to

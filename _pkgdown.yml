@@ -11,57 +11,52 @@ authors:
   Ryan Hafen:
     href: https://ryanhafen.com
 
-reference:
-- title: Panel visualization identification
-  desc:  Specify which column of a data frame is a reference to an image/html to be rendered
+articles:
+- title: Articles
+  navbar: ~
   contents:
-  - '`iframe_panel`'
-  - '`iframe_panel_local`'
-  - '`img_panel`'
-  - '`img_panel_local`'
+  - panels
+  - embed
+  - bigdata
 
-- title: Panel visualization creation
-  desc:  Utilities to create R visualizations to be used as panels
-  contents:
-  - '`facet_panels`'
-  - '`nest_panels`'
-  - '`map2_plot`'
-  - '`map_plot`'
+reference:
 
 - title: Create a Trelliscope data frame
   contents:
   - '`as_trelliscope_df`'
 
+- title: Panel visualization specification
+  contents:
+  - '`panel_local`'
+  - '`panel_lazy`'
+  - '`panel_url`'
+  - '`facet_panels`'
+  - '`as_panels_df`'
+  - '`panel_options`'
+
+- title: Meta variables
+  desc:  Special meta variable types beyond the basic R types
+  contents:
+  - '`number`'
+  - '`currency`'
+  - '`href`'
+
 - title: Pipe functions
   desc:  These functions receive and return a modified trelliscope data frame
   contents:
+  - '`set_tags`'
+  - '`set_var_labels`'
+  - '`set_panel_options`'
+  - '`set_primary_panel`'
   - '`set_default_filters`'
   - '`set_default_labels`'
   - '`set_default_layout`'
   - '`set_default_sort`'
-  - '`add_meta_defs`'
-  - '`add_meta_def`'
-  - '`add_meta_labels`'
-  - '`add_meta_tags`'
   - '`add_inputs`'
   - '`add_view`'
   - '`add_charm`'
-  - '`write_panels`'
   - '`write_trelliscope`'
   - '`view_trelliscope`'
-
-- title: Meta variables
-  desc:  Specify attributes of the meta variables by which the panels can be interactively explored
-  contents:
-  - '`meta_currency`'
-  - '`meta_date`'
-  - '`meta_datetime`'
-  - '`meta_factor`'
-  - '`meta_geo`'
-  - '`meta_graph`'
-  - '`meta_href`'
-  - '`meta_number`'
-  - '`meta_string`'
 
 - title: Inputs
   desc:  Specify panel-level user inputs
@@ -86,7 +81,6 @@ reference:
   contents:
   - '`show_info`'
   - '`as_json`'
-  - '`infer_meta`'
   - '`update_display_list`'
   - '`currencies`'
 
@@ -99,7 +93,3 @@ reference:
   contents:
   - '`gapminder`'
   - '`mars_rover`'
-
-- title: Experimental
-  contents:
-  - '`local_websocket_server`'

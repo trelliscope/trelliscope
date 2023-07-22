@@ -71,9 +71,9 @@ infer_state <- function(state, df, keycols, metas, view = NULL) {
   state2
 }
 
-#' Infer meta variable definitions
-#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
-#' or a data frame which will be cast as such.
+# Infer meta variable definitions
+# @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+# or a data frame which will be cast as such.
 # @export
 infer_meta <- function(trdf) {
   trdf <- check_trelliscope_df(trdf)
@@ -83,11 +83,12 @@ infer_meta <- function(trdf) {
   panel_opts <- attr(trdf, "trelliscope")$panel_options
   needs_opts <- setdiff(panel_cols, names(panel_opts))
   new_opts <- lapply(needs_opts, function(nm) {
-    if (inherits(trdf[[nm]], panel_lazy_classes)) {
-      panel_options_lazy()
-    } else {
-      panel_options()
-    }
+    panel_options()
+    # if (inherits(trdf[[nm]], panel_lazy_classes)) {
+    #   panel_options_lazy()
+    # } else {
+    #   panel_options()
+    # }
   })
   names(new_opts) <- needs_opts
   trdf <- do.call(set_panel_options, c(list(trdf = trdf), new_opts))
@@ -123,9 +124,13 @@ infer_meta_variable <- function(x, nm, panel_opts) {
 
   res <- NULL
   if (inherits(x, panel_classes)) {
-    if (inherits(x, panel_lazy_classes) && panel_opts$prerender == FALSE) {
-      psource <- LocalWebSocketPanelSource$new(port = NULL)
+    if (inherits(x, panel_lazy_classes)) {
       aspect <- panel_opts$width / panel_opts$height
+      if (panel_opts$prerender == FALSE) {
+        psource <- LocalWebSocketPanelSource$new(port = NULL)
+      } else {
+        psource <- FilePanelSource$new(local = TRUE)
+      }
     } else {
       if (inherits(x, "panel_url_vec")) {
         psource <- FilePanelSource$new(local = FALSE)
