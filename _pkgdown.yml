@@ -33,6 +33,7 @@ reference:
   - '`facet_panels`'
   - '`as_panels_df`'
   - '`panel_options`'
+  - '`get_test_subset`'
 
 - title: Meta variables
   desc:  Special meta variable types beyond the basic R types

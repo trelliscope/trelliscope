@@ -29,7 +29,7 @@ write_widget <- function(trobj) {
 
   # create widget
   wdgt <- htmlwidgets::createWidget(
-    name = "trelliscope_widget",
+    name = "trs",
     x,
     width = width,
     height = height,
@@ -55,8 +55,9 @@ write_widget <- function(trobj) {
   }
 
   options(trelliscope_latest_display_url = index_html)
-  msg("Trelliscope written to {index_html}
-    Open this file or call view_trelliscope() to view.")
+  if (!getOption("trelliscope_view_trelliscope", FALSE))
+    msg("Trelliscope written to {index_html}
+      Open this file or call view_trelliscope() to view.")
 
   invisible(index_html)
 }

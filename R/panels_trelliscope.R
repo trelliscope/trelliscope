@@ -27,40 +27,33 @@ set_panel_options <- function(trdf, ...) {
       msg = "panel options for {.val {nm}} must be specified using {.fn \\
         panel_options}")
     if (inherits(trdf[[nm]], panel_lazy_classes)) {
+      # override format if htmlwidget or plotly since it can only be html
+      has_plotly <- attr(trdf[[nm]], "as_plotly")
+      if (length(has_plotly) == 0)
+        has_plotly <- FALSE
+      is_widget <- attr(trdf[[nm]], "type") == "htmlwidget"
+      if (length(is_widget) == 0)
+        is_widget <- FALSE
+      if (is_widget || has_plotly)
+        objs[[nm]]$format <- "html"
+
       if (is.null(objs[[nm]]$format)) {
-        if (inherits(trdf[[nm]], "panel_lazy_vec")) {
-          if (attr(trdf[[nm]], "type") == "htmlwidget") {
-            objs[[nm]]$format <- "html"
-          } else {
-            objs[[nm]]$format <- "png"
-          }
-        } else {
-          if (attr(trdf[[nm]], "as_plotly")) {
-            objs[[nm]]$format <- "html"
-          } else {
-            objs[[nm]]$format <- "png"
-          }
-        }
+        objs[[nm]]$format <- "png"
       }
+
       if (objs[[nm]]$format == "html") {
         objs[[nm]]$type <- "iframe"
       } else {
         objs[[nm]]$type <- "img"
       }
     } else {
-      exts <- tolower(unique(tools::file_ext(trdf[[nm]])))
-      if (all(exts %in% valid_img_exts)) {
-        objs[[nm]]$type <- "img"
-      } else {
-        objs[[nm]]$type <- "iframe"
-      }
+      objs[[nm]]$type <- attr(trdf[[nm]], "type")
       objs[[nm]]$aspect <- objs[[nm]]$width / objs[[nm]]$height
       objs[[nm]]$width <- NULL
       objs[[nm]]$height <- NULL
       objs[[nm]]$force <- NULL
       objs[[nm]]$prerender <- NULL
     }
-
     trobj$panel_options[[nm]] <- objs[[nm]]
   }
   attr(trdf, "trelliscope") <- trobj

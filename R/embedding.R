@@ -7,7 +7,8 @@ in_rmarkdown <- function() {
 can_print_rmarkdown <- function() {
   pandoc_to <- knitr::opts_knit$get("rmarkdown.pandoc.to")
   pandoc_args <- knitr::opts_knit$get("rmarkdown.pandoc.args")
-  pandoc_to == "html" && !any(pandoc_args == "--self-contained")
+  valid <- c("html", "revealjs", "slidy")
+  pandoc_to %in% valid && !any(pandoc_args == "--self-contained")
 }
 
 # #' @importFrom glue glue

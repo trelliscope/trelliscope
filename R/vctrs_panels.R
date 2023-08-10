@@ -18,39 +18,14 @@ panel_lazy <- function(
 ) {
   assert(is.function(plot_fn),
     msg = "`plot_fn` must be a function")
-  assert(is.data.frame(data),
-    msg = "`data`` must be a data frame")
-  if (!is.null(by)) {
-    assert(is.character(by),
-      msg = "`by` must be a character vector")
-    assert(all(by %in% names(data)),
-      msg = "All elements of `by` must be found in `data`")
-  }
-
-  if (is.null(by)) {
-    by <- intersect(names(data), names(cur))
-    # TODO: should make sure these are atomic, etc.
-  }
-
-  # get "by" values for each row
-  by_vals <- cur |>
-    dplyr::select(dplyr::all_of(by)) |>
-    split(seq_len(nrow(cur))) |>
-    unname() |>
-    lapply(function(x) {
-      x <- as.list(x)
-      lapply(x, function(a) {
-        if (is.factor(a))
-          a <- as.character(a)
-        a
-      })
-    })
+  by_vals <- get_by_vals(data, cur, by = by)
+  by <- names(by_vals[[1]])
 
   # test plot function on a subset
   nd <- data
   for (gv in by)
     nd <- dplyr::filter(nd, .data[[gv]] == by_vals[[1]][[gv]][[1]])
-  nd <- dplyr::collect(nd)
+  # nd <- dplyr::collect(nd)
   p <- plot_fn(nd)
   if (inherits(p, "htmlwidget")) {
     type <- "htmlwidget"
@@ -69,6 +44,66 @@ panel_lazy <- function(
     class = "panel_lazy_vec"
   )
 }
+
+#' Get a subset of a dataset to test a plot function on
+#' @param full_dat The full dataset from which to extract a subset
+#' @param summ_dat The summary dataset to which a plot column will be added.
+#'   Each row of this dataset will correspond to one subset of `full_dat` and a
+#'   sample row will be used to produce a single test subset.
+#' @param by A list of variables found in both `full_dat` and in `summ_dat`
+#'   to which a plot column will be added. This is used to specify which subset
+#'   of `data` to apply for a given plot. If not provided, it is inferred based
+#'   on the variables found in both `data` and the summary data.
+#' @export
+get_test_subset <- function(full_dat, summ_dat, by = NULL) {
+  by_vals <- get_by_vals(full_dat, summ_dat, by = by, top = TRUE)
+  by <- names(by_vals[[1]])
+  nd <- full_dat
+  for (gv in by)
+    nd <- dplyr::filter(nd, .data[[gv]] == by_vals[[1]][[gv]][[1]])
+  nd
+}
+
+get_by_vals <- function(full_dat, summ_dat, by = NULL, top = FALSE) {
+  is_df <-
+    (inherits(full_dat, "Dataset") && inherits(full_dat, "ArrowObject")) ||
+    inherits(full_dat, "arrow_dplyr_query") ||
+    is.data.frame(full_dat)
+
+  assert(is_df,
+    msg = "`full_dat` must be a data frame or appropriate Arrow object")
+  if (!is.null(by)) {
+    assert(is.character(by),
+      msg = "`by` must be a character vector")
+    assert(all(by %in% names(full_dat)),
+      msg = "All elements of `by` must be found in `full_dat`")
+  }
+
+  if (is.null(by)) {
+    by <- intersect(names(full_dat), names(summ_dat))
+    # TODO: should make sure these are atomic, etc.
+  }
+
+  if (top)
+    summ_dat <- head(summ_dat, 1)
+
+  # get "by" values for each row
+  by_vals <- summ_dat |>
+    dplyr::select(dplyr::all_of(by)) |>
+    split(seq_len(nrow(summ_dat))) |>
+    unname() |>
+    lapply(function(x) {
+      x <- as.list(x)
+      lapply(x, function(a) {
+        if (is.factor(a))
+          a <- as.character(a)
+        a
+      })
+    })
+
+  by_vals
+}
+
 
 get_panel_rel_path <- function(x, name, fmt = NULL) {
   UseMethod("get_panel_rel_path")
@@ -126,15 +161,32 @@ pillar_shaft.panel_lazy_vec <- function(x, ...) {
 #   cat(format(x), sep = "\n")
 # }
 
+get_panel_type <- function(x, type) {
+  if (is.character(type) && length(type) == 1 && type %in% c("img", "frame"))
+    return(type)
+  type <- "iframe"
+  exts <- tolower(unique(tools::file_ext(x)))
+  if (all(exts %in% valid_img_exts)) {
+    type <- "img"
+  }
+  type
+}
+
 #' Add a "panel_url" column to a dataset
 #' @param urls A character vector of URLs to be used as panels.
+#' @param type The "type" of panel ("img" or "iframe"). If NULL, will be
+#'  inferred from the file extension.
 #' @importFrom vctrs field new_rcrd new_vctr vec_data
 #' @export
-panel_url <- function(urls) {
+panel_url <- function(urls, type = NULL) {
   assert(is.character(urls),
     msg = "`urls` must be a character vector")
 
-  vctrs::new_vctr(urls, class = "panel_url_vec")
+  vctrs::new_vctr(
+    urls,
+    type = get_panel_type(urls, type),
+    class = "panel_url_vec"
+  )
 }
 
 #' @export
@@ -177,25 +229,32 @@ vec_ptype_abbr.panel_url_vec <- function(
   "url_panels"
 }
 
-#' @importFrom pillar pillar_shaft
+#' @importFrom pillar pillar_shaft style_subtle
 #' @export
 pillar_shaft.panel_url_vec <- function(x, ...) {
   out <- vctrs::vec_data(x)
   nc <- nchar(out)
-  out_short <- substr(out, nc - 10, nc)
+  out_short <- paste0("<", attr(x, "type"), ">")
+  out <- paste0(out_short,
+    pillar::style_subtle(paste0(" ...", substr(out, nc - 10, nc))))
   pillar::new_pillar_shaft_simple(out, align = "left",
-    width = 10, shorten = "front", short_formatted = out_short)
+    short_formatted = rep(out_short, length(x)))
 }
-
 
 #' Add a "panel_local" column to a dataset
 #' @param x A character vector of paths to local files to be used as panels.
+#' @param type The "type" of panel ("img" or "iframe"). If NULL, will be
+#'  inferred from the file extension.
 #' @export
-panel_local <- function(x = character()) {
+panel_local <- function(x = character(), type = NULL) {
   assert(is.character(x),
     msg = "`x` must be a character vector")
 
-  vctrs::new_vctr(x, class = "panel_local_vec")
+  vctrs::new_vctr(
+    x,
+    type = get_panel_type(x, type),
+    class = "panel_local_vec"
+  )
 }
 
 #' @export
@@ -221,8 +280,7 @@ vec_cast.character.panel_local_vec <- function(x, to, ...) vctrs::vec_data(x)
 #' @importFrom magick image_ggplot image_read
 #' @export
 get_panel.panel_local_vec <- function(x) {
-  # TODO: look for raster image file extensions instead
-  if (tools::file_ext(vctrs::vec_data(x)) == "html") {
+  if (attr(x, "type") == "iframe") {
     utils::browseURL(vctrs::vec_data(x))
   } else {
     magick::image_ggplot(magick::image_read(vctrs::vec_data(x)))
@@ -244,17 +302,14 @@ vec_ptype_abbr.panel_local_vec <- function(
   "local_panels"
 }
 
-#' @importFrom pillar pillar_shaft new_pillar_shaft_simple
+#' @importFrom pillar pillar_shaft new_pillar_shaft_simple style_subtle
 #' @export
 pillar_shaft.panel_local_vec <- function(x, ...) {
   out <- vctrs::vec_data(x)
+  nc <- nchar(out)
+  out_short <- paste0("<", attr(x, "type"), ">")
+  out <- paste0(out_short,
+    pillar::style_subtle(paste0(" ...", substr(out, nc - 10, nc))))
   pillar::new_pillar_shaft_simple(out, align = "left",
-    width = 10, shorten = "front")
+    short_formatted = rep(out_short, length(out)))
 }
-
-# check_html_ext <- function(x, fn) {
-#   exts <- tolower(unique(tools::file_ext(x)))
-#   assert(all(exts == "html"),
-#     msg = paste0("For ", fn, "(), all file extensions must be .html"))
-#   TRUE
-# }

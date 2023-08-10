@@ -33,7 +33,11 @@ write_panels <- function(trdf, nm, force = FALSE) {
     for (idx in idxs) {
       cli::cli_progress_update()
 
-      p <- get_panel(pnls[[idx]])
+      p <- try(get_panel(pnls[[idx]]), silent = TRUE)
+      if (inherits(p, "try-error")) {
+        cli::cli_alert("Error writing panel {nm} with output to {basename(pths[idx])}")
+        next
+      }
 
       write_panel(
         p,

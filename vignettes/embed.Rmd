@@ -1,8 +1,8 @@
 ---
-title: "Embedding Trelliscope"
+title: "Sharing and Embedding Trelliscope"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Embedding Trelliscope}
+  %\VignetteIndexEntry{Sharing and Embedding Trelliscope}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -17,3 +17,107 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(trelliscope)
 ```
+
+## Sharing Trelliscope displays
+
+Trelliscope displays are best used as a way to explore data with colleagues, particularly domain experts who can provide insight into what is being seen. As such, it is important to be able to share Trelliscope displays with others. There are a few ways to do this.
+
+Trelliscope displays are self-contained serverless web applications that can be easily shared with others. They are designed to be able to be used completely offline (no web dependencies for libraries, fonts, etc.), so you can share them with others without having to worry about hosting them on a server with complex dependencies. The only requirement is that the person you are sharing with has a modern web browser.
+
+### Sharing the app directory
+
+One of the easiest ways to share a Trelliscope display is to simply send a copy of the output directory to a colleague. This could be through email, a shared file system, or cloud-based file sharing. The output directory will contain everything needed to run the display. The only thing the recipient needs to do is open the `index.html` file in a web browser.
+
+### GitHub Pages
+
+Services like [GitHub Pages](https://pages.github.com), [Netlify](https://www.netlify.com), [Amazon S3](https://aws.amazon.com/s3/), and others make it easy to host static web content, often for free. Trelliscope displays are static web content, so they can be hosted on these services. You can read more about these services by visiting their websites. Typically you can set things up so that any new commits of your app directory will automatically be deployed to the web.
+
+### R Markdown and Shiny
+
+We will discuss how to embed Trelliscope displays in R Markdown documents in later sections in this document.
+
+### Password Protection
+
+If your content is sensitive, you can either use services provided by your web hosting solution or you can pass your Trelliscope data frame through the `add_charm()` function to add a simple password protection layer to your display. This will require the user to enter a password before they can view the display. This function makes use of the [fidelius](https://mattwarkentin.github.io/fidelius/) R package and currently only encrypts the index.html file, so you will want to make sure your web hosting platform does not allow direct access to any of the other files in your app directory.
+
+## Embedding Trelliscope in R Markdown
+
+We have worked to make it easy to embed Trelliscope displays in R Markdown documents. It is as easy as calling `view_trelliscope()` on a Trelliscope data frame. However, there are a few things to keep in mind.
+
+First, you can only embed Trelliscope outputs in HTML-formatted output types that aren't self-contained. We have tested the following output formats:
+
+- `rmarkdown::html_vignette`
+- `rmarkdown::html_document`
+- `rmarkdown::slidy_presentation`
+- `revealjs::revealjs_presentation`
+
+Second, your output chunk needs to have a name. This will be used to determine where to write the output of the display.
+
+Third, you need to leave the `path` option of `as_trelliscoe_df()` blank. Trelliscope will automatically determine the path to use, which will be a relative path inside your R Markdown output directory.
+
+Additionally, you might consider setting some chunk options to make the output look better. For example, it is a good idea to set `out.width="100%"` and hard-code the height (`out.height="___px"`) to control the size of the display. We have also added support for a `scale` chunk option that can be used to scale the output UI so that it doesn't appear so large when rendered in confined spaces.
+
+Below is an example of a chunk that will embed a Trelliscope display in an R Markdown document with these considerations in mind.
+
+
+````markdown
+`r ''````{r mars_trelliscope, out.width="100%", out.height="700px", scale=0.5}
+library(trellicope)
+d <- as_trelliscope_df(mars_rover, name = "mars rover")
+view_trelliscope(d)
+```
+````
+
+Another option for embedding Trelliscope displays in R Markdown documents is to pre-render them and host them somewhere on the internet and then stick an iframe tag in your R Markdown document.
+
+## Embedding Trelliscope in Shiny
+
+Trelliscope is a great alternative to Shiny for a wide range of interactive visualization applications. In any situation where you are considering building a Shiny app that provides the user with many controls that produce a visual output, you should consider using Trelliscope instead by producing a data frame of visualizations corresponding to every combination of user input values. Trelliscope displays are easier to build, maintain, and share than shiny apps, and provide the benefit of being able to view many outputs simultaneously, as well as exploring the input parameter space interactively.
+
+It can be the case, however, that you might want to build a Shiny app that allows a user to provide inputs for building a Trelliscope display, or in which you would like a user to be able to view a Trelliscope display. If the latter (no dynamic inputs required for creating the display), we advise to simply build the display up-front and embed it in an iframe somewhere in the Shiny app. For building and displaying dynamically-generated Trelliscope displays, we provide an example below.
+
+In this example, we create a simple app that allows a user to choose a dataset (either `mars_rover` or none), provide a description for the Trelliscope display, and then view the resulting display.
+
+```r
+library(trelliscope)
+library(shiny)
+
+tr_dir <- tempfile()
+dir.create(tr_dir)
+add_trelliscope_resource_path("trelliscope", tr_dir)
+
+ui <- fluidPage(
+  titlePanel("Trelliscope Embed in Shiny"),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput(
+        "dataset",
+        "Choose a dataset:",
+        choices = c("mars_rover", "[no data]")),
+      textInput("description", "Description:", "[display description]")
+    ),
+    mainPanel(
+      trelliscopeOutput("trelliscope", style = "height: 800px")
+    )
+  )
+)
+
+server <- function(input, output) {
+  output$trelliscope <- renderTrelliscope({
+    if (input$dataset == "mars_rover") {
+      d <- as_trelliscope_df(mars_rover,
+        name = "mars rover",
+        description = input$description,
+        path = file.path(tr_dir, "test")
+      )
+      d
+    } else {
+      NULL
+    }
+  })
+}
+
+shinyApp(ui = ui, server = server)
+```
+
+For those with experience in Shiny, most of the above should be straightforward. One main function to call out is `add_trelliscope_resource_path()`, which allows you to specify a path that the app can look in to find your Trelliscope displays. In the UI, you can use `trelliscopeOutput()` to specify where a Trelliscope display will be rendered. In the server, you use `renderTrelliscope()` to write create the display. You must place the display in the path you used with `add_trelliscope_resource_path()`. The object returned by `renderTrelliscope()` should be a Trelliscope data frame. Trelliscope will take care of writing the display to the specified path and rendering it in the UI.

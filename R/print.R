@@ -100,26 +100,26 @@ show_info <- function(trdf) {
   #   trobj$meta_labels, trobj$meta_tags)
 }
 
-#' @importFrom cli cli_bullets cli_code cli_div cli_end
-#' @importFrom dplyr tibble bind_rows
-#' @importFrom utils capture.output
-cli_print_tbl <- function(x) {
-  nr <- nrow(x)
-  a <- utils::capture.output(print(x, n = 8, width = getOption("width") - 4))
-  a <- a[-1]
-  a <- gsub("^[0-9] ", "", a)
-  a <- gsub("^# ", "", a)
-  a <- gsub("^ +", "", a)
-  lns <- paste(rep("\u2500", nchar(a[1])), collapse = "")
-  a[2] <- lns
-  a <- c(lns, a, lns)
-  a <- gsub("^", "    ", a)
-  if (nr > 8)
-    a <- a[-length(a)]
-  cli::cli_div(theme = list(.code = list(color = "darkgray")))
-  cli::cli_code(a, language = NULL)
-  cli::cli_end()
-}
+# #' @importFrom cli cli_bullets cli_code cli_div cli_end
+# #' @importFrom dplyr tibble bind_rows
+# #' @importFrom utils capture.output
+# cli_print_tbl <- function(x) {
+#   nr <- nrow(x)
+#   a <- utils::capture.output(print(x, n = 8, width = getOption("width") - 4))
+#   a <- a[-1]
+#   a <- gsub("^[0-9] ", "", a)
+#   a <- gsub("^# ", "", a)
+#   a <- gsub("^ +", "", a)
+#   lns <- paste(rep("\u2500", nchar(a[1])), collapse = "")
+#   a[2] <- lns
+#   a <- c(lns, a, lns)
+#   a <- gsub("^", "    ", a)
+#   if (nr > 8)
+#     a <- a[-length(a)]
+#   cli::cli_div(theme = list(.code = list(color = "darkgray")))
+#   cli::cli_code(a, language = NULL)
+#   cli::cli_end()
+# }
 
 print_meta_info_df <- function(metas, df, meta_labels, meta_tags) {
   # TODO: revamp this

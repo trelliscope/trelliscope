@@ -1,11 +1,19 @@
 ---
-title: "Visualizing Large Datasets"
-output: rmarkdown::html_vignette
+title: "Visualizing Large Datasets with Trelliscope"
+output:
+  rmarkdown::html_vignette:
+    toc: false
 vignette: >
-  %\VignetteIndexEntry{Visualizing Large Datasets}
+  %\VignetteIndexEntry{Visualizing Large Datasets with Trelliscope}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+<style>
+.row>main {
+  max-width: unset !important;
+}
+</style>
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -14,6 +22,235 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+Trelliscope can be very useful for visualizing large datasets. Often when visualizing large data, we are constrained to either calculate and visualize summaries or to take a more in-depth look at a small sample of the data. These are both useful but insights can easily be lost in summaries or by not looking in the right places. Trelliscope provides a convenient fast way to interactively explore large datasets in detail.
+
+In this article we will show a quick example of creating a Trelliscope display against NYC Taxi data, [conveniently made available by the Apache Arrow project](https://arrow.apache.org/docs/r/articles/dataset.html#example-nyc-taxi-data).
+
+First we'll load some dependencies.
+
+```r
+library(arrow, warn.conflicts = FALSE)
+library(dplyr, warn.conflicts = FALSE)
+library(lubridate, warn.conflicts = FALSE)
+library(ggplot2)
 library(trelliscope)
 ```
+
+If you'd like to download the data locally, you can use the following:
+
+```r
+bucket <- s3_bucket("voltrondata-labs-datasets/nyc-taxi")
+# this will take a very long time!
+copy_files(from = bucket, to = "nyc-taxi")
+
+list.files("nyc-taxi")
+#> [1] "year=2009" "year=2010" "year=2011" "year=2012" "year=2013" "year=2014"
+#> [7] "year=2015" "year=2016" "year=2017" "year=2018" "year=2019" "year=2020"
+#> [13] "year=2021" "year=2022"
+```
+
+<!-- list.files("../examples/examples/12-bigdata/nyc-taxi") -->
+
+The data is partitioned by year and month and runs from 2009 to 2020.
+
+```r
+system("du -hs nyc-taxi")
+#> 64G  nyc-taxi
+```
+
+It is 64 GB in size. We will open and work with this data using the [arrow R package](https://arrow.apache.org/docs/r/index.html).
+
+<!--
+library(arrow, warn.conflicts = FALSE)
+library(dplyr, warn.conflicts = FALSE)
+library(lubridate, warn.conflicts = FALSE)
+ds <- open_dataset("../examples/examples/12-bigdata/nyc-taxi") %>%
+  mutate(
+    day = day(pickup_datetime),
+    hour = hour(pickup_datetime)
+  )
+dsumm <- ds %>%
+  group_by(year, month, day) %>%
+  summarise(n = n()) %>%
+  collect() %>%
+  ungroup() %>%
+  mutate(
+    date = make_date(year, month, day),
+    wday = wday(date, label = TRUE)
+  ) %>%
+  arrange(date)
+saveRDS(dsumm, "vignettes/bd_dsumm.rds")
+pd <- ds %>%
+  filter(year == 2009, month == 1, day == 1) %>%
+  count(hour) %>%
+  collect() %>%
+  arrange(hour)
+saveRDS(pd, "vignettes/bd_pd.rds")
+-->
+
+```r
+ds <- open_dataset("nyc-taxi") %>%
+  mutate(
+    day = day(pickup_datetime),
+    hour = hour(pickup_datetime)
+  )
+
+nrow(ds)
+#> [1] 1,672,590,319
+```
+
+There are over 1.6 billion rows in this dataset.
+
+For the sake of a very simple example, suppose that we wish to create a visualization for each day in the dataset showing the number of rides in each hour of the day. There are many other interesting things we could do with this data, but this will suffice for an illustration of the process.
+
+First we want a dataset that represents each day of the data. Below is a simple summary computing the number of rides per day.
+
+```r
+dsumm <- ds %>%
+  group_by(year, month, day) %>%
+  summarise(n = n()) %>%
+  collect() %>%
+  ungroup() %>%
+  mutate(
+    date = make_date(year, month, day),
+    wday = wday(date, label = TRUE)
+  ) %>%
+  arrange(date)
+```
+
+This could be a lot more interesting with more summaries such as the median fare and distance per day, but we will keep it simple for this example.
+
+```{r, echo=FALSE, message=FALSE}
+library(dplyr, warn.conflicts = FALSE)
+library(ggplot2, warn.conflicts = FALSE)
+dsumm <- readRDS("bd_dsumm.rds")
+pd <- readRDS("bd_pd.rds")
+```
+
+```{r}
+dsumm
+```
+
+This will serve as the summary dataset that we will turn in to a Trelliscope data frame. With this, we create visualizations of data for each day and add them as a column to the data frame.
+
+As discussed in the [Creating Panel Columns](panels.html) article, we can link the full dataset to this summary dataset with a plot function that will be applied to each subset of the full dataset, as defined by the variables that uniquely define a row in the summary dataset (in this case, year, month, and day). Conveniently, the full dataset can be an Arrow dataset, which is what we have here. This means that we do not need to read the huge input data into R to create the display, allowing us to build it nearly instantaneously.
+
+<!-- ggplot(dsumm, aes(date, n)) + geom_line() -->
+
+Our plot function takes as a single argument a data object which will represents the full dataset filtered to the subset that corresponds to the summary row being plotted.
+
+We can get a test subset to work with using the following:
+
+```r
+x <- get_test_subset(ds, dsumm)
+
+x
+#> FileSystemDataset (query)
+#> vendor_name: string
+#> pickup_datetime: timestamp[ms]
+#> dropoff_datetime: timestamp[ms]
+#> passenger_count: int64
+#> ...
+#> year: int32
+#> month: int32
+#> day: int64 (day(pickup_datetime))
+#> hour: int64 (hour(pickup_datetime))
+#> 
+#> * Filter: (((year == 2009) and (month == 1)) and (day(pickup_datetime) == 1))
+#> See $.data for the source Arrow object
+```
+
+Since the full dataset is an Arrow dataset, our test subset represents a query against this dataset. We see that this subset will represent the data for January 1, 2009. We can use Arrow to count the number of rides in each hour of the day and then collect the results to obtain the data that we want to plot.
+
+```r
+pd <- x %>%
+  count(hour) %>%
+  collect() %>%
+  arrange(hour)
+```
+
+Our data to plot looks like this:
+
+```{r}
+pd
+```
+
+A simple plot with ggplot2:
+
+```{r}
+ggplot(pd, aes(hour, n)) +
+  geom_point() +
+  geom_segment(aes(xend = hour, yend = 0)) +
+  xlim(0, 23) +
+  theme_minimal()
+```
+
+We now put this together into a plot function that we can use to create a panel column.
+
+```r
+plot_fn <- function(x) {
+  pd <- x %>%
+    count(hour) %>%
+    collect()
+  ggplot(pd, aes(hour, n)) +
+    geom_point() +
+    geom_segment(aes(xend = hour, yend = 0)) +
+    xlim(0, 23) +
+    theme_minimal()
+}
+```
+
+Now we can add a plot column, `hourly_ct`, to our summary dataset with the plot function we defined above.
+
+```r
+dsumm <- dsumm %>%
+  mutate(hourly_ct = panel_lazy(plot_fn, ds))
+
+dsumm
+#> # A tibble: 4,807 × 7
+#>     year month   day      n date       wday  hourly_ct    
+#>    <int> <int> <int>  <int> <date>     <ord> <lazy_panels>
+#>  1  2009     1     1 327625 2009-01-01 Thu   <ggplot>     
+#>  2  2009     1     2 376708 2009-01-02 Fri   <ggplot>     
+#>  3  2009     1     3 432710 2009-01-03 Sat   <ggplot>     
+#>  4  2009     1     4 367525 2009-01-04 Sun   <ggplot>     
+#>  5  2009     1     5 370901 2009-01-05 Mon   <ggplot>     
+#>  6  2009     1     6 427394 2009-01-06 Tue   <ggplot>     
+#>  7  2009     1     7 371043 2009-01-07 Wed   <ggplot>     
+#>  8  2009     1     8 477502 2009-01-08 Thu   <ggplot>     
+#>  9  2009     1     9 520846 2009-01-09 Fri   <ggplot>     
+#> 10  2009     1    10 483350 2009-01-10 Sat   <ggplot>     
+#> # ℹ 4,797 more rows
+#> # ℹ Use `print(n = ...)` to see more rows
+```
+
+Finally, we can create a Trelliscope display from this data frame.
+
+```r
+dsumm <- dsumm %>%
+  as_trelliscope_df(name = "NYC Taxi") %>%
+  set_default_labels(c("date", "n", "wday")) %>%
+  set_default_sort("date") %>%
+  set_default_layout(ncol = 4)
+```
+
+So far, there is not much about this example that is any different from other examples in these articles. If we were to view our Trelliscope display right now, it would cycle through all of the data to pre-render the panels. This could take a while because of the number of panels and because of the size of the underlying dataset.
+
+Trelliscope has an experimental option to disable pre-rendering of panels. This will allow us to view the display immediately, but will cause panels to be rendered on-demand as we view them, using your local R session to do so. We can set this with the following:
+
+```r
+  set_panel_options(hourly_ct = panel_options(prerender = FALSE))
+```
+
+Now when we view the display, we should see something like this:
+
+```r
+view_trelliscope(dsumm)
+```
+
+<video controls autoplay loop style="width: 100%">
+  <source src="https://user-images.githubusercontent.com/1275592/255818491-36afe4f6-90e8-4fc0-9398-7136dcb62abf.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+Disabling pre-rendering is a great feature for getting to an output quickly, regardless of the size of the underlying data, but it can have drawbacks. First, it can be slow to render panels on-demand, especially if the panel function is computationally expensive. Panels are cached, so this will only be a problem the first time you view a panel. Note that particularly in our case, since we are dealing with an Arrow dataset, we are at the mercy of how quickly the data can be filtered. Since here the partitioning of the data is on year and month, the filtering is very fast. Second, you currently cannot share Trelliscope displays that have panels that are not pre-rendered. This is because the panels are rendered using your local R session which causes the resulting app to lose its serverless self-contained properties.

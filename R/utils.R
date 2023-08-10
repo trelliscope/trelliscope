@@ -114,17 +114,17 @@ check_not_has_var <- function(df, name, err_fn = paste0) {
 check_graphvar <- function(
   x, name, idvar, idvarname, err_fn = paste0
 ) {
-  assert(is.list(x),
-    msg = err_fn("The variable specifying the graph, \\
-      {.val {name}} must be a list"))
-  ids <- unlist(unlist(x, recursive = FALSE), recursive = FALSE)
-  assert(is.atomic(ids),
-    msg = err_fn("The values in the variable specifying the graph \\
-      {.val {name}} must be atomic"))
-  assert(all(unique(ids) %in% idvar),
-    msg = err_fn("There were values found in the variable specifying \\
-      the graph {.val {name}} that are not found in the ID variable, \\
-      {.val {idvarname}}"))
+  # assert(is.list(x),
+  #   msg = err_fn("The variable specifying the graph, \\
+  #     {.val {name}} must be a list"))
+  # ids <- unlist(unlist(x, recursive = FALSE), recursive = FALSE)
+  # assert(is.atomic(ids),
+  #   msg = err_fn("The values in the variable specifying the graph \\
+  #     {.val {name}} must be atomic"))
+  # assert(all(unique(ids) %in% idvar),
+  #   msg = err_fn("There were values found in the variable specifying \\
+  #     the graph {.val {name}} that are not found in the ID variable, \\
+  #     {.val {idvarname}}"))
 }
 
 check_latvar <- function(x, name, err_fn = paste0) {

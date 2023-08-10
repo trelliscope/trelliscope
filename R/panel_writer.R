@@ -98,6 +98,7 @@ get_png_pars <- function(width, height, orig_width = width, ...) {
 
 #' @importFrom grDevices png dev.cur dev.off
 #' @importFrom grid grid.draw
+#' @importFrom utils capture.output
 make_png <- function(p, file, width, height, orig_width = width, ...) {
 
   pngfun <- grDevices::png
@@ -117,7 +118,7 @@ make_png <- function(p, file, width, height, orig_width = width, ...) {
     } else {
       if (file.exists(file))
         unlink(file)
-      try(capture.output(print(p)), silent = TRUE)
+      try(utils::capture.output(print(p)), silent = TRUE)
       # if panel function didn't plot anything then make a blank panel
       # res = res * pixelratio,
       if (!file.exists(file)) {
@@ -144,7 +145,7 @@ make_svg <- function(p, file, width, height, ...) {
 
 #' @importFrom ggplot2 aes element_blank element_rect geom_text ggplot labs
 #' scale_y_continuous theme unit
-blank_image <- function(txt = "no thumbnail") {
+blank_image <- function(txt = "no image") {
   dd <- data.frame(x = 0.5, y = 0.75, label = txt)
   ggplot2::ggplot() +
     ggplot2::geom_text(ggplot2::aes(

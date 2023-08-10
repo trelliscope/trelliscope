@@ -4,10 +4,13 @@
 \alias{panel_url}
 \title{Add a "panel_url" column to a dataset}
 \usage{
-panel_url(urls)
+panel_url(urls, type = NULL)
 }
 \arguments{
 \item{urls}{A character vector of URLs to be used as panels.}
+
+\item{type}{The "type" of panel ("img" or "iframe"). If NULL, will be
+inferred from the file extension.}
 }
 \description{
 Add a "panel_url" column to a dataset

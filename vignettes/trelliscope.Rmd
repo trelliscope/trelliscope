@@ -59,7 +59,7 @@ show_info(d)
 
 Now to view this in the Trelliscope viewer app:
 
-```{r mars, out.width="100%", out.height="700px", scale=0.7}
+```{r mars, out.width="100%", out.height="640px", scale=0.7}
 view_trelliscope(d)
 ```
 
@@ -124,13 +124,13 @@ Note that `as_panels_df()` has options such as `as_plotly = TRUE` that will conv
 
 You can view the plot for any one row by calling the panel column and the index number of the row you want to look at. For example, if you wanted to see the generated plot for the second row, Albania, you would run the following code.
 
-```{r}
+```{r message=FALSE}
 p_df$panel[[2]]
 ```
 
 Note that this nested data frame of visualizations can be a useful object to work with outside of using it with Trelliscope.
 
-Just as in the Mars rover example, we can view this data frame of visualizations and cast it as a Trelliscope data frame with `as_trelliscoe_df()` and view it with `view_trelliscope()`.
+Just as in the Mars rover example, we can view this data frame of visualizations and cast it as a Trelliscope data frame with `as_trelliscope_df()` and view it with `view_trelliscope()`.
 
 ```{r gap0, out.width="100%", out.height="700px", scale=0.7}
 tdf <- as_trelliscope_df(p_df,
@@ -173,7 +173,7 @@ Our data frame already has a panel column, but we can add more if we would like.
 - `panel_local()`: Add a panel column with local image files
 - `panel_lazy()`: Add a panel column by specifying a plot function and dataset against which panels will be lazily generated
 
-Here we will show an example of using `panel_url()` to add a country flag images to our data frame. In another article we will provide more examples of using these functions. Note that a variation of `panel_lazy()` is used underneath the hood when you use `facet_panels()`.
+Here we will show an example of using `panel_url()` to add a country flag images to our data frame. In another article we will [provide more examples of using these functions](panels.html). Note that a variation of `panel_lazy()` is used underneath the hood when you use `facet_panels()`.
 
 A database of country flags is available [here](https://raw.githubusercontent.com/hafen/countryflags/master/png/512/) and flag images can be referenced by their 2-letter country code.
 
@@ -515,4 +515,8 @@ tdf <- tdf |>
 view_trelliscope(tdf)
 ```
 
-A few additional features are available in Trelliscope that we have not covered here and can be found by visiting other articles in this documentation.
+A few additional features are available in Trelliscope that we have not covered here and can be found by visiting other articles in this documentation:
+
+- [A deeper dive into creating panel columns](panels.html)
+- [Sharing and embedding Trelliscope displays](embed.html)
+- [Visualizing very large datasets with Trelliscope](bigdata.html)

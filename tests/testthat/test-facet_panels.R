@@ -134,7 +134,7 @@ test_that2("facet_trellisope errors/warnings", {
 
   expect_error(
     as_panels_df(a, panel_col = "manufacturer"),
-    "one of the facet columns"
+    "matches one of the facet"
   )
 })
 

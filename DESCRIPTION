@@ -14,6 +14,7 @@ Suggests:
     covr,
     plotly,
     fidelius,
+    dygraphs,
     rmarkdown
 Config/testthat/edition: 3
 Imports:

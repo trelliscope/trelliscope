@@ -16,4 +16,150 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(trelliscope)
+library(ggplot2)
+library(dygraphs)
+library(dplyr, warn.conflicts = FALSE)
+```
+
+This article provides a more in-depth look at different ways to create panel columns for use with Trelliscope.  It is assumed that you have read the [Introduction](trelliscope.html) article and are familiar with the basics of Trelliscope.
+
+## Using `facet_panels()` with ggplot2
+
+We will stick with the gapminder example for this article. In the Introduction article, we showed how to visualize life expectancy vs. time for each country with ggplot2 using `facet_panels()` and `as_panels_df()`.
+
+```{r}
+gap <- (
+  ggplot(gapminder, aes(year, lifeExp)) +
+    geom_point() +
+    facet_panels(vars(country, continent, iso_alpha2))
+  ) |>
+  as_panels_df(panel_col = "lexp_time")
+
+gap
+```
+
+```{r echo=FALSE, eval=FALSE}
+attributes(gap$lexp_time)
+attr(gap$lexp_time, "d")
+ls(envir = environment(attr(gap$lexp_time, "plot_fn")))
+get("data", envir = environment(attr(gap$lexp_time, "plot_fn")))
+get("x", envir = environment(attr(gap$lexp_time, "plot_fn")))$data
+```
+
+The `lexp_time` column is a list of what appears to be ggplot2 objects, one for each panel. What is actually happening is a bit more complex. `lexp_time` is a special vector that contains minimal information for each row needed to create the ggplot facet for that particular row, along with a plotting function that contains instructions for how to create the panel and the underlying data. When a single plot is rendered (e.g. calling `gap$lexp_time[[1]]`), the plotting function is called with the data for that particular panel. And when you view this data frame as a Trelliscope data frame, it will write out all the panels using these instructions. This is a special case of a more general "lazy" panel specification approach that we will discuss in the next section.
+
+Note that `as_panels_df()` has an arument `as_plotly` argument, which if `TRUE`, will convert the ggplot panels to Plotly. Additional arguments `plotly_args` and `plotly_cfg` are provided to further customize the Plotly output.
+
+## Custom R-generated panels with `panel_lazy()`
+
+A typical use case for visualizing data with Trelliscope, as seen in the example above, is that we have a larger dataset which we aggregate in some way according to some grouping variables, and we then want to visualize the larger dataset corresponding to each group. One way to do this is as we did above, using faceting to specify the subsetting and "summary" visualizations. Another way to do it is to summarize the data first and then specify a plotting function that provides a plot for each row of the summary dataset which can be based on data from the full dataset.
+
+For example, consider the following simple summary dataset of mean life expectancy and mean GDP per capita for each country in the gapminder dataset.
+
+```{r}
+gsumm <- gapminder %>%
+  summarise(
+    mean_lexp = mean(lifeExp),
+    mean_gdp = mean(gdpPercap),
+    .by = c("continent", "country", "iso_alpha2")
+  )
+gsumm
+```
+
+Now suppose that we would like to use the [dygraphs](https://rstudio.github.io/dygraphs/index.html) package to create an interactive time series plot of life expectancy over time for each country. What we need to do is provide a function that takes a single input which will represent a data frame corresponding to a subset of the `gapminder` dataset associated with a single row of the summary dataset `gsumm` (one country).
+
+A helper function to get an example subset to expect in the plotting function is `get_test_subset()`. This takes as arguments the full dataset and the summary dataset and returns an example subset that you can build your plot function around.
+
+```{r}
+x <- get_test_subset(gapminder, gsumm)
+
+x
+```
+
+Let's build a simple plotting function based on this data.
+
+```{r}
+plot_fn <- function(x) {
+  library(dygraphs)
+  dygraph(select(x, year, lifeExp)) %>%
+    dyOptions(strokeWidth = 3, drawPoints = TRUE, pointSize = 4, gridLineColor = "#dedede") %>%
+    dyHighlight(highlightCircleSize = 6) %>%
+    dyAxis("x", label = "Year", valueRange = c(1952, 2007)) %>%
+    dyAxis("y", label = "Life Expectancy (yrs)", valueRange = c(23.59, 82.61)) %>%
+    dyRangeSelector()
+}
+
+plot_fn(x)
+```
+
+Now all we need to do to add a new plot column to `gsumm` is to use `panel_lazy()` which takes our plot function and the full dataset as arguments.
+
+```{r}
+gsumm <- gsumm %>%
+  mutate(lexp_time = panel_lazy(plot_fn, gapminder))
+
+gsumm
+```
+
+Note that these panels are [htmlwidgets](http://www.htmlwidgets.org). Your plot function can return any type of htmlwidget or plot objects that can be printed to image files, such as ggplot2 objects.
+
+## Panels of images existing on the web with `panel_url()`
+
+<!-- lapply(gsumm$country, function(x) {
+  browseURL(paste0("https://en.wikipedia.org/wiki/", x))
+  Sys.sleep(0.2)
+}) -->
+
+If image or html assets exist on the web, you can create panel columns pointing to these using `panel_url()`. For example, suppose we want to add a column of flags for each country. [This forked repository](https://github.com/hafen/countryflags) contains image files for each country flag, where each file is named using the country's 2-letter code. We can use the `iso_alpha2` column in the gapminder dataset to construct the URL for each flag.
+
+```{r}
+flag_base_url <- "https://raw.githubusercontent.com/hafen/countryflags/master/png/512/"
+
+gsumm <- mutate(gsumm,
+  flag_url = panel_url(paste0(flag_base_url, iso_alpha2, ".png"))
+)
+gsumm
+```
+
+## Panels of images on the local filesystem with `panel_local()`
+
+Suppose we instead want to use local image files. We can use `panel_local()` to create a panel column that points to local files.
+
+We will download all of the flag images to a temporary directory to illustrate.
+
+```{r}
+flag_path <- tempdir()
+download.file("https://github.com/trelliscope/trelliscope/files/12265140/flags.zip",
+  destfile = file.path(flag_path, "flags.zip"))
+unzip(file.path(flag_path, "flags.zip"), exdir = file.path(flag_path, "flags"))
+list.files(file.path(flag_path, "flags"))
+```
+
+We can now create a panel column that points to these local files.
+
+```{r}
+gsumm <- mutate(gsumm,
+  flag = panel_local(file.path(flag_path, "flags", paste0(iso_alpha2, ".png"))),
+)
+gsumm
+```
+
+Note that once we make `gsumm` into a Trelliscope data frame and view it, local panel files will be copied into the directory of the Trelliscope display so that it is self-contained. If you want to avoid a making copy, you can create the appropriate directory structure and put the files there yourself.
+
+## Setting panel options
+
+```{r gap, out.width="100%", out.height="700px", scale=0.6}
+d <- as_trelliscope_df(gsumm, name = "gapminder")  |>
+  set_default_labels(c("country", "continent")) |>
+  set_default_layout(ncol = 3) |>
+  set_default_sort(c("continent", "mean_lexp"), dir = c("asc", "desc"))
+
+# set panel options (if not specified, defaults are used)
+d <- d |>
+  set_panel_options(
+    lexp_time = panel_options(width = 600, height = 400)
+  ) |>
+  set_primary_panel("lexp_time")
+
+view_trelliscope(d)
 ```

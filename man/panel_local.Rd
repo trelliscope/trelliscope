@@ -4,10 +4,13 @@
 \alias{panel_local}
 \title{Add a "panel_local" column to a dataset}
 \usage{
-panel_local(x = character())
+panel_local(x = character(), type = NULL)
 }
 \arguments{
 \item{x}{A character vector of paths to local files to be used as panels.}
+
+\item{type}{The "type" of panel ("img" or "iframe"). If NULL, will be
+inferred from the file extension.}
 }
 \description{
 Add a "panel_local" column to a dataset

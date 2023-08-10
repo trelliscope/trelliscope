@@ -32,7 +32,14 @@ view_trelliscope <- function(trdf = NULL) {
     #   paste0("displayInfo.", c("json", "jsonp")))
     # if (!any(file.exists(pth))) {
     #   msg("Display has not been written... writing...")
+
+    on.exit({
+      options(trelliscope_view_trelliscope = FALSE)
+    }, add = TRUE)
+    options(trelliscope_view_trelliscope = TRUE)
     trdf <- write_trelliscope(trdf)
+    options(trelliscope_view_trelliscope = FALSE)
+
     has_server <- requires_server(trdf)
     if (has_server)
       wrn("Trelliscope displays that have panels with `prerender = FALSE` \\
