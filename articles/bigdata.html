@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="trelliscope">
-<title>Visualizing Large Datasets • trelliscope</title>
+<title>Visualizing Large Datasets with Trelliscope • trelliscope</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Visualizing Large Datasets">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Visualizing Large Datasets with Trelliscope">
 <meta property="og:description" content="trelliscope">
 <meta property="og:image" content="https://trelliscope.github.io/trelliscope/logo.svg">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -52,8 +52,8 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/panels.html">Creating Panel Columns</a>
-    <a class="dropdown-item" href="../articles/embed.html">Embedding Trelliscope</a>
-    <a class="dropdown-item" href="../articles/bigdata.html">Visualizing Large Datasets</a>
+    <a class="dropdown-item" href="../articles/embed.html">Sharing and Embedding Trelliscope</a>
+    <a class="dropdown-item" href="../articles/bigdata.html">Visualizing Large Datasets with Trelliscope</a>
   </div>
 </li>
       </ul>
@@ -80,7 +80,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.svg" class="logo" alt=""><h1>Visualizing Large Datasets</h1>
+      <img src="../logo.svg" class="logo" alt=""><h1>Visualizing Large Datasets with Trelliscope</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/trelliscope/trelliscope/blob/HEAD/vignettes/bigdata.Rmd" class="external-link"><code>vignettes/bigdata.Rmd</code></a></small>
@@ -89,8 +89,259 @@
 
     
     
+<style>
+.row>main {
+  max-width: unset !important;
+}
+</style>
+<p>Trelliscope can be very useful for visualizing large datasets. Often
+when visualizing large data, we are constrained to either calculate and
+visualize summaries or to take a more in-depth look at a small sample of
+the data. These are both useful but insights can easily be lost in
+summaries or by not looking in the right places. Trelliscope provides a
+convenient fast way to interactively explore large datasets in
+detail.</p>
+<p>In this article we will show a quick example of creating a
+Trelliscope display against NYC Taxi data, <a href="https://arrow.apache.org/docs/r/articles/dataset.html#example-nyc-taxi-data" class="external-link">conveniently
+made available by the Apache Arrow project</a>.</p>
+<p>First we’ll load some dependencies.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://trelliscope.org/trelliscope" class="external-link">trelliscope</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/apache/arrow/" class="external-link">arrow</a></span>, warn.conflicts <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span>, warn.conflicts <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org" class="external-link">lubridate</a></span>, warn.conflicts <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://trelliscope.org/trelliscope" class="external-link">trelliscope</a></span><span class="op">)</span></span></code></pre></div>
+<p>If you’d like to download the data locally, you can use the
+following:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">bucket</span> <span class="op">&lt;-</span> <span class="fu">s3_bucket</span><span class="op">(</span><span class="st">"voltrondata-labs-datasets/nyc-taxi"</span><span class="op">)</span></span>
+<span><span class="co"># this will take a very long time!</span></span>
+<span><span class="fu">copy_files</span><span class="op">(</span>from <span class="op">=</span> <span class="va">bucket</span>, to <span class="op">=</span> <span class="st">"nyc-taxi"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="st">"nyc-taxi"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "year=2009" "year=2010" "year=2011" "year=2012" "year=2013" "year=2014"</span></span>
+<span><span class="co">#&gt; [7] "year=2015" "year=2016" "year=2017" "year=2018" "year=2019" "year=2020"</span></span>
+<span><span class="co">#&gt; [13] "year=2021" "year=2022"</span></span></code></pre></div>
+<!-- list.files("../examples/examples/12-bigdata/nyc-taxi") -->
+<p>The data is partitioned by year and month and runs from 2009 to
+2020.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.html" class="external-link">system</a></span><span class="op">(</span><span class="st">"du -hs nyc-taxi"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 64G  nyc-taxi</span></span></code></pre></div>
+<p>It is 64 GB in size. We will open and work with this data using the
+<a href="https://arrow.apache.org/docs/r/index.html" class="external-link">arrow R
+package</a>.</p>
+<!--
+library(arrow, warn.conflicts = FALSE)
+library(dplyr, warn.conflicts = FALSE)
+library(lubridate, warn.conflicts = FALSE)
+ds <- open_dataset("../examples/examples/12-bigdata/nyc-taxi") %>%
+  mutate(
+    day = day(pickup_datetime),
+    hour = hour(pickup_datetime)
+  )
+dsumm <- ds %>%
+  group_by(year, month, day) %>%
+  summarise(n = n()) %>%
+  collect() %>%
+  ungroup() %>%
+  mutate(
+    date = make_date(year, month, day),
+    wday = wday(date, label = TRUE)
+  ) %>%
+  arrange(date)
+saveRDS(dsumm, "vignettes/bd_dsumm.rds")
+pd <- ds %>%
+  filter(year == 2009, month == 1, day == 1) %>%
+  count(hour) %>%
+  collect() %>%
+  arrange(hour)
+saveRDS(pd, "vignettes/bd_pd.rds")
+-->
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ds</span> <span class="op">&lt;-</span> <span class="fu">open_dataset</span><span class="op">(</span><span class="st">"nyc-taxi"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    day <span class="op">=</span> <span class="fu">day</span><span class="op">(</span><span class="va">pickup_datetime</span><span class="op">)</span>,</span>
+<span>    hour <span class="op">=</span> <span class="fu">hour</span><span class="op">(</span><span class="va">pickup_datetime</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">ds</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1,672,590,319</span></span></code></pre></div>
+<p>There are over 1.6 billion rows in this dataset.</p>
+<p>For the sake of a very simple example, suppose that we wish to create
+a visualization for each day in the dataset showing the number of rides
+in each hour of the day. There are many other interesting things we
+could do with this data, but this will suffice for an illustration of
+the process.</p>
+<p>First we want a dataset that represents each day of the data. Below
+is a simple summary computing the number of rides per day.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dsumm</span> <span class="op">&lt;-</span> <span class="va">ds</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">month</span>, <span class="va">day</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    date <span class="op">=</span> <span class="fu">make_date</span><span class="op">(</span><span class="va">year</span>, <span class="va">month</span>, <span class="va">day</span><span class="op">)</span>,</span>
+<span>    wday <span class="op">=</span> <span class="fu">wday</span><span class="op">(</span><span class="va">date</span>, label <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span></span></code></pre></div>
+<p>This could be a lot more interesting with more summaries such as the
+median fare and distance per day, but we will keep it simple for this
+example.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dsumm</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4,807 × 6</span></span></span>
+<span><span class="co">#&gt;     year month   day      n date       wday </span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;ord&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">2</span>009     1     1 <span style="text-decoration: underline;">327</span>625 2009-01-01 Thu  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">2</span>009     1     2 <span style="text-decoration: underline;">376</span>708 2009-01-02 Fri  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">2</span>009     1     3 <span style="text-decoration: underline;">432</span>710 2009-01-03 Sat  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">2</span>009     1     4 <span style="text-decoration: underline;">367</span>525 2009-01-04 Sun  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">2</span>009     1     5 <span style="text-decoration: underline;">370</span>901 2009-01-05 Mon  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">2</span>009     1     6 <span style="text-decoration: underline;">427</span>394 2009-01-06 Tue  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">2</span>009     1     7 <span style="text-decoration: underline;">371</span>043 2009-01-07 Wed  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">2</span>009     1     8 <span style="text-decoration: underline;">477</span>502 2009-01-08 Thu  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">2</span>009     1     9 <span style="text-decoration: underline;">520</span>846 2009-01-09 Fri  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">2</span>009     1    10 <span style="text-decoration: underline;">483</span>350 2009-01-10 Sat  </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 4,797 more rows</span></span></span></code></pre></div>
+<p>This will serve as the summary dataset that we will turn in to a
+Trelliscope data frame. With this, we create visualizations of data for
+each day and add them as a column to the data frame.</p>
+<p>As discussed in the <a href="panels.html">Creating Panel Columns</a>
+article, we can link the full dataset to this summary dataset with a
+plot function that will be applied to each subset of the full dataset,
+as defined by the variables that uniquely define a row in the summary
+dataset (in this case, year, month, and day). Conveniently, the full
+dataset can be an Arrow dataset, which is what we have here. This means
+that we do not need to read the huge input data into R to create the
+display, allowing us to build it nearly instantaneously.</p>
+<!-- ggplot(dsumm, aes(date, n)) + geom_line() -->
+<p>Our plot function takes as a single argument a data object which will
+represents the full dataset filtered to the subset that corresponds to
+the summary row being plotted.</p>
+<p>We can get a test subset to work with using the following:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_test_subset.html">get_test_subset</a></span><span class="op">(</span><span class="va">ds</span>, <span class="va">dsumm</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">x</span></span>
+<span><span class="co">#&gt; FileSystemDataset (query)</span></span>
+<span><span class="co">#&gt; vendor_name: string</span></span>
+<span><span class="co">#&gt; pickup_datetime: timestamp[ms]</span></span>
+<span><span class="co">#&gt; dropoff_datetime: timestamp[ms]</span></span>
+<span><span class="co">#&gt; passenger_count: int64</span></span>
+<span><span class="co">#&gt; ...</span></span>
+<span><span class="co">#&gt; year: int32</span></span>
+<span><span class="co">#&gt; month: int32</span></span>
+<span><span class="co">#&gt; day: int64 (day(pickup_datetime))</span></span>
+<span><span class="co">#&gt; hour: int64 (hour(pickup_datetime))</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; * Filter: (((year == 2009) and (month == 1)) and (day(pickup_datetime) == 1))</span></span>
+<span><span class="co">#&gt; See $.data for the source Arrow object</span></span></code></pre></div>
+<p>Since the full dataset is an Arrow dataset, our test subset
+represents a query against this dataset. We see that this subset will
+represent the data for January 1, 2009. We can use Arrow to count the
+number of rides in each hour of the day and then collect the results to
+obtain the data that we want to plot.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pd</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">hour</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">hour</span><span class="op">)</span></span></code></pre></div>
+<p>Our data to plot looks like this:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pd</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 24 × 2</span></span></span>
+<span><span class="co">#&gt;     hour     n</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     0 <span style="text-decoration: underline;">15</span>386</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     1 <span style="text-decoration: underline;">16</span>990</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     2 <span style="text-decoration: underline;">15</span>585</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     3 <span style="text-decoration: underline;">13</span>307</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     4  <span style="text-decoration: underline;">9</span>619</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     5  <span style="text-decoration: underline;">5</span>391</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     6  <span style="text-decoration: underline;">3</span>682</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     7  <span style="text-decoration: underline;">2</span>899</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     8  <span style="text-decoration: underline;">2</span>602</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>     9  <span style="text-decoration: underline;">3</span>289</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 14 more rows</span></span></span></code></pre></div>
+<p>A simple plot with ggplot2:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">pd</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">hour</span>, <span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html" class="external-link">geom_segment</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>xend <span class="op">=</span> <span class="va">hour</span>, yend <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">xlim</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">23</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="bigdata_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
+<p>We now put this together into a plot function that we can use to
+create a panel column.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">plot_fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">pd</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">hour</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">pd</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">hour</span>, <span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html" class="external-link">geom_segment</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>xend <span class="op">=</span> <span class="va">hour</span>, yend <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">xlim</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">23</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>Now we can add a plot column, <code>hourly_ct</code>, to our summary
+dataset with the plot function we defined above.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dsumm</span> <span class="op">&lt;-</span> <span class="va">dsumm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>hourly_ct <span class="op">=</span> <span class="fu"><a href="../reference/panel_lazy.html">panel_lazy</a></span><span class="op">(</span><span class="va">plot_fn</span>, <span class="va">ds</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">dsumm</span></span>
+<span><span class="co">#&gt; # A tibble: 4,807 × 7</span></span>
+<span><span class="co">#&gt;     year month   day      n date       wday  hourly_ct    </span></span>
+<span><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;  &lt;int&gt; &lt;date&gt;     &lt;ord&gt; &lt;lazy_panels&gt;</span></span>
+<span><span class="co">#&gt;  1  2009     1     1 327625 2009-01-01 Thu   &lt;ggplot&gt;     </span></span>
+<span><span class="co">#&gt;  2  2009     1     2 376708 2009-01-02 Fri   &lt;ggplot&gt;     </span></span>
+<span><span class="co">#&gt;  3  2009     1     3 432710 2009-01-03 Sat   &lt;ggplot&gt;     </span></span>
+<span><span class="co">#&gt;  4  2009     1     4 367525 2009-01-04 Sun   &lt;ggplot&gt;     </span></span>
+<span><span class="co">#&gt;  5  2009     1     5 370901 2009-01-05 Mon   &lt;ggplot&gt;     </span></span>
+<span><span class="co">#&gt;  6  2009     1     6 427394 2009-01-06 Tue   &lt;ggplot&gt;     </span></span>
+<span><span class="co">#&gt;  7  2009     1     7 371043 2009-01-07 Wed   &lt;ggplot&gt;     </span></span>
+<span><span class="co">#&gt;  8  2009     1     8 477502 2009-01-08 Thu   &lt;ggplot&gt;     </span></span>
+<span><span class="co">#&gt;  9  2009     1     9 520846 2009-01-09 Fri   &lt;ggplot&gt;     </span></span>
+<span><span class="co">#&gt; 10  2009     1    10 483350 2009-01-10 Sat   &lt;ggplot&gt;     </span></span>
+<span><span class="co">#&gt; # ℹ 4,797 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code></pre></div>
+<p>Finally, we can create a Trelliscope display from this data
+frame.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dsumm</span> <span class="op">&lt;-</span> <span class="va">dsumm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/as_trelliscope_df.html">as_trelliscope_df</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"NYC Taxi"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/set_default_labels.html">set_default_labels</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"date"</span>, <span class="st">"n"</span>, <span class="st">"wday"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/set_default_sort.html">set_default_sort</a></span><span class="op">(</span><span class="st">"date"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/set_default_layout.html">set_default_layout</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
+<p>So far, there is not much about this example that is any different
+from other examples in these articles. If we were to view our
+Trelliscope display right now, it would cycle through all of the data to
+pre-render the panels. This could take a while because of the number of
+panels and because of the size of the underlying dataset.</p>
+<p>Trelliscope has an experimental option to disable pre-rendering of
+panels. This will allow us to view the display immediately, but will
+cause panels to be rendered on-demand as we view them, using your local
+R session to do so. We can set this with the following:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span>  <span class="fu"><a href="../reference/set_panel_options.html">set_panel_options</a></span><span class="op">(</span>hourly_ct <span class="op">=</span> <span class="fu"><a href="../reference/panel_options.html">panel_options</a></span><span class="op">(</span>prerender <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Now when we view the display, we should see something like this:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/view_trelliscope.html">view_trelliscope</a></span><span class="op">(</span><span class="va">dsumm</span><span class="op">)</span></span></code></pre></div>
+<video controls autoplay loop style="width: 100%"><source src="https://user-images.githubusercontent.com/1275592/255818491-36afe4f6-90e8-4fc0-9398-7136dcb62abf.mp4" type="video/mp4"><p>Your browser does not support the video tag. </p></source></video><p>Disabling pre-rendering is a great feature for getting to an output
+quickly, regardless of the size of the underlying data, but it can have
+drawbacks. First, it can be slow to render panels on-demand, especially
+if the panel function is computationally expensive. Panels are cached,
+so this will only be a problem the first time you view a panel. Note
+that particularly in our case, since we are dealing with an Arrow
+dataset, we are at the mercy of how quickly the data can be filtered.
+Since here the partitioning of the data is on year and month, the
+filtering is very fast. Second, you currently cannot share Trelliscope
+displays that have panels that are not pre-rendered. This is because the
+panels are rendered using your local R session which causes the
+resulting app to lose its serverless self-contained properties.</p>
   </main>
 </div>
 

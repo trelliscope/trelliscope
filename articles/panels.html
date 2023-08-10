@@ -52,8 +52,8 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/panels.html">Creating Panel Columns</a>
-    <a class="dropdown-item" href="../articles/embed.html">Embedding Trelliscope</a>
-    <a class="dropdown-item" href="../articles/bigdata.html">Visualizing Large Datasets</a>
+    <a class="dropdown-item" href="../articles/embed.html">Sharing and Embedding Trelliscope</a>
+    <a class="dropdown-item" href="../articles/bigdata.html">Visualizing Large Datasets with Trelliscope</a>
   </div>
 </li>
       </ul>
@@ -77,8 +77,8 @@
 
 
 
-
-<div class="row">
+<script src="panels_files/htmlwidgets-1.6.2/htmlwidgets.js"></script><link href="panels_files/dygraphs-1.1.1/dygraph.css" rel="stylesheet">
+<script src="panels_files/dygraphs-1.1.1/dygraph-combined.js"></script><script src="panels_files/dygraphs-1.1.1/shapes.js"></script><script src="panels_files/moment-2.8.4/moment.js"></script><script src="panels_files/moment-timezone-0.2.5/moment-timezone-with-data.js"></script><script src="panels_files/moment-fquarter-1.0.0/moment-fquarter.min.js"></script><script src="panels_files/dygraphs-binding-1.1.1.6/dygraphs.js"></script><div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Creating Panel Columns</h1>
             
@@ -90,8 +90,309 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://trelliscope.org/trelliscope" class="external-link">trelliscope</a></span><span class="op">)</span></span></code></pre></div>
-  </main>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://trelliscope.org/trelliscope" class="external-link">trelliscope</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/dygraphs" class="external-link">dygraphs</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span>, warn.conflicts <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p>This article provides a more in-depth look at different ways to
+create panel columns for use with Trelliscope. It is assumed that you
+have read the <a href="trelliscope.html">Introduction</a> article and
+are familiar with the basics of Trelliscope.</p>
+<div class="section level2">
+<h2 id="using-facet_panels-with-ggplot2">Using <code>facet_panels()</code> with ggplot2<a class="anchor" aria-label="anchor" href="#using-facet_panels-with-ggplot2"></a>
+</h2>
+<p>We will stick with the gapminder example for this article. In the
+Introduction article, we showed how to visualize life expectancy
+vs. time for each country with ggplot2 using <code><a href="../reference/facet_panels.html">facet_panels()</a></code>
+and <code><a href="../reference/as_panels_df.html">as_panels_df()</a></code>.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">gap</span> <span class="op">&lt;-</span> <span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">gapminder</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">lifeExp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="../reference/facet_panels.html">facet_panels</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">country</span>, <span class="va">continent</span>, <span class="va">iso_alpha2</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/as_panels_df.html">as_panels_df</a></span><span class="op">(</span>panel_col <span class="op">=</span> <span class="st">"lexp_time"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">gap</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 123 × 4</span></span></span>
+<span><span class="co">#&gt;    country     continent iso_alpha2 lexp_time </span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;ggpanels&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Afghanistan Asia      AF         &lt;ggplot&gt;  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Albania     Europe    AL         &lt;ggplot&gt;  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Algeria     Africa    DZ         &lt;ggplot&gt;  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Angola      Africa    AO         &lt;ggplot&gt;  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Argentina   Americas  AR         &lt;ggplot&gt;  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Australia   Oceania   AU         &lt;ggplot&gt;  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Austria     Europe    AT         &lt;ggplot&gt;  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Bahrain     Asia      BH         &lt;ggplot&gt;  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Bangladesh  Asia      BD         &lt;ggplot&gt;  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Belgium     Europe    BE         &lt;ggplot&gt;  </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 113 more rows</span></span></span></code></pre></div>
+<p>The <code>lexp_time</code> column is a list of what appears to be
+ggplot2 objects, one for each panel. What is actually happening is a bit
+more complex. <code>lexp_time</code> is a special vector that contains
+minimal information for each row needed to create the ggplot facet for
+that particular row, along with a plotting function that contains
+instructions for how to create the panel and the underlying data. When a
+single plot is rendered (e.g. calling <code>gap$lexp_time[[1]]</code>),
+the plotting function is called with the data for that particular panel.
+And when you view this data frame as a Trelliscope data frame, it will
+write out all the panels using these instructions. This is a special
+case of a more general “lazy” panel specification approach that we will
+discuss in the next section.</p>
+<p>Note that <code><a href="../reference/as_panels_df.html">as_panels_df()</a></code> has an arument
+<code>as_plotly</code> argument, which if <code>TRUE</code>, will
+convert the ggplot panels to Plotly. Additional arguments
+<code>plotly_args</code> and <code>plotly_cfg</code> are provided to
+further customize the Plotly output.</p>
+</div>
+<div class="section level2">
+<h2 id="custom-r-generated-panels-with-panel_lazy">Custom R-generated panels with <code>panel_lazy()</code><a class="anchor" aria-label="anchor" href="#custom-r-generated-panels-with-panel_lazy"></a>
+</h2>
+<p>A typical use case for visualizing data with Trelliscope, as seen in
+the example above, is that we have a larger dataset which we aggregate
+in some way according to some grouping variables, and we then want to
+visualize the larger dataset corresponding to each group. One way to do
+this is as we did above, using faceting to specify the subsetting and
+“summary” visualizations. Another way to do it is to summarize the data
+first and then specify a plotting function that provides a plot for each
+row of the summary dataset which can be based on data from the full
+dataset.</p>
+<p>For example, consider the following simple summary dataset of mean
+life expectancy and mean GDP per capita for each country in the
+gapminder dataset.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">gsumm</span> <span class="op">&lt;-</span> <span class="va">gapminder</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span></span>
+<span>    mean_lexp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">lifeExp</span><span class="op">)</span>,</span>
+<span>    mean_gdp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">gdpPercap</span><span class="op">)</span>,</span>
+<span>    .by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"continent"</span>, <span class="st">"country"</span>, <span class="st">"iso_alpha2"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="va">gsumm</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 123 × 5</span></span></span>
+<span><span class="co">#&gt;    continent country     iso_alpha2 mean_lexp mean_gdp</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Asia      Afghanistan AF              37.5     803.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Europe    Albania     AL              68.4    <span style="text-decoration: underline;">3</span>255.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Africa    Algeria     DZ              59.0    <span style="text-decoration: underline;">4</span>426.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Africa    Angola      AO              37.9    <span style="text-decoration: underline;">3</span>607.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Americas  Argentina   AR              69.1    <span style="text-decoration: underline;">8</span>956.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Oceania   Australia   AU              74.7   <span style="text-decoration: underline;">19</span>981.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Europe    Austria     AT              73.1   <span style="text-decoration: underline;">20</span>412.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Asia      Bahrain     BH              65.6   <span style="text-decoration: underline;">18</span>078.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Asia      Bangladesh  BD              49.8     818.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Europe    Belgium     BE              73.6   <span style="text-decoration: underline;">19</span>901.</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 113 more rows</span></span></span></code></pre></div>
+<p>Now suppose that we would like to use the <a href="https://rstudio.github.io/dygraphs/index.html" class="external-link">dygraphs</a>
+package to create an interactive time series plot of life expectancy
+over time for each country. What we need to do is provide a function
+that takes a single input which will represent a data frame
+corresponding to a subset of the <code>gapminder</code> dataset
+associated with a single row of the summary dataset <code>gsumm</code>
+(one country).</p>
+<p>A helper function to get an example subset to expect in the plotting
+function is <code><a href="../reference/get_test_subset.html">get_test_subset()</a></code>. This takes as arguments the
+full dataset and the summary dataset and returns an example subset that
+you can build your plot function around.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_test_subset.html">get_test_subset</a></span><span class="op">(</span><span class="va">gapminder</span>, <span class="va">gsumm</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">x</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12 × 10</span></span></span>
+<span><span class="co">#&gt;    country   continent  year lifeExp    pop gdpPercap capital latitude longitude</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>952    28.8 8.43<span style="color: #949494;">e</span>6      779. Kabul       34.5      69.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>957    30.3 9.24<span style="color: #949494;">e</span>6      821. Kabul       34.5      69.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>962    32.0 1.03<span style="color: #949494;">e</span>7      853. Kabul       34.5      69.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>967    34.0 1.15<span style="color: #949494;">e</span>7      836. Kabul       34.5      69.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>972    36.1 1.31<span style="color: #949494;">e</span>7      740. Kabul       34.5      69.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>977    38.4 1.49<span style="color: #949494;">e</span>7      786. Kabul       34.5      69.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>982    39.9 1.29<span style="color: #949494;">e</span>7      978. Kabul       34.5      69.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>987    40.8 1.39<span style="color: #949494;">e</span>7      852. Kabul       34.5      69.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>992    41.7 1.63<span style="color: #949494;">e</span>7      649. Kabul       34.5      69.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>997    41.8 2.22<span style="color: #949494;">e</span>7      635. Kabul       34.5      69.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> Afghanis… Asia       <span style="text-decoration: underline;">2</span>002    42.1 2.53<span style="color: #949494;">e</span>7      727. Kabul       34.5      69.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> Afghanis… Asia       <span style="text-decoration: underline;">2</span>007    43.8 3.19<span style="color: #949494;">e</span>7      975. Kabul       34.5      69.2</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: iso_alpha2 &lt;chr&gt;</span></span></span></code></pre></div>
+<p>Let’s build a simple plotting function based on this data.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">plot_fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/dygraphs" class="external-link">dygraphs</a></span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/dygraphs/man/dygraph.html" class="external-link">dygraph</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">year</span>, <span class="va">lifeExp</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/dygraphs/man/dyOptions.html" class="external-link">dyOptions</a></span><span class="op">(</span>strokeWidth <span class="op">=</span> <span class="fl">3</span>, drawPoints <span class="op">=</span> <span class="cn">TRUE</span>, pointSize <span class="op">=</span> <span class="fl">4</span>, gridLineColor <span class="op">=</span> <span class="st">"#dedede"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/dygraphs/man/dyHighlight.html" class="external-link">dyHighlight</a></span><span class="op">(</span>highlightCircleSize <span class="op">=</span> <span class="fl">6</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/dygraphs/man/dyAxis.html" class="external-link">dyAxis</a></span><span class="op">(</span><span class="st">"x"</span>, label <span class="op">=</span> <span class="st">"Year"</span>, valueRange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1952</span>, <span class="fl">2007</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/dygraphs/man/dyAxis.html" class="external-link">dyAxis</a></span><span class="op">(</span><span class="st">"y"</span>, label <span class="op">=</span> <span class="st">"Life Expectancy (yrs)"</span>, valueRange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">23.59</span>, <span class="fl">82.61</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/dygraphs/man/dyRangeSelector.html" class="external-link">dyRangeSelector</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">plot_fn</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<div class="dygraphs html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-e274b6f8ea80c2035086" style="width:700px;height:432.632880098888px;"></div>
+<script type="application/json" data-for="htmlwidget-e274b6f8ea80c2035086">{"x":{"attrs":{"axes":{"x":{"pixelsPerLabel":60,"drawAxis":true,"valueRange":[1952,2007]},"y":{"drawAxis":true,"valueRange":[23.59,82.61]}},"highlightSeriesOpts":[],"labels":["year","lifeExp"],"legend":"auto","retainDateWindow":false,"stackedGraph":false,"fillGraph":false,"fillAlpha":0.15,"stepPlot":false,"drawPoints":true,"pointSize":4,"drawGapEdgePoints":false,"connectSeparatedPoints":false,"strokeWidth":3,"strokeBorderColor":"white","colorValue":0.5,"colorSaturation":1,"includeZero":false,"drawAxesAtZero":false,"logscale":false,"axisTickSize":3,"axisLineColor":"black","axisLineWidth":0.3,"axisLabelColor":"black","axisLabelFontSize":14,"axisLabelWidth":60,"drawGrid":true,"gridLineColor":"#dedede","gridLineWidth":0.3,"rightGap":5,"digitsAfterDecimal":2,"labelsKMB":false,"labelsKMG2":false,"labelsUTC":false,"maxNumberWidth":6,"animatedZooms":false,"mobileDisableYTouch":true,"disableZoom":false,"highlightCircleSize":6,"highlightSeriesBackgroundAlpha":0.5,"hideOverlayOnMouseOut":true,"xlabel":"Year","ylabel":"Life Expectancy (yrs)","showRangeSelector":true,"rangeSelectorHeight":40,"rangeSelectorPlotFillColor":" #A7B1C4","rangeSelectorPlotStrokeColor":"#808FAB","interactionModel":"Dygraph.Interaction.defaultModel"},"annotations":[],"shadings":[],"events":[],"format":"numeric","data":[[1952,1957,1962,1967,1972,1977,1982,1987,1992,1997,2002,2007],[28.801,30.332,31.997,34.02,36.088,38.438,39.854,40.822,41.674,41.763,42.129,43.828]],"fixedtz":false,"tzone":""},"evals":["attrs.interactionModel"],"jsHooks":[]}</script><p>Now all we need to do to add a new plot column to <code>gsumm</code>
+is to use <code><a href="../reference/panel_lazy.html">panel_lazy()</a></code> which takes our plot function and
+the full dataset as arguments.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">gsumm</span> <span class="op">&lt;-</span> <span class="va">gsumm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>lexp_time <span class="op">=</span> <span class="fu"><a href="../reference/panel_lazy.html">panel_lazy</a></span><span class="op">(</span><span class="va">plot_fn</span>, <span class="va">gapminder</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">gsumm</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 123 × 6</span></span></span>
+<span><span class="co">#&gt;    continent country     iso_alpha2 mean_lexp mean_gdp lexp_time    </span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lazy_panels&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Asia      Afghanistan AF              37.5     803. &lt;htmlwidget&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Europe    Albania     AL              68.4    <span style="text-decoration: underline;">3</span>255. &lt;htmlwidget&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Africa    Algeria     DZ              59.0    <span style="text-decoration: underline;">4</span>426. &lt;htmlwidget&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Africa    Angola      AO              37.9    <span style="text-decoration: underline;">3</span>607. &lt;htmlwidget&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Americas  Argentina   AR              69.1    <span style="text-decoration: underline;">8</span>956. &lt;htmlwidget&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Oceania   Australia   AU              74.7   <span style="text-decoration: underline;">19</span>981. &lt;htmlwidget&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Europe    Austria     AT              73.1   <span style="text-decoration: underline;">20</span>412. &lt;htmlwidget&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Asia      Bahrain     BH              65.6   <span style="text-decoration: underline;">18</span>078. &lt;htmlwidget&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Asia      Bangladesh  BD              49.8     818. &lt;htmlwidget&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Europe    Belgium     BE              73.6   <span style="text-decoration: underline;">19</span>901. &lt;htmlwidget&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 113 more rows</span></span></span></code></pre></div>
+<p>Note that these panels are <a href="http://www.htmlwidgets.org" class="external-link">htmlwidgets</a>. Your plot function
+can return any type of htmlwidget or plot objects that can be printed to
+image files, such as ggplot2 objects.</p>
+</div>
+<div class="section level2">
+<h2 id="panels-of-images-existing-on-the-web-with-panel_url">Panels of images existing on the web with
+<code>panel_url()</code><a class="anchor" aria-label="anchor" href="#panels-of-images-existing-on-the-web-with-panel_url"></a>
+</h2>
+<!-- lapply(gsumm$country, function(x) {
+  browseURL(paste0("https://en.wikipedia.org/wiki/", x))
+  Sys.sleep(0.2)
+}) -->
+<p>If image or html assets exist on the web, you can create panel
+columns pointing to these using <code><a href="../reference/panel_url.html">panel_url()</a></code>. For example,
+suppose we want to add a column of flags for each country. <a href="https://github.com/hafen/countryflags" class="external-link">This forked repository</a>
+contains image files for each country flag, where each file is named
+using the country’s 2-letter code. We can use the
+<code>iso_alpha2</code> column in the gapminder dataset to construct the
+URL for each flag.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">flag_base_url</span> <span class="op">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/hafen/countryflags/master/png/512/"</span></span>
+<span></span>
+<span><span class="va">gsumm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">gsumm</span>,</span>
+<span>  flag_url <span class="op">=</span> <span class="fu"><a href="../reference/panel_url.html">panel_url</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">flag_base_url</span>, <span class="va">iso_alpha2</span>, <span class="st">".png"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">gsumm</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 123 × 7</span></span></span>
+<span><span class="co">#&gt;    continent country     iso_alpha2 mean_lexp mean_gdp lexp_time     flag_url   </span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lazy_panels&gt;</span> <span style="color: #949494; font-style: italic;">&lt;url_panel&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Asia      Afghanistan AF              37.5     803. &lt;htmlwidget&gt;  &lt;img&gt;      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Europe    Albania     AL              68.4    <span style="text-decoration: underline;">3</span>255. &lt;htmlwidget&gt;  &lt;img&gt;      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Africa    Algeria     DZ              59.0    <span style="text-decoration: underline;">4</span>426. &lt;htmlwidget&gt;  &lt;img&gt;      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Africa    Angola      AO              37.9    <span style="text-decoration: underline;">3</span>607. &lt;htmlwidget&gt;  &lt;img&gt;      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Americas  Argentina   AR              69.1    <span style="text-decoration: underline;">8</span>956. &lt;htmlwidget&gt;  &lt;img&gt;      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Oceania   Australia   AU              74.7   <span style="text-decoration: underline;">19</span>981. &lt;htmlwidget&gt;  &lt;img&gt;      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Europe    Austria     AT              73.1   <span style="text-decoration: underline;">20</span>412. &lt;htmlwidget&gt;  &lt;img&gt;      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Asia      Bahrain     BH              65.6   <span style="text-decoration: underline;">18</span>078. &lt;htmlwidget&gt;  &lt;img&gt;      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Asia      Bangladesh  BD              49.8     818. &lt;htmlwidget&gt;  &lt;img&gt;      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Europe    Belgium     BE              73.6   <span style="text-decoration: underline;">19</span>901. &lt;htmlwidget&gt;  &lt;img&gt;      </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 113 more rows</span></span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="panels-of-images-on-the-local-filesystem-with-panel_local">Panels of images on the local filesystem with
+<code>panel_local()</code><a class="anchor" aria-label="anchor" href="#panels-of-images-on-the-local-filesystem-with-panel_local"></a>
+</h2>
+<p>Suppose we instead want to use local image files. We can use
+<code><a href="../reference/panel_local.html">panel_local()</a></code> to create a panel column that points to local
+files.</p>
+<p>We will download all of the flag images to a temporary directory to
+illustrate.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">flag_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/download.file.html" class="external-link">download.file</a></span><span class="op">(</span><span class="st">"https://github.com/trelliscope/trelliscope/files/12265140/flags.zip"</span>,</span>
+<span>  destfile <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">flag_path</span>, <span class="st">"flags.zip"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/unzip.html" class="external-link">unzip</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">flag_path</span>, <span class="st">"flags.zip"</span><span class="op">)</span>, exdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">flag_path</span>, <span class="st">"flags"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">flag_path</span>, <span class="st">"flags"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   [1] "AF.png" "AL.png" "AO.png" "AR.png" "AT.png" "AU.png" "BA.png" "BD.png"</span></span>
+<span><span class="co">#&gt;   [9] "BE.png" "BF.png" "BG.png" "BH.png" "BI.png" "BJ.png" "BR.png" "BW.png"</span></span>
+<span><span class="co">#&gt;  [17] "CA.png" "CF.png" "CH.png" "CL.png" "CM.png" "CN.png" "CO.png" "CR.png"</span></span>
+<span><span class="co">#&gt;  [25] "CU.png" "DE.png" "DJ.png" "DK.png" "DO.png" "DZ.png" "EC.png" "EG.png"</span></span>
+<span><span class="co">#&gt;  [33] "ER.png" "ES.png" "ET.png" "FI.png" "FR.png" "GA.png" "GB.png" "GH.png"</span></span>
+<span><span class="co">#&gt;  [41] "GM.png" "GN.png" "GQ.png" "GR.png" "GT.png" "GW.png" "HN.png" "HR.png"</span></span>
+<span><span class="co">#&gt;  [49] "HT.png" "HU.png" "ID.png" "IE.png" "IL.png" "IN.png" "IQ.png" "IS.png"</span></span>
+<span><span class="co">#&gt;  [57] "IT.png" "JM.png" "JO.png" "JP.png" "KE.png" "KH.png" "KM.png" "KW.png"</span></span>
+<span><span class="co">#&gt;  [65] "LB.png" "LK.png" "LR.png" "LS.png" "LY.png" "MA.png" "ME.png" "MG.png"</span></span>
+<span><span class="co">#&gt;  [73] "ML.png" "MM.png" "MN.png" "MR.png" "MU.png" "MW.png" "MX.png" "MY.png"</span></span>
+<span><span class="co">#&gt;  [81] "MZ.png" "NA.png" "NE.png" "NG.png" "NI.png" "NL.png" "NO.png" "NP.png"</span></span>
+<span><span class="co">#&gt;  [89] "NZ.png" "OM.png" "PA.png" "PE.png" "PH.png" "PK.png" "PL.png" "PR.png"</span></span>
+<span><span class="co">#&gt;  [97] "PT.png" "PY.png" "RO.png" "RS.png" "RW.png" "SA.png" "SD.png" "SE.png"</span></span>
+<span><span class="co">#&gt; [105] "SG.png" "SI.png" "SL.png" "SN.png" "SO.png" "ST.png" "SV.png" "SZ.png"</span></span>
+<span><span class="co">#&gt; [113] "TD.png" "TG.png" "TH.png" "TN.png" "TR.png" "TT.png" "UG.png" "UY.png"</span></span>
+<span><span class="co">#&gt; [121] "ZA.png" "ZM.png" "ZW.png"</span></span></code></pre></div>
+<p>We can now create a panel column that points to these local
+files.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">gsumm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="va">gsumm</span>,</span>
+<span>  flag <span class="op">=</span> <span class="fu"><a href="../reference/panel_local.html">panel_local</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">flag_path</span>, <span class="st">"flags"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">iso_alpha2</span>, <span class="st">".png"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span><span class="op">)</span></span>
+<span><span class="va">gsumm</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 123 × 8</span></span></span>
+<span><span class="co">#&gt;    continent country   iso_alpha2 mean_lexp mean_gdp lexp_time    flag_url flag </span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lazy_panel&gt;</span> <span style="color: #949494; font-style: italic;">&lt;url_pa&gt;</span> <span style="color: #949494; font-style: italic;">&lt;loc&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Asia      Afghanis… AF              37.5     803. &lt;htmlwidget&gt; &lt;img&gt;    &lt;img&gt;</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Europe    Albania   AL              68.4    <span style="text-decoration: underline;">3</span>255. &lt;htmlwidget&gt; &lt;img&gt;    &lt;img&gt;</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Africa    Algeria   DZ              59.0    <span style="text-decoration: underline;">4</span>426. &lt;htmlwidget&gt; &lt;img&gt;    &lt;img&gt;</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Africa    Angola    AO              37.9    <span style="text-decoration: underline;">3</span>607. &lt;htmlwidget&gt; &lt;img&gt;    &lt;img&gt;</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Americas  Argentina AR              69.1    <span style="text-decoration: underline;">8</span>956. &lt;htmlwidget&gt; &lt;img&gt;    &lt;img&gt;</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Oceania   Australia AU              74.7   <span style="text-decoration: underline;">19</span>981. &lt;htmlwidget&gt; &lt;img&gt;    &lt;img&gt;</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Europe    Austria   AT              73.1   <span style="text-decoration: underline;">20</span>412. &lt;htmlwidget&gt; &lt;img&gt;    &lt;img&gt;</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Asia      Bahrain   BH              65.6   <span style="text-decoration: underline;">18</span>078. &lt;htmlwidget&gt; &lt;img&gt;    &lt;img&gt;</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Asia      Banglade… BD              49.8     818. &lt;htmlwidget&gt; &lt;img&gt;    &lt;img&gt;</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Europe    Belgium   BE              73.6   <span style="text-decoration: underline;">19</span>901. &lt;htmlwidget&gt; &lt;img&gt;    &lt;img&gt;</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 113 more rows</span></span></span></code></pre></div>
+<p>Note that once we make <code>gsumm</code> into a Trelliscope data
+frame and view it, local panel files will be copied into the directory
+of the Trelliscope display so that it is self-contained. If you want to
+avoid a making copy, you can create the appropriate directory structure
+and put the files there yourself.</p>
+</div>
+<div class="section level2">
+<h2 id="setting-panel-options">Setting panel options<a class="anchor" aria-label="anchor" href="#setting-panel-options"></a>
+</h2>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_trelliscope_df.html">as_trelliscope_df</a></span><span class="op">(</span><span class="va">gsumm</span>, name <span class="op">=</span> <span class="st">"gapminder"</span><span class="op">)</span>  <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/set_default_labels.html">set_default_labels</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"continent"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/set_default_layout.html">set_default_layout</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/set_default_sort.html">set_default_sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"continent"</span>, <span class="st">"mean_lexp"</span><span class="op">)</span>, dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"asc"</span>, <span class="st">"desc"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using the variables <span style="color: #0000BB;">"continent"</span> and <span style="color: #0000BB;">"country"</span> to uniquely identify each row</span></span>
+<span><span class="co">#&gt;   of the data.</span></span>
+<span><span class="co">#&gt; Warning: <span style="color: #BBBB00;">!</span> Files for local panel <span style="color: #0000BB;">"flag"</span> are not in the correct location. They are</span></span>
+<span><span class="co">#&gt;   currently here: '/tmp/RtmpqlEFnU/flags' and will be copied here:</span></span>
+<span><span class="co">#&gt;   '/home/runner/work/trelliscope/trelliscope/docs/articles/panels_files/figure-html/gap/displays/gapminder/panels/flag'</span></span>
+<span><span class="co">#&gt;   when the display is written.</span></span>
+<span></span>
+<span><span class="co"># set panel options (if not specified, defaults are used)</span></span>
+<span><span class="va">d</span> <span class="op">&lt;-</span> <span class="va">d</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/set_panel_options.html">set_panel_options</a></span><span class="op">(</span></span>
+<span>    lexp_time <span class="op">=</span> <span class="fu"><a href="../reference/panel_options.html">panel_options</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">600</span>, height <span class="op">=</span> <span class="fl">400</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/set_primary_panel.html">set_primary_panel</a></span><span class="op">(</span><span class="st">"lexp_time"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/view_trelliscope.html">view_trelliscope</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Inferred that variable 'mean_gdp' should be shown on log scale.</span></span>
+<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■                   </span>  41% | ETA:  1s</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■                  </span>  43% | ETA:  1s</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span></code></pre></div>
+<div style="width: 100%; height: 700px; padding-bottom: 5px;">
+<iframe style="
+        transform: scale(0.6);
+        width: 166.666666666667%;
+        height: 1166.66666666667px;
+        margin: 0;
+        padding: 0;
+        border: 1px solid #efefef;
+        transform-origin: top left;
+      " src="panels_files/figure-html//gap/index.html" title="gapminder" width="166.666666666667%px" height="1166.66666666667pxpx" allowfullscreen>
+</iframe>
+</div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

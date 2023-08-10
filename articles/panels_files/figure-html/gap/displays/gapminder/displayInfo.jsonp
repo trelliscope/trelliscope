@@ -1,0 +1,136 @@
+__loadDisplayInfo__51c1b5b9({
+  "name": "gapminder",
+  "description": "gapminder",
+  "tags": [],
+  "keycols": ["continent", "country"],
+  "metas": [
+    {
+      "levels": ["Africa", "Americas", "Asia", "Europe", "Oceania"],
+      "maxnchar": 8,
+      "sortable": true,
+      "filterable": true,
+      "tags": [],
+      "label": "continent",
+      "type": "factor",
+      "varname": "continent"
+    },
+    {
+      "maxnchar": 24,
+      "sortable": true,
+      "filterable": true,
+      "tags": [],
+      "label": "country",
+      "type": "string",
+      "varname": "country"
+    },
+    {
+      "maxnchar": 2,
+      "sortable": true,
+      "filterable": true,
+      "tags": [],
+      "label": "iso_alpha2",
+      "type": "string",
+      "varname": "iso_alpha2"
+    },
+    {
+      "log": false,
+      "locale": true,
+      "digits": 1,
+      "maxnchar": 8,
+      "sortable": true,
+      "filterable": true,
+      "tags": [],
+      "label": "mean_lexp",
+      "type": "number",
+      "varname": "mean_lexp"
+    },
+    {
+      "log": true,
+      "locale": true,
+      "digits": 0,
+      "maxnchar": 10,
+      "sortable": true,
+      "filterable": true,
+      "tags": [],
+      "label": "mean_gdp",
+      "type": "number",
+      "varname": "mean_gdp"
+    },
+    {
+      "source": {
+        "isLocal": true,
+        "type": "file"
+      },
+      "aspect": 1.5,
+      "paneltype": "iframe",
+      "maxnchar": 0,
+      "sortable": false,
+      "filterable": false,
+      "tags": [],
+      "label": "lexp_time",
+      "type": "panel",
+      "varname": "lexp_time"
+    },
+    {
+      "source": {
+        "isLocal": false,
+        "type": "file"
+      },
+      "aspect": 1,
+      "paneltype": "img",
+      "maxnchar": 0,
+      "sortable": false,
+      "filterable": false,
+      "tags": [],
+      "label": "flag_url",
+      "type": "panel",
+      "varname": "flag_url"
+    },
+    {
+      "source": {
+        "isLocal": true,
+        "type": "file"
+      },
+      "aspect": 1,
+      "paneltype": "img",
+      "maxnchar": 0,
+      "sortable": false,
+      "filterable": false,
+      "tags": [],
+      "label": "flag",
+      "type": "panel",
+      "varname": "flag"
+    }
+  ],
+  "state": {
+    "layout": {
+      "viewtype": "grid",
+      "page": 1,
+      "ncol": 3,
+      "type": "layout"
+    },
+    "labels": {
+      "varnames": ["country", "continent"],
+      "type": "labels"
+    },
+    "sort": [
+      {
+        "metatype": "factor",
+        "dir": "asc",
+        "varname": "continent",
+        "type": "sort"
+      },
+      {
+        "metatype": "number",
+        "dir": "desc",
+        "varname": "mean_lexp",
+        "type": "sort"
+      }
+    ],
+    "filter": []
+  },
+  "views": [],
+  "inputs": null,
+  "primarypanel": "lexp_time",
+  "thumbnailurl": "panels/lexp_time/Afghanistan_Asia_AF.html"
+})

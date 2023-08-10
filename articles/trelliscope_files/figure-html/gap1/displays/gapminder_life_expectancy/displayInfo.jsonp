@@ -1,4 +1,4 @@
-__loadDisplayInfo__ec4b9e41({
+__loadDisplayInfo__8878d2da({
   "name": "gapminder life expectancy",
   "description": "gapminder life expectancy",
   "tags": [],
@@ -24,7 +24,7 @@ __loadDisplayInfo__ec4b9e41({
       "varname": "continent"
     },
     {
-      "maxnchar": "NA",
+      "maxnchar": 2,
       "sortable": true,
       "filterable": true,
       "tags": [],
