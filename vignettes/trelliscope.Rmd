@@ -71,10 +71,10 @@ The behavior of the Trelliscope viewer can be customized in many ways, either th
 
 A likely more common use case when visualizing data during an analysis will be that the images do not yet exist and we will be generating them from subsets of the data we are analyzing. Trelliscope has utilities to make this convenient for visualization packages like ggplot2.
 
-As a simple example, let's consider the `gapminder` dataset that originally comes with the [`gapminder`](https://cran.r-project.org/web/packages/gapminder/index.html) package. For convenience, we have included a modified version of the dataset with the Trelliscope package.
+As a simple example, let's consider the `gap` dataset which is a modified version of data that originally comes with the [`gapminder`](https://cran.r-project.org/web/packages/gapminder/index.html) package. This modified version contains some extra columns such as ISO country code and country centroid latitude and longitude.
 
 ```{r}
-gapminder
+gap
 ```
 
 This data provides statistics such as life expectancy annually for 123 countries.
@@ -91,7 +91,7 @@ suppressPackageStartupMessages(
 ```{r}
 library(ggplot2)
 
-ggplot(gapminder, aes(year, lifeExp)) +
+ggplot(gap, aes(year, life_exp)) +
   geom_point() +
   facet_wrap(vars(country, continent))
 ```
@@ -101,7 +101,7 @@ There are too many panels to view on one page, making this a good candidate for 
 Trelliscope provides a function `facet_panels()` that is the first step in turning a ggplot object into a Trelliscope data frame. You can swap out `facet_wrap()` for this function.
 
 ```{r}
-p <- ggplot(gapminder, aes(year, lifeExp)) +
+p <- ggplot(gap, aes(year, life_exp)) +
   geom_point() +
   facet_panels(vars(country, continent))
 
@@ -153,7 +153,7 @@ Let's revisit the gapminder example. Here we re-build a data frame of ggplot pan
 library(dplyr, warn.conflicts = FALSE)
 
 tdf <- (
-  ggplot(gapminder, aes(year, lifeExp)) +
+  ggplot(gap, aes(year, life_exp)) +
     geom_point() +
     facet_panels(vars(country, continent, iso_alpha2))
   ) |>
@@ -196,11 +196,11 @@ One of the most useful things you can do to customize your Trelliscope app is to
 For example, suppose we want to be able to explore countries based on summary statistics such as their mean life expectancy, etc. We can do this by computing a summaries of the gapminder data and joining this with `tdf`.
 
 ```{r}
-gsumm <- gapminder |>
-  mutate(pct_chg = 100 * (lifeExp - lag(lifeExp)) / lag(lifeExp)) |>
+gsumm <- gap |>
+  mutate(pct_chg = 100 * (life_exp - lag(life_exp)) / lag(life_exp)) |>
   summarise(
-    mean_lexp = mean(lifeExp),
-    mean_gdp = mean(gdpPercap),
+    mean_lexp = mean(life_exp),
+    mean_gdp = mean(gdp_percap),
     max_lexp_pct_chg = max(pct_chg, na.rm = TRUE),
     dt_lexp_max_pct_chg = as.Date(paste0(year[which.max(pct_chg)], "-01-01")),
     .by = country
@@ -439,7 +439,7 @@ This example illustrates most of the features available in Trelliscope. As seen 
 ```{r eval=FALSE}
 # create initial Trelliscope data frame
 tdf <- (
-  ggplot(gapminder, aes(year, lifeExp)) +
+  ggplot(gap, aes(year, life_exp)) +
     geom_point() +
     facet_panels(vars(country, continent))
   ) |>
@@ -447,11 +447,11 @@ tdf <- (
   as_trelliscope_df(name = "gapminder life expectancy")
 
 # add variables
-gsumm <- gapminder |>
-  mutate(pct_chg = 100 * (lifeExp - lag(lifeExp)) / lag(lifeExp)) |>
+gsumm <- gap |>
+  mutate(pct_chg = 100 * (life_exp - lag(life_exp)) / lag(life_exp)) |>
   summarise(
-    mean_lexp = number(mean(lifeExp), digits = 1),
-    mean_gdp = currency(mean(gdpPercap), code = "USD"),
+    mean_lexp = number(mean(life_exp), digits = 1),
+    mean_gdp = currency(mean(gdp_percap), code = "USD"),
     max_lexp_pct_chg = max(pct_chg, na.rm = TRUE),
     dt_lexp_max_pct_chg = as.Date(paste0(year[which.max(pct_chg)], "-01-01")),
     wiki_link = href(paste0("https://en.wikipedia.org/wiki/", country)),

@@ -125,6 +125,11 @@ infer_meta_variable <- function(x, nm, panel_opts) {
   res <- NULL
   if (inherits(x, panel_classes)) {
     if (inherits(x, panel_lazy_classes)) {
+      # defaults
+      if (length(panel_opts$width) == 0)
+        panel_opts$width <- 600
+      if (length(panel_opts$height) == 0)
+        panel_opts$height <- 400
       aspect <- panel_opts$width / panel_opts$height
       if (panel_opts$prerender == FALSE) {
         psource <- LocalWebSocketPanelSource$new(port = NULL)
@@ -138,7 +143,7 @@ infer_meta_variable <- function(x, nm, panel_opts) {
         psource <- FilePanelSource$new(local = TRUE)
       }
       aspect <- panel_opts$aspect
-      if (is.null(aspect))
+      if (length(aspect) == 0)
         aspect <- infer_aspect_ratio(x)
     }
 

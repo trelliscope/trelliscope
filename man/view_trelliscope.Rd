@@ -17,7 +17,7 @@ View a trelliscope display
 library(ggplot2)
 
 panel_dat <- (
-  ggplot(gapminder, aes(year, lifeExp)) +
+  ggplot(gap, aes(year, life_exp)) +
     geom_point() +
     facet_panels(vars(country, continent))
 ) |>

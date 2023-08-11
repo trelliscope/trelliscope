@@ -92,5 +92,5 @@ reference:
 
 - title: Example datasets
   contents:
-  - '`gapminder`'
+  - '`gap`'
   - '`mars_rover`'

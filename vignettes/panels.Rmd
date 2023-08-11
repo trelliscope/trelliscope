@@ -25,17 +25,17 @@ This article provides a more in-depth look at different ways to create panel col
 
 ## Using `facet_panels()` with ggplot2
 
-We will stick with the gapminder example for this article. In the Introduction article, we showed how to visualize life expectancy vs. time for each country with ggplot2 using `facet_panels()` and `as_panels_df()`.
+We will stick with the gapminder example for this article (using the `gap` version of the gapminder data that comes with this package). In the Introduction article, we showed how to visualize life expectancy vs. time for each country with ggplot2 using `facet_panels()` and `as_panels_df()`.
 
 ```{r}
-gap <- (
-  ggplot(gapminder, aes(year, lifeExp)) +
+gp <- (
+  ggplot(gap, aes(year, life_exp)) +
     geom_point() +
     facet_panels(vars(country, continent, iso_alpha2))
   ) |>
   as_panels_df(panel_col = "lexp_time")
 
-gap
+gp
 ```
 
 ```{r echo=FALSE, eval=FALSE}
@@ -57,21 +57,21 @@ A typical use case for visualizing data with Trelliscope, as seen in the example
 For example, consider the following simple summary dataset of mean life expectancy and mean GDP per capita for each country in the gapminder dataset.
 
 ```{r}
-gsumm <- gapminder %>%
+gsumm <- gap %>%
   summarise(
-    mean_lexp = mean(lifeExp),
-    mean_gdp = mean(gdpPercap),
+    mean_lexp = mean(life_exp),
+    mean_gdp = mean(gdp_percap),
     .by = c("continent", "country", "iso_alpha2")
   )
 gsumm
 ```
 
-Now suppose that we would like to use the [dygraphs](https://rstudio.github.io/dygraphs/index.html) package to create an interactive time series plot of life expectancy over time for each country. What we need to do is provide a function that takes a single input which will represent a data frame corresponding to a subset of the `gapminder` dataset associated with a single row of the summary dataset `gsumm` (one country).
+Now suppose that we would like to use the [dygraphs](https://rstudio.github.io/dygraphs/index.html) package to create an interactive time series plot of life expectancy over time for each country. What we need to do is provide a function that takes a single input which will represent a data frame corresponding to a subset of the `gap` dataset associated with a single row of the summary dataset `gsumm` (one country).
 
 A helper function to get an example subset to expect in the plotting function is `get_test_subset()`. This takes as arguments the full dataset and the summary dataset and returns an example subset that you can build your plot function around.
 
 ```{r}
-x <- get_test_subset(gapminder, gsumm)
+x <- get_test_subset(gap, gsumm)
 
 x
 ```
@@ -81,7 +81,7 @@ Let's build a simple plotting function based on this data.
 ```{r}
 plot_fn <- function(x) {
   library(dygraphs)
-  dygraph(select(x, year, lifeExp)) %>%
+  dygraph(select(x, year, life_exp)) %>%
     dyOptions(strokeWidth = 3, drawPoints = TRUE, pointSize = 4, gridLineColor = "#dedede") %>%
     dyHighlight(highlightCircleSize = 6) %>%
     dyAxis("x", label = "Year", valueRange = c(1952, 2007)) %>%
@@ -96,7 +96,7 @@ Now all we need to do to add a new plot column to `gsumm` is to use `panel_lazy(
 
 ```{r}
 gsumm <- gsumm %>%
-  mutate(lexp_time = panel_lazy(plot_fn, gapminder))
+  mutate(lexp_time = panel_lazy(plot_fn, gap))
 
 gsumm
 ```

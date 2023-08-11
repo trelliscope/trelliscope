@@ -4,6 +4,10 @@ write_panels <- function(trdf, nm, force = FALSE) {
 
   pnls <- trdf[[nm]]
   panel_opts <- trobj$panel_options[[nm]]
+  if (is.null(panel_opts$width))
+    panel_opts$width <- 600
+  if (is.null(panel_opts$height))
+    panel_opts$height <- 400
 
   if (inherits(pnls, panel_lazy_classes)) {
     p <- get_panel(pnls[[1]])

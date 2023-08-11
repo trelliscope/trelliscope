@@ -48,19 +48,19 @@ library(ggplot2)
 library(dplyr)
 
 panel_dat <- (
-  ggplot(gapminder, aes(year, lifeExp)) +
+  ggplot(gap, aes(year, life_exp)) +
     geom_point() +
     facet_panels(vars(country, continent))
   ) |>
     as_panels_df()
 
-meta_dat <- gapminder |>
+meta_dat <- gap |>
   group_by(country, continent) |>
   summarise(
-    mean_lifeExp = mean(lifeExp),
-    min_lifeExp = min(lifeExp),
-    max_lifeexp = max(lifeExp),
-    mean_gdp = mean(gdpPercap),
+    mean_life_exp = mean(life_exp),
+    min_life_exp = min(life_exp),
+    max_life_exp = max(life_exp),
+    mean_gdp = mean(gdp_percap),
     .groups = "drop"
   )
 

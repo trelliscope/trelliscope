@@ -1,15 +1,15 @@
 test_that("full example runs without issue", {
-  # summarize gapminder by country
-  gapo <- gapminder |>
+  # summarize gap by country
+  gapo <- gap |>
     filter(continent == "Oceania")
 
   d <- gapo |>
     arrange(year) |>
     group_by(country, continent, iso_alpha2) |>
-    mutate(pct_chg = 100 * (lifeExp - lag(lifeExp)) / lag(lifeExp)) |>
+    mutate(pct_chg = 100 * (life_exp - lag(life_exp)) / lag(life_exp)) |>
     summarise(
-      mean_lexp = number(mean(lifeExp)),
-      mean_gdp = currency(mean(gdpPercap)),
+      mean_lexp = number(mean(life_exp)),
+      mean_gdp = currency(mean(gdp_percap)),
       max_lexp_pct_chg = max(pct_chg, na.rm = TRUE),
       dt_lexp_max_pct_chg = as.Date(paste0(year[which.max(pct_chg)], "-01-01")),
       dttm_lexp_max_pct_chg = as.POSIXct(dt_lexp_max_pct_chg),
@@ -18,7 +18,7 @@ test_that("full example runs without issue", {
     )
 
   # add some ggplots
-  p <- ggplot(gapo, aes(year, lifeExp)) +
+  p <- ggplot(gapo, aes(year, life_exp)) +
     geom_point() +
     facet_panels(vars(country, continent))
 
@@ -32,7 +32,7 @@ test_that("full example runs without issue", {
   # lazy panel
   tmp <- get_test_subset(gapo, d)
   plot_fn <- function(x) {
-    ggplot(x, aes(year, lifeExp)) +
+    ggplot(x, aes(year, life_exp)) +
       geom_point()
   }
 
@@ -75,7 +75,7 @@ test_that("full example runs without issue", {
     flag, flag_url))
 
   expect_warning(
-    dt <- suppressMessages(as_trelliscope_df(d, name = "gapminder")),
+    dt <- suppressMessages(as_trelliscope_df(d, name = "gap")),
     "are not in the correct location"
   )
 

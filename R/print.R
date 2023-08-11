@@ -67,7 +67,7 @@ print_panels <- function(x) {
 #' library(dplyr)
 #'
 #' panel_dat <- (
-#'   ggplot(gapminder, aes(year, lifeExp)) +
+#'   ggplot(gap, aes(year, life_exp)) +
 #'     geom_point() +
 #'     facet_panels(~country + continent)
 #'   ) |>

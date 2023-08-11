@@ -80,12 +80,14 @@ set_panel_options <- function(trdf, ...) {
 #'   set_panel_options(img_src = panel_options(width = 2, height = 1))
 #' # TODO
 panel_options <- function(
-  width = 500, height = 500, format = NULL, force = FALSE, prerender = TRUE
+  width = NULL, height = NULL, format = NULL, force = FALSE, prerender = TRUE
 ) {
-  assert(is.numeric(width) && length(width) == 1 && width > 0,
-    msg = "width must be a single positive numeric value")
-  assert(is.numeric(height) && length(height) == 1 && height > 0,
-    msg = "height must be a single positive numeric value")
+  if (!is.null(width))
+    assert(is.numeric(width) && length(width) == 1 && width > 0,
+      msg = "width must be a single positive numeric value")
+  if (!is.null(height))
+    assert(is.numeric(height) && length(height) == 1 && height > 0,
+      msg = "height must be a single positive numeric value")
   assert(is.logical(force) && length(force) == 1,
     msg = "force must be a single logical value")
   assert(is.logical(prerender) && length(prerender) == 1,

@@ -5,14 +5,14 @@ test_that("server works", {
   # d <- gapo |>
   #   group_by(country) |>
   #   summarise(
-  #     mean_lexp = number(mean(lifeExp)),
+  #     mean_lexp = number(mean(life_exp)),
   #     .groups = "drop"
   #   )
 
   # # lazy panel
   # tmp <- get_test_subset(gapo, d)
   # plot_fn <- function(x) {
-  #   ggplot(x, aes(year, lifeExp)) +
+  #   ggplot(x, aes(year, life_exp)) +
   #     geom_point()
   # }
 

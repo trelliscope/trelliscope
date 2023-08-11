@@ -14,7 +14,7 @@ add_input_class <- function(x) {
 #' library(dplyr)
 #'
 #' panel_dat <- (
-#'   ggplot(gapminder, aes(year, lifeExp)) +
+#'   ggplot(gap, aes(year, life_exp)) +
 #'     geom_point() +
 #'     facet_panels(vars(country, continent))
 #'   ) |>
@@ -52,7 +52,7 @@ input_number <- function(
 #' library(dplyr)
 #'
 #' panel_dat <- (
-#'   ggplot(gapminder, aes(year, lifeExp)) +
+#'   ggplot(gap, aes(year, life_exp)) +
 #'     geom_point() +
 #'     facet_panels(vars(country, continent))
 #'   ) |>
@@ -90,7 +90,7 @@ input_radio <- function(
 #' library(dplyr)
 #'
 #' panel_dat <- (
-#'   ggplot(gapminder, aes(year, lifeExp)) +
+#'   ggplot(gap, aes(year, life_exp)) +
 #'     geom_point() +
 #'     facet_panels(vars(country, continent))
 #'   ) |>
@@ -128,7 +128,7 @@ input_checkbox <- function(
 #' library(dplyr)
 #'
 #' panel_dat <- (
-#'   ggplot(gapminder, aes(year, lifeExp)) +
+#'   ggplot(gap, aes(year, life_exp)) +
 #'     geom_point() +
 #'     facet_panels(vars(country, continent))
 #'   ) |>
@@ -167,7 +167,7 @@ input_select <- function(
 #' library(dplyr)
 #'
 #' panel_dat <- (
-#'   ggplot(gapminder, aes(year, lifeExp)) +
+#'   ggplot(gap, aes(year, life_exp)) +
 #'     geom_point() +
 #'     facet_panels(vars(country, continent))
 #'   ) |>
@@ -205,7 +205,7 @@ input_multiselect <- function(
 #' library(dplyr)
 #'
 #' panel_dat <- (
-#'   ggplot(gapminder, aes(year, lifeExp)) +
+#'   ggplot(gap, aes(year, life_exp)) +
 #'     geom_point() +
 #'     facet_panels(vars(country, continent))
 #'   ) |>
