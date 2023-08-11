@@ -5,8 +5,8 @@
 \title{Specify options for lazily-rendered panels in a Trelliscope display}
 \usage{
 panel_options(
-  width = 500,
-  height = 500,
+  width = NULL,
+  height = NULL,
   format = NULL,
   force = FALSE,
   prerender = TRUE

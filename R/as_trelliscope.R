@@ -134,7 +134,7 @@ find_panel_vars <- function(trdf, warn = TRUE) {
     x <- trdf[[nm]]
     if (is.character(x)) {
       exts <- tolower(unique(tools::file_ext(x)))
-      http_pref <- all(grepl("^http:", x))
+      http_pref <- all(grepl("^http:|^https:", x))
       all_imgs <- all(exts %in% valid_img_exts)
       all_html <- all(exts %in% c("html", "htm"))
       # ?: should all URLs be coerced to be panels?
