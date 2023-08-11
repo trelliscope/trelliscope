@@ -1,4 +1,4 @@
-__loadDisplayInfo__b30b6377({
+__loadDisplayInfo__5b300926({
   "name": "mars rover",
   "description": "mars rover",
   "tags": [],
@@ -117,7 +117,7 @@ __loadDisplayInfo__b30b6377({
         "isLocal": false,
         "type": "file"
       },
-      "aspect": 1,
+      "aspect": 1.36,
       "paneltype": "img",
       "maxnchar": 0,
       "sortable": false,

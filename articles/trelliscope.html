@@ -228,27 +228,26 @@ analysis will be that the images do not yet exist and we will be
 generating them from subsets of the data we are analyzing. Trelliscope
 has utilities to make this convenient for visualization packages like
 ggplot2.</p>
-<p>As a simple example, let’s consider the <code>gapminder</code>
-dataset that originally comes with the <a href="https://cran.r-project.org/web/packages/gapminder/index.html" class="external-link"><code>gapminder</code></a>
-package. For convenience, we have included a modified version of the
-dataset with the Trelliscope package.</p>
+<p>As a simple example, let’s consider the <code>gap</code> dataset
+which is a modified version of data that originally comes with the <a href="https://cran.r-project.org/web/packages/gapminder/index.html" class="external-link"><code>gapminder</code></a>
+package. This modified version contains some extra columns such as ISO
+country code and country centroid latitude and longitude.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">gapminder</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1,476 × 10</span></span></span>
-<span><span class="co">#&gt;    country   continent  year lifeExp    pop gdpPercap capital latitude longitude</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>952    28.8 8.43<span style="color: #949494;">e</span>6      779. Kabul       34.5      69.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>957    30.3 9.24<span style="color: #949494;">e</span>6      821. Kabul       34.5      69.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>962    32.0 1.03<span style="color: #949494;">e</span>7      853. Kabul       34.5      69.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>967    34.0 1.15<span style="color: #949494;">e</span>7      836. Kabul       34.5      69.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>972    36.1 1.31<span style="color: #949494;">e</span>7      740. Kabul       34.5      69.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>977    38.4 1.49<span style="color: #949494;">e</span>7      786. Kabul       34.5      69.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>982    39.9 1.29<span style="color: #949494;">e</span>7      978. Kabul       34.5      69.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>987    40.8 1.39<span style="color: #949494;">e</span>7      852. Kabul       34.5      69.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>992    41.7 1.63<span style="color: #949494;">e</span>7      649. Kabul       34.5      69.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>997    41.8 2.22<span style="color: #949494;">e</span>7      635. Kabul       34.5      69.2</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1,466 more rows</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: iso_alpha2 &lt;chr&gt;</span></span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">gap</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1,704 × 9</span></span></span>
+<span><span class="co">#&gt;    country     continent  year life_exp    pop gdp_percap iso_alpha2   lat   lon</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Afghanistan Asia       <span style="text-decoration: underline;">1</span>952     28.8 8.43<span style="color: #949494;">e</span>6       779. AF            33    65</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Afghanistan Asia       <span style="text-decoration: underline;">1</span>957     30.3 9.24<span style="color: #949494;">e</span>6       821. AF            33    65</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Afghanistan Asia       <span style="text-decoration: underline;">1</span>962     32.0 1.03<span style="color: #949494;">e</span>7       853. AF            33    65</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Afghanistan Asia       <span style="text-decoration: underline;">1</span>967     34.0 1.15<span style="color: #949494;">e</span>7       836. AF            33    65</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Afghanistan Asia       <span style="text-decoration: underline;">1</span>972     36.1 1.31<span style="color: #949494;">e</span>7       740. AF            33    65</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Afghanistan Asia       <span style="text-decoration: underline;">1</span>977     38.4 1.49<span style="color: #949494;">e</span>7       786. AF            33    65</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Afghanistan Asia       <span style="text-decoration: underline;">1</span>982     39.9 1.29<span style="color: #949494;">e</span>7       978. AF            33    65</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Afghanistan Asia       <span style="text-decoration: underline;">1</span>987     40.8 1.39<span style="color: #949494;">e</span>7       852. AF            33    65</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Afghanistan Asia       <span style="text-decoration: underline;">1</span>992     41.7 1.63<span style="color: #949494;">e</span>7       649. AF            33    65</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Afghanistan Asia       <span style="text-decoration: underline;">1</span>997     41.8 2.22<span style="color: #949494;">e</span>7       635. AF            33    65</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1,694 more rows</span></span></span></code></pre></div>
 <p>This data provides statistics such as life expectancy annually for
 123 countries.</p>
 <p>Suppose we want to visualize life expectancy vs. year for each
@@ -256,7 +255,7 @@ country. With ggplot2, you would do something like this:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">gapminder</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">lifeExp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">gap</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">life_exp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">country</span>, <span class="va">continent</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="trelliscope_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
@@ -266,7 +265,7 @@ candidate for Trelliscope.</p>
 the first step in turning a ggplot object into a Trelliscope data frame.
 You can swap out <code><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap()</a></code> for this function.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">gapminder</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">lifeExp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">gap</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">life_exp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/facet_panels.html">facet_panels</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">country</span>, <span class="va">continent</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -282,7 +281,7 @@ row for each country/continent, we can apply the function
 <code class="sourceCode R"><span><span class="va">p_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_panels_df.html">as_panels_df</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">p_df</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 123 × 3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 142 × 3</span></span></span>
 <span><span class="co">#&gt;    country     continent panel     </span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;ggpanels&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Afghanistan Asia      &lt;ggplot&gt;  </span></span>
@@ -295,7 +294,7 @@ row for each country/continent, we can apply the function
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Bahrain     Asia      &lt;ggplot&gt;  </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Bangladesh  Asia      &lt;ggplot&gt;  </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Belgium     Europe    &lt;ggplot&gt;  </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 113 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 132 more rows</span></span></span></code></pre></div>
 <p>Here, just as in the Mars rover example, we have a data frame of
 visualizations. However, in this case, the visualizations are ggplot
 objects instead of image references.</p>
@@ -324,17 +323,17 @@ visualizations and cast it as a Trelliscope data frame with
 <span><span class="fu"><a href="../reference/view_trelliscope.html">view_trelliscope</a></span><span class="op">(</span><span class="va">tdf</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No default <span style="color: #0000BB;">"layout"</span> state supplied. <span style="font-style: italic;">Using ncol=3.</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No default <span style="color: #0000BB;">"labels"</span> state supplied. <span style="font-style: italic;">Using country, continent.</span></span></span>
-<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■                             </span>   7% | ETA: 13s</span></span>
+<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■                             </span>   6% | ETA: 15s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■                         </span>  20% | ETA: 12s</span></span>
+<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■                         </span>  20% | ETA: 14s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■                   </span>  39% | ETA:  9s</span></span>
+<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■                    </span>  37% | ETA: 11s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■             </span>  59% | ETA:  6s</span></span>
+<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■               </span>  54% | ETA:  8s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■        </span>  77% | ETA:  3s</span></span>
+<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■          </span>  70% | ETA:  5s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  </span>  96% | ETA:  1s</span></span>
+<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■     </span>  87% | ETA:  2s</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span></code></pre></div>
 <div style="width: 100%; height: 700px; padding-bottom: 5px;">
@@ -381,7 +380,7 @@ ggplot panels in one code block.</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span>, warn.conflicts <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tdf</span> <span class="op">&lt;-</span> <span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">gapminder</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">lifeExp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">gap</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">life_exp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="../reference/facet_panels.html">facet_panels</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">country</span>, <span class="va">continent</span>, <span class="va">iso_alpha2</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -393,7 +392,7 @@ ggplot panels in one code block.</p>
 <span><span class="co">#&gt;   <span style="color: #0000BB;">"/home/runner/work/trelliscope/trelliscope/docs/articles/trelliscope_files/figure-html//gap1"</span></span></span>
 <span><span class="co">#&gt;   with <span style="color: #0000BB;">1</span> panel:</span></span>
 <span><span class="co">#&gt; • <span style="color: #0000BB;">"lexp_time"</span>: &lt;ggpanel&gt;     <span style="color: #555555;">[no panel options specified]</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 123 × 4</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 142 × 4</span></span></span>
 <span><span class="co">#&gt;    country     continent iso_alpha2 lexp_time </span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;ggpanels&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Afghanistan Asia      AF         &lt;ggplot&gt;  </span></span>
@@ -406,7 +405,7 @@ ggplot panels in one code block.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Bahrain     Asia      BH         &lt;ggplot&gt;  </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Bangladesh  Asia      BD         &lt;ggplot&gt;  </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Belgium     Europe    BE         &lt;ggplot&gt;  </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 113 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 132 more rows</span></span></span></code></pre></div>
 <p>Here we also added <code>iso_alpha2</code> (country code) as a
 redundant facetting variable so that it is available in our data frame
 for later use.</p>
@@ -447,7 +446,7 @@ and flag images can be referenced by their 2-letter country code.</p>
 <span><span class="co">#&gt; • <span style="color: #0000BB;">"lexp_time"</span>: &lt;ggpanel&gt;     <span style="color: #555555;">[no panel options specified]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; • <span style="color: #0000BB;">"flag_url"</span> : &lt;panel_url&gt;   <span style="color: #555555;">[no panel options specified]</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 123 × 5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 142 × 5</span></span></span>
 <span><span class="co">#&gt;    country     continent iso_alpha2 lexp_time  flag_url            </span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;ggpanels&gt;</span> <span style="color: #949494; font-style: italic;">&lt;url_panels&gt;</span>        </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Afghanistan Asia      AF         &lt;ggplot&gt;   &lt;img&gt;<span style="color: #949494;"> .../512/AF.png</span></span></span>
@@ -460,7 +459,7 @@ and flag images can be referenced by their 2-letter country code.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Bahrain     Asia      BH         &lt;ggplot&gt;   &lt;img&gt;<span style="color: #949494;"> .../512/BH.png</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Bangladesh  Asia      BD         &lt;ggplot&gt;   &lt;img&gt;<span style="color: #949494;"> .../512/BD.png</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Belgium     Europe    BE         &lt;ggplot&gt;   &lt;img&gt;<span style="color: #949494;"> .../512/BE.png</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 113 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 132 more rows</span></span></span></code></pre></div>
 <p>We can view a flag for any country by looking at a single entry from
 the column, e.g. <code>tdf$flag_url[[1]]</code>. This will open up the
 image in a web browser.</p>
@@ -477,11 +476,11 @@ summary statistics such as their mean life expectancy, etc. We can do
 this by computing a summaries of the gapminder data and joining this
 with <code>tdf</code>.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">gsumm</span> <span class="op">&lt;-</span> <span class="va">gapminder</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct_chg <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="op">(</span><span class="va">lifeExp</span> <span class="op">-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">lifeExp</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">lifeExp</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="va">gsumm</span> <span class="op">&lt;-</span> <span class="va">gap</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct_chg <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="op">(</span><span class="va">life_exp</span> <span class="op">-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">life_exp</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">life_exp</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span></span>
-<span>    mean_lexp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">lifeExp</span><span class="op">)</span>,</span>
-<span>    mean_gdp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">gdpPercap</span><span class="op">)</span>,</span>
+<span>    mean_lexp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">life_exp</span><span class="op">)</span>,</span>
+<span>    mean_gdp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">gdp_percap</span><span class="op">)</span>,</span>
 <span>    max_lexp_pct_chg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">pct_chg</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    dt_lexp_max_pct_chg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">year</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">pct_chg</span><span class="op">)</span><span class="op">]</span>, <span class="st">"-01-01"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    .by <span class="op">=</span> <span class="va">country</span></span>
@@ -496,7 +495,7 @@ with <code>tdf</code>.</p>
 <span><span class="co">#&gt; • <span style="color: #0000BB;">"lexp_time"</span>: &lt;ggpanel&gt;     <span style="color: #555555;">[no panel options specified]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; • <span style="color: #0000BB;">"flag_url"</span> : &lt;panel_url&gt;   <span style="color: #555555;">[no panel options specified]</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 123 × 9</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 142 × 9</span></span></span>
 <span><span class="co">#&gt;    country     continent iso_alpha2 lexp_time  flag_url     mean_lexp mean_gdp</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;ggpanels&gt;</span> <span style="color: #949494; font-style: italic;">&lt;url_panels&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Afghanistan Asia      AF         &lt;ggplot&gt;   &lt;img&gt;             37.5     803.</span></span>
@@ -509,7 +508,7 @@ with <code>tdf</code>.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Bahrain     Asia      BH         &lt;ggplot&gt;   &lt;img&gt;             65.6   <span style="text-decoration: underline;">18</span>078.</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Bangladesh  Asia      BD         &lt;ggplot&gt;   &lt;img&gt;             49.8     818.</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Belgium     Europe    BE         &lt;ggplot&gt;   &lt;img&gt;             73.6   <span style="text-decoration: underline;">19</span>901.</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 113 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 132 more rows</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 more variables: max_lexp_pct_chg &lt;dbl&gt;, dt_lexp_max_pct_chg &lt;date&gt;</span></span></span></code></pre></div>
 <p>Trelliscope makes use of variable types to determine how data is
 displayed in the viewer as well as how it can be interacted with.
@@ -559,7 +558,7 @@ our gapminder data frame:</p>
 <span><span class="co">#&gt; • <span style="color: #0000BB;">"lexp_time"</span>: &lt;ggpanel&gt;     <span style="color: #555555;">[no panel options specified]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; • <span style="color: #0000BB;">"flag_url"</span> : &lt;panel_url&gt;   <span style="color: #555555;">[no panel options specified]</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 123 × 10</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 142 × 10</span></span></span>
 <span><span class="co">#&gt;    country     continent iso_alpha2 lexp_time  flag_url     mean_lexp   mean_gdp</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;ggpanels&gt;</span> <span style="color: #949494; font-style: italic;">&lt;url_panels&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;number&gt;</span> <span style="color: #949494; font-style: italic;">&lt;currency&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Afghanistan Asia      AF         &lt;ggplot&gt;   &lt;img&gt;             37.5     802.67</span></span>
@@ -572,7 +571,7 @@ our gapminder data frame:</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Bahrain     Asia      BH         &lt;ggplot&gt;   &lt;img&gt;             65.6   18077.66</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Bangladesh  Asia      BD         &lt;ggplot&gt;   &lt;img&gt;             49.8     817.56</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Belgium     Europe    BE         &lt;ggplot&gt;   &lt;img&gt;             73.6   19900.76</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 113 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 132 more rows</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3 more variables: max_lexp_pct_chg &lt;dbl&gt;, dt_lexp_max_pct_chg &lt;date&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   wiki_link &lt;href&gt;</span></span></span></code></pre></div>
 <p>More special variable types will come in the future as supporting
@@ -841,7 +840,7 @@ Trelliscope data frame:</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Key columns</span>: <span style="color: #0000BB;">"country"</span>, <span style="color: #0000BB;">"continent"</span>, and <span style="color: #0000BB;">"iso_alpha2"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Path</span>:</span></span>
 <span><span class="co">#&gt;   <span style="color: #9E9E9E;">"/home/runner/work/trelliscope/trelliscope/docs/articles/trelliscope_files/figure-html//gap1"</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Number of panels</span>: <span style="color: #0000BB;">123</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> <span style="font-weight: bold;">Number of panels</span>: <span style="color: #0000BB;">142</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="writing-and-viewing-the-app">Writing and viewing the app<a class="anchor" aria-label="anchor" href="#writing-and-viewing-the-app"></a>
@@ -858,13 +857,13 @@ out as specified before with <code><a href="../reference/write_trelliscope.html"
 <span><span class="co">#&gt;   expectancy (mean &gt;= 60)'. <span style="font-style: italic;">Using country, continent, iso_alpha2.</span></span></span>
 <span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■                            </span>   9% | ETA: 11s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■                          </span>  18% | ETA: 10s</span></span>
+<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■                      </span>  29% | ETA:  9s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■                  </span>  44% | ETA:  7s</span></span>
+<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■■■                </span>  51% | ETA:  6s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■          </span>  71% | ETA:  3s</span></span>
+<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■         </span>  73% | ETA:  4s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  </span>  98% | ETA:  0s</span></span>
+<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   </span>  94% | ETA:  1s</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -919,7 +918,7 @@ app.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create initial Trelliscope data frame</span></span>
 <span><span class="va">tdf</span> <span class="op">&lt;-</span> <span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">gapminder</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">lifeExp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">gap</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">life_exp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="../reference/facet_panels.html">facet_panels</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">country</span>, <span class="va">continent</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -927,11 +926,11 @@ app.</p>
 <span>  <span class="fu"><a href="../reference/as_trelliscope_df.html">as_trelliscope_df</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"gapminder life expectancy"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># add variables</span></span>
-<span><span class="va">gsumm</span> <span class="op">&lt;-</span> <span class="va">gapminder</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct_chg <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="op">(</span><span class="va">lifeExp</span> <span class="op">-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">lifeExp</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">lifeExp</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="va">gsumm</span> <span class="op">&lt;-</span> <span class="va">gap</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct_chg <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="op">(</span><span class="va">life_exp</span> <span class="op">-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">life_exp</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">life_exp</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span></span>
-<span>    mean_lexp <span class="op">=</span> <span class="fu"><a href="../reference/number.html">number</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">lifeExp</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
-<span>    mean_gdp <span class="op">=</span> <span class="fu"><a href="../reference/currency.html">currency</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">gdpPercap</span><span class="op">)</span>, code <span class="op">=</span> <span class="st">"USD"</span><span class="op">)</span>,</span>
+<span>    mean_lexp <span class="op">=</span> <span class="fu"><a href="../reference/number.html">number</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">life_exp</span><span class="op">)</span>, digits <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>    mean_gdp <span class="op">=</span> <span class="fu"><a href="../reference/currency.html">currency</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">gdp_percap</span><span class="op">)</span>, code <span class="op">=</span> <span class="st">"USD"</span><span class="op">)</span>,</span>
 <span>    max_lexp_pct_chg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">pct_chg</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    dt_lexp_max_pct_chg <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">year</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">pct_chg</span><span class="op">)</span><span class="op">]</span>, <span class="st">"-01-01"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    wiki_link <span class="op">=</span> <span class="fu"><a href="../reference/href.html">href</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"https://en.wikipedia.org/wiki/"</span>, <span class="va">country</span><span class="op">)</span><span class="op">)</span>,</span>

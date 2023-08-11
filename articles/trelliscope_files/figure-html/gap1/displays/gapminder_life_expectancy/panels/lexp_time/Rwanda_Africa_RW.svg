@@ -81,6 +81,6 @@
 <text x='419.38' y='359.28' text-anchor='middle' style='font-size: 17.60px;fill: #4D4D4D; font-family: "Liberation Sans";' textLength='44.78px' lengthAdjust='spacingAndGlyphs'>1990</text>
 <text x='505.28' y='359.28' text-anchor='middle' style='font-size: 17.60px;fill: #4D4D4D; font-family: "Liberation Sans";' textLength='44.78px' lengthAdjust='spacingAndGlyphs'>2000</text>
 <text x='329.18' y='384.46' text-anchor='middle' style='font-size: 22.00px; font-family: "Liberation Sans";' textLength='49.09px' lengthAdjust='spacingAndGlyphs'>year</text>
-<text transform='translate(27.00,173.77) rotate(-90)' text-anchor='middle' style='font-size: 22.00px; font-family: "Liberation Sans";' textLength='74.40px' lengthAdjust='spacingAndGlyphs'>lifeExp</text>
+<text transform='translate(27.00,173.77) rotate(-90)' text-anchor='middle' style='font-size: 22.00px; font-family: "Liberation Sans";' textLength='84.65px' lengthAdjust='spacingAndGlyphs'>life_exp</text>
 </g>
 </svg>

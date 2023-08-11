@@ -101,20 +101,21 @@ are familiar with the basics of Trelliscope.</p>
 <div class="section level2">
 <h2 id="using-facet_panels-with-ggplot2">Using <code>facet_panels()</code> with ggplot2<a class="anchor" aria-label="anchor" href="#using-facet_panels-with-ggplot2"></a>
 </h2>
-<p>We will stick with the gapminder example for this article. In the
-Introduction article, we showed how to visualize life expectancy
-vs. time for each country with ggplot2 using <code><a href="../reference/facet_panels.html">facet_panels()</a></code>
-and <code><a href="../reference/as_panels_df.html">as_panels_df()</a></code>.</p>
+<p>We will stick with the gapminder example for this article (using the
+<code>gap</code> version of the gapminder data that comes with this
+package). In the Introduction article, we showed how to visualize life
+expectancy vs. time for each country with ggplot2 using
+<code><a href="../reference/facet_panels.html">facet_panels()</a></code> and <code><a href="../reference/as_panels_df.html">as_panels_df()</a></code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">gap</span> <span class="op">&lt;-</span> <span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">gapminder</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">lifeExp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<code class="sourceCode R"><span><span class="va">gp</span> <span class="op">&lt;-</span> <span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">gap</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">life_exp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="../reference/facet_panels.html">facet_panels</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">country</span>, <span class="va">continent</span>, <span class="va">iso_alpha2</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/as_panels_df.html">as_panels_df</a></span><span class="op">(</span>panel_col <span class="op">=</span> <span class="st">"lexp_time"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">gap</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 123 × 4</span></span></span>
+<span><span class="va">gp</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 142 × 4</span></span></span>
 <span><span class="co">#&gt;    country     continent iso_alpha2 lexp_time </span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;ggpanels&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Afghanistan Asia      AF         &lt;ggplot&gt;  </span></span>
@@ -127,7 +128,7 @@ and <code><a href="../reference/as_panels_df.html">as_panels_df()</a></code>.</p
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Bahrain     Asia      BH         &lt;ggplot&gt;  </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Bangladesh  Asia      BD         &lt;ggplot&gt;  </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Belgium     Europe    BE         &lt;ggplot&gt;  </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 113 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 132 more rows</span></span></span></code></pre></div>
 <p>The <code>lexp_time</code> column is a list of what appears to be
 ggplot2 objects, one for each panel. What is actually happening is a bit
 more complex. <code>lexp_time</code> is a special vector that contains
@@ -162,14 +163,14 @@ dataset.</p>
 life expectancy and mean GDP per capita for each country in the
 gapminder dataset.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">gsumm</span> <span class="op">&lt;-</span> <span class="va">gapminder</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">gsumm</span> <span class="op">&lt;-</span> <span class="va">gap</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span></span>
-<span>    mean_lexp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">lifeExp</span><span class="op">)</span>,</span>
-<span>    mean_gdp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">gdpPercap</span><span class="op">)</span>,</span>
+<span>    mean_lexp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">life_exp</span><span class="op">)</span>,</span>
+<span>    mean_gdp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">gdp_percap</span><span class="op">)</span>,</span>
 <span>    .by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"continent"</span>, <span class="st">"country"</span>, <span class="st">"iso_alpha2"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="va">gsumm</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 123 × 5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 142 × 5</span></span></span>
 <span><span class="co">#&gt;    continent country     iso_alpha2 mean_lexp mean_gdp</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Asia      Afghanistan AF              37.5     803.</span></span>
@@ -182,43 +183,42 @@ gapminder dataset.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Asia      Bahrain     BH              65.6   <span style="text-decoration: underline;">18</span>078.</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Asia      Bangladesh  BD              49.8     818.</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Europe    Belgium     BE              73.6   <span style="text-decoration: underline;">19</span>901.</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 113 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 132 more rows</span></span></span></code></pre></div>
 <p>Now suppose that we would like to use the <a href="https://rstudio.github.io/dygraphs/index.html" class="external-link">dygraphs</a>
 package to create an interactive time series plot of life expectancy
 over time for each country. What we need to do is provide a function
 that takes a single input which will represent a data frame
-corresponding to a subset of the <code>gapminder</code> dataset
-associated with a single row of the summary dataset <code>gsumm</code>
-(one country).</p>
+corresponding to a subset of the <code>gap</code> dataset associated
+with a single row of the summary dataset <code>gsumm</code> (one
+country).</p>
 <p>A helper function to get an example subset to expect in the plotting
 function is <code><a href="../reference/get_test_subset.html">get_test_subset()</a></code>. This takes as arguments the
 full dataset and the summary dataset and returns an example subset that
 you can build your plot function around.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_test_subset.html">get_test_subset</a></span><span class="op">(</span><span class="va">gapminder</span>, <span class="va">gsumm</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_test_subset.html">get_test_subset</a></span><span class="op">(</span><span class="va">gap</span>, <span class="va">gsumm</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">x</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12 × 10</span></span></span>
-<span><span class="co">#&gt;    country   continent  year lifeExp    pop gdpPercap capital latitude longitude</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>952    28.8 8.43<span style="color: #949494;">e</span>6      779. Kabul       34.5      69.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>957    30.3 9.24<span style="color: #949494;">e</span>6      821. Kabul       34.5      69.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>962    32.0 1.03<span style="color: #949494;">e</span>7      853. Kabul       34.5      69.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>967    34.0 1.15<span style="color: #949494;">e</span>7      836. Kabul       34.5      69.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>972    36.1 1.31<span style="color: #949494;">e</span>7      740. Kabul       34.5      69.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>977    38.4 1.49<span style="color: #949494;">e</span>7      786. Kabul       34.5      69.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>982    39.9 1.29<span style="color: #949494;">e</span>7      978. Kabul       34.5      69.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>987    40.8 1.39<span style="color: #949494;">e</span>7      852. Kabul       34.5      69.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>992    41.7 1.63<span style="color: #949494;">e</span>7      649. Kabul       34.5      69.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Afghanis… Asia       <span style="text-decoration: underline;">1</span>997    41.8 2.22<span style="color: #949494;">e</span>7      635. Kabul       34.5      69.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> Afghanis… Asia       <span style="text-decoration: underline;">2</span>002    42.1 2.53<span style="color: #949494;">e</span>7      727. Kabul       34.5      69.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> Afghanis… Asia       <span style="text-decoration: underline;">2</span>007    43.8 3.19<span style="color: #949494;">e</span>7      975. Kabul       34.5      69.2</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: iso_alpha2 &lt;chr&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12 × 9</span></span></span>
+<span><span class="co">#&gt;    country     continent  year life_exp    pop gdp_percap iso_alpha2   lat   lon</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Afghanistan Asia       <span style="text-decoration: underline;">1</span>952     28.8 8.43<span style="color: #949494;">e</span>6       779. AF            33    65</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Afghanistan Asia       <span style="text-decoration: underline;">1</span>957     30.3 9.24<span style="color: #949494;">e</span>6       821. AF            33    65</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Afghanistan Asia       <span style="text-decoration: underline;">1</span>962     32.0 1.03<span style="color: #949494;">e</span>7       853. AF            33    65</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Afghanistan Asia       <span style="text-decoration: underline;">1</span>967     34.0 1.15<span style="color: #949494;">e</span>7       836. AF            33    65</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Afghanistan Asia       <span style="text-decoration: underline;">1</span>972     36.1 1.31<span style="color: #949494;">e</span>7       740. AF            33    65</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Afghanistan Asia       <span style="text-decoration: underline;">1</span>977     38.4 1.49<span style="color: #949494;">e</span>7       786. AF            33    65</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Afghanistan Asia       <span style="text-decoration: underline;">1</span>982     39.9 1.29<span style="color: #949494;">e</span>7       978. AF            33    65</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Afghanistan Asia       <span style="text-decoration: underline;">1</span>987     40.8 1.39<span style="color: #949494;">e</span>7       852. AF            33    65</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Afghanistan Asia       <span style="text-decoration: underline;">1</span>992     41.7 1.63<span style="color: #949494;">e</span>7       649. AF            33    65</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Afghanistan Asia       <span style="text-decoration: underline;">1</span>997     41.8 2.22<span style="color: #949494;">e</span>7       635. AF            33    65</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> Afghanistan Asia       <span style="text-decoration: underline;">2</span>002     42.1 2.53<span style="color: #949494;">e</span>7       727. AF            33    65</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> Afghanistan Asia       <span style="text-decoration: underline;">2</span>007     43.8 3.19<span style="color: #949494;">e</span>7       975. AF            33    65</span></span></code></pre></div>
 <p>Let’s build a simple plotting function based on this data.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plot_fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/dygraphs" class="external-link">dygraphs</a></span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/dygraphs/man/dygraph.html" class="external-link">dygraph</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">year</span>, <span class="va">lifeExp</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/dygraphs/man/dygraph.html" class="external-link">dygraph</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">year</span>, <span class="va">life_exp</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/dygraphs/man/dyOptions.html" class="external-link">dyOptions</a></span><span class="op">(</span>strokeWidth <span class="op">=</span> <span class="fl">3</span>, drawPoints <span class="op">=</span> <span class="cn">TRUE</span>, pointSize <span class="op">=</span> <span class="fl">4</span>, gridLineColor <span class="op">=</span> <span class="st">"#dedede"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/dygraphs/man/dyHighlight.html" class="external-link">dyHighlight</a></span><span class="op">(</span>highlightCircleSize <span class="op">=</span> <span class="fl">6</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/dygraphs/man/dyAxis.html" class="external-link">dyAxis</a></span><span class="op">(</span><span class="st">"x"</span>, label <span class="op">=</span> <span class="st">"Year"</span>, valueRange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1952</span>, <span class="fl">2007</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -227,16 +227,16 @@ you can build your plot function around.</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">plot_fn</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
-<div class="dygraphs html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-e274b6f8ea80c2035086" style="width:700px;height:432.632880098888px;"></div>
-<script type="application/json" data-for="htmlwidget-e274b6f8ea80c2035086">{"x":{"attrs":{"axes":{"x":{"pixelsPerLabel":60,"drawAxis":true,"valueRange":[1952,2007]},"y":{"drawAxis":true,"valueRange":[23.59,82.61]}},"highlightSeriesOpts":[],"labels":["year","lifeExp"],"legend":"auto","retainDateWindow":false,"stackedGraph":false,"fillGraph":false,"fillAlpha":0.15,"stepPlot":false,"drawPoints":true,"pointSize":4,"drawGapEdgePoints":false,"connectSeparatedPoints":false,"strokeWidth":3,"strokeBorderColor":"white","colorValue":0.5,"colorSaturation":1,"includeZero":false,"drawAxesAtZero":false,"logscale":false,"axisTickSize":3,"axisLineColor":"black","axisLineWidth":0.3,"axisLabelColor":"black","axisLabelFontSize":14,"axisLabelWidth":60,"drawGrid":true,"gridLineColor":"#dedede","gridLineWidth":0.3,"rightGap":5,"digitsAfterDecimal":2,"labelsKMB":false,"labelsKMG2":false,"labelsUTC":false,"maxNumberWidth":6,"animatedZooms":false,"mobileDisableYTouch":true,"disableZoom":false,"highlightCircleSize":6,"highlightSeriesBackgroundAlpha":0.5,"hideOverlayOnMouseOut":true,"xlabel":"Year","ylabel":"Life Expectancy (yrs)","showRangeSelector":true,"rangeSelectorHeight":40,"rangeSelectorPlotFillColor":" #A7B1C4","rangeSelectorPlotStrokeColor":"#808FAB","interactionModel":"Dygraph.Interaction.defaultModel"},"annotations":[],"shadings":[],"events":[],"format":"numeric","data":[[1952,1957,1962,1967,1972,1977,1982,1987,1992,1997,2002,2007],[28.801,30.332,31.997,34.02,36.088,38.438,39.854,40.822,41.674,41.763,42.129,43.828]],"fixedtz":false,"tzone":""},"evals":["attrs.interactionModel"],"jsHooks":[]}</script><p>Now all we need to do to add a new plot column to <code>gsumm</code>
+<div class="dygraphs html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-642c35aa737d60135c11" style="width:700px;height:432.632880098888px;"></div>
+<script type="application/json" data-for="htmlwidget-642c35aa737d60135c11">{"x":{"attrs":{"axes":{"x":{"pixelsPerLabel":60,"drawAxis":true,"valueRange":[1952,2007]},"y":{"drawAxis":true,"valueRange":[23.59,82.61]}},"highlightSeriesOpts":[],"labels":["year","life_exp"],"legend":"auto","retainDateWindow":false,"stackedGraph":false,"fillGraph":false,"fillAlpha":0.15,"stepPlot":false,"drawPoints":true,"pointSize":4,"drawGapEdgePoints":false,"connectSeparatedPoints":false,"strokeWidth":3,"strokeBorderColor":"white","colorValue":0.5,"colorSaturation":1,"includeZero":false,"drawAxesAtZero":false,"logscale":false,"axisTickSize":3,"axisLineColor":"black","axisLineWidth":0.3,"axisLabelColor":"black","axisLabelFontSize":14,"axisLabelWidth":60,"drawGrid":true,"gridLineColor":"#dedede","gridLineWidth":0.3,"rightGap":5,"digitsAfterDecimal":2,"labelsKMB":false,"labelsKMG2":false,"labelsUTC":false,"maxNumberWidth":6,"animatedZooms":false,"mobileDisableYTouch":true,"disableZoom":false,"highlightCircleSize":6,"highlightSeriesBackgroundAlpha":0.5,"hideOverlayOnMouseOut":true,"xlabel":"Year","ylabel":"Life Expectancy (yrs)","showRangeSelector":true,"rangeSelectorHeight":40,"rangeSelectorPlotFillColor":" #A7B1C4","rangeSelectorPlotStrokeColor":"#808FAB","interactionModel":"Dygraph.Interaction.defaultModel"},"annotations":[],"shadings":[],"events":[],"format":"numeric","data":[[1952,1957,1962,1967,1972,1977,1982,1987,1992,1997,2002,2007],[28.801,30.332,31.997,34.02,36.088,38.438,39.854,40.822,41.674,41.763,42.129,43.828]],"fixedtz":false,"tzone":""},"evals":["attrs.interactionModel"],"jsHooks":[]}</script><p>Now all we need to do to add a new plot column to <code>gsumm</code>
 is to use <code><a href="../reference/panel_lazy.html">panel_lazy()</a></code> which takes our plot function and
 the full dataset as arguments.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gsumm</span> <span class="op">&lt;-</span> <span class="va">gsumm</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>lexp_time <span class="op">=</span> <span class="fu"><a href="../reference/panel_lazy.html">panel_lazy</a></span><span class="op">(</span><span class="va">plot_fn</span>, <span class="va">gapminder</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>lexp_time <span class="op">=</span> <span class="fu"><a href="../reference/panel_lazy.html">panel_lazy</a></span><span class="op">(</span><span class="va">plot_fn</span>, <span class="va">gap</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">gsumm</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 123 × 6</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 142 × 6</span></span></span>
 <span><span class="co">#&gt;    continent country     iso_alpha2 mean_lexp mean_gdp lexp_time    </span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lazy_panels&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Asia      Afghanistan AF              37.5     803. &lt;htmlwidget&gt; </span></span>
@@ -249,7 +249,7 @@ the full dataset as arguments.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Asia      Bahrain     BH              65.6   <span style="text-decoration: underline;">18</span>078. &lt;htmlwidget&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Asia      Bangladesh  BD              49.8     818. &lt;htmlwidget&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Europe    Belgium     BE              73.6   <span style="text-decoration: underline;">19</span>901. &lt;htmlwidget&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 113 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 132 more rows</span></span></span></code></pre></div>
 <p>Note that these panels are <a href="http://www.htmlwidgets.org" class="external-link">htmlwidgets</a>. Your plot function
 can return any type of htmlwidget or plot objects that can be printed to
 image files, such as ggplot2 objects.</p>
@@ -276,7 +276,7 @@ URL for each flag.</p>
 <span>  flag_url <span class="op">=</span> <span class="fu"><a href="../reference/panel_url.html">panel_url</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">flag_base_url</span>, <span class="va">iso_alpha2</span>, <span class="st">".png"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">gsumm</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 123 × 7</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 142 × 7</span></span></span>
 <span><span class="co">#&gt;    continent country     iso_alpha2 mean_lexp mean_gdp lexp_time     flag_url   </span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lazy_panels&gt;</span> <span style="color: #949494; font-style: italic;">&lt;url_panel&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Asia      Afghanistan AF              37.5     803. &lt;htmlwidget&gt;  &lt;img&gt;      </span></span>
@@ -289,7 +289,7 @@ URL for each flag.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Asia      Bahrain     BH              65.6   <span style="text-decoration: underline;">18</span>078. &lt;htmlwidget&gt;  &lt;img&gt;      </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Asia      Bangladesh  BD              49.8     818. &lt;htmlwidget&gt;  &lt;img&gt;      </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Europe    Belgium     BE              73.6   <span style="text-decoration: underline;">19</span>901. &lt;htmlwidget&gt;  &lt;img&gt;      </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 113 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 132 more rows</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="panels-of-images-on-the-local-filesystem-with-panel_local">Panels of images on the local filesystem with
@@ -329,7 +329,7 @@ files.</p>
 <span>  flag <span class="op">=</span> <span class="fu"><a href="../reference/panel_local.html">panel_local</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">flag_path</span>, <span class="st">"flags"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">iso_alpha2</span>, <span class="st">".png"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
 <span><span class="op">)</span></span>
 <span><span class="va">gsumm</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 123 × 8</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 142 × 8</span></span></span>
 <span><span class="co">#&gt;    continent country   iso_alpha2 mean_lexp mean_gdp lexp_time    flag_url flag </span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lazy_panel&gt;</span> <span style="color: #949494; font-style: italic;">&lt;url_pa&gt;</span> <span style="color: #949494; font-style: italic;">&lt;loc&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Asia      Afghanis… AF              37.5     803. &lt;htmlwidget&gt; &lt;img&gt;    &lt;img&gt;</span></span>
@@ -342,7 +342,7 @@ files.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Asia      Bahrain   BH              65.6   <span style="text-decoration: underline;">18</span>078. &lt;htmlwidget&gt; &lt;img&gt;    &lt;img&gt;</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Asia      Banglade… BD              49.8     818. &lt;htmlwidget&gt; &lt;img&gt;    &lt;img&gt;</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Europe    Belgium   BE              73.6   <span style="text-decoration: underline;">19</span>901. &lt;htmlwidget&gt; &lt;img&gt;    &lt;img&gt;</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 113 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 132 more rows</span></span></span></code></pre></div>
 <p>Note that once we make <code>gsumm</code> into a Trelliscope data
 frame and view it, local panel files will be copied into the directory
 of the Trelliscope display so that it is self-contained. If you want to
@@ -360,7 +360,7 @@ and put the files there yourself.</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using the variables <span style="color: #0000BB;">"continent"</span> and <span style="color: #0000BB;">"country"</span> to uniquely identify each row</span></span>
 <span><span class="co">#&gt;   of the data.</span></span>
 <span><span class="co">#&gt; Warning: <span style="color: #BBBB00;">!</span> Files for local panel <span style="color: #0000BB;">"flag"</span> are not in the correct location. They are</span></span>
-<span><span class="co">#&gt;   currently here: '/tmp/RtmpqlEFnU/flags' and will be copied here:</span></span>
+<span><span class="co">#&gt;   currently here: '/tmp/RtmpaDHe4H/flags' and will be copied here:</span></span>
 <span><span class="co">#&gt;   '/home/runner/work/trelliscope/trelliscope/docs/articles/panels_files/figure-html/gap/displays/gapminder/panels/flag'</span></span>
 <span><span class="co">#&gt;   when the display is written.</span></span>
 <span></span>
@@ -373,9 +373,9 @@ and put the files there yourself.</p>
 <span></span>
 <span><span class="fu"><a href="../reference/view_trelliscope.html">view_trelliscope</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Inferred that variable 'mean_gdp' should be shown on log scale.</span></span>
-<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■                   </span>  41% | ETA:  1s</span></span>
+<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■                    </span>  35% | ETA:  2s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■                  </span>  43% | ETA:  1s</span></span>
+<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  </span>  96% | ETA:  0s</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span></code></pre></div>
 <div style="width: 100%; height: 700px; padding-bottom: 5px;">

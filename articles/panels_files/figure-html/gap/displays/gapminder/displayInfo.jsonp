@@ -1,4 +1,4 @@
-__loadDisplayInfo__51c1b5b9({
+__loadDisplayInfo__e3c828e9({
   "name": "gapminder",
   "description": "gapminder",
   "tags": [],
@@ -76,7 +76,7 @@ __loadDisplayInfo__51c1b5b9({
         "isLocal": false,
         "type": "file"
       },
-      "aspect": 1,
+      "aspect": 1.50146627565982,
       "paneltype": "img",
       "maxnchar": 0,
       "sortable": false,
@@ -91,7 +91,7 @@ __loadDisplayInfo__51c1b5b9({
         "isLocal": true,
         "type": "file"
       },
-      "aspect": 1,
+      "aspect": 1.50146627565982,
       "paneltype": "img",
       "maxnchar": 0,
       "sortable": false,
