@@ -1,8 +1,8 @@
 Package: trelliscope
 Title: Create Interactive Trelliscope Displays
-Version: 0.1.0
+Version: 0.1.1
 Authors@R:
-    person("Ryan", "Hafen", , "rhafen@gmail.com", role = c("aut", "cre"),
+    person("Ryan", "Hafen", , "rhafen@gmail.com", role = c("aut", "cre", "cph"),
         comment = c(ORCID = "0000-0002-5516-8367"))
 Description: Trelliscope enables interactive exploration of data frames of visualizations.
 License: MIT + file LICENSE
