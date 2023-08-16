@@ -24,7 +24,7 @@ number <- function(x = double(),
     msg = "`locale` must be a single logical value")
 
   if (!is.null(log))
-    assert(is.numeric(log) && length(log) == 1,
+    assert(is.logical(log) && length(log) == 1,
       msg = "`log` must be a single logical value")
 
   vctrs::new_vctr(
@@ -98,7 +98,7 @@ currency <- function(x = double(),
     msg = "`locale` must be a single logical value")
 
   if (!is.null(log))
-    assert(is.numeric(log) && length(log) == 1,
+    assert(is.logical(log) && length(log) == 1,
       msg = "`log` must be a single logical value")
 
   vctrs::new_vctr(
