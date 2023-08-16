@@ -1,4 +1,4 @@
-__loadDisplayInfo__11fdd274({
+__loadDisplayInfo__ed4493b2({
   "name": "gapminder",
   "description": "gapminder",
   "tags": [],
@@ -132,5 +132,7 @@ __loadDisplayInfo__11fdd274({
   "views": [],
   "inputs": null,
   "primarypanel": "lexp_time",
-  "thumbnailurl": "panels/lexp_time/Afghanistan_Asia_AF.html"
+  "thumbnailurl": "panels/lexp_time/Afghanistan_Asia_AF.html",
+  "infoOnLoad": false,
+  "hasCustomInfo": false
 })

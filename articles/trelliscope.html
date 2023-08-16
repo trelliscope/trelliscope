@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">trelliscope</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -323,19 +323,21 @@ visualizations and cast it as a Trelliscope data frame with
 <span><span class="fu"><a href="../reference/view_trelliscope.html">view_trelliscope</a></span><span class="op">(</span><span class="va">tdf</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No default <span style="color: #0000BB;">"layout"</span> state supplied. <span style="font-style: italic;">Using ncol=3.</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No default <span style="color: #0000BB;">"labels"</span> state supplied. <span style="font-style: italic;">Using country, continent.</span></span></span>
-<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■                             </span>   6% | ETA: 16s</span></span>
+<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■                             </span>   6% | ETA: 18s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■                            </span>   9% | ETA: 17s</span></span>
+<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■                             </span>   8% | ETA: 18s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■                        </span>  24% | ETA: 14s</span></span>
+<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■                        </span>  23% | ETA: 15s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■                   </span>  39% | ETA: 12s</span></span>
+<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■                    </span>  38% | ETA: 12s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■               </span>  55% | ETA:  9s</span></span>
+<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■               </span>  53% | ETA:  9s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■          </span>  70% | ETA:  6s</span></span>
+<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■           </span>  68% | ETA:  7s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■      </span>  85% | ETA:  3s</span></span>
+<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■      </span>  82% | ETA:  4s</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  </span>  97% | ETA:  1s</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span></code></pre></div>
 <div style="width: 100%; height: 700px; padding-bottom: 5px;">
@@ -616,6 +618,12 @@ feedback for each panel</li>
 <code><a href="../reference/add_view.html">add_view()</a></code>: add a pre-defined “view” that allows users
 to navigate to specified states of the display</li>
 <li>
+<code><a href="../reference/set_info_html.html">set_info_html()</a></code>: specify HTML to display in the info
+panel of the viewer</li>
+<li>
+<code><a href="../reference/set_show_info_on_load.html">set_show_info_on_load()</a></code>: specify whether to show the
+info panel on load</li>
+<li>
 <code><a href="../reference/add_charm.html">add_charm()</a></code>: simple password protection for the
 generated app</li>
 </ul>
@@ -857,17 +865,17 @@ out as specified before with <code><a href="../reference/write_trelliscope.html"
 <span><span class="co">#&gt;   expectancy (mean &gt;= 60)'. <span style="font-style: italic;">Using ncol=3.</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No default <span style="color: #0000BB;">"labels"</span> state supplied for view 'Countries with high life</span></span>
 <span><span class="co">#&gt;   expectancy (mean &gt;= 60)'. <span style="font-style: italic;">Using country, continent, iso_alpha2.</span></span></span>
-<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■                             </span>   8% | ETA: 12s</span></span>
+<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■                             </span>   8% | ETA: 13s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■                          </span>  18% | ETA: 11s</span></span>
+<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■                           </span>  13% | ETA: 12s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■                    </span>  38% | ETA:  9s</span></span>
+<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■                     </span>  32% | ETA: 10s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■             </span>  58% | ETA:  6s</span></span>
+<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■               </span>  52% | ETA:  7s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■       </span>  79% | ETA:  3s</span></span>
+<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■         </span>  72% | ETA:  4s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span>  99% | ETA:  0s</span></span>
+<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■    </span>  91% | ETA:  1s</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span>
 <span><span class="co">#&gt; </span></span>

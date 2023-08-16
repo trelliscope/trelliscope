@@ -1,4 +1,4 @@
-__loadDisplayInfo__decfddd9({
+__loadDisplayInfo__0d6eb75a({
   "name": "gapminder life expectancy",
   "description": "gapminder life expectancy",
   "tags": [],
@@ -222,5 +222,7 @@ __loadDisplayInfo__decfddd9({
     }
   },
   "primarypanel": "lexp_time",
-  "thumbnailurl": "panels/lexp_time/Afghanistan_Asia_AF.svg"
+  "thumbnailurl": "panels/lexp_time/Afghanistan_Asia_AF.svg",
+  "infoOnLoad": false,
+  "hasCustomInfo": false
 })

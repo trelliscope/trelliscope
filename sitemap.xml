@@ -565,10 +565,16 @@
     <loc>https://trelliscope.github.io/trelliscope/reference/set_default_sort.html</loc>
   </url>
   <url>
+    <loc>https://trelliscope.github.io/trelliscope/reference/set_info_html.html</loc>
+  </url>
+  <url>
     <loc>https://trelliscope.github.io/trelliscope/reference/set_panel_options.html</loc>
   </url>
   <url>
     <loc>https://trelliscope.github.io/trelliscope/reference/set_primary_panel.html</loc>
+  </url>
+  <url>
+    <loc>https://trelliscope.github.io/trelliscope/reference/set_show_info_on_load.html</loc>
   </url>
   <url>
     <loc>https://trelliscope.github.io/trelliscope/reference/set_tags.html</loc>
