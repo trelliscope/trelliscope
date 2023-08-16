@@ -29,8 +29,10 @@ InputEmailFeedback <- R6::R6Class("InputEmailFeedback",
         vars <- list()
       if (length(vars) == 1)
         vars <- I(vars)
-      assert(!is.null(private$feedbackEmail),
-        msg = "This display has inputs. Must provide a feedback email.")
+      if (!is.null(private$feedbackEmail)) {
+        assert(!is.null(private$feedbackEmail),
+          msg = "This display has inputs. Must provide a feedback email.")
+      }
       list(
         feedbackEmail = private$feedbackEmail,
         includeMetaVars = vars
@@ -127,7 +129,7 @@ RadioInput <- R6::R6Class("RadioInput",
     ) {
       super$initialize(name, label, active, type = "radio")
       check_atomic_vector(options, "options", self$error_msg)
-      private$options <- as.character(options)
+      private$options <- I(as.character(options))
     }
   ),
   private = list(
@@ -143,7 +145,7 @@ CheckboxInput <- R6::R6Class("CheckboxInput",
     ) {
       super$initialize(name, label, active, type = "checkbox")
       check_atomic_vector(options, "options", self$error_msg)
-      private$options <- as.character(options)
+      private$options <- I(as.character(options))
     }
   ),
   private = list(
@@ -159,7 +161,7 @@ SelectInput <- R6::R6Class("SelectInput",
     ) {
       super$initialize(name, label, active, type = "select")
       check_atomic_vector(options, "options", self$error_msg)
-      private$options <- as.character(options)
+      private$options <- I(as.character(options))
     }
   ),
   private = list(
@@ -175,7 +177,7 @@ MultiselectInput <- R6::R6Class("MultiselectInput",
     ) {
       super$initialize(name, label, active, type = "multiselect")
       check_atomic_vector(options, "options", self$error_msg)
-      private$options <- as.character(options)
+      private$options <- I(as.character(options))
     }
   ),
   private = list(
