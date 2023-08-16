@@ -257,6 +257,8 @@ The following pipe functions are available:
 - Additional features
   - `add_inputs()`: specify input variables that capture user feedback for each panel
   - `add_view()`: add a pre-defined "view" that allows users to navigate to specified states of the display
+  - `set_info_html()`: specify HTML to display in the info panel of the viewer
+  - `set_show_info_on_load()`: specify whether to show the info panel on load
   - `add_charm()`: simple password protection for the generated app
 - Writing and viewing
   - `write_trelliscope()`

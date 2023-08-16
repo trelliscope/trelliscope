@@ -18,7 +18,7 @@ test_that2("RadioInput", {
 
   expect_equal(
     obj$as_list(),
-    list(options = c("no", "yes"), type = "radio", active = TRUE,
+    list(options = I(c("no", "yes")), type = "radio", active = TRUE,
       label = "Is it good?", name = "good")
   )
 })
@@ -33,7 +33,7 @@ test_that2("CheckboxInput", {
 
   expect_equal(
     obj$as_list(),
-    list(options = c("no", "yes"), type = "checkbox", active = TRUE,
+    list(options = I(c("no", "yes")), type = "checkbox", active = TRUE,
       label = "Is it good?", name = "good")
   )
 
@@ -53,7 +53,7 @@ test_that2("SelectInput", {
 
   expect_equal(
     obj$as_list(),
-    list(options = c("no", "yes"), type = "select", active = TRUE,
+    list(options = I(c("no", "yes")), type = "select", active = TRUE,
       label = "Is it good?", name = "good")
   )
 })
@@ -68,7 +68,7 @@ test_that2("MultiselectInput", {
 
   expect_equal(
     obj$as_list(),
-    list(options = c("no", "yes"), type = "multiselect", active = TRUE,
+    list(options = I(c("no", "yes")), type = "multiselect", active = TRUE,
       label = "Is it good?", name = "good")
   )
 })
