@@ -92,6 +92,11 @@ write_trelliscope <- function(
     jsonp, cfg$id)
   update_display_list(trobj$path, jsonp, cfg$id)
 
+  if (!is.null(trobj$info_html_file))
+    file.copy(trobj$info_html_file,
+      file.path(trobj$get_display_path(), "info.html"),
+        overwrite = TRUE)
+
   write_widget(trobj)
 
   invisible(trdf)

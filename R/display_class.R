@@ -5,6 +5,7 @@ Display <- R6::R6Class(
     path = NULL,
     force_plot = NULL,
     panel_options = list(),
+    info_html_file = NULL,
     fidelius_pars = NULL,
     initialize = function(
       name, description, tags, keycols, path, force_plot
@@ -86,7 +87,9 @@ Display <- R6::R6Class(
         views = unname(lapply(private$views, function(x) x$as_list())),
         inputs = inputs,
         primarypanel = private$primarypanel,
-        thumbnailurl = private$thumbnailurl
+        thumbnailurl = private$thumbnailurl,
+        infoOnLoad = private$infoOnLoad,
+        hasCustomInfo = private$hasCustomInfo
       )
     },
     as_json = function(pretty = TRUE) {
@@ -125,7 +128,7 @@ Display <- R6::R6Class(
     views = list(),
     primarypanel = NULL,
     thumbnailurl = NULL,
-    customInfoPage = FALSE,
-    showInfoOnFirstLoad = FALSE
+    hasCustomInfo = FALSE,
+    infoOnLoad = FALSE
   )
 )

@@ -118,11 +118,11 @@ add_view <- function(trdf, name, ...) {
 #' @param ... Any number of input specifications. These can be specified with
 #' any of [`input_number()`], [`input_radio()`], [`input_checkbox()`],
 #' [`input_select()`], [`input_multiselect()`], [`input_text()`]
-#' @param email An email address.
+#' @param email An email address (optional).
 #' @param vars A vector of meta variable names found in the display. These
 #'   will be made available as columns in the csv download of user inputs.
 #' @export
-add_inputs <- function(trdf, ..., email, vars = NULL) {
+add_inputs <- function(trdf, ..., email = NULL, vars = NULL) {
   trdf <- check_trelliscope_df(trdf)
   trobj <- attr(trdf, "trelliscope")$clone()
   inputs <- list(...)
@@ -193,5 +193,36 @@ set_primary_panel <- function(trdf, name) {
   } else {
     wrn("Panel '{name}' not found in data. Ignoring.")
   }
+  trdf
+}
+
+#' Show "display info" when display first loads
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+#' or a data frame which will be cast as such.
+#' @param show Should display info be shown on load?
+#' @export
+set_show_info_on_load <- function(trdf, show = TRUE) {
+  trdf <- check_trelliscope_df(trdf)
+  trobj <- attr(trdf, "trelliscope")$clone()
+  trobj$set("infoOnLoad", show)
+  attr(trdf, "trelliscope") <- trobj
+  trdf
+}
+
+#' Specify custom "display info" html
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+#' or a data frame which will be cast as such.
+#' @param file Path to an existing html file to use.
+#' @export
+set_info_html <- function(trdf, file) {
+  trdf <- check_trelliscope_df(trdf)
+  trobj <- attr(trdf, "trelliscope")$clone()
+  trobj$set("hasCustomInfo", TRUE)
+  assert(file.exists(file) && !dir.exists(file),
+    msg = "File {file} does not exist.")
+  assert(tools::file_ext(file) %in% c("htm", "html"),
+    msg = "File {file} must be an HTML file.")
+  trobj$info_html_file <- file
+  attr(trdf, "trelliscope") <- trobj
   trdf
 }
