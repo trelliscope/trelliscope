@@ -1,7 +1,8 @@
 test_that("full example runs without issue", {
   # summarize gap by country
   gapo <- gap |>
-    filter(continent == "Oceania")
+    filter(continent == "Oceania") |>
+    droplevels()
 
   d <- gapo |>
     arrange(year) |>
@@ -71,7 +72,7 @@ test_that("full example runs without issue", {
       info = c("country", "continent", "iso_alpha2")
     )
 
-  print(select(d, lexp_time, lexp_time_pl, lazy_panel, 
+  print(select(d, lexp_time, lexp_time_pl, lazy_panel,
     flag, flag_url))
 
   expect_warning(
@@ -93,7 +94,7 @@ test_that("full example runs without issue", {
     set_default_sort(c("continent", "mean_lexp"), dir = c("asc", "desc")) |>
     set_default_filters(
       filter_string("continent", values = "Oceania"),
-      filter_range("mean_lexp", max = 50)
+      filter_range("mean_lexp", min = 50)
     ) |>
     add_view(
       name = "Countries with high life expectancy (mean >= 60)",

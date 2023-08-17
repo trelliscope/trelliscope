@@ -59,7 +59,7 @@ show_info(d)
 
 Now to view this in the Trelliscope viewer app:
 
-```{r mars, out.width="100%", out.height="640px", scale=0.7}
+```{r mars, out.width="100%", out.height="520px", scale=0.7}
 view_trelliscope(d)
 ```
 
@@ -132,7 +132,7 @@ Note that this nested data frame of visualizations can be a useful object to wor
 
 Just as in the Mars rover example, we can view this data frame of visualizations and cast it as a Trelliscope data frame with `as_trelliscope_df()` and view it with `view_trelliscope()`.
 
-```{r gap0, out.width="100%", out.height="700px", scale=0.7}
+```{r gap0, out.width="100%", out.height="520px", scale=0.7}
 tdf <- as_trelliscope_df(p_df,
   name = "gapminder life expectancy")
 
@@ -428,7 +428,7 @@ This writes the panels if they haven't been written yet and then writes out a JS
 
 Here is the final output.
 
-```{r gap, out.width="100%", out.height="700px", scale=0.6}
+```{r gap, out.width="100%", out.height="630px", scale=0.6}
 view_trelliscope(tdf)
 ```
 

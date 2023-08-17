@@ -285,20 +285,20 @@ FactorMeta <- R6::R6Class("FactorMeta",
       if (!is.null(levels)) {
         check_atomic_vector(levels, "levels", self$error_msg)
         check_character(levels, "levels", self$error_msg)
-        private$levels <- levels
+        private$levels <- I(levels)
       }
     },
     check_variable = function(df) {
       # need to infer levels if it wasn't specified already
       if (is.null(private$levels)) {
         if (is.factor(df[[private$varname]])) {
-          private$levels <- levels(df[[private$varname]])
+          private$levels <- I(levels(df[[private$varname]]))
         } else {
-          private$levels <- as.character(sort(unique(df[[private$varname]])))
+          private$levels <- I(as.character(sort(unique(df[[private$varname]]))))
         }
       }
       if (any(is.na(df[[private$varname]])))
-        private$levels <- c(private$levels, NA)
+        private$levels <- I(c(private$levels, NA))
       check_atomic_vector(
         df[[private$varname]], private$varname, self$data_error_msg)
       check_exhaustive_levels(
