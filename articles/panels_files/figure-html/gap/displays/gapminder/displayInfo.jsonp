@@ -1,4 +1,4 @@
-__loadDisplayInfo__ed4493b2({
+__loadDisplayInfo__4cddb5e9({
   "name": "gapminder",
   "description": "gapminder",
   "tags": [],
@@ -105,6 +105,7 @@ __loadDisplayInfo__ed4493b2({
   "state": {
     "layout": {
       "viewtype": "grid",
+      "activeSidebar": false,
       "page": 1,
       "ncol": 3,
       "type": "layout"
@@ -115,16 +116,16 @@ __loadDisplayInfo__ed4493b2({
     },
     "sort": [
       {
-        "metatype": "factor",
-        "dir": "asc",
+        "type": "sort",
         "varname": "continent",
-        "type": "sort"
+        "dir": "asc",
+        "metatype": "factor"
       },
       {
-        "metatype": "number",
-        "dir": "desc",
+        "type": "sort",
         "varname": "mean_lexp",
-        "type": "sort"
+        "dir": "desc",
+        "metatype": "number"
       }
     ],
     "filter": []

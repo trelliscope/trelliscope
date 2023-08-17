@@ -1,4 +1,4 @@
-__loadDisplayInfo__037aeff8({
+__loadDisplayInfo__c75d2d9c({
   "name": "gapminder life expectancy",
   "description": "gapminder life expectancy",
   "tags": [],
@@ -42,6 +42,7 @@ __loadDisplayInfo__037aeff8({
   "state": {
     "layout": {
       "viewtype": "grid",
+      "activeSidebar": false,
       "page": 1,
       "ncol": 3,
       "type": "layout"

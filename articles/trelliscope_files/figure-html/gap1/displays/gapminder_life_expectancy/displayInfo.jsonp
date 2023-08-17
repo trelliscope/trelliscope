@@ -1,4 +1,4 @@
-__loadDisplayInfo__0d6eb75a({
+__loadDisplayInfo__0b6dabdc({
   "name": "gapminder life expectancy",
   "description": "gapminder life expectancy",
   "tags": [],
@@ -120,6 +120,7 @@ __loadDisplayInfo__0d6eb75a({
   "state": {
     "layout": {
       "viewtype": "grid",
+      "activeSidebar": false,
       "page": 1,
       "ncol": 4,
       "type": "layout"
@@ -144,7 +145,7 @@ __loadDisplayInfo__0d6eb75a({
     ],
     "filter": [
       {
-        "values": [],
+        "values": [1],
         "regexp": null,
         "metatype": "factor",
         "filtertype": "category",
@@ -167,6 +168,7 @@ __loadDisplayInfo__0d6eb75a({
       "state": {
         "layout": {
           "viewtype": "grid",
+          "activeSidebar": false,
           "page": 1,
           "ncol": 3,
           "type": "layout"
