@@ -323,17 +323,21 @@ visualizations and cast it as a Trelliscope data frame with
 <span><span class="fu"><a href="../reference/view_trelliscope.html">view_trelliscope</a></span><span class="op">(</span><span class="va">tdf</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No default <span style="color: #0000BB;">"layout"</span> state supplied. <span style="font-style: italic;">Using ncol=3.</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No default <span style="color: #0000BB;">"labels"</span> state supplied. <span style="font-style: italic;">Using country, continent.</span></span></span>
-<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■                             </span>   7% | ETA: 14s</span></span>
+<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■                             </span>   6% | ETA: 18s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■                           </span>  13% | ETA: 14s</span></span>
+<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■                           </span>  14% | ETA: 18s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■                     </span>  32% | ETA: 11s</span></span>
+<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■                       </span>  28% | ETA: 15s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■■■■                </span>  50% | ETA:  8s</span></span>
+<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■                   </span>  42% | ETA: 12s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■           </span>  68% | ETA:  5s</span></span>
+<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■              </span>  56% | ETA:  9s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■     </span>  87% | ETA:  2s</span></span>
+<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■          </span>  70% | ETA:  6s</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■      </span>  83% | ETA:  4s</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  </span>  96% | ETA:  1s</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Writing panel <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span></code></pre></div>
 <div style="width: 100%; height: 520px; padding-bottom: 5px;">
@@ -827,14 +831,12 @@ do the following.</p>
 <span>    <span class="fu"><a href="../reference/input_text.html">input_text</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"comments"</span>, label <span class="op">=</span> <span class="st">"Comments about this panel"</span>,</span>
 <span>      height <span class="op">=</span> <span class="fl">6</span><span class="op">)</span>,</span>
 <span>    <span class="fu"><a href="../reference/input_radio.html">input_radio</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"looks_correct"</span>,</span>
-<span>      label <span class="op">=</span> <span class="st">"Does the data look correct?"</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no"</span>, <span class="st">"yes"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    email <span class="op">=</span> <span class="st">"johndoe123@fakemail.net"</span></span>
+<span>      label <span class="op">=</span> <span class="st">"Does the data look correct?"</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no"</span>, <span class="st">"yes"</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p>The final argument, <code>email</code>, is currently required and
-will provide the user with a way to send their inputs back to you. Since
-the Trelliscope app is not backed by a server, persistent storage of
-user inputs is currently not supported, and you will need to capture
-these inputs from the user directly.</p>
+<p>Since the Trelliscope app is not backed by a server, persistent
+storage of user inputs is currently not supported. If you need to get
+inputs back from a user, an optional <code>email</code> argument can be
+provided which will help the user know how to get these back to you.</p>
 <p>Let’s see how all of these operations are reflected in our
 Trelliscope data frame:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
@@ -861,15 +863,17 @@ out as specified before with <code><a href="../reference/write_trelliscope.html"
 <span><span class="co">#&gt;   expectancy (mean &gt;= 60)'. <span style="font-style: italic;">Using ncol=3.</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No default <span style="color: #0000BB;">"labels"</span> state supplied for view 'Countries with high life</span></span>
 <span><span class="co">#&gt;   expectancy (mean &gt;= 60)'. <span style="font-style: italic;">Using country, continent, iso_alpha2.</span></span></span>
-<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■                            </span>   9% | ETA: 10s</span></span>
+<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■                             </span>   7% | ETA: 14s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■                            </span>  10% | ETA: 10s</span></span>
+<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■                        </span>  24% | ETA: 13s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■                    </span>  35% | ETA:  8s</span></span>
+<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■                   </span>  41% | ETA: 10s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■             </span>  60% | ETA:  5s</span></span>
+<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■              </span>  56% | ETA:  8s</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■      </span>  85% | ETA:  2s</span></span>
+<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■         </span>  73% | ETA:  5s</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■     </span>  87% | ETA:  2s</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -992,8 +996,7 @@ app.</p>
 <span>    <span class="fu"><a href="../reference/input_text.html">input_text</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"comments"</span>, label <span class="op">=</span> <span class="st">"Comments about this panel"</span>,</span>
 <span>      height <span class="op">=</span> <span class="fl">6</span><span class="op">)</span>,</span>
 <span>    <span class="fu"><a href="../reference/input_radio.html">input_radio</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"looks_correct"</span>,</span>
-<span>      label <span class="op">=</span> <span class="st">"Does the data look correct?"</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no"</span>, <span class="st">"yes"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    email <span class="op">=</span> <span class="st">"johndoe123@fakemail.net"</span></span>
+<span>      label <span class="op">=</span> <span class="st">"Does the data look correct?"</span>, options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"no"</span>, <span class="st">"yes"</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># view the display</span></span>

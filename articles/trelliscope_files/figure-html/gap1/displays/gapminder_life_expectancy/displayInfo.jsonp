@@ -1,4 +1,4 @@
-__loadDisplayInfo__67aad5d7({
+__loadDisplayInfo__d84c19ab({
   "name": "gapminder life expectancy",
   "description": "gapminder life expectancy",
   "tags": [],
@@ -219,7 +219,7 @@ __loadDisplayInfo__67aad5d7({
       "type": "localStorage"
     },
     "feedbackInterface": {
-      "feedbackEmail": "johndoe123@fakemail.net",
+      "feedbackEmail": null,
       "includeMetaVars": []
     }
   },
