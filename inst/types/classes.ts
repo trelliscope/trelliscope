@@ -674,24 +674,24 @@ export class LayoutState extends State implements ILayoutState {
   ncol: number;
   page: number;
   viewtype: ViewType;
-  activeSidebar: boolean;
+  sidebarActive: boolean;
   constructor(
     {
       ncol,
       page,
       viewtype,
-      activeSidebar,
+      sidebarActive,
     } : {
       ncol?: number | undefined,
       page?: number | undefined,
       viewtype?: ViewType | undefined,
-      activeSidebar?: boolean | undefined,
+      sidebarActive?: boolean | undefined,
     }
   ) {
     super('layout');
     this.ncol = ncol === undefined ? 1 : ncol;
     this.page = page === undefined ? 1 : page;
-    this.activeSidebar = activeSidebar === undefined ? false : activeSidebar;
+    this.sidebarActive = sidebarActive === undefined ? false : sidebarActive;
     this.viewtype = viewtype === undefined ? 'grid' : viewtype;
   };
 }

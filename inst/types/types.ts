@@ -172,7 +172,7 @@ export interface ILayoutState extends IState {
   ncol: number;
   page: number;
   viewtype: ViewType;
-  activeSidebar: boolean;
+  sidebarActive: boolean;
 }
 
 export interface ILabelState extends IState {
