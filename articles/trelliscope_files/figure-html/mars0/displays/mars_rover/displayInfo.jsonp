@@ -1,4 +1,4 @@
-__loadDisplayInfo__2b31975e({
+__loadDisplayInfo__3bbd9535({
   "name": "mars rover",
   "description": "mars rover",
   "tags": [],
@@ -131,7 +131,7 @@ __loadDisplayInfo__2b31975e({
   "state": {
     "layout": {
       "viewtype": "grid",
-      "activeSidebar": false,
+      "sidebarActive": false,
       "page": 1,
       "ncol": 3,
       "type": "layout"

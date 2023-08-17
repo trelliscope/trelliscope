@@ -1,4 +1,4 @@
-__loadDisplayInfo__ba07e353({
+__loadDisplayInfo__55c1462f({
   "name": "gapminder",
   "description": "gapminder",
   "tags": [],
@@ -105,7 +105,7 @@ __loadDisplayInfo__ba07e353({
   "state": {
     "layout": {
       "viewtype": "grid",
-      "activeSidebar": false,
+      "sidebarActive": false,
       "page": 1,
       "ncol": 3,
       "type": "layout"

@@ -1,4 +1,4 @@
-__loadDisplayInfo__e5094f44({
+__loadDisplayInfo__cde2a72b({
   "name": "gapminder life expectancy",
   "description": "gapminder life expectancy",
   "tags": [],
@@ -120,7 +120,7 @@ __loadDisplayInfo__e5094f44({
   "state": {
     "layout": {
       "viewtype": "grid",
-      "activeSidebar": false,
+      "sidebarActive": false,
       "page": 1,
       "ncol": 4,
       "type": "layout"
@@ -168,7 +168,7 @@ __loadDisplayInfo__e5094f44({
       "state": {
         "layout": {
           "viewtype": "grid",
-          "activeSidebar": false,
+          "sidebarActive": false,
           "page": 1,
           "ncol": 3,
           "type": "layout"
