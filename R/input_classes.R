@@ -29,10 +29,8 @@ InputEmailFeedback <- R6::R6Class("InputEmailFeedback",
         vars <- list()
       if (length(vars) == 1)
         vars <- I(vars)
-      if (!is.null(private$feedbackEmail)) {
-        assert(!is.null(private$feedbackEmail),
-          msg = "This display has inputs. Must provide a feedback email.")
-      }
+      # if (!is.null(private$feedbackEmail)) {
+      # }
       list(
         feedbackEmail = private$feedbackEmail,
         includeMetaVars = vars

@@ -36,8 +36,7 @@ add_inputs(
     name = "Multiselect Input",
     label = "A space to add custom dropdown inputs",
     options =c("yes", "no")
-  ),
-  email = "johndoe@email.com"
+  )
 )
 \dontrun{
 view_trelliscope(trell)

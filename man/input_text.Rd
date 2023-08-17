@@ -35,8 +35,7 @@ trell <- panel_dat |>
     input_text(
       name = "Text Input",
       label = "A space to add custom text input"
-    ),
-    email = "johndoe@email.com"
+    )
 )
 \dontrun{
 view_trelliscope(trell)

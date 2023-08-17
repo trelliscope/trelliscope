@@ -36,8 +36,7 @@ add_inputs(
     name = "Radio Input",
     label = "A space to add custom ranking for sorting",
     options = c("yes", "no")
-  ),
-  email = "johndoe@email.com"
+  )
 )
 \dontrun{
 view_trelliscope(trell)

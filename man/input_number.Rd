@@ -38,8 +38,7 @@ add_inputs(
     name = "Numeric Input",
     label = "A space to add custom ranking for sorting",
     min = 0, max = 10
-  ),
-  email = "johndoe@email.com"
+  )
 )
 \dontrun{
 view_trelliscope(trell)

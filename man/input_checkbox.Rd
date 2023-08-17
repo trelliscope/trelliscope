@@ -36,8 +36,7 @@ add_inputs(
     name = "Checkbox Input",
     label = "A space to add custom button inputs",
     options = c("yes", "no")
-  ),
-  email = "johndoe@email.com"
+  )
 )
 \dontrun{
 view_trelliscope(trell)

@@ -403,12 +403,11 @@ tdf <- tdf |>
     input_text(name = "comments", label = "Comments about this panel",
       height = 6),
     input_radio(name = "looks_correct",
-      label = "Does the data look correct?", options = c("no", "yes")),
-    email = "johndoe123@fakemail.net"
+      label = "Does the data look correct?", options = c("no", "yes"))
   )
 ```
 
-The final argument, `email`, is currently required and will provide the user with a way to send their inputs back to you. Since the Trelliscope app is not backed by a server, persistent storage of user inputs is currently not supported, and you will need to capture these inputs from the user directly.
+Since the Trelliscope app is not backed by a server, persistent storage of user inputs is currently not supported. If you need to get inputs back from a user, an optional `email` argument can be provided which will help the user know how to get these back to you.
 
 Let's see how all of these operations are reflected in our Trelliscope data frame:
 
@@ -509,8 +508,7 @@ tdf <- tdf |>
     input_text(name = "comments", label = "Comments about this panel",
       height = 6),
     input_radio(name = "looks_correct",
-      label = "Does the data look correct?", options = c("no", "yes")),
-    email = "johndoe123@fakemail.net"
+      label = "Does the data look correct?", options = c("no", "yes"))
   )
 
 # view the display

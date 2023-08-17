@@ -27,8 +27,7 @@ add_input_class <- function(x) {
 #'     name = "Numeric Input",
 #'     label = "A space to add custom ranking for sorting",
 #'     min = 0, max = 10
-#'   ),
-#'   email = "johndoe@email.com"
+#'   )
 #' )
 #' \dontrun{
 #' view_trelliscope(trell)
@@ -65,8 +64,7 @@ input_number <- function(
 #'     name = "Radio Input",
 #'     label = "A space to add custom ranking for sorting",
 #'     options = c("yes", "no")
-#'   ),
-#'   email = "johndoe@email.com"
+#'   )
 #' )
 #' \dontrun{
 #' view_trelliscope(trell)
@@ -103,8 +101,7 @@ input_radio <- function(
 #'     name = "Checkbox Input",
 #'     label = "A space to add custom button inputs",
 #'     options = c("yes", "no")
-#'   ),
-#'   email = "johndoe@email.com"
+#'   )
 #' )
 #' \dontrun{
 #' view_trelliscope(trell)
@@ -141,8 +138,7 @@ input_checkbox <- function(
 #'     name = "Select Input",
 #'     label = "A space to add custom dropdown inputs",
 #'     options =c("yes", "no")
-#'   ),
-#'   email = "johndoe@email.com"
+#'   )
 #' )
 #' \dontrun{
 #' view_trelliscope(trell)
@@ -180,8 +176,7 @@ input_select <- function(
 #'     name = "Multiselect Input",
 #'     label = "A space to add custom dropdown inputs",
 #'     options =c("yes", "no")
-#'   ),
-#'   email = "johndoe@email.com"
+#'   )
 #' )
 #' \dontrun{
 #' view_trelliscope(trell)
@@ -217,8 +212,7 @@ input_multiselect <- function(
 #'     input_text(
 #'       name = "Text Input",
 #'       label = "A space to add custom text input"
-#'     ),
-#'     email = "johndoe@email.com"
+#'     )
 #' )
 #' \dontrun{
 #' view_trelliscope(trell)
