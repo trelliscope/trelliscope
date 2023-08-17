@@ -74,7 +74,6 @@ infer_state <- function(state, df, keycols, metas, view = NULL) {
     fltbl <- unlist(lapply(metas, function(x) x$get("filterable")))
     fltbl <- names(fltbl)[fltbl]
     nms <- intersect(fltbl, lyt$visible_filters)
-    browser()
     if (length(nms) > 0)
       state2$set(list(get = function(x) "filterView", names = I(nms)))
   }

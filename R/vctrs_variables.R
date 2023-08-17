@@ -176,3 +176,30 @@ vec_ptype_abbr.href_vec <- function(
 ) {
   "href"
 }
+
+#' @title Create a link to another display filtered to categories of a variable
+#' @param display_name The name of the display to link to.
+#' @param varname The name of the variable to filter on.
+#' @param values The values of the variable to filter on.
+#' @param labels Labels in the linked display to show.
+#' @param prefix A prefix to add to the link. Not needed if the display is part
+#'   of the same app.
+#' @importFrom utils URLencode
+#' @export
+filter_cat_href <- function(
+  display_name, varname, values = NULL, labels = NULL, prefix = NULL
+) {
+  if (is.null(values))
+    return(NA_character_)
+  labels_str <- ""
+  if (!is.null(labels))
+    labels_str <- paste0("&labels=", paste0(labels, collapse = ","))
+  if (is.null(prefix))
+    prefix <- ""
+
+  href(unlist(lapply(values, function(x)
+    paste0(prefix, "#selectedDisplay=", utils::URLencode(display_name),
+      labels_str, "&filter=var:", varname,
+      ";type:category;regexp:;metatype:string;val:",
+      paste(x, collapse = "#")))))
+}

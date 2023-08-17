@@ -41,6 +41,7 @@ reference:
   - '`number`'
   - '`currency`'
   - '`href`'
+  - '`filter_cat_href`'
 
 - title: Pipe functions
   desc:  These functions receive and return a modified trelliscope data frame

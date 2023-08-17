@@ -143,7 +143,7 @@ LayoutState <- R6::R6Class("LayoutState",
       }
       private$ncol <- ncol
       private$page <- page
-      private$activeSidebar <- sidebar
+      private$sidebarActive <- sidebar
       private$viewtype <- viewtype
       self$visible_filters <- visible_filters
     },
@@ -156,7 +156,7 @@ LayoutState <- R6::R6Class("LayoutState",
   private = list(
     ncol = NULL,
     page = 1,
-    activeSidebar = FALSE,
+    sidebarActive = FALSE,
     viewtype = "grid"
   )
 )
