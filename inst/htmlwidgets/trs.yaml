@@ -2,5 +2,5 @@ dependencies:
   - name: trs
     version:  0.6.0
     src: htmlwidgets/lib/trs
-    script: [      js/main.ee0a572f.js, ]
+    script: [      js/main.e1bf6a71.js, ]
     stylesheet: [      css/main.3a31eeba.css, ]

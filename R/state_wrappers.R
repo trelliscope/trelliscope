@@ -6,12 +6,19 @@ add_state_class <- function(x, extra = NULL) {
 #' Specify a "layout" state
 #' @param ncol Number of columns of panels to show.
 #' @param page The page number to show.
+#' @param sidebar Should the sidebar be shown?
+#' @param viewtype The type of view to show ("grid" or "table").
+#' @param visible_filters A vector of variable names to add as visible filters
+#'   in the sidebar.
 #' @export
 state_layout <- function(
-  ncol = 1, page = 1
+  ncol = 1, page = 1, sidebar = FALSE, viewtype = c("grid", "table"),
+  visible_filters = NULL
 ) {
+  viewtype <- match.arg(viewtype)
   LayoutState$new(
-    ncol = ncol, page = 1
+    ncol = ncol, page = 1, sidebar = sidebar, viewtype = viewtype,
+    visible_filters = visible_filters
   ) |>
   add_state_class()
 }

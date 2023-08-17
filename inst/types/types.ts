@@ -159,6 +159,7 @@ export interface IDisplayState {
   labels: ILabelState;
   sort: ISortState[];
   filter: IFilterState[];
+  filterView: string[];
 }
 
 export interface IState {
@@ -171,6 +172,7 @@ export interface ILayoutState extends IState {
   ncol: number;
   page: number;
   viewtype: ViewType;
+  activeSidebar: boolean;
 }
 
 export interface ILabelState extends IState {

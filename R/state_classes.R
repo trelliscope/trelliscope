@@ -47,6 +47,8 @@ DisplayState <- R6::R6Class("DisplayState",
           names(tmp) <- varname
           private$filter <- tmp
         }
+      } else if (obj$get("type") == "filterView") {
+        private$filterView <- obj$names
       }
     },
     as_list = function() {
@@ -71,7 +73,15 @@ DisplayState <- R6::R6Class("DisplayState",
     layout = NULL,
     labels = NULL,
     sort = list(),
-    filter = list()
+    filter = list(),
+    filterView = list(),
+    deep_clone = function(name, value) {
+      if (name %in% c("sort", "filter")) {
+        lapply(value, function(x) x$clone())
+      } else {
+        value
+      }
+    }
   )
 )
 
@@ -111,14 +121,31 @@ State <- R6::R6Class("State",
 LayoutState <- R6::R6Class("LayoutState",
   inherit = State,
   public = list(
-    initialize = function(ncol = 1, page = 1) {
+    # visible_filters refers to `filterView` (visible filters in sidebar)
+    # and should go in layout but is stored in overall state object
+    # we'll track it here since that's where it should be
+    visible_filters = NULL,
+    initialize = function(
+      ncol = 1, page = 1, sidebar = FALSE,
+      viewtype = "grid", visible_filters = NULL
+    ) {
       super$initialize(type = "layout")
-      check_atomic_vector(ncol, "ncol", self$error_msg)
+      check_scalar(ncol, "ncol", self$error_msg)
       check_integer(ncol, "ncol", self$error_msg)
-      check_atomic_vector(page, "page", self$error_msg)
+      check_scalar(page, "page", self$error_msg)
       check_integer(page, "page", self$error_msg)
+      check_scalar(sidebar, "sidebar", self$error_msg)
+      check_logical(sidebar, "sidebar", self$error_msg)
+      check_enum(viewtype, c("grid", "table"), "viewtype", self$error_msg)
+      if (!is.null(visible_filters)) {
+        check_atomic(visible_filters, "visible_filters", self$error_msg)
+        check_character(visible_filters, "visible_filters", self$error_msg)
+      }
       private$ncol <- ncol
       private$page <- page
+      private$activeSidebar <- sidebar
+      private$viewtype <- viewtype
+      self$visible_filters <- visible_filters
     },
     check_with_data = function(df) {
       # TODO: could check to see if "page" makes sense after applying filters
@@ -129,6 +156,7 @@ LayoutState <- R6::R6Class("LayoutState",
   private = list(
     ncol = NULL,
     page = 1,
+    activeSidebar = FALSE,
     viewtype = "grid"
   )
 )
@@ -235,6 +263,7 @@ FilterState <- R6::R6Class("FilterState",
 CategoryFilterState <- R6::R6Class("CategoryFilterState",
   inherit = FilterState,
   public = list(
+    factor_transformed = FALSE,
     initialize = function(varname, regexp = NULL, values = NULL) {
       super$initialize(varname = varname, filtertype = "category",
         applies_to = c("string", "factor"))

@@ -4,7 +4,13 @@
 \alias{set_default_layout}
 \title{Add a layout state specification to a trelliscope display}
 \usage{
-set_default_layout(trdf, ncol = 1, page = 1)
+set_default_layout(
+  trdf,
+  ncol = 1,
+  page = 1,
+  sidebar = FALSE,
+  visible_filters = NULL
+)
 }
 \arguments{
 \item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope_df]{as_trelliscope_df()}}
@@ -13,6 +19,11 @@ or a data frame which will be cast as such.}
 \item{ncol}{Number of columns of panels to show.}
 
 \item{page}{The page number to show.}
+
+\item{sidebar}{Should the sidebar be shown?}
+
+\item{visible_filters}{A vector of variable names to add as visible filters
+in the sidebar.}
 }
 \description{
 Add a layout state specification to a trelliscope display

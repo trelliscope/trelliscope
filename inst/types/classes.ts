@@ -637,23 +637,27 @@ export class DisplayState implements IDisplayState {
   labels: ILabelState;
   sort: ISortState[];
   filter: IFilterState[];
+  filterView: string[];
   constructor(
     {
       layout,
       labels,
       sort,
       filter,
+      filterView
     } : {
       layout?: ILayoutState | undefined,
       labels: ILabelState,
       sort?: ISortState[] | undefined,
       filter?: IFilterState[] | undefined,
+      filterView?: string[] | undefined,
     }
   ) {
     this.layout = layout === undefined ? new LayoutState({}) : layout;
     this.labels = labels;
     this.sort = sort === undefined ? [] : sort;
     this.filter = filter === undefined ? [] : filter;
+    this.filterView = filterView === undefined ? [] : filterView;
   }
 }
 
@@ -670,19 +674,25 @@ export class LayoutState extends State implements ILayoutState {
   ncol: number;
   page: number;
   viewtype: ViewType;
+  activeSidebar: boolean;
   constructor(
     {
       ncol,
       page,
+      viewtype,
+      activeSidebar,
     } : {
       ncol?: number | undefined,
       page?: number | undefined,
+      viewtype?: ViewType | undefined,
+      activeSidebar?: boolean | undefined,
     }
   ) {
     super('layout');
     this.ncol = ncol === undefined ? 1 : ncol;
     this.page = page === undefined ? 1 : page;
-    this.viewtype = 'grid';
+    this.activeSidebar = activeSidebar === undefined ? false : activeSidebar;
+    this.viewtype = viewtype === undefined ? 'grid' : viewtype;
   };
 }
 
@@ -879,7 +889,7 @@ export class Display implements IDisplay {
   inputs: IInputs | null;
   state: IDisplayState;
   views: IView[];
-  primaryPanel: string;
+  primarypanel: string;
   thumbnailurl: string;
   constructor(
     {
@@ -892,7 +902,7 @@ export class Display implements IDisplay {
       inputs,
       state,
       views,
-      primaryPanel,
+      primarypanel,
       thumbnailurl,
     } : {
       name: string,
@@ -904,7 +914,7 @@ export class Display implements IDisplay {
       inputs?: IInputs | null,
       state: IDisplayState,
       views?: IView[] | undefined,
-      primaryPanel: string,
+      primarypanel: string,
       thumbnailurl: string,
     }
   ) {
@@ -917,7 +927,7 @@ export class Display implements IDisplay {
     this.inputs = inputs === undefined ? null : inputs;
     this.state = state;
     this.views = views === undefined ? [] : views;
-    this.primaryPanel = primaryPanel;
+    this.primarypanel = primarypanel;
     this.thumbnailurl = thumbnailurl;
   }
 }

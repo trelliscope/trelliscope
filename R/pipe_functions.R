@@ -11,9 +11,12 @@ cast_var <- function(df, obj) {
 #' or a data frame which will be cast as such.
 #' @inheritParams state_layout
 #' @export
-set_default_layout <- function(trdf, ncol = 1, page = 1) {
+set_default_layout <- function(
+  trdf, ncol = 1, page = 1, sidebar = FALSE, visible_filters = NULL
+) {
   trdf <- check_trelliscope_df(trdf)
-  obj <- state_layout(ncol = ncol, page = page)
+  obj <- state_layout(ncol = ncol, page = page, sidebar = sidebar,
+    visible_filters = visible_filters)
   obj$check_with_data(trdf)
   trobj <- attr(trdf, "trelliscope")$clone()
   state <- trobj$get("state")

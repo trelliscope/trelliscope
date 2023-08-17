@@ -4,12 +4,25 @@
 \alias{state_layout}
 \title{Specify a "layout" state}
 \usage{
-state_layout(ncol = 1, page = 1)
+state_layout(
+  ncol = 1,
+  page = 1,
+  sidebar = FALSE,
+  viewtype = c("grid", "table"),
+  visible_filters = NULL
+)
 }
 \arguments{
 \item{ncol}{Number of columns of panels to show.}
 
 \item{page}{The page number to show.}
+
+\item{sidebar}{Should the sidebar be shown?}
+
+\item{viewtype}{The type of view to show ("grid" or "table").}
+
+\item{visible_filters}{A vector of variable names to add as visible filters
+in the sidebar.}
 }
 \description{
 Specify a "layout" state

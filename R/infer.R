@@ -30,7 +30,7 @@ infer_state <- function(state, df, keycols, metas, view = NULL) {
   if (!is.null(view))
     view_str <- paste0(" for view '", view, "'")
 
-  state2 <- state$clone()
+  state2 <- state$clone(deep = TRUE)
   lyt <- state2$get("layout")
   if (is.null(lyt)) {
     msg("No default {.val layout} state supplied{view_str}. \\
@@ -48,24 +48,35 @@ infer_state <- function(state, df, keycols, metas, view = NULL) {
 
   # need to add in metatype for sorts and filters
   flt <- state2$get("filter")
-  for (nm in names(flt))
-    flt[[nm]]$set("metatype", metas[[nm]]$get("type"))
-  srt <- state2$get("sort")
-  for (nm in names(srt))
-    srt[[nm]]$set("metatype", metas[[nm]]$get("type"))
-
-  # if there is a default filter that is factor, need to translate
   for (nm in names(flt)) {
+    flt[[nm]]$set("metatype", metas[[nm]]$get("type"))
+
+    # if there is a default filter that is factor, need to translate
     if (
       flt[[nm]]$get("filtertype") == "category" &&
-      metas[[nm]]$get("type") == "factor"
+      metas[[nm]]$get("type") == "factor" &&
+      !flt[[nm]]$factor_transformed
     ) {
-      if (length(flt[[nm]]$get("values")) > 0)
+      if (length(flt[[nm]]$get("values")) > 0) {
         flt[[nm]]$set(
           "values",
           I(which(metas[[nm]]$get("levels") %in% flt[[nm]]$get("values")))
         )
+        flt[[nm]]$factor_transformed <- TRUE
+      }
     }
+  }
+  srt <- state2$get("sort")
+  for (nm in names(srt))
+    srt[[nm]]$set("metatype", metas[[nm]]$get("type"))
+
+  if (length(lyt$visible_filters) > 0) {
+    fltbl <- unlist(lapply(metas, function(x) x$get("filterable")))
+    fltbl <- names(fltbl)[fltbl]
+    nms <- intersect(fltbl, lyt$visible_filters)
+    browser()
+    if (length(nms) > 0)
+      state2$set(list(get = function(x) "filterView", names = I(nms)))
   }
 
   state2
