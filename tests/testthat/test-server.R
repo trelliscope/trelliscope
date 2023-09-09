@@ -10,8 +10,8 @@ test_that("server works", {
   #   )
 
   # # lazy panel
-  # tmp <- get_test_subset(gapo, d)
-  # plot_fn <- function(x) {
+  # plot_fn <- function(country) {
+  #   x <- filter(gapo, country == {{ country }})
   #   ggplot(x, aes(year, life_exp)) +
   #     geom_point()
   # }

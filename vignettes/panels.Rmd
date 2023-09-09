@@ -66,21 +66,13 @@ gsumm <- gap %>%
 gsumm
 ```
 
-Now suppose that we would like to use the [dygraphs](https://rstudio.github.io/dygraphs/index.html) package to create an interactive time series plot of life expectancy over time for each country. What we need to do is provide a function that takes a single input which will represent a data frame corresponding to a subset of the `gap` dataset associated with a single row of the summary dataset `gsumm` (one country).
-
-A helper function to get an example subset to expect in the plotting function is `get_test_subset()`. This takes as arguments the full dataset and the summary dataset and returns an example subset that you can build your plot function around.
+Now suppose that we would like to use the [dygraphs](https://rstudio.github.io/dygraphs/index.html) package to create an interactive time series plot of life expectancy over time for each country. To do this, we create a plot function that takes an input, `country`, and returns a dygraph plot of life expectancy vs. time for the `gap` dataset filtered to that country.
 
 ```{r}
-x <- get_test_subset(gap, gsumm)
+library(dygraphs)
 
-x
-```
-
-Let's build a simple plotting function based on this data.
-
-```{r}
-plot_fn <- function(x) {
-  library(dygraphs)
+plot_fn <- function(country) {
+  x <- filter(gap, country == {{ country }})
   dygraph(select(x, year, life_exp)) %>%
     dyOptions(strokeWidth = 3, drawPoints = TRUE, pointSize = 4, gridLineColor = "#dedede") %>%
     dyHighlight(highlightCircleSize = 6) %>%
@@ -89,19 +81,50 @@ plot_fn <- function(x) {
     dyRangeSelector()
 }
 
-plot_fn(x)
+plot_fn("Afghanistan")
 ```
 
-Now all we need to do to add a new plot column to `gsumm` is to use `panel_lazy()` which takes our plot function and the full dataset as arguments.
+Now all we need to do to add a new plot column to `gsumm` is to use `panel_lazy()` which takes our plot function and the dataset it applies to as arguments. Note that if used in a dplyr `mutate()`, the dataset is inferred and does not need to be provided.
 
 ```{r}
 gsumm <- gsumm %>%
-  mutate(lexp_time = panel_lazy(plot_fn, gap))
+  mutate(lexp_time = panel_lazy(plot_fn))
 
 gsumm
 ```
 
-Note that these panels are [htmlwidgets](http://www.htmlwidgets.org). Your plot function can return any type of htmlwidget or plot objects that can be printed to image files, such as ggplot2 objects.
+If we create this plot column outside of dplyr, we need to provide the dataset as an argument:
+
+```{r}
+gsumm$lexp_time <- panel_lazy(plot_fn, data = gsumm)
+```
+
+Note that in this case these panels are [htmlwidgets](http://www.htmlwidgets.org). Your plot function can return any type of htmlwidget or plot objects that can be printed to image files, such as ggplot2 objects.
+
+We can now view a plot for any country by indexing into the `lexp_time` column.
+
+```{r}
+gsumm$lexp_time[[1]]
+```
+
+An important thing to note is that your plot function arguments must match variable names found in the dataset. In this case, the `country` argument of `plot_fn()` matches the `country` column in `gsumm`. You can access any columns from the dataset that you would like. For example, if you want to use the `iso_alpha2` column to help label the plot, you can this:
+
+```{r}
+plot_fn <- function(country, iso_alpha2) {
+  x <- filter(gap, country == {{ country }})
+  dygraph(select(x, year, life_exp),
+    main = paste0(country, " (", iso_alpha2, ")")) %>%
+    dyOptions(strokeWidth = 3, drawPoints = TRUE, pointSize = 4, gridLineColor = "#dedede") %>%
+    dyHighlight(highlightCircleSize = 6) %>%
+    dyAxis("x", label = "Year", valueRange = c(1952, 2007)) %>%
+    dyAxis("y", label = "Life Expectancy (yrs)", valueRange = c(23.59, 82.61)) %>%
+    dyRangeSelector()
+}
+```
+
+When applied to any row of `gsumm`, the `iso_alpha2` column will be passed to `plot_fn()` along with the `country` column.
+
+Another thing to note is that if you are using dplyr to filter inside your plot function, please be aware of issues that can arise from [data masking](https://dplyr.tidyverse.org/articles/programming.html#indirection). For example, you will notice in our example that we need to use the embrace operator `{{` in our `filter()` to keep the code execution from getting confused about whether we are referring to a column name in the data or not. If you are not using dplyr, something like `x <- gap[gap$country == country, ]` would work fine.
 
 ## Panels of images existing on the web with `panel_url()`
 

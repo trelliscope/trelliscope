@@ -171,7 +171,7 @@ Our data frame already has a panel column, but we can add more if we would like.
 
 - `panel_url()`: Add a panel column with URLs to images
 - `panel_local()`: Add a panel column with local image files
-- `panel_lazy()`: Add a panel column by specifying a plot function and dataset against which panels will be lazily generated
+- `panel_lazy()`: Add a panel column by specifying a plot function that will be used to generate panels
 
 Here we will show an example of using `panel_url()` to add a country flag images to our data frame. In another article we will [provide more examples of using these functions](panels.html). Note that a variation of `panel_lazy()` is used underneath the hood when you use `facet_panels()`.
 

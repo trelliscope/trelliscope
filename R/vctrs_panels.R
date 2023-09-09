@@ -1,32 +1,27 @@
 #' Add a "calculated panel" column to a dataset
 #' @param plot_fn A function that produces a panel from a given subset of
-#'   `data`.
+#'   `data`, taking as arguments any variable names in `data` that you would
+#'   like to be available in the plottinf function.
 #' @param data A data frame from which subsets will be extracted and plots will
 #'   be made. Should be a superset of the summary dataset to which this plot
 #'   column is being added.
-#' @param by A list of variables found in both `data` and in the summary
-#'   dataset to which this plot column is being added. This is used to specify
-#'   which subset of `data` to apply for a given plot. If not provided, it is
-#'   inferred based on the variables found in both `data` and the summary data.
-#' @param cur A data frame containing the current summary dataset to which this
-#'   plot column is being added. This is used to determine which variables in
-#'   `data` are available for subsetting. Ideally you should not change this
-#'   parameter.
 #' @export
 panel_lazy <- function(
-  plot_fn, data, by = NULL, cur = dplyr::pick(dplyr::everything())
+  plot_fn, data = dplyr::pick(dplyr::everything())
 ) {
   assert(is.function(plot_fn),
     msg = "`plot_fn` must be a function")
-  by_vals <- get_by_vals(data, cur, by = by)
-  by <- names(by_vals[[1]])
 
-  # test plot function on a subset
-  nd <- data
-  for (gv in by)
-    nd <- dplyr::filter(nd, .data[[gv]] == by_vals[[1]][[gv]][[1]])
-  # nd <- dplyr::collect(nd)
-  p <- plot_fn(nd)
+  vars <- names(formals(plot_fn))
+
+  not_found <- setdiff(vars, names(data))
+  assert(length(not_found) == 0,
+    msg = "All function arguments of `plot_fn()` must be found in `data`.\
+      Following variable{?s} not found: {not_found}")
+
+  var_vals <- get_var_vals_list(data, vars)
+
+  p <- do.call(plot_fn, var_vals[[1]])
   if (inherits(p, "htmlwidget")) {
     type <- "htmlwidget"
   } else if (inherits(p, "ggplot")) {
@@ -36,61 +31,23 @@ panel_lazy <- function(
   }
 
   vctrs::new_rcrd(
-    fields = list(by = by_vals),
+    fields = list(vars = var_vals),
     plot_fn = plot_fn,
-    by = by,
+    vars = vars,
     data = data,
     type = type,
     class = "panel_lazy_vec"
   )
 }
 
-#' Get a subset of a dataset to test a plot function on
-#' @param full_dat The full dataset from which to extract a subset
-#' @param summ_dat The summary dataset to which a plot column will be added.
-#'   Each row of this dataset will correspond to one subset of `full_dat` and a
-#'   sample row will be used to produce a single test subset.
-#' @param by A list of variables found in both `full_dat` and in `summ_dat`
-#'   to which a plot column will be added. This is used to specify which subset
-#'   of `data` to apply for a given plot. If not provided, it is inferred based
-#'   on the variables found in both `data` and the summary data.
-#' @export
-get_test_subset <- function(full_dat, summ_dat, by = NULL) {
-  by_vals <- get_by_vals(full_dat, summ_dat, by = by, top = TRUE)
-  by <- names(by_vals[[1]])
-  nd <- full_dat
-  for (gv in by)
-    nd <- dplyr::filter(nd, .data[[gv]] == by_vals[[1]][[gv]][[1]])
-  nd
-}
-
-get_by_vals <- function(full_dat, summ_dat, by = NULL, top = FALSE) {
-  is_df <-
-    (inherits(full_dat, "Dataset") && inherits(full_dat, "ArrowObject")) ||
-    inherits(full_dat, "arrow_dplyr_query") ||
-    is.data.frame(full_dat)
-
-  assert(is_df,
-    msg = "`full_dat` must be a data frame or appropriate Arrow object")
-  if (!is.null(by)) {
-    assert(is.character(by),
-      msg = "`by` must be a character vector")
-    assert(all(by %in% names(full_dat)),
-      msg = "All elements of `by` must be found in `full_dat`")
-  }
-
-  if (is.null(by)) {
-    by <- intersect(names(full_dat), names(summ_dat))
-    # TODO: should make sure these are atomic, etc.
-  }
-
+get_var_vals_list <- function(dat, vars, top = FALSE) {
   if (top)
-    summ_dat <- head(summ_dat, 1)
+    dat <- head(dat, 1)
 
-  # get "by" values for each row
-  by_vals <- summ_dat |>
-    dplyr::select(dplyr::all_of(by)) |>
-    split(seq_len(nrow(summ_dat))) |>
+  # get vars values for each row
+  by_vals <- dat |>
+    dplyr::select(dplyr::all_of(vars)) |>
+    split(seq_len(nrow(dat))) |>
     unname() |>
     lapply(function(x) {
       x <- as.list(x)
@@ -104,14 +61,13 @@ get_by_vals <- function(full_dat, summ_dat, by = NULL, top = FALSE) {
   by_vals
 }
 
-
 get_panel_rel_path <- function(x, name, fmt = NULL) {
   UseMethod("get_panel_rel_path")
 }
 
 #' @export
 get_panel_rel_path.panel_lazy_vec <- function(x, name, fmt) {
-  tmp <- unlist(lapply(vec_data(x)$by, function(x)
+  tmp <- unlist(lapply(vec_data(x)$vars, function(x)
     paste(sanitize(x), collapse = "_")))
   file.path("panels", sanitize(name), paste0(tmp, ".", fmt))
 }
@@ -123,14 +79,10 @@ get_panel <- function(x) {
 # only meant to work if x is a single element
 #' @export
 get_panel.panel_lazy_vec <- function(x) {
-  nd <- attr(x, "data")
-  by <- attr(x, "by")
+  vars <- attr(x, "vars")
   plot_fn <- attr(x, "plot_fn")
-  by_vals <- vctrs::vec_data(x)$by[[1]]
-  for (gv in by)
-    nd <- dplyr::filter(nd, .data[[gv]] == by_vals[[gv]][[1]])
-  nd <- dplyr::collect(nd)
-  plot_fn(nd)
+  var_vals <- vctrs::vec_data(x)$vars[[1]]
+  do.call(plot_fn, var_vals)
 }
 
 #' @export
@@ -195,11 +147,11 @@ get_panel_rel_path.panel_url_vec <- function(x, name, fmt = NULL) {
 }
 
 #' @export
-vec_ptype2.panel_url_vec.panel_url_vec <- function(x, y, ...) panel_url()
+vec_ptype.panel_url_vec.panel_url_vec <- function(x, y, ...) panel_url()
 #' @export
-vec_ptype2.panel_url_vec.character <- function(x, y, ...) panel_url()
+vec_ptype.panel_url_vec.character <- function(x, y, ...) panel_url()
 #' @export
-vec_ptype2.character.panel_url_vec <- function(x, y, ...) panel_url()
+vec_ptype.character.panel_url_vec <- function(x, y, ...) panel_url()
 
 #' @export
 vec_cast.panel_url_vec.panel_url_vec <- function(x, to, ...) x
@@ -263,11 +215,11 @@ get_panel_rel_path.panel_local_vec <- function(x, name, fmt = NULL) {
 }
 
 #' @export
-vec_ptype2.panel_local_vec.panel_local_vec <- function(x, y, ...) panel_local()
+vec_ptype.panel_local_vec.panel_local_vec <- function(x, y, ...) panel_local()
 #' @export
-vec_ptype2.panel_local_vec.character <- function(x, y, ...) panel_local()
+vec_ptype.panel_local_vec.character <- function(x, y, ...) panel_local()
 #' @export
-vec_ptype2.character.panel_local_vec <- function(x, y, ...) panel_local()
+vec_ptype.character.panel_local_vec <- function(x, y, ...) panel_local()
 
 #' @export
 vec_cast.panel_local_vec.panel_local_vec <- function(x, to, ...) x

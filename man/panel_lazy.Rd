@@ -4,25 +4,16 @@
 \alias{panel_lazy}
 \title{Add a "calculated panel" column to a dataset}
 \usage{
-panel_lazy(plot_fn, data, by = NULL, cur = dplyr::pick(dplyr::everything()))
+panel_lazy(plot_fn, data = dplyr::pick(dplyr::everything()))
 }
 \arguments{
 \item{plot_fn}{A function that produces a panel from a given subset of
-\code{data}.}
+\code{data}, taking as arguments any variable names in \code{data} that you would
+like to be available in the plottinf function.}
 
 \item{data}{A data frame from which subsets will be extracted and plots will
 be made. Should be a superset of the summary dataset to which this plot
 column is being added.}
-
-\item{by}{A list of variables found in both \code{data} and in the summary
-dataset to which this plot column is being added. This is used to specify
-which subset of \code{data} to apply for a given plot. If not provided, it is
-inferred based on the variables found in both \code{data} and the summary data.}
-
-\item{cur}{A data frame containing the current summary dataset to which this
-plot column is being added. This is used to determine which variables in
-\code{data} are available for subsetting. Ideally you should not change this
-parameter.}
 }
 \description{
 Add a "calculated panel" column to a dataset

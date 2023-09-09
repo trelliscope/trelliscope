@@ -31,15 +31,15 @@ test_that("full example runs without issue", {
   d <- left_join(d, d2, by = c("country", "continent"))
 
   # lazy panel
-  tmp <- get_test_subset(gapo, d)
-  plot_fn <- function(x) {
+  plot_fn <- function(country) {
+    x <- filter(gapo, country == {{ country }})
     ggplot(x, aes(year, life_exp)) +
       geom_point()
   }
 
   d <- d |>
     mutate(
-      lazy_panel = panel_lazy(plot_fn, gapo)
+      lazy_panel = panel_lazy(plot_fn)
     )
 
   # also add panel_local and panel_url columns for flags

@@ -54,7 +54,7 @@ start_server <- function(trdf) {
   s <- httpuv::runServer("127.0.0.1", port,
     list(
       onWSOpen = function(ws) {
-        # msg("Server connection opened.")
+        # msg("Server connection opened on port {port}...")
         ws$onMessage(function(binary, message) {
           mesg <- jsonlite::fromJSON(message)
           nm <- mesg$panelName
@@ -72,6 +72,10 @@ start_server <- function(trdf) {
           msg("Writing panel {mesg$panelURL}...")
           p <- get_panel(trdf[[nm]][[idx]])
           popts <- panel_opts[[nm]]
+          if (length(popts$width) == 0)
+            popts$width <- 600
+          if (length(popts$height) == 0)
+            popts$height <- 400
 
           panel_path <- file.path(trobj$get_display_path(), "panels",
             sanitize(nm))
