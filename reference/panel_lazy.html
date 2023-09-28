@@ -59,34 +59,21 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">panel_lazy</span><span class="op">(</span><span class="va">plot_fn</span>, <span class="va">data</span>, by <span class="op">=</span> <span class="cn">NULL</span>, cur <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/pick.html" class="external-link">pick</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">panel_lazy</span><span class="op">(</span><span class="va">plot_fn</span>, data <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/pick.html" class="external-link">pick</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>plot_fn</dt>
 <dd><p>A function that produces a panel from a given subset of
-<code>data</code>.</p></dd>
+<code>data</code>, taking as arguments any variable names in <code>data</code> that you would
+like to be available in the plottinf function.</p></dd>
 
 
 <dt>data</dt>
 <dd><p>A data frame from which subsets will be extracted and plots will
 be made. Should be a superset of the summary dataset to which this plot
 column is being added.</p></dd>
-
-
-<dt>by</dt>
-<dd><p>A list of variables found in both <code>data</code> and in the summary
-dataset to which this plot column is being added. This is used to specify
-which subset of <code>data</code> to apply for a given plot. If not provided, it is
-inferred based on the variables found in both <code>data</code> and the summary data.</p></dd>
-
-
-<dt>cur</dt>
-<dd><p>A data frame containing the current summary dataset to which this
-plot column is being added. This is used to determine which variables in
-<code>data</code> are available for subsetting. Ideally you should not change this
-parameter.</p></dd>
 
 </dl></div>
 
