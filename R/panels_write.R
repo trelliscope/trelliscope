@@ -34,6 +34,11 @@ write_panels <- function(trdf, nm, force = FALSE) {
 
     cli::cli_progress_bar(paste("Writing", nm), total = length(idxs))
 
+    if (length(panel_opts$width) == 0)
+      panel_opts$width <- 600
+    if (length(panel_opts$height) == 0)
+      panel_opts$height <- 400
+
     for (idx in idxs) {
       cli::cli_progress_update()
 

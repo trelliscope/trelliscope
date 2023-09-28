@@ -106,13 +106,18 @@ write_meta_data <- function(df, cols_ignore, disp_path, jsonp, id) {
   trobj <- attr(df, "trelliscope")
   df <- dplyr::select(df, !dplyr::all_of(cols_ignore))
 
-  txt <- get_jsonp_text(jsonp, paste0("__loadMetaData__", id))
+  # txt <- get_jsonp_text(jsonp, paste0("__loadMetaData__", id))
+  # cat(paste0(
+  #   txt$st,
+  #   as.character(to_json(df, factor = "integer", force = TRUE)),
+  #   txt$nd
+  # ), file = file.path(disp_path,
+  #   paste0("metaData.", ifelse(jsonp, "jsonp", "json"))))
+
   cat(paste0(
-    txt$st,
-    as.character(to_json(df, factor = "integer", force = TRUE)),
-    txt$nd
-  ), file = file.path(disp_path,
-    paste0("metaData.", ifelse(jsonp, "jsonp", "json"))))
+    "window.metaData = ",
+    as.character(to_json(df, factor = "integer", force = TRUE))
+  ), file = file.path(disp_path, "metaData.js"))
 }
 
 write_trelliscope_info <- function(df, jsonp, id) {

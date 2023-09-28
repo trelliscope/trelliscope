@@ -64,7 +64,7 @@ It is 64 GB in size. We will open and work with this data using the [arrow R pac
 library(arrow, warn.conflicts = FALSE)
 library(dplyr, warn.conflicts = FALSE)
 library(lubridate, warn.conflicts = FALSE)
-ds <- open_dataset("../examples/examples/12-bigdata/nyc-taxi") %>%
+ds <- open_dataset("../../examples/examples/nyc-taxi/nyc-taxi/") %>%
   mutate(
     day = day(pickup_datetime),
     hour = hour(pickup_datetime)
@@ -133,36 +133,11 @@ dsumm
 
 This will serve as the summary dataset that we will turn in to a Trelliscope data frame. With this, we create visualizations of data for each day and add them as a column to the data frame.
 
-As discussed in the [Creating Panel Columns](panels.html) article, we can link the full dataset to this summary dataset with a plot function that will be applied to each subset of the full dataset, as defined by the variables that uniquely define a row in the summary dataset (in this case, year, month, and day). Conveniently, the full dataset can be an Arrow dataset, which is what we have here. This means that we do not need to read the huge input data into R to create the display, allowing us to build it nearly instantaneously.
-
-<!-- ggplot(dsumm, aes(date, n)) + geom_line() -->
-
-Our plot function takes as a single argument a data object which will represents the full dataset filtered to the subset that corresponds to the summary row being plotted.
-
-We can get a test subset to work with using the following:
+As discussed in the [Creating Panel Columns](panels.html) article, create a plot function that returns a plot of the data for any given day, as defined by the `year`, `month`, and `day` variables that are found in `dsumm`. Let's first build up what this plot function needs to do with the data for a single day.
 
 ```r
-x <- get_test_subset(ds, dsumm)
+x <- filter(ds, year == 2009, month == 1, day == 1)
 
-x
-#> FileSystemDataset (query)
-#> vendor_name: string
-#> pickup_datetime: timestamp[ms]
-#> dropoff_datetime: timestamp[ms]
-#> passenger_count: int64
-#> ...
-#> year: int32
-#> month: int32
-#> day: int64 (day(pickup_datetime))
-#> hour: int64 (hour(pickup_datetime))
-#> 
-#> * Filter: (((year == 2009) and (month == 1)) and (day(pickup_datetime) == 1))
-#> See $.data for the source Arrow object
-```
-
-Since the full dataset is an Arrow dataset, our test subset represents a query against this dataset. We see that this subset will represent the data for January 1, 2009. We can use Arrow to count the number of rides in each hour of the day and then collect the results to obtain the data that we want to plot.
-
-```r
 pd <- x %>%
   count(hour) %>%
   collect() %>%
@@ -185,11 +160,13 @@ ggplot(pd, aes(hour, n)) +
   theme_minimal()
 ```
 
+<!-- ggplot(dsumm, aes(date, n)) + geom_line() -->
+
 We now put this together into a plot function that we can use to create a panel column.
 
 ```r
-plot_fn <- function(x) {
-  pd <- x %>%
+plot_fn <- function(year, month, day) {
+  pd <- filter(ds, year == {{ year }}, month == {{ month }}, day == {{ day }}) %>%
     count(hour) %>%
     collect()
   ggplot(pd, aes(hour, n)) +
@@ -204,7 +181,7 @@ Now we can add a plot column, `hourly_ct`, to our summary dataset with the plot 
 
 ```r
 dsumm <- dsumm %>%
-  mutate(hourly_ct = panel_lazy(plot_fn, ds))
+  mutate(hourly_ct = panel_lazy(plot_fn))
 
 dsumm
 #> # A tibble: 4,807 × 7
@@ -239,6 +216,7 @@ So far, there is not much about this example that is any different from other ex
 Trelliscope has an experimental option to disable pre-rendering of panels. This will allow us to view the display immediately, but will cause panels to be rendered on-demand as we view them, using your local R session to do so. We can set this with the following:
 
 ```r
+dsumm <- dsumm |>
   set_panel_options(hourly_ct = panel_options(prerender = FALSE))
 ```
 
