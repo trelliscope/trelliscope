@@ -30,10 +30,21 @@ panel_lazy <- function(
     stop("plot_fn must return either an htmlwidget or a ggplot object")
   }
 
+  name_idx <- which(unlist(lapply(data[vars], is.atomic)))
+
+  ids <- apply(data[vars[name_idx]], 1, function(x) paste(
+    sanitize(x), sep = "_"))
+
+  if (length(unique(ids)) != nrow(data)) {
+    wrn("The atomic input columns to the lazy panel function \
+      are not unique.")
+  }
+
   vctrs::new_rcrd(
     fields = list(vars = var_vals),
     plot_fn = plot_fn,
     vars = vars,
+    name_idx = name_idx,
     data = data,
     type = type,
     class = "panel_lazy_vec"
@@ -67,8 +78,9 @@ get_panel_rel_path <- function(x, name, fmt = NULL) {
 
 #' @export
 get_panel_rel_path.panel_lazy_vec <- function(x, name, fmt) {
-  tmp <- unlist(lapply(vec_data(x)$vars, function(x)
-    paste(sanitize(x), collapse = "_")))
+  idx <- attr(x, "name_idx")
+  tmp <- unlist(lapply(vec_data(x)$vars, function(a)
+    paste(sanitize(a[idx]), collapse = "_")))
   file.path("panels", sanitize(name), paste0(tmp, ".", fmt))
 }
 
