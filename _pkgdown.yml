@@ -56,6 +56,7 @@ reference:
   - '`add_inputs`'
   - '`add_view`'
   - '`set_info_html`'
+  - '`set_theme`'
   - '`set_show_info_on_load`'
   - '`add_charm`'
   - '`write_trelliscope`'
