@@ -1,8 +1,9 @@
-__loadDisplayList__4a14de2e([
+__loadDisplayList__0645f597([
   {
     "name": "gapminder",
     "description": "gapminder",
     "tags": [],
-    "thumbnailurl": "panels/lexp_time/Afghanistan.html"
+    "thumbnailurl": "panels/lexp_time/Afghanistan.html",
+    "order": 0
   }
 ])

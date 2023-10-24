@@ -1,4 +1,4 @@
-__loadDisplayInfo__d053dd78({
+__loadDisplayInfo__9a14f9fc({
   "name": "gapminder life expectancy",
   "description": "gapminder life expectancy",
   "tags": [],
@@ -52,12 +52,14 @@ __loadDisplayInfo__d053dd78({
       "type": "labels"
     },
     "sort": [],
-    "filter": []
+    "filter": [],
+    "filterView": []
   },
   "views": [],
   "inputs": null,
   "primarypanel": "panel",
   "thumbnailurl": "panels/panel/Afghanistan_Asia.png",
   "infoOnLoad": false,
-  "hasCustomInfo": false
+  "hasCustomInfo": false,
+  "order": 0
 })

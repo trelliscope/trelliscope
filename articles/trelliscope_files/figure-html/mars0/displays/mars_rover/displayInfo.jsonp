@@ -1,4 +1,4 @@
-__loadDisplayInfo__6fcff3f5({
+__loadDisplayInfo__664dba79({
   "name": "mars rover",
   "description": "mars rover",
   "tags": [],
@@ -141,12 +141,14 @@ __loadDisplayInfo__6fcff3f5({
       "type": "labels"
     },
     "sort": [],
-    "filter": []
+    "filter": [],
+    "filterView": []
   },
   "views": [],
   "inputs": null,
   "primarypanel": "img_src",
   "thumbnailurl": "http://mars.jpl.nasa.gov/msl-raw-images/msss/00565/mhli/0565MH0003250050201853I01_DXXX.jpg",
   "infoOnLoad": false,
-  "hasCustomInfo": false
+  "hasCustomInfo": false,
+  "order": 0
 })

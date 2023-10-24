@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">trelliscope</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -204,8 +204,8 @@ country.</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">plot_fn</span><span class="op">(</span><span class="st">"Afghanistan"</span><span class="op">)</span></span></code></pre></div>
-<div class="dygraphs html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-862f6917c8e27e0ac6bf" style="width:700px;height:432.632880098888px;"></div>
-<script type="application/json" data-for="htmlwidget-862f6917c8e27e0ac6bf">{"x":{"attrs":{"axes":{"x":{"pixelsPerLabel":60,"drawAxis":true,"valueRange":[1952,2007]},"y":{"drawAxis":true,"valueRange":[23.59,82.61]}},"highlightSeriesOpts":[],"labels":["year","life_exp"],"legend":"auto","retainDateWindow":false,"stackedGraph":false,"fillGraph":false,"fillAlpha":0.15,"stepPlot":false,"drawPoints":true,"pointSize":4,"drawGapEdgePoints":false,"connectSeparatedPoints":false,"strokeWidth":3,"strokeBorderColor":"white","colorValue":0.5,"colorSaturation":1,"includeZero":false,"drawAxesAtZero":false,"logscale":false,"axisTickSize":3,"axisLineColor":"black","axisLineWidth":0.3,"axisLabelColor":"black","axisLabelFontSize":14,"axisLabelWidth":60,"drawGrid":true,"gridLineColor":"#dedede","gridLineWidth":0.3,"rightGap":5,"digitsAfterDecimal":2,"labelsKMB":false,"labelsKMG2":false,"labelsUTC":false,"maxNumberWidth":6,"animatedZooms":false,"mobileDisableYTouch":true,"disableZoom":false,"highlightCircleSize":6,"highlightSeriesBackgroundAlpha":0.5,"hideOverlayOnMouseOut":true,"xlabel":"Year","ylabel":"Life Expectancy (yrs)","showRangeSelector":true,"rangeSelectorHeight":40,"rangeSelectorPlotFillColor":" #A7B1C4","rangeSelectorPlotStrokeColor":"#808FAB","interactionModel":"Dygraph.Interaction.defaultModel"},"annotations":[],"shadings":[],"events":[],"format":"numeric","data":[[1952,1957,1962,1967,1972,1977,1982,1987,1992,1997,2002,2007],[28.801,30.332,31.997,34.02,36.088,38.438,39.854,40.822,41.674,41.763,42.129,43.828]],"fixedtz":false,"tzone":""},"evals":["attrs.interactionModel"],"jsHooks":[]}</script><p>Now all we need to do to add a new plot column to <code>gsumm</code>
+<div class="dygraphs html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-405227af61e409dea070" style="width:700px;height:432.632880098888px;"></div>
+<script type="application/json" data-for="htmlwidget-405227af61e409dea070">{"x":{"attrs":{"axes":{"x":{"pixelsPerLabel":60,"drawAxis":true,"valueRange":[1952,2007]},"y":{"drawAxis":true,"valueRange":[23.59,82.61]}},"highlightSeriesOpts":[],"labels":["year","life_exp"],"legend":"auto","retainDateWindow":false,"stackedGraph":false,"fillGraph":false,"fillAlpha":0.15,"stepPlot":false,"drawPoints":true,"pointSize":4,"drawGapEdgePoints":false,"connectSeparatedPoints":false,"strokeWidth":3,"strokeBorderColor":"white","colorValue":0.5,"colorSaturation":1,"includeZero":false,"drawAxesAtZero":false,"logscale":false,"axisTickSize":3,"axisLineColor":"black","axisLineWidth":0.3,"axisLabelColor":"black","axisLabelFontSize":14,"axisLabelWidth":60,"drawGrid":true,"gridLineColor":"#dedede","gridLineWidth":0.3,"rightGap":5,"digitsAfterDecimal":2,"labelsKMB":false,"labelsKMG2":false,"labelsUTC":false,"maxNumberWidth":6,"animatedZooms":false,"mobileDisableYTouch":true,"disableZoom":false,"highlightCircleSize":6,"highlightSeriesBackgroundAlpha":0.5,"hideOverlayOnMouseOut":true,"xlabel":"Year","ylabel":"Life Expectancy (yrs)","showRangeSelector":true,"rangeSelectorHeight":40,"rangeSelectorPlotFillColor":" #A7B1C4","rangeSelectorPlotStrokeColor":"#808FAB","interactionModel":"Dygraph.Interaction.defaultModel"},"annotations":[],"shadings":[],"events":[],"format":"numeric","data":[[1952,1957,1962,1967,1972,1977,1982,1987,1992,1997,2002,2007],[28.801,30.332,31.997,34.02,36.088,38.438,39.854,40.822,41.674,41.763,42.129,43.828]],"fixedtz":false,"tzone":""},"evals":["attrs.interactionModel"],"jsHooks":[]}</script><p>Now all we need to do to add a new plot column to <code>gsumm</code>
 is to use <code><a href="../reference/panel_lazy.html">panel_lazy()</a></code> which takes our plot function and
 the dataset it applies to as arguments. Note that if used in a dplyr
 <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate()</a></code>, the dataset is inferred and does not need to be
@@ -378,7 +378,7 @@ and put the files there yourself.</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using the variables <span style="color: #0000BB;">"continent"</span> and <span style="color: #0000BB;">"country"</span> to uniquely identify each row</span></span>
 <span><span class="co">#&gt;   of the data.</span></span>
 <span><span class="co">#&gt; Warning: <span style="color: #BBBB00;">!</span> Files for local panel <span style="color: #0000BB;">"flag"</span> are not in the correct location. They are</span></span>
-<span><span class="co">#&gt;   currently here: '/tmp/RtmpnGnw2k/flags' and will be copied here:</span></span>
+<span><span class="co">#&gt;   currently here: '/tmp/RtmpIEAgJ5/flags' and will be copied here:</span></span>
 <span><span class="co">#&gt;   '/home/runner/work/trelliscope/trelliscope/docs/articles/panels_files/figure-html/gap/displays/gapminder/panels/flag'</span></span>
 <span><span class="co">#&gt;   when the display is written.</span></span>
 <span></span>
@@ -391,7 +391,7 @@ and put the files there yourself.</p>
 <span></span>
 <span><span class="fu"><a href="../reference/view_trelliscope.html">view_trelliscope</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Inferred that variable 'mean_gdp' should be shown on log scale.</span></span>
-<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■                  </span>  42% | ETA:  1s</span></span>
+<span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■                     </span>  33% | ETA:  2s</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Writing lexp_time <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span></span></code></pre></div>
 <div style="width: 100%; height: 700px; padding-bottom: 5px;">

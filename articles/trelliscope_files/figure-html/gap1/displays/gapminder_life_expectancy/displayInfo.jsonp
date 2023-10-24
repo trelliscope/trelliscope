@@ -1,4 +1,4 @@
-__loadDisplayInfo__725f05c4({
+__loadDisplayInfo__04a54516({
   "name": "gapminder life expectancy",
   "description": "gapminder life expectancy",
   "tags": [],
@@ -160,7 +160,8 @@ __loadDisplayInfo__725f05c4({
         "varname": "mean_lexp",
         "type": "filter"
       }
-    ]
+    ],
+    "filterView": []
   },
   "views": [
     {
@@ -194,7 +195,8 @@ __loadDisplayInfo__725f05c4({
             "varname": "mean_lexp",
             "type": "filter"
           }
-        ]
+        ],
+        "filterView": []
       }
     }
   ],
@@ -226,5 +228,6 @@ __loadDisplayInfo__725f05c4({
   "primarypanel": "lexp_time",
   "thumbnailurl": "panels/lexp_time/Afghanistan_Asia_AF.svg",
   "infoOnLoad": false,
-  "hasCustomInfo": false
+  "hasCustomInfo": false,
+  "order": 0
 })

@@ -1,4 +1,4 @@
-__loadDisplayInfo__4a14de2e({
+__loadDisplayInfo__0645f597({
   "name": "gapminder",
   "description": "gapminder",
   "tags": [],
@@ -128,12 +128,14 @@ __loadDisplayInfo__4a14de2e({
         "metatype": "number"
       }
     ],
-    "filter": []
+    "filter": [],
+    "filterView": []
   },
   "views": [],
   "inputs": null,
   "primarypanel": "lexp_time",
   "thumbnailurl": "panels/lexp_time/Afghanistan.html",
   "infoOnLoad": false,
-  "hasCustomInfo": false
+  "hasCustomInfo": false,
+  "order": 0
 })
