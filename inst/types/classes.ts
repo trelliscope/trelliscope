@@ -891,6 +891,7 @@ export class Display implements IDisplay {
   views: IView[];
   primarypanel: string;
   thumbnailurl: string;
+  order: number;
   constructor(
     {
       name,
@@ -904,6 +905,7 @@ export class Display implements IDisplay {
       views,
       primarypanel,
       thumbnailurl,
+      order,
     } : {
       name: string,
       description?: string,
@@ -916,6 +918,7 @@ export class Display implements IDisplay {
       views?: IView[] | undefined,
       primarypanel: string,
       thumbnailurl: string,
+      order: number | undefined,
     }
   ) {
     this.name = name;
@@ -929,6 +932,7 @@ export class Display implements IDisplay {
     this.views = views === undefined ? [] : views;
     this.primarypanel = primarypanel;
     this.thumbnailurl = thumbnailurl;
+    this.order = order === undefined ? 0 : order;
   }
 }
 

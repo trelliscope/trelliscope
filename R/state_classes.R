@@ -62,7 +62,8 @@ DisplayState <- R6::R6Class("DisplayState",
         layout = lyt,
         labels = lbl,
         sort = unname(lapply(private$sort, function(x) x$as_list())),
-        filter = unname(lapply(private$filter, function(x) x$as_list()))
+        filter = unname(lapply(private$filter, function(x) x$as_list())),
+        filterView = private$filterView
       )
     },
     as_json = function(pretty = TRUE) {

@@ -229,3 +229,67 @@ set_info_html <- function(trdf, file) {
   attr(trdf, "trelliscope") <- trobj
   trdf
 }
+
+#' Set a color theme for a Trelliscope display
+#' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
+#' @param primary Primary color to use.
+#' @param dark Dark color to use.
+#' @param light Light color to use.
+#' @param light_text_on_dark Should light text be used on backgrounds.
+#' using the dark color?
+#' @param dark_text Dark text color to use.
+#' @param light_text Light text color to use.
+#' @param header_background Color to use for the header background.
+#' @param header_text Color to use for the header text.
+#' @param logo URL (relative or absolute) to a logo image to
+#' include in the header.
+#' @export
+set_theme <- function(
+  trdf,
+  primary = "#448aff",
+  dark = "#2e60b1",
+  light = "#4dabf5",
+  light_text_on_dark = TRUE,
+  dark_text = "#000000",
+  light_text = "#ffffff",
+  header_background = "#fefefe",
+  header_text = NULL,
+  logo = NULL
+) {
+  trdf <- check_trelliscope_df(trdf)
+
+  check_scalar(primary, "primary")
+  check_scalar(dark, "dark")
+  check_scalar(light, "light")
+  check_scalar(light_text_on_dark, "light_text_on_dark")
+  check_scalar(dark_text, "dark_text")
+  check_scalar(light_text, "light_text")
+  check_scalar(header_background, "header_background")
+
+  check_logical(light_text_on_dark, "light_text_on_dark")
+  check_color(primary, "primary")
+  check_color(dark, "dark")
+  check_color(light, "light")
+  check_color(dark_text, "dark_text")
+  check_color(light_text, "light_text")
+  check_color(header_background, "header_background")
+
+  if (is.null(header_text))
+    header_text <- ifelse(light_text_on_dark, light_text, dark_text)
+
+  attr(trdf, "theme") <- structure(list(
+    primary = primary,
+    dark = dark,
+    light = light,
+    isLightTextOnDark = light_text_on_dark,
+    darkText = dark_text,
+    lightText = light_text,
+    header = list(
+      background = header_background,
+      text = header_text
+    ),
+    logo = logo
+  ), class = c("list", "trelliscope_theme"))
+
+  trdf
+}

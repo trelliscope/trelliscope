@@ -36,7 +36,7 @@ write_trelliscope <- function(
   if (!dir.exists(trobj$get_display_path()))
     dir.create(trobj$get_display_path(), recursive = TRUE)
 
-  cfg <- check_app_config(trobj$path, jsonp)
+  cfg <- check_app_config(trobj$path, jsonp, attr(trdf, "theme"))
   cfg_jsonp <- cfg$datatype == "jsonp"
   if (cfg_jsonp != jsonp) {
     jsonp <- cfg_jsonp
@@ -155,23 +155,31 @@ read_json_p <- function(f) {
   res
 }
 
-check_app_config <- function(app_path, jsonp) {
+check_app_config <- function(app_path, jsonp, theme) {
   f <- list.files(app_path, pattern = "^config\\.json", full.names = TRUE)
+
+if (!is.null(theme) && inherits(theme, "trelliscope_theme")) {
+    theme <- unclass(theme)
+  } else {
+    theme <- NULL
+  }
 
   if (length(f) > 0) {
     cfg <- read_json_p(f[1])
+    cfg$theme <- theme
   } else {
     cfg <- list(
       name = "Trelliscope App",
       datatype = ifelse(jsonp, "jsonp", "json"),
       id = substr(hash(Sys.time()), 1, 8)
     )
-    txt <- get_jsonp_text(jsonp, paste0("__loadAppConfig__", cfg$id))
-    cat(paste0(txt$st, as.character(to_json(cfg, pretty = TRUE)), txt$nd),
-      file = file.path(app_path,
-        paste0("config", ifelse(jsonp, ".jsonp", ".json"))))
-    cat(cfg$id, file = file.path(app_path, "id"))
+    cfg$theme <- theme
   }
+  txt <- get_jsonp_text(jsonp, paste0("__loadAppConfig__", cfg$id))
+  cat(paste0(txt$st, as.character(to_json(cfg, pretty = TRUE)), txt$nd),
+    file = file.path(app_path,
+      paste0("config", ifelse(jsonp, ".jsonp", ".json"))))
+  cat(cfg$id, file = file.path(app_path, "id"))
   cfg
 }
 
@@ -191,10 +199,14 @@ update_display_list <- function(app_path, jsonp = TRUE, id) {
     dir.exists(f) && file.exists(file.path(f, dispfile)))))
   lst <- lapply(ff[idx], function(f) {
     cur <- read_json_p(file.path(f, dispfile))
-    cur[c("name", "description", "tags", "thumbnailurl")]
+    if (is.null(cur$order))
+      cur$order <- 0
+    cur[c("name", "description", "tags", "thumbnailurl", "order")]
   })
+  odr <- order(unlist(lapply(lst, function(x) x$order)))
+
   txt <- get_jsonp_text(jsonp, paste0("__loadDisplayList__", id))
-  cat(paste0(txt$st, as.character(to_json(lst, pretty = TRUE)), txt$nd),
+  cat(paste0(txt$st, as.character(to_json(lst[odr], pretty = TRUE)), txt$nd),
     file = file.path(app_path, "displays",
       paste0("displayList", ifelse(jsonp, ".jsonp", ".json"))))
 }

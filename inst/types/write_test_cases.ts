@@ -237,5 +237,6 @@ const displ = new Display({
   state: displst,
   views: [view, view2],
   thumbnailurl: 'asdf.svg',
+  order: 0,
   primarypanel: 'panel'
 });

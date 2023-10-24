@@ -240,6 +240,7 @@ export interface IDisplay {
   // panelsource: IPanelSource,
   primarypanel: string;
   thumbnailurl: string;
+  order: number;
 }
 
 /* ------------------------------------------------------ */

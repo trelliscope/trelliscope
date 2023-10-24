@@ -13,6 +13,9 @@
 #'   have already been plotted and have not changed since the previous plotting?
 #' @param key_sig A string "signature" that represents the panels for this
 #'   display. This should not be specified unless you know what you are doing.
+#' @param order If there will be multiple displays in the same directory, this
+#'   can be used to specify the order in which they should be listed. The
+#'   display with the lowest order will be shown on load.
 #'
 #' @examples
 #' # Use `as_trelliscope_df()` to convert panel metadata to a special
@@ -53,14 +56,14 @@
 #' @importFrom dplyr group_cols
 as_trelliscope_df <- function(
   df, name = NULL, description = name, key_cols = NULL, tags = NULL,
-  path = NULL, force_plot = FALSE, key_sig = NULL
+  path = NULL, force_plot = FALSE, key_sig = NULL, order = 0
 ) {
   if (inherits(df, "facet_panels")) {
     # msg("
     #   An object from {.fn facet_panels} was passed to {.fn trelliscope}.
     #   {.emph Building panels...}")
     msg("{.emph Note:} For more control over building panels, you can \\
-      call {.fn as_panels_df} explicitly before passing to {.fn trelliscope}.",
+      call {.fn as_panels_df} explicitly before passing to {.fn as_trelliscope_df}.",
       .frequency = "regularly", .frequency_id = "explicit_build_note")
     df <- as_panels_df(df)
   }
@@ -111,7 +114,7 @@ as_trelliscope_df <- function(
 
   obj <- Display$new(name = name, description = description,
     keycols = key_cols, path = path, force_plot = force_plot,
-    tags = tags)
+    tags = tags, order = order)
   class(obj) <- c("R6", "trelliscope_object")
 
   attr(df, "trelliscope") <- obj

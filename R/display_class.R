@@ -8,7 +8,7 @@ Display <- R6::R6Class(
     info_html_file = NULL,
     fidelius_pars = NULL,
     initialize = function(
-      name, description, tags, keycols, path, force_plot
+      name, description, tags, keycols, path, force_plot, order
     ) {
       if (!is.null(name)) {
         check_scalar(name, "name")
@@ -25,10 +25,13 @@ Display <- R6::R6Class(
       check_logical(force_plot, "force_plot")
       check_character(keycols, "keycols")
       check_atomic(tags, "tags")
+      check_scalar(order, "order")
+      check_numeric(order, "order")
       private$name <- name
       private$description <- description
       private$tags <- I(as.character(tags))
       private$keycols <- keycols
+      private$order <- order
       self$path <- path
       self$force_plot <- force_plot
       private$state <- DisplayState$new()
@@ -89,7 +92,8 @@ Display <- R6::R6Class(
         primarypanel = private$primarypanel,
         thumbnailurl = private$thumbnailurl,
         infoOnLoad = private$infoOnLoad,
-        hasCustomInfo = private$hasCustomInfo
+        hasCustomInfo = private$hasCustomInfo,
+        order = private$order
       )
     },
     as_json = function(pretty = TRUE) {
@@ -126,6 +130,7 @@ Display <- R6::R6Class(
     inputs = NULL,
     state = NULL,
     views = list(),
+    order = 0,
     primarypanel = NULL,
     thumbnailurl = NULL,
     hasCustomInfo = FALSE,

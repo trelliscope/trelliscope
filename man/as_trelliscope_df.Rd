@@ -12,7 +12,8 @@ as_trelliscope_df(
   tags = NULL,
   path = NULL,
   force_plot = FALSE,
-  key_sig = NULL
+  key_sig = NULL,
+  order = 0
 )
 }
 \arguments{
@@ -37,6 +38,10 @@ have already been plotted and have not changed since the previous plotting?}
 
 \item{key_sig}{A string "signature" that represents the panels for this
 display. This should not be specified unless you know what you are doing.}
+
+\item{order}{If there will be multiple displays in the same directory, this
+can be used to specify the order in which they should be listed. The
+display with the lowest order will be shown on load.}
 }
 \description{
 Instantiate a trelliscope data frame

@@ -32,8 +32,8 @@ panel_lazy <- function(
 
   name_idx <- which(unlist(lapply(data[vars], is.atomic)))
 
-  ids <- apply(data[vars[name_idx]], 1, function(x) paste(
-    sanitize(x), sep = "_"))
+  ids <- apply(as.matrix(data[vars[name_idx]]), 1, function(x) paste(
+    sanitize(x), sep = "_", collapse = "_"))
 
   if (length(unique(ids)) != nrow(data)) {
     wrn("The atomic input columns to the lazy panel function \
