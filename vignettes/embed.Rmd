@@ -70,6 +70,23 @@ view_trelliscope(d)
 
 Another option for embedding Trelliscope displays in R Markdown documents is to pre-render them and host them somewhere on the internet and then stick an iframe tag in your R Markdown document.
 
+## Embedding Trelliscope in Quarto
+
+Similar to R Markdown, when embedding in Quarto, you can set necessary [output options](https://quarto.org/docs/computations/execution-options.html#output-options) in your code block to help a display render in the way you would like. For example:
+
+````markdown
+`r ''````{r}
+#| label: mars_trelliscope
+#| out-width: "100%"
+#| out-height: "500px"
+#| scale: 0.5
+#| output: asis
+library(trellicope)
+d <- as_trelliscope_df(mars_rover, name = "mars rover")
+view_trelliscope(d)
+```
+````
+
 ## Embedding Trelliscope in Shiny
 
 Trelliscope is a great alternative to Shiny for a wide range of interactive visualization applications. In any situation where you are considering building a Shiny app that provides the user with many controls that produce a visual output, you should consider using Trelliscope instead by producing a data frame of visualizations corresponding to every combination of user input values. Trelliscope displays are easier to build, maintain, and share than shiny apps, and provide the benefit of being able to view many outputs simultaneously, as well as exploring the input parameter space interactively.

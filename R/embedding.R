@@ -80,7 +80,7 @@ renderTrelliscope <- function(expr, env = parent.frame(), quoted = FALSE) {
         } else {
           prefix <- getOption(".trelliscope_shiny_resource_prefix")
           pth <- getOption(".trelliscope_shiny_resource_path")
-          tmp <- gsub(pth, prefix, trobj$path)
+          tmp <- gsub(pth, prefix, trobj$path, fixed = TRUE)
           src <- paste0(tmp, "/index.html")
         }
 

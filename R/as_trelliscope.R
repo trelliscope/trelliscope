@@ -96,7 +96,8 @@ as_trelliscope_df <- function(
   } else if (!is.null(shiny::getCurrentOutputInfo()$name)) {
     has_rsrc_path <- FALSE
     if (!is.null(path))
-      has_rsrc_path <- normalizePath(dirname(path)) %in% shiny::resourcePaths()
+      has_rsrc_path <- normalizePath(dirname(path)) %in%
+        normalizePath(shiny::resourcePaths())
     if (!is.null(path)) {
       if (!has_rsrc_path) {
         msg("Overwriting path for trelliscope display because it is being \
