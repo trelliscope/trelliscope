@@ -68,7 +68,8 @@
 <span>  path <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  force_plot <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  key_sig <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  order <span class="op">=</span> <span class="fl">0</span></span>
+<span>  order <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  jsonp <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -116,6 +117,14 @@ display. This should not be specified unless you know what you are doing.</p></d
 <dd><p>If there will be multiple displays in the same directory, this
 can be used to specify the order in which they should be listed. The
 display with the lowest order will be shown on load.</p></dd>
+
+
+<dt>jsonp</dt>
+<dd><p>If true, app data files are written as "jsonp" format, otherwise
+"json" format. The "jsonp" format makes it possible to browse a
+trelliscope app without the need for a web server and is set to TRUE by
+default. Use "json" if you are deploying to a web server that doesn't
+work well with "jsonp".</p></dd>
 
 </dl></div>
 

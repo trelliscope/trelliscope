@@ -163,7 +163,7 @@ output formats:</p>
 <p>Second, your output chunk needs to have a name. This will be used to
 determine where to write the output of the display.</p>
 <p>Third, you need to leave the <code>path</code> option of
-<code>as_trelliscoe_df()</code> blank. Trelliscope will automatically
+<code><a href="../reference/as_trelliscope_df.html">as_trelliscope_df()</a></code> blank. Trelliscope will automatically
 determine the path to use, which will be a relative path inside your R
 Markdown output directory.</p>
 <p>Additionally, you might consider setting some chunk options to make
@@ -256,7 +256,8 @@ display.</p>
 <span>      <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_trelliscope_df.html">as_trelliscope_df</a></span><span class="op">(</span><span class="va">mars_rover</span>,</span>
 <span>        name <span class="op">=</span> <span class="st">"mars rover"</span>,</span>
 <span>        description <span class="op">=</span> <span class="va">input</span><span class="op">$</span><span class="va">description</span>,</span>
-<span>        path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">tr_dir</span>, <span class="st">"test"</span><span class="op">)</span></span>
+<span>        path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">tr_dir</span>, <span class="st">"test"</span><span class="op">)</span>,</span>
+<span>        jsonp <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>      <span class="op">)</span></span>
 <span>      <span class="va">d</span></span>
 <span>    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
@@ -278,6 +279,13 @@ must place the display in the path you used with
 <code><a href="../reference/trelliscope-shiny.html">renderTrelliscope()</a></code> should be a Trelliscope data frame.
 Trelliscope will take care of writing the display to the specified path
 and rendering it in the UI.</p>
+<p>Note that when we create our Trelliscope data frame in
+<code><a href="../reference/trelliscope-shiny.html">renderTrelliscope()</a></code>, we use <code>jsonp = FALSE</code>. If
+you are using Shiny locally, you can likely stick with the default of
+<code>jsonp = TRUE</code>. However, if you are deploying your Shiny app
+to a server, we have noticed that services like shinyapps.io and Posit
+Connect do not like the data files written out by Trelliscope to be
+stored as jsonp so you will need to set <code>jsonp = FALSE</code>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
