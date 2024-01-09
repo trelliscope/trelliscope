@@ -82,6 +82,8 @@ renderTrelliscope <- function(expr, env = parent.frame(), quoted = FALSE) {
           pth <- getOption(".trelliscope_shiny_resource_path")
           tmp <- gsub(pth, prefix, trobj$path, fixed = TRUE)
           src <- paste0(tmp, "/index.html")
+          if (grepl("^/", src))
+            src <- paste0(".", src)
         }
 
         write_trelliscope(value)
