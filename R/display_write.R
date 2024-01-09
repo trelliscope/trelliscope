@@ -113,11 +113,15 @@ write_meta_data <- function(df, cols_ignore, disp_path, jsonp, id) {
   #   txt$nd
   # ), file = file.path(disp_path,
   #   paste0("metaData.", ifelse(jsonp, "jsonp", "json"))))
-
-  cat(paste0(
-    "window.metaData = ",
-    as.character(to_json(df, factor = "integer", force = TRUE))
-  ), file = file.path(disp_path, "metaData.js"))
+  if (jsonp) {
+    cat(paste0(
+      "window.metaData = ",
+      as.character(to_json(df, factor = "integer", force = TRUE))
+    ), file = file.path(disp_path, "metaData.js"))
+  } else {
+    cat(to_json(df, factor = "integer", force = TRUE),
+      file = file.path(disp_path, "metaData.json"))
+  }
 }
 
 write_trelliscope_info <- function(df, jsonp, id) {
