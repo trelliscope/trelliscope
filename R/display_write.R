@@ -25,7 +25,7 @@
 #' }
 #' @export
 write_trelliscope <- function(
-  trdf, force_write = FALSE, jsonp = TRUE
+  trdf, force_write = NULL, jsonp = NULL
 ) {
   # in case new panel-like variables were added
   trdf <- find_panel_vars(trdf, warn = FALSE)
@@ -36,11 +36,22 @@ write_trelliscope <- function(
   if (!dir.exists(trobj$get_display_path()))
     dir.create(trobj$get_display_path(), recursive = TRUE)
 
+  if (is.null(force_write))
+    force_write <- trobj$force_plot
+  if (is.null(jsonp))
+    jsonp <- trobj$jsonp
+
+  check_scalar(force_write, "force_write")
+  check_logical(force_write, "force_write")
+  check_scalar(jsonp, "jsonp")
+  check_logical(jsonp, "jsonp")
+
   cfg <- check_app_config(trobj$path, jsonp, attr(trdf, "theme"))
   cfg_jsonp <- cfg$datatype == "jsonp"
   if (cfg_jsonp != jsonp) {
     jsonp <- cfg_jsonp
-    msg("Using jsonp=", jsonp)
+    msg("Using jsonp=", as.character(jsonp),
+      " as it has already been specified in config")
   }
 
   # if (is.null(port))

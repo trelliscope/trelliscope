@@ -13,7 +13,8 @@ as_trelliscope_df(
   path = NULL,
   force_plot = FALSE,
   key_sig = NULL,
-  order = 0
+  order = 0,
+  jsonp = TRUE
 )
 }
 \arguments{
@@ -42,6 +43,12 @@ display. This should not be specified unless you know what you are doing.}
 \item{order}{If there will be multiple displays in the same directory, this
 can be used to specify the order in which they should be listed. The
 display with the lowest order will be shown on load.}
+
+\item{jsonp}{If true, app data files are written as "jsonp" format, otherwise
+"json" format. The "jsonp" format makes it possible to browse a
+trelliscope app without the need for a web server and is set to TRUE by
+default. Use "json" if you are deploying to a web server that doesn't
+work well with "jsonp".}
 }
 \description{
 Instantiate a trelliscope data frame

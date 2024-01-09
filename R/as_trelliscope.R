@@ -16,6 +16,11 @@
 #' @param order If there will be multiple displays in the same directory, this
 #'   can be used to specify the order in which they should be listed. The
 #'   display with the lowest order will be shown on load.
+#' @param jsonp If true, app data files are written as "jsonp" format, otherwise
+#'   "json" format. The "jsonp" format makes it possible to browse a
+#'   trelliscope app without the need for a web server and is set to TRUE by
+#'   default. Use "json" if you are deploying to a web server that doesn't
+#'   work well with "jsonp".
 #'
 #' @examples
 #' # Use `as_trelliscope_df()` to convert panel metadata to a special
@@ -56,7 +61,7 @@
 #' @importFrom dplyr group_cols
 as_trelliscope_df <- function(
   df, name = NULL, description = name, key_cols = NULL, tags = NULL,
-  path = NULL, force_plot = FALSE, key_sig = NULL, order = 0
+  path = NULL, force_plot = FALSE, key_sig = NULL, order = 0, jsonp = TRUE
 ) {
   if (inherits(df, "facet_panels")) {
     # msg("
@@ -115,7 +120,7 @@ as_trelliscope_df <- function(
 
   obj <- Display$new(name = name, description = description,
     keycols = key_cols, path = path, force_plot = force_plot,
-    tags = tags, order = order)
+    tags = tags, order = order, jsonp = jsonp)
   class(obj) <- c("R6", "trelliscope_object")
 
   attr(df, "trelliscope") <- obj

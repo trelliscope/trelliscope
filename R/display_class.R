@@ -4,11 +4,12 @@ Display <- R6::R6Class(
     df_cols_ignore = NULL, # these columns won't be written to JSON
     path = NULL,
     force_plot = NULL,
+    jsonp = FALSE,
     panel_options = list(),
     info_html_file = NULL,
     fidelius_pars = NULL,
     initialize = function(
-      name, description, tags, keycols, path, force_plot, order
+      name, description, tags, keycols, path, force_plot, order, jsonp
     ) {
       if (!is.null(name)) {
         check_scalar(name, "name")
@@ -27,6 +28,8 @@ Display <- R6::R6Class(
       check_atomic(tags, "tags")
       check_scalar(order, "order")
       check_numeric(order, "order")
+      check_scalar(jsonp, "jsonp")
+      check_logical(jsonp, "jsonp")
       private$name <- name
       private$description <- description
       private$tags <- I(as.character(tags))
@@ -34,6 +37,7 @@ Display <- R6::R6Class(
       private$order <- order
       self$path <- path
       self$force_plot <- force_plot
+      self$jsonp <- jsonp
       private$state <- DisplayState$new()
     },
     set = function(name, val) {

@@ -4,7 +4,7 @@
 \alias{write_trelliscope}
 \title{Write the contents of a display}
 \usage{
-write_trelliscope(trdf, force_write = FALSE, jsonp = TRUE)
+write_trelliscope(trdf, force_write = NULL, jsonp = NULL)
 }
 \arguments{
 \item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope_df]{as_trelliscope_df()}}

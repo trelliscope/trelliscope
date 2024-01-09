@@ -53,7 +53,7 @@ First, you can only embed Trelliscope outputs in HTML-formatted output types tha
 
 Second, your output chunk needs to have a name. This will be used to determine where to write the output of the display.
 
-Third, you need to leave the `path` option of `as_trelliscoe_df()` blank. Trelliscope will automatically determine the path to use, which will be a relative path inside your R Markdown output directory.
+Third, you need to leave the `path` option of `as_trelliscope_df()` blank. Trelliscope will automatically determine the path to use, which will be a relative path inside your R Markdown output directory.
 
 Additionally, you might consider setting some chunk options to make the output look better. For example, it is a good idea to set `out.width="100%"` and hard-code the height (`out.height="___px"`) to control the size of the display. We have also added support for a `scale` chunk option that can be used to scale the output UI so that it doesn't appear so large when rendered in confined spaces.
 
@@ -125,7 +125,8 @@ server <- function(input, output) {
       d <- as_trelliscope_df(mars_rover,
         name = "mars rover",
         description = input$description,
-        path = file.path(tr_dir, "test")
+        path = file.path(tr_dir, "test"),
+        jsonp = FALSE
       )
       d
     } else {
@@ -138,3 +139,5 @@ shinyApp(ui = ui, server = server)
 ```
 
 For those with experience in Shiny, most of the above should be straightforward. One main function to call out is `add_trelliscope_resource_path()`, which allows you to specify a path that the app can look in to find your Trelliscope displays. In the UI, you can use `trelliscopeOutput()` to specify where a Trelliscope display will be rendered. In the server, you use `renderTrelliscope()` to write create the display. You must place the display in the path you used with `add_trelliscope_resource_path()`. The object returned by `renderTrelliscope()` should be a Trelliscope data frame. Trelliscope will take care of writing the display to the specified path and rendering it in the UI.
+
+Note that when we create our Trelliscope data frame in `renderTrelliscope()`, we use `jsonp = FALSE`. If you are using Shiny locally, you can likely stick with the default of `jsonp = TRUE`. However, if you are deploying your Shiny app to a server, we have noticed that services like shinyapps.io and Posit Connect do not like the data files written out by Trelliscope to be stored as jsonp so you will need to set `jsonp = FALSE`.
