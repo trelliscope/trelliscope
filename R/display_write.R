@@ -145,11 +145,11 @@ get_jsonp_text <- function(jsonp, fn_name) {
 #' @importFrom jsonlite fromJSON
 read_json_p <- function(f) {
   res <- NULL
+  tmp <- readLines(f, warn = FALSE) |> paste(collapse = "\n")
+  rgxp <- paste0("^__[a-zA-Z]+__[a-zA-Z0-9_/\\.]+\\((.*)\\)")
   if (grepl("json$", f)) {
     res <- jsonlite::fromJSON(gsub(rgxp, "\\1", tmp))
   } else if (grepl("jsonp$", f)) {
-    tmp <- readLines(f, warn = FALSE) |> paste(collapse = "\n")
-    rgxp <- paste0("^__[a-zA-Z]+__[a-zA-Z0-9_/\\.]+\\((.*)\\)")
     res <- jsonlite::fromJSON(gsub(rgxp, "\\1", tmp))
   }
   res
@@ -158,7 +158,7 @@ read_json_p <- function(f) {
 check_app_config <- function(app_path, jsonp, theme) {
   f <- list.files(app_path, pattern = "^config\\.json", full.names = TRUE)
 
-if (!is.null(theme) && inherits(theme, "trelliscope_theme")) {
+  if (!is.null(theme) && inherits(theme, "trelliscope_theme")) {
     theme <- unclass(theme)
   } else {
     theme <- NULL

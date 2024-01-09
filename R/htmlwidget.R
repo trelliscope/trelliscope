@@ -8,11 +8,10 @@ scale_w_suffix <- function(val, scale) {
   return(paste0(num / scale, suffix))
 }
 
-
 # spa = TRUE, width = NULL, height = NULL
 write_widget <- function(trobj) {
   path <- trobj$path
-  config_info <- list.files(path, pattern = "config.json")
+  config_info <- list.files(path, pattern = "config.json")[1]
   id <- readLines(file.path(path, "id"), warn = FALSE)[1]
   spa <- TRUE
 
