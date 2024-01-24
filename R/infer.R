@@ -36,7 +36,7 @@ infer_state <- function(state, df, keycols, metas, view = NULL) {
     msg("No default {.val layout} state supplied{view_str}. \\
       {.emph Using ncol=3.}")
     # TODO: maybe use nrow(df) and panel dimensions for a better initial state
-    state2$set(state_layout(ncol = 3))
+    state2$set(state_layout(ncol = min(nrow(df), 3)))
   }
 
   lbls <- state2$get("labels")

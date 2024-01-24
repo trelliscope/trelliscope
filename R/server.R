@@ -27,8 +27,8 @@ start_server <- function(trdf) {
 
     p <- get_panel(trdf[[nm]][[1]])
     if (inherits(p, "htmlwidget")) {
-      dir.create(file.path(trobj$path, "displays", "libs"),
-        showWarnings = FALSE)
+      if (!dir.exists(file.path(trobj$path, "displays", "libs")))
+        dir.create(file.path(trobj$path, "displays", "libs"))
       html_head_list[[nm]] <- write_htmlwidget_deps(p,
         file.path(trobj$path, "displays"), panel_path)
     }

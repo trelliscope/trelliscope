@@ -10,14 +10,6 @@ write_panels <- function(trdf, nm, force = FALSE) {
     panel_opts$height <- 400
 
   if (inherits(pnls, panel_lazy_classes)) {
-    p <- get_panel(pnls[[1]])
-    html_head <- NULL
-    if (inherits(p, "htmlwidget")) {
-      dir.create(file.path(app_path, "displays", "libs"), showWarnings = FALSE)
-      html_head <- write_htmlwidget_deps(p,
-        file.path(app_path, "displays"), panel_path)
-    }
-
     panel_path <- file.path(trobj$get_display_path(), "panels",
       sanitize(nm))
     if (!dir.exists(panel_path))
@@ -39,10 +31,24 @@ write_panels <- function(trdf, nm, force = FALSE) {
     if (length(panel_opts$height) == 0)
       panel_opts$height <- 400
 
+    widget_deps_written <- character(0)
+    html_heads <- list()
+
     for (idx in idxs) {
       cli::cli_progress_update()
 
       p <- try(get_panel(pnls[[idx]]), silent = TRUE)
+      if (inherits(p, "htmlwidget")) {
+        wcls <- setdiff(class(p), "htmlwidget")[1]
+        if (!(wcls %in% widget_deps_written)) {
+          widget_deps_written <- c(widget_deps_written, wcls)
+          if (!dir.exists(file.path(app_path, "displays", "libs")))
+            dir.create(file.path(app_path, "displays", "libs"))
+          html_heads[[wcls]] <- write_htmlwidget_deps(p,
+            file.path(app_path, "displays"), panel_path)
+        }
+      }
+
       if (inherits(p, "try-error")) {
         cli::cli_alert("Error writing panel {nm} with output to {basename(pths[idx])}")
         next
@@ -56,7 +62,7 @@ write_panels <- function(trdf, nm, force = FALSE) {
         width = panel_opts$width,
         height = panel_opts$height,
         format = panel_opts$format,
-        html_head = html_head
+        html_head = html_heads[[wcls]]
       )
     }
 
