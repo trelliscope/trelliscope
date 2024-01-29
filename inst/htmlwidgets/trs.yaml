@@ -1,6 +1,6 @@
 dependencies:
   - name: trs
-    version:  0.6.0
+    version:  0.7.0
     src: htmlwidgets/lib/trs
-    script: [      js/main.5fe660d8.js, ]
-    stylesheet: [      css/main.18e9ab79.css, ]
+    script: [ index.js ]
+    stylesheet: [ index.css ]
