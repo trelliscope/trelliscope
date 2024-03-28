@@ -461,7 +461,7 @@ gsumm <- gap |>
 
 tdf <- left_join(tdf, gsumm, by = "country")
 
-# set varialbe labels
+# set variable labels
 tdf <- tdf |>
   set_var_labels(
     mean_lexp = "Mean life expectancy",

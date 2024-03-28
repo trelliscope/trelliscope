@@ -61,8 +61,17 @@ Below is an example of a chunk that will embed a Trelliscope display in an R Mar
 
 
 ````markdown
+---
+title: "Trelliscope RMarkdown Embedding"
+output:
+  html_document:
+    self_contained: false
+---
+
+# Mars Rover Images
+
 `r ''````{r mars_trelliscope, out.width="100%", out.height="700px", scale=0.5}
-library(trellicope)
+library(trelliscope)
 d <- as_trelliscope_df(mars_rover, name = "mars rover")
 view_trelliscope(d)
 ```

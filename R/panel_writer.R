@@ -31,8 +31,8 @@ write_htmlwidget_deps <- function(x, base_path, panel_path) {
     libdir = widget_name, selfcontained = FALSE)
 
   html_head <- readLines(file.path(deps_path, "index.html"))
-  idx <- which(grepl("<body>", html_head))
-  assert(length(idx) > 0, "problem...")
+  idx <- which(grepl("</head>", html_head))
+  assert(length(idx) > 0, "problem finding <head> in htmlwidget...")
   html_head <- html_head[1:idx]
   html_head <- gsub("src=\"", "src=\"../../../libs/", html_head)
   html_head <- gsub("href=\"", "href=\"../../../libs/", html_head)
