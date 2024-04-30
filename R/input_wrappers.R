@@ -32,7 +32,7 @@ add_input_class <- function(x) {
 #' \dontrun{
 #' view_trelliscope(trell)
 #' }
-#' @family {input types}
+#' @family inputtypes
 #' @export
 input_number <- function(
   name, label = name, active = TRUE, min = NULL, max = NULL
@@ -69,7 +69,7 @@ input_number <- function(
 #' \dontrun{
 #' view_trelliscope(trell)
 #' }
-#' @family {input types}
+#' @family inputtypes
 #' @export
 input_radio <- function(
   name, label = name, active = TRUE, options
@@ -106,7 +106,7 @@ input_radio <- function(
 #' \dontrun{
 #' view_trelliscope(trell)
 #' }
-#' @family {input types}
+#' @family inputtypes
 #' @export
 input_checkbox <- function(
   name, label = name, active = TRUE, options
@@ -143,7 +143,7 @@ input_checkbox <- function(
 #' \dontrun{
 #' view_trelliscope(trell)
 #' }
-#' @family {input types}
+#' @family inputtypes
 #' @export
 input_select <- function(
   name, label = name, active = TRUE, options
@@ -181,7 +181,7 @@ input_select <- function(
 #' \dontrun{
 #' view_trelliscope(trell)
 #' }
-#' @family {input types}
+#' @family inputtypes
 #' @export
 input_multiselect <- function(
   name, label = name, active = TRUE, options
@@ -217,7 +217,7 @@ input_multiselect <- function(
 #' \dontrun{
 #' view_trelliscope(trell)
 #' }
-#' @family {input types}
+#' @family inputtypes
 #' @export
 input_text <- function(
   name, label = name, active = TRUE, height = 3

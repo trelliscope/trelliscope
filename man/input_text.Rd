@@ -42,11 +42,11 @@ view_trelliscope(trell)
 }
 }
 \seealso{
-Other {input types}: 
+Other inputtypes: 
 \code{\link{input_checkbox}()},
 \code{\link{input_multiselect}()},
 \code{\link{input_number}()},
 \code{\link{input_radio}()},
 \code{\link{input_select}()}
 }
-\concept{{input types}}
+\concept{inputtypes}
