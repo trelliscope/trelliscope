@@ -50,7 +50,7 @@ check_enum <- function(x, vals, name, err_fn = paste0) {
 }
 
 check_atomic <- function(x, name, err_fn = paste0) {
-  assert(is.atomic(x),
+  assert(is.null(x) || is.atomic(x),
     msg = err_fn("{.val {name}} must be an atomic vector"))
 }
 
