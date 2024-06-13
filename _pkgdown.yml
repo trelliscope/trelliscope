@@ -81,12 +81,13 @@ reference:
   - '`state_layout`'
   - '`state_sort`'
 
-- title: Miscellanious utilities
+- title: Miscellanious utilities/data
   contents:
   - '`show_info`'
   - '`as_json`'
   - '`update_display_list`'
   - '`currencies`'
+  - '`rover_icon_b64`'
 
 - title: Embedding
   contents:
