@@ -9,3 +9,6 @@
 #' Mars rover data
 #' @source <https://github.com/corincerami/mars-photo-api>
 "mars_rover"
+
+#' Base-64 encoded icon of a rover for use in the Mars rover example
+"rover_icon_b64"

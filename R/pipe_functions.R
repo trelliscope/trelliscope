@@ -232,61 +232,129 @@ set_info_html <- function(trdf, file) {
 
 #' Set a color theme for a Trelliscope display
 #' @param trdf A trelliscope data frame created with [`as_trelliscope_df()`]
-#' @param primary Primary color to use.
-#' @param dark Dark color to use.
-#' @param light Light color to use.
-#' @param light_text_on_dark Should light text be used on backgrounds.
-#' using the dark color?
-#' @param dark_text Dark text color to use.
-#' @param light_text Light text color to use.
-#' @param header_background Color to use for the header background.
-#' @param header_text Color to use for the header text.
+#' @param primary The primary color which applies to the main controls in the
+#'  app (buttons, navigation icons, checkboxes, etc.).
+#' @param primary2 The second-level primary color which applies to hover states,
+#'  etc. Typically a slightly lighter shade of the primary color.
+#' @param primary3 The third-level primary color, mainly used for the fullscreen
+#'  button. Typically a slightly darker shade of the primary color.
+#' @param background The background color of the app.
+#' @param background2 The second-level background color used in various
+#'  components and headers. Typically a slightly lighter or darker shade of the
+#'  background color.
+#' @param background3 The third-level background color used for inactive filter
+#'  bars, sub-header background, component outlines, etc. Typically a slightly
+#'  lighter or darker shade of the background color.
+#' @param bars Color used for highlighted bars in the filter graphs (histogram
+#'  and bar chart).
+#' @param text The general text color used in the app.
+#' @param text2 The secondary text color used in the header, etc. Should be a
+#'  contrasting color to the primary color.
+#' @param button_text The text color used for buttons. Should be a
+#'  contrasting color to the primary color.
+#' @param text_disabled The text color used for disabled buttons, etc.
+#' @param error The color used for error messages.
+#' @param font_family The font family to use in the app. Default is "Poppins".
+#'  Note that many aspects of the app are styled with this font, so changing it
+#'  may result in less-attractive styling.
 #' @param logo URL (relative or absolute) to a logo image to
 #' include in the header.
 #' @export
+#' @examples
+#' x <- mars_rover |>
+#'   as_trelliscope_df(name = "mars rover") |>
+#'   set_theme(
+#'     primary = "#c80000",
+#'     primary2 = "#f00000",
+#'     primary3 = "#960000",
+#'     background = "#222222",
+#'     background2 = "#444444",
+#'     background3 = "#333333",
+#'     bars = "#c80000",
+#'     text = "#ffffff",
+#'     text2 = "#ffffff",
+#'     text_disabled = "#bcbcbc",
+#'     logo = rover_icon_b64
+#'   )
 set_theme <- function(
   trdf,
   primary = "#448aff",
-  dark = "#2e60b1",
-  light = "#4dabf5",
-  light_text_on_dark = TRUE,
-  dark_text = "#000000",
-  light_text = "#ffffff",
-  header_background = "#fefefe",
-  header_text = NULL,
+  primary2 = "#4dabf5",
+  primary3 = "#2e60b1",
+  background = "#FEFEFE",
+  background2 = "#EBEBEB",
+  background3 = "#E0E0E0",
+  bars = "#FFAE25",
+  text = "#000",
+  text2 = "#FFF",
+  button_text = "#757575",
+  text_disabled = "#BCBCBC",
+  error = "#ff5252",
+  font_family = "\"Poppins\", sans-serif",
   logo = NULL
 ) {
   trdf <- check_trelliscope_df(trdf)
 
   check_scalar(primary, "primary")
-  check_scalar(dark, "dark")
-  check_scalar(light, "light")
-  check_scalar(light_text_on_dark, "light_text_on_dark")
-  check_scalar(dark_text, "dark_text")
-  check_scalar(light_text, "light_text")
-  check_scalar(header_background, "header_background")
+  check_scalar(primary2, "primary2")
+  check_scalar(primary3, "primary3")
+  check_scalar(background, "background")
+  check_scalar(background2, "background2")
+  check_scalar(background3, "background3")
+  check_scalar(bars, "bars")
+  check_scalar(text, "text")
+  check_scalar(text2, "text2")
+  check_scalar(text_disabled, "text_disabled")
+  check_scalar(error, "error")
+  check_scalar(font_family, "font_family")
 
-  check_logical(light_text_on_dark, "light_text_on_dark")
   check_color(primary, "primary")
-  check_color(dark, "dark")
-  check_color(light, "light")
-  check_color(dark_text, "dark_text")
-  check_color(light_text, "light_text")
-  check_color(header_background, "header_background")
-
-  if (is.null(header_text))
-    header_text <- ifelse(light_text_on_dark, light_text, dark_text)
+  check_color(primary2, "primary2")
+  check_color(primary3, "primary3")
+  check_color(background, "background")
+  check_color(background2, "background2")
+  check_color(background3, "background3")
+  check_color(bars, "bars")
+  check_color(text, "text")
+  check_color(text2, "text2")
+  check_color(text_disabled, "text_disabled")
+  check_color(error, "error")
+  check_character(font_family, "font_family")
 
   attr(trdf, "theme") <- structure(list(
-    primary = primary,
-    dark = dark,
-    light = light,
-    isLightTextOnDark = light_text_on_dark,
-    darkText = dark_text,
-    lightText = light_text,
-    header = list(
-      background = header_background,
-      text = header_text
+    palette = list(
+      primary = list(
+        main = primary,
+        light = primary2,
+        dark = primary3,
+        contrastText = button_text
+      ),
+      secondary = list(
+        main = background,
+        light = background2,
+        dark = background3,
+        contrastText = bars
+      ),
+      background = list(
+        default = background
+      ),
+      action = list(
+        active = button_text
+      ),
+      text = list(
+        primary = text,
+        secondary = text2,
+        disabled = text_disabled
+      ),
+      error = list(
+        main = error
+      )
+    ),
+    typography = list(
+      fontFamily = font_family,
+      fontWeightLight = 200,
+      fontWeightRegular = 300,
+      fontWeightMedium = 400
     ),
     logo = logo
   ), class = c("list", "trelliscope_theme"))

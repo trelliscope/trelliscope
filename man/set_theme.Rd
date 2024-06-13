@@ -7,39 +7,82 @@
 set_theme(
   trdf,
   primary = "#448aff",
-  dark = "#2e60b1",
-  light = "#4dabf5",
-  light_text_on_dark = TRUE,
-  dark_text = "#000000",
-  light_text = "#ffffff",
-  header_background = "#fefefe",
-  header_text = NULL,
+  primary2 = "#4dabf5",
+  primary3 = "#2e60b1",
+  background = "#FEFEFE",
+  background2 = "#EBEBEB",
+  background3 = "#E0E0E0",
+  bars = "#FFAE25",
+  text = "#000",
+  text2 = "#FFF",
+  button_text = "#757575",
+  text_disabled = "#BCBCBC",
+  error = "#ff5252",
+  font_family = "\\"Poppins\\", sans-serif",
   logo = NULL
 )
 }
 \arguments{
 \item{trdf}{A trelliscope data frame created with \code{\link[=as_trelliscope_df]{as_trelliscope_df()}}}
 
-\item{primary}{Primary color to use.}
+\item{primary}{The primary color which applies to the main controls in the
+app (buttons, navigation icons, checkboxes, etc.).}
 
-\item{dark}{Dark color to use.}
+\item{primary2}{The second-level primary color which applies to hover states,
+etc. Typically a slightly lighter shade of the primary color.}
 
-\item{light}{Light color to use.}
+\item{primary3}{The third-level primary color, mainly used for the fullscreen
+button. Typically a slightly darker shade of the primary color.}
 
-\item{light_text_on_dark}{Should light text be used on backgrounds.
-using the dark color?}
+\item{background}{The background color of the app.}
 
-\item{dark_text}{Dark text color to use.}
+\item{background2}{The second-level background color used in various
+components and headers. Typically a slightly lighter or darker shade of the
+background color.}
 
-\item{light_text}{Light text color to use.}
+\item{background3}{The third-level background color used for inactive filter
+bars, sub-header background, component outlines, etc. Typically a slightly
+lighter or darker shade of the background color.}
 
-\item{header_background}{Color to use for the header background.}
+\item{bars}{Color used for highlighted bars in the filter graphs (histogram
+and bar chart).}
 
-\item{header_text}{Color to use for the header text.}
+\item{text}{The general text color used in the app.}
+
+\item{text2}{The secondary text color used in the header, etc. Should be a
+contrasting color to the primary color.}
+
+\item{button_text}{The text color used for buttons. Should be a
+contrasting color to the primary color.}
+
+\item{text_disabled}{The text color used for disabled buttons, etc.}
+
+\item{error}{The color used for error messages.}
+
+\item{font_family}{The font family to use in the app. Default is "Poppins".
+Note that many aspects of the app are styled with this font, so changing it
+may result in less-attractive styling.}
 
 \item{logo}{URL (relative or absolute) to a logo image to
 include in the header.}
 }
 \description{
 Set a color theme for a Trelliscope display
+}
+\examples{
+x <- mars_rover |>
+  as_trelliscope_df(name = "mars rover") |>
+  set_theme(
+    primary = "#c80000",
+    primary2 = "#f00000",
+    primary3 = "#960000",
+    background = "#222222",
+    background2 = "#444444",
+    background3 = "#333333",
+    bars = "#c80000",
+    text = "#ffffff",
+    text2 = "#ffffff",
+    text_disabled = "#bcbcbc",
+    logo = rover_icon_b64
+  )
 }
