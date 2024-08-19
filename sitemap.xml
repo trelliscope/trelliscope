@@ -1,615 +1,207 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/404.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/bigdata.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/embed.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Afghanistan.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Albania.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Algeria.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Angola.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Argentina.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Australia.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Austria.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Bahrain.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Bangladesh.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Belgium.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Benin.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Bolivia.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Bosnia_and_Herzegovina.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Botswana.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Brazil.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Bulgaria.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Burkina_Faso.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Burundi.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Cambodia.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Cameroon.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Canada.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Central_African_Republic.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Chad.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Chile.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/China.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Colombia.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Comoros.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Congo__Dem__Rep_.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Congo__Rep_.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Costa_Rica.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Cote_d_Ivoire.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Croatia.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Cuba.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Czech_Republic.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Denmark.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Djibouti.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Dominican_Republic.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Ecuador.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Egypt.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/El_Salvador.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Equatorial_Guinea.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Eritrea.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Ethiopia.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Finland.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/France.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Gabon.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Gambia.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Germany.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Ghana.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Greece.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Guatemala.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Guinea.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Guinea_Bissau.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Haiti.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Honduras.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Hong_Kong__China.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Hungary.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Iceland.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/India.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Indonesia.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Iran.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Iraq.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Ireland.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Israel.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Italy.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Jamaica.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Japan.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Jordan.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Kenya.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Korea__Dem__Rep_.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Korea__Rep_.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Kuwait.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Lebanon.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Lesotho.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Liberia.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Libya.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Madagascar.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Malawi.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Malaysia.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Mali.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Mauritania.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Mauritius.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Mexico.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Mongolia.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Montenegro.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Morocco.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Mozambique.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Myanmar.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Namibia.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Nepal.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Netherlands.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/New_Zealand.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Nicaragua.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Niger.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Nigeria.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Norway.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Oman.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Pakistan.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Panama.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Paraguay.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Peru.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Philippines.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Poland.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Portugal.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Puerto_Rico.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Reunion.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Romania.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Rwanda.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Sao_Tome_and_Principe.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Saudi_Arabia.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Senegal.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Serbia.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Sierra_Leone.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Singapore.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Slovak_Republic.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Slovenia.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Somalia.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/South_Africa.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Spain.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Sri_Lanka.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Sudan.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Swaziland.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Sweden.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Switzerland.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Syria.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Taiwan.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Tanzania.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Thailand.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Togo.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Trinidad_and_Tobago.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Tunisia.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Turkey.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Uganda.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/United_Kingdom.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/United_States.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Uruguay.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Venezuela.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Vietnam.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/West_Bank_and_Gaza.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Yemen__Rep_.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Zambia.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Zimbabwe.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/index.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/trelliscope.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/trelliscope_files/figure-html/gap0/index.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/trelliscope_files/figure-html/gap1/index.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/articles/trelliscope_files/figure-html/mars0/index.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/index.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/add_charm.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/add_inputs.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/add_trelliscope_resource_path.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/add_view.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/as_json.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/as_panels_df.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/as_trelliscope_df.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/currencies.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/currency.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/facet_panels.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/filter_cat_href.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/filter_range.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/filter_string.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/gap.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/href.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/input_checkbox.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/input_multiselect.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/input_number.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/input_radio.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/input_select.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/input_text.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/mars_rover.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/number.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/panel_lazy.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/panel_local.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/panel_options.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/panel_url.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/rover_icon_b64.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/set_default_filters.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/set_default_labels.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/set_default_layout.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/set_default_sort.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/set_info_html.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/set_panel_options.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/set_primary_panel.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/set_show_info_on_load.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/set_tags.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/set_theme.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/set_var_labels.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/show_info.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/state_labels.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/state_layout.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/state_sort.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/trelliscope-shiny.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/update_display_list.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/view_trelliscope.html</loc>
-  </url>
-  <url>
-    <loc>https://trelliscope.github.io/trelliscope/reference/write_trelliscope.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://trelliscope.github.io/trelliscope/404.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/LICENSE-text.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/LICENSE.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/bigdata.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/embed.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/index.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Afghanistan.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Albania.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Algeria.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Angola.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Argentina.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Australia.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Austria.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Bahrain.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Bangladesh.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Belgium.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Benin.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Bolivia.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Bosnia_and_Herzegovina.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Botswana.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Brazil.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Bulgaria.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Burkina_Faso.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Burundi.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Cambodia.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Cameroon.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Canada.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Central_African_Republic.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Chad.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Chile.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/China.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Colombia.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Comoros.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Congo__Dem__Rep_.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Congo__Rep_.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Costa_Rica.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Cote_d_Ivoire.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Croatia.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Cuba.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Czech_Republic.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Denmark.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Djibouti.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Dominican_Republic.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Ecuador.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Egypt.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/El_Salvador.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Equatorial_Guinea.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Eritrea.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Ethiopia.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Finland.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/France.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Gabon.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Gambia.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Germany.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Ghana.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Greece.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Guatemala.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Guinea.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Guinea_Bissau.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Haiti.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Honduras.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Hong_Kong__China.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Hungary.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Iceland.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/India.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Indonesia.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Iran.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Iraq.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Ireland.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Israel.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Italy.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Jamaica.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Japan.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Jordan.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Kenya.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Korea__Dem__Rep_.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Korea__Rep_.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Kuwait.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Lebanon.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Lesotho.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Liberia.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Libya.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Madagascar.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Malawi.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Malaysia.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Mali.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Mauritania.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Mauritius.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Mexico.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Mongolia.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Montenegro.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Morocco.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Mozambique.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Myanmar.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Namibia.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Nepal.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Netherlands.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/New_Zealand.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Nicaragua.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Niger.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Nigeria.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Norway.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Oman.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Pakistan.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Panama.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Paraguay.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Peru.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Philippines.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Poland.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Portugal.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Puerto_Rico.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Reunion.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Romania.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Rwanda.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Sao_Tome_and_Principe.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Saudi_Arabia.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Senegal.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Serbia.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Sierra_Leone.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Singapore.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Slovak_Republic.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Slovenia.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Somalia.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/South_Africa.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Spain.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Sri_Lanka.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Sudan.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Swaziland.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Sweden.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Switzerland.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Syria.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Taiwan.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Tanzania.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Thailand.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Togo.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Trinidad_and_Tobago.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Tunisia.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Turkey.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Uganda.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/United_Kingdom.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/United_States.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Uruguay.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Venezuela.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Vietnam.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/West_Bank_and_Gaza.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Yemen__Rep_.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Zambia.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/displays/gapminder/panels/lexp_time/Zimbabwe.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/panels_files/figure-html/gap/index.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/trelliscope.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/trelliscope_files/figure-html/gap0/index.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/trelliscope_files/figure-html/gap1/index.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/articles/trelliscope_files/figure-html/mars0/index.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/authors.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/index.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/add_charm.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/add_inputs.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/add_trelliscope_resource_path.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/add_view.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/as_json.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/as_panels_df.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/as_trelliscope_df.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/currencies.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/currency.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/facet_panels.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/filter_cat_href.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/filter_range.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/filter_string.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/gap.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/href.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/index.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/input_checkbox.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/input_multiselect.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/input_number.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/input_radio.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/input_select.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/input_text.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/mars_rover.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/number.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/panel_lazy.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/panel_local.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/panel_options.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/panel_url.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/rover_icon_b64.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/set_default_filters.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/set_default_labels.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/set_default_layout.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/set_default_sort.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/set_info_html.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/set_panel_options.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/set_primary_panel.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/set_show_info_on_load.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/set_tags.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/set_theme.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/set_var_labels.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/show_info.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/state_labels.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/state_layout.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/state_sort.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/trelliscope-shiny.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/update_display_list.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/view_trelliscope.html</loc></url>
+<url><loc>https://trelliscope.github.io/trelliscope/reference/write_trelliscope.html</loc></url>
 </urlset>
+

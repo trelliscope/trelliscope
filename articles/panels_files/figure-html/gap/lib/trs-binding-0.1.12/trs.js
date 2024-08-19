@@ -12,6 +12,7 @@ HTMLWidgets.widget({
     // define shared variables for this instance...
     return {
       renderValue: function(x) {
+        window.__VERSION__ = x.version;
         el.innerHTML = '';
         var dv = document.createElement('div');
         dv.id = x.id;
