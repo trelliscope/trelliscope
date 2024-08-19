@@ -18,7 +18,8 @@ write_widget <- function(trobj) {
   x <- list(
     id = id,
     config_info = config_info,
-    spa = spa
+    spa = spa,
+    version = get_trs_version()
   )
 
   if (spa) {
@@ -66,6 +67,16 @@ get_viewer <- function() {
   if (is.null(viewer))
     viewer <- utils::browseURL
   viewer
+}
+
+get_trs_version <- function() {
+  deps <- htmlwidgets::getDependency("trs", package = "trelliscope")
+  idx <- which(unlist(lapply(deps, function(x) x$name == "trs")))
+  if (length(idx) > 0) {
+    deps[[idx[1]]]$version
+  } else {
+    "{version not found}"
+  }
 }
 
 # get_viewer <- function(wdgt) {
